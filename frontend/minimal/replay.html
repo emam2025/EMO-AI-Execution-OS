@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Replay Viewer — Emo-AI</title>
+  <script src="https://unpkg.com/htmx.org@1.9.11"></script>
+  <script src="/static/script.js"></script>
+  <link href="/static/styles.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 text-gray-900 font-sans">
+  <nav class="bg-gray-900 text-white px-6 py-3 flex items-center gap-6">
+    <span class="font-bold text-lg">⚙ Emo-AI Operator</span>
+    <a href="/dashboard" class="hover:text-yellow-300">Dashboard</a>
+    <a href="/trace/trace_001" class="hover:text-yellow-300">Trace Explorer</a>
+    <a href="/replay/replay_001" class="hover:text-yellow-300">Replay Viewer</a>
+    <a href="/actions" class="hover:text-yellow-300">Actions</a>
+  </nav>
+  <main class="p-6 max-w-6xl mx-auto">
+    <h1 class="text-2xl font-bold mb-4">Replay Viewer</h1>
+    <div class="mb-4">
+      <label class="block text-sm font-medium mb-1">Replay / Execution ID</label>
+      <input id="replay-input" type="text" value="replay_001" class="border rounded px-3 py-2 w-80 font-mono">
+      <button onclick="loadReplay()" class="ml-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Compare</button>
+    </div>
+    <div id="replay-result" class="bg-white rounded shadow p-4">
+      <p class="text-gray-400">Enter a replay ID to view side-by-side comparison.</p>
+    </div>
+  </main>
+    <script>
+    async function loadReplay() {
+      const id = document.getElementById('replay-input').value;
+      const el = document.getElementById('replay-result');
+      el.innerHTML = '<p class="text-gray-400">Loading…</p>';
+      try {
+        const [res1, res2] = await Promise.all([
+          fetch('/api/trace/' + encodeURIComponent(id)),
+          fetch('/api/trace/' + encodeURIComponent(id) + '_replay'),
+        ]);
+        const orig = await res1.json();
+        const replay = await res2.json();
+        const origEvents = (orig.timeline?.events || orig.spans?.events || []);
+        const replayEvents = (replay.timeline?.events || replay.spans?.events || []);
+        let html = '<h2 class="text-lg font-semibold mb-2">Replay Report: ' + id + '</h2>';
+        html += '<div class="grid grid-cols-2 gap-4">';
+        html += '<div class="border rounded p-3"><h3 class="font-medium mb-2 text-green-700">Original Execution</h3>';
+        origEvents.slice(0, 20).forEach((e, i) => {
+          const cls = e.includes('FAILED') || e.includes('failed') ? 'text-red-600' : '';
+          html += '<li class="font-mono text-xs ' + cls + '">' + (i+1) + '. ' + e + '</li>';
+        });
+        html += '</ul></div>';
+        html += '<div class="border rounded p-3"><h3 class="font-medium mb-2 text-blue-700">Replay</h3>';
+        replayEvents.slice(0, 20).forEach((e, i) => {
+          const cls = e.includes('FAILED') || e.includes('failed') ? 'text-red-600' : '';
+          html += '<li class="font-mono text-xs ' + cls + '">' + (i+1) + '. ' + e + '</li>';
+        });
+        html += '</ul></div></div>';
+        const match = origEvents.length === replayEvents.length ? '✅ Deterministic match' : '⚠ Drift detected';
+        html += '<p class="text-xs text-gray-400 mt-3">' + match + ' | Operator Trace: ' + (orig.operator_trace_id || '—') + '</p>';
+        el.innerHTML = html;
+      } catch (e) {
+        el.innerHTML = '<p class="text-red-500">Error loading replay data.</p>';
+      }
+    }
+    window.addEventListener('DOMContentLoaded', loadReplay);
+  </script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+{
+  "governance_interfaces": {
+    "file": "core/interfaces/governance.py",
+    "imports": [
+      "typing",
+      "typing"
+    ],
+    "runtime_import_violations": [],
+    "isolated": true
+  },
+  "adapter_layer": {
+    "file": "core/adapters/governance_adapter.py",
+    "imports": [
+      "typing",
+      "..interfaces.governance",
+      "..contracts",
+      "..api_compliance"
+    ],
+    "has_business_logic": false,
+    "pure_wrapper": true
+  },
+  "delegation_integrity": {
+    "direct_vs_adapter_match": true,
+    "note": "DefaultContractValidator delegates to ContractValidator \u2014 output verified identical"
+  },
+  "verdict": {
+    "isolated": true,
+    "pure_adapter": true,
+    "delegation_correct": true,
+    "overall": true
+  }
+}

@@ -1,0 +1,165 @@
+{
+  "phase": "G2",
+  "title": "Implementation Canon Compliance Log",
+  "date": "2026-05-22",
+  "status": "COMPLETE",
+  "total_items": 22,
+  "compliant": 22,
+  "non_compliant": 0,
+  "items": [
+    {
+      "id": "G2-IC-001",
+      "canon_ref": "LAW 7 — Failure Propagation",
+      "file": "core/runtime/critic/failure_diagnoser.py",
+      "function": "FailureDiagnoser.analyze_error_pattern",
+      "status": "COMPLIANT"
+    },
+    {
+      "id": "G2-IC-002",
+      "canon_ref": "LAW 7 — Failure Propagation",
+      "file": "core/runtime/critic/failure_diagnoser.py",
+      "function": "FailureDiagnoser.match_failure_signature",
+      "status": "COMPLIANT"
+    },
+    {
+      "id": "G2-IC-003",
+      "canon_ref": "LAW 7 — Failure Propagation",
+      "file": "core/runtime/critic/failure_diagnoser.py",
+      "function": "FailureDiagnoser.isolate_root_cause",
+      "status": "COMPLIANT"
+    },
+    {
+      "id": "G2-IC-004",
+      "canon_ref": "LAW 7 — Failure Propagation",
+      "file": "core/runtime/critic/critic_agent.py",
+      "function": "CriticAgent.diagnose_failure",
+      "status": "COMPLIANT"
+    },
+    {
+      "id": "G2-IC-005",
+      "canon_ref": "LAW 7 — Failure Propagation",
+      "file": "core/runtime/critic/diagnosis_state_machine.py",
+      "function": "DiagnosisStateMachine.guard_escalate",
+      "status": "COMPLIANT"
+    },
+    {
+      "id": "G2-IC-006",
+      "canon_ref": "LAW 8 — Governance",
+      "file": "core/runtime/critic/critic_agent.py",
+      "function": "CriticAgent.publish_assessment",
+      "status": "COMPLIANT"
+    },
+    {
+      "id": "G2-IC-007",
+      "canon_ref": "LAW 8 — Governance",
+      "file": "core/runtime/critic/critic_agent.py",
+      "function": "CriticAgent.propose_correction (guarded)",
+      "status": "COMPLIANT"
+    },
+    {
+      "id": "G2-IC-008",
+      "canon_ref": "LAW 8 — Governance",
+      "file": "core/runtime/critic/diagnosis_state_machine.py",
+      "function": "DiagnosisStateMachine.evaluate_correction_guards",
+      "status": "COMPLIANT"
+    },
+    {
+      "id": "G2-IC-009",
+      "canon_ref": "LAW 12 — Traceability",
+      "file": "core/runtime/critic/critic_agent.py",
+      "function": "CriticAgent.diagnose_failure returns critic_trace_id",
+      "status": "COMPLIANT"
+    },
+    {
+      "id": "G2-IC-010",
+      "canon_ref": "LAW 12 — Traceability",
+      "file": "core/runtime/critic/critic_agent.py",
+      "function": "CriticAgent.propose_correction returns critic_trace_id",
+      "status": "COMPLIANT"
+    },
+    {
+      "id": "G2-IC-011",
+      "canon_ref": "LAW 12 — Traceability",
+      "file": "core/runtime/critic/trace_correlator.py",
+      "function": "CriticTraceCorrelator.propagate_to_g1/d9/f4",
+      "status": "COMPLIANT"
+    },
+    {
+      "id": "G2-IC-012",
+      "canon_ref": "LAW 12 — Traceability",
+      "file": "core/runtime/critic/trace_correlator.py",
+      "function": "CriticTraceCorrelator.trace_chain",
+      "status": "COMPLIANT"
+    },
+    {
+      "id": "G2-IC-013",
+      "canon_ref": "LAW 12 — Traceability",
+      "file": "core/runtime/models/critic_models.py",
+      "function": "DiagnosisReport.critic_trace_id",
+      "status": "COMPLIANT"
+    },
+    {
+      "id": "G2-IC-014",
+      "canon_ref": "LAW 20 — EventBus",
+      "file": "core/runtime/critic/critic_agent.py",
+      "function": "CriticAgent._emit — all critic.* topics",
+      "status": "COMPLIANT"
+    },
+    {
+      "id": "G2-IC-015",
+      "canon_ref": "LAW 20 — EventBus",
+      "file": "core/runtime/critic/critic_agent.py",
+      "function": "diagnose_failure emits critic.diagnosis.completed",
+      "status": "COMPLIANT"
+    },
+    {
+      "id": "G2-IC-016",
+      "canon_ref": "LAW 20 — EventBus",
+      "file": "core/runtime/critic/critic_agent.py",
+      "function": "propose_correction emits critic.correction.proposed / rejected",
+      "status": "COMPLIANT"
+    },
+    {
+      "id": "G2-IC-017",
+      "canon_ref": "RULE 1 — Determinism",
+      "file": "core/runtime/critic/diagnosis_state_machine.py",
+      "function": "DiagnosisStateMachine.compute_determinism_hash",
+      "status": "COMPLIANT"
+    },
+    {
+      "id": "G2-IC-018",
+      "canon_ref": "RULE 1 — Determinism",
+      "file": "core/runtime/critic/diagnosis_state_machine.py",
+      "function": "DiagnosisStateMachine.check_deterministic_review",
+      "status": "COMPLIANT"
+    },
+    {
+      "id": "G2-IC-019",
+      "canon_ref": "RULE 1 — Determinism",
+      "file": "core/runtime/critic/runtime_reviewer.py",
+      "function": "RuntimeReviewer.flag_determinism_violation",
+      "status": "COMPLIANT"
+    },
+    {
+      "id": "G2-IC-020",
+      "canon_ref": "RULE 3 — Feedback-Adaptation",
+      "file": "core/runtime/critic/diagnosis_state_machine.py",
+      "function": "guard_correction_allowed — signal_count >= 1",
+      "status": "COMPLIANT"
+    },
+    {
+      "id": "G2-IC-021",
+      "canon_ref": "RULE 3 — Feedback-Adaptation",
+      "file": "core/runtime/critic/diagnosis_state_machine.py",
+      "function": "guard_correction_allowed — confidence >= 0.75",
+      "status": "COMPLIANT"
+    },
+    {
+      "id": "G2-IC-022",
+      "canon_ref": "RULE 5 — Recovery",
+      "file": "core/runtime/critic/plan_correction_engine.py",
+      "function": "PlanCorrectionEngine.propose_correction — rollback_safe",
+      "status": "COMPLIANT"
+    }
+  ]
+}

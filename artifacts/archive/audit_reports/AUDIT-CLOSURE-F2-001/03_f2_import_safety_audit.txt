@@ -1,0 +1,637 @@
+{
+  "task_id": "AUDIT-CLOSURE-F2-001",
+  "step": "03_import_safety",
+  "files_scanned": [
+    "core/",
+    "routers/",
+    "main.py",
+    "scripts/"
+  ],
+  "dead_indirection_files": {
+    "core/execution_core.py": {
+      "active_references": [
+        {
+          "file": "core/execution_engine.py",
+          "line": 24,
+          "pattern": "execution_core",
+          "type": "from_import"
+        },
+        {
+          "file": "core/execution_engine.py",
+          "line": 48,
+          "pattern": "execution_core",
+          "type": "from_import"
+        },
+        {
+          "file": "core/execution_engine.py",
+          "line": 82,
+          "pattern": "ExecutionCore",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/execution_engine.py",
+          "line": 380,
+          "pattern": "ExecutionCore",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/execution_engine.py",
+          "line": 384,
+          "pattern": "ExecutionCore",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/execution_engine.py",
+          "line": 388,
+          "pattern": "ExecutionCore",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/execution_runtime.py",
+          "line": 32,
+          "pattern": "execution_core",
+          "type": "from_import"
+        },
+        {
+          "file": "core/execution_runtime.py",
+          "line": 79,
+          "pattern": "ExecutionCore",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/execution_runtime.py",
+          "line": 145,
+          "pattern": "get_event_type_for_transition",
+          "type": "method_call"
+        },
+        {
+          "file": "core/composition/root.py",
+          "line": 31,
+          "pattern": "execution_core",
+          "type": "from_import"
+        },
+        {
+          "file": "core/composition/root.py",
+          "line": 170,
+          "pattern": "ExecutionCore",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/composition/root.py",
+          "line": 88,
+          "pattern": "ExecutionCore",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/composition/root.py",
+          "line": 172,
+          "pattern": "ExecutionCore",
+          "type": "name_ref"
+        }
+      ],
+      "active_caller_count": 3
+    },
+    "core/codegraph/graph.py": {
+      "active_references": [
+        {
+          "file": "core/runtime_intelligence.py",
+          "line": 20,
+          "pattern": "codegraph\\.graph",
+          "type": "from_import"
+        },
+        {
+          "file": "core/runtime_intelligence.py",
+          "line": 42,
+          "pattern": "CodeGraph",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/codegraph/query_engine.py",
+          "line": 14,
+          "pattern": "CodeGraph",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/codegraph/bridge.py",
+          "line": 16,
+          "pattern": "codegraph\\.graph",
+          "type": "from_import"
+        },
+        {
+          "file": "core/codegraph/bridge.py",
+          "line": 119,
+          "pattern": "CodeGraph",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/codegraph/bridge.py",
+          "line": 183,
+          "pattern": "CodeGraph",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/codegraph/integration.py",
+          "line": 24,
+          "pattern": "codegraph\\.graph",
+          "type": "from_import"
+        },
+        {
+          "file": "core/codegraph/integration.py",
+          "line": 251,
+          "pattern": "CodeGraph",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/codegraph/integration.py",
+          "line": 70,
+          "pattern": "CodeGraph",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/codegraph/integration.py",
+          "line": 57,
+          "pattern": "CodeGraph",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/codegraph/builder.py",
+          "line": 65,
+          "pattern": "CodeGraph",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/codegraph/builder.py",
+          "line": 74,
+          "pattern": "CodeGraph",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/codegraph/builder.py",
+          "line": 114,
+          "pattern": "CodeGraph",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/codegraph/builder.py",
+          "line": 173,
+          "pattern": "CodeGraph",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/codegraph/builder.py",
+          "line": 229,
+          "pattern": "CodeGraph",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/codegraph/builder.py",
+          "line": 246,
+          "pattern": "CodeGraph",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/codegraph/storage.py",
+          "line": 40,
+          "pattern": "CodeGraph",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/codegraph/storage.py",
+          "line": 57,
+          "pattern": "CodeGraph",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/codegraph/storage.py",
+          "line": 16,
+          "pattern": "CodeGraph",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/codegraph/storage.py",
+          "line": 60,
+          "pattern": "CodeGraph",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/codegraph/serializer.py",
+          "line": 9,
+          "pattern": "CodeGraph",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/codegraph/serializer.py",
+          "line": 15,
+          "pattern": "CodeGraph",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/codegraph/serializer.py",
+          "line": 83,
+          "pattern": "CodeGraph",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/codegraph/serializer.py",
+          "line": 93,
+          "pattern": "CodeGraph",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/codegraph/serializer.py",
+          "line": 103,
+          "pattern": "CodeGraph",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/codegraph/serializer.py",
+          "line": 119,
+          "pattern": "CodeGraph",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/codegraph/drift/runtime_drift_detector.py",
+          "line": 16,
+          "pattern": "codegraph\\.graph",
+          "type": "from_import"
+        },
+        {
+          "file": "core/codegraph/drift/runtime_drift_detector.py",
+          "line": 126,
+          "pattern": "CodeGraph",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/codegraph/drift/runtime_drift_detector.py",
+          "line": 74,
+          "pattern": "CodeGraph",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/codegraph/drift/runtime_drift_detector.py",
+          "line": 83,
+          "pattern": "CodeGraph",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/codegraph/drift/snapshot.py",
+          "line": 5,
+          "pattern": "codegraph\\.graph",
+          "type": "from_import"
+        },
+        {
+          "file": "core/codegraph/drift/snapshot.py",
+          "line": 10,
+          "pattern": "CodeGraph",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/codegraph/runtime_intelligence/hotspot_analyzer.py",
+          "line": 12,
+          "pattern": "codegraph\\.graph",
+          "type": "from_import"
+        },
+        {
+          "file": "core/codegraph/runtime_intelligence/hotspot_analyzer.py",
+          "line": 44,
+          "pattern": "CodeGraph",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/codegraph/runtime_intelligence/runtime_centrality.py",
+          "line": 14,
+          "pattern": "codegraph\\.graph",
+          "type": "from_import"
+        },
+        {
+          "file": "core/codegraph/runtime_intelligence/runtime_centrality.py",
+          "line": 40,
+          "pattern": "CodeGraph",
+          "type": "name_ref"
+        }
+      ],
+      "active_caller_count": 11
+    },
+    "core/codegraph/runtime_intelligence/execution_topology.py": {
+      "active_references": [
+        {
+          "file": "core/runtime_intelligence.py",
+          "line": 47,
+          "pattern": "ExecutionTopology",
+          "type": "name_ref"
+        }
+      ],
+      "active_caller_count": 1
+    },
+    "core/control_plane/cluster_manager.py": {
+      "active_references": [],
+      "active_caller_count": 0
+    },
+    "core/control_plane/health_supervisor.py": {
+      "active_references": [
+        {
+          "file": "core/control_plane/coordinator.py",
+          "line": 22,
+          "pattern": "health_supervisor",
+          "type": "from_import"
+        },
+        {
+          "file": "core/control_plane/coordinator.py",
+          "line": 71,
+          "pattern": "HealthSupervisor",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/control_plane/coordinator.py",
+          "line": 48,
+          "pattern": "HealthSupervisor",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/control_plane/coordinator.py",
+          "line": 55,
+          "pattern": "HealthSupervisor",
+          "type": "name_ref"
+        }
+      ],
+      "active_caller_count": 1
+    },
+    "core/control_plane/worker_drainer.py": {
+      "active_references": [
+        {
+          "file": "core/control_plane/coordinator.py",
+          "line": 23,
+          "pattern": "worker_drainer",
+          "type": "from_import"
+        },
+        {
+          "file": "core/control_plane/coordinator.py",
+          "line": 67,
+          "pattern": "WorkerDrainer",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/control_plane/coordinator.py",
+          "line": 47,
+          "pattern": "WorkerDrainer",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/control_plane/coordinator.py",
+          "line": 54,
+          "pattern": "WorkerDrainer",
+          "type": "name_ref"
+        }
+      ],
+      "active_caller_count": 1
+    },
+    "core/distributed_checkpoint.py": {
+      "active_references": [
+        {
+          "file": "core/recovery_coordinator.py",
+          "line": 37,
+          "pattern": "distributed_checkpoint",
+          "type": "from_import"
+        },
+        {
+          "file": "core/recovery_coordinator.py",
+          "line": 150,
+          "pattern": "DistributedCheckpointManager",
+          "type": "name_ref"
+        }
+      ],
+      "active_caller_count": 1
+    },
+    "core/observability/timeline.py": {
+      "active_references": [
+        {
+          "file": "core/observability/dashboard.py",
+          "line": 21,
+          "pattern": "timeline",
+          "type": "from_import"
+        },
+        {
+          "file": "core/observability/dashboard.py",
+          "line": 52,
+          "pattern": "TimelineStore",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/observability/dashboard.py",
+          "line": 38,
+          "pattern": "TimelineStore",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/observability/dashboard.py",
+          "line": 42,
+          "pattern": "TimelineStore",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/control_plane/coordinator.py",
+          "line": 24,
+          "pattern": "timeline",
+          "type": "from_import"
+        },
+        {
+          "file": "core/control_plane/brain.py",
+          "line": 35,
+          "pattern": "timeline",
+          "type": "from_import"
+        },
+        {
+          "file": "core/control_plane/brain.py",
+          "line": 110,
+          "pattern": "TimelineStore",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/control_plane/brain.py",
+          "line": 74,
+          "pattern": "TimelineStore",
+          "type": "name_ref"
+        }
+      ],
+      "active_caller_count": 3
+    },
+    "core/observability/topology_viewer.py": {
+      "active_references": [
+        {
+          "file": "core/observability/dashboard.py",
+          "line": 23,
+          "pattern": "topology_viewer",
+          "type": "from_import"
+        },
+        {
+          "file": "core/observability/dashboard.py",
+          "line": 60,
+          "pattern": "TopologyViewer",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/observability/dashboard.py",
+          "line": 40,
+          "pattern": "TopologyViewer",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/observability/dashboard.py",
+          "line": 44,
+          "pattern": "TopologyViewer",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/observability/dag_visualizer.py",
+          "line": 106,
+          "pattern": "get_node",
+          "type": "method_call"
+        },
+        {
+          "file": "core/observability/dag_visualizer.py",
+          "line": 179,
+          "pattern": "get_node",
+          "type": "method_call"
+        },
+        {
+          "file": "core/codegraph/query_engine.py",
+          "line": 106,
+          "pattern": "get_node",
+          "type": "method_call"
+        },
+        {
+          "file": "core/codegraph/query_engine.py",
+          "line": 126,
+          "pattern": "get_node",
+          "type": "method_call"
+        },
+        {
+          "file": "core/codegraph/query_engine.py",
+          "line": 135,
+          "pattern": "get_node",
+          "type": "method_call"
+        },
+        {
+          "file": "core/codegraph/serializer.py",
+          "line": 123,
+          "pattern": "get_node",
+          "type": "method_call"
+        },
+        {
+          "file": "core/control_plane/health.py",
+          "line": 90,
+          "pattern": "get_node",
+          "type": "method_call"
+        },
+        {
+          "file": "core/control_plane/brain.py",
+          "line": 37,
+          "pattern": "topology_viewer",
+          "type": "from_import"
+        },
+        {
+          "file": "core/control_plane/brain.py",
+          "line": 118,
+          "pattern": "TopologyViewer",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/control_plane/brain.py",
+          "line": 76,
+          "pattern": "TopologyViewer",
+          "type": "name_ref"
+        }
+      ],
+      "active_caller_count": 6
+    },
+    "core/observability/trace.py": {
+      "active_references": [
+        {
+          "file": "core/observability/dashboard.py",
+          "line": 20,
+          "pattern": "trace",
+          "type": "from_import"
+        },
+        {
+          "file": "core/observability/dashboard.py",
+          "line": 48,
+          "pattern": "TraceStore",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/observability/dashboard.py",
+          "line": 104,
+          "pattern": "get_trace",
+          "type": "method_call"
+        },
+        {
+          "file": "core/observability/dashboard.py",
+          "line": 37,
+          "pattern": "TraceStore",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/observability/dashboard.py",
+          "line": 41,
+          "pattern": "TraceStore",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/control_plane/brain.py",
+          "line": 34,
+          "pattern": "trace",
+          "type": "from_import"
+        },
+        {
+          "file": "core/control_plane/brain.py",
+          "line": 106,
+          "pattern": "TraceStore",
+          "type": "name_ref"
+        },
+        {
+          "file": "core/control_plane/brain.py",
+          "line": 73,
+          "pattern": "TraceStore",
+          "type": "name_ref"
+        },
+        {
+          "file": "routers/ai.py",
+          "line": 18,
+          "pattern": "trace",
+          "type": "import"
+        },
+        {
+          "file": "routers/e2e.py",
+          "line": 14,
+          "pattern": "trace",
+          "type": "import"
+        },
+        {
+          "file": "main.py",
+          "line": 5,
+          "pattern": "trace",
+          "type": "import"
+        }
+      ],
+      "active_caller_count": 5
+    }
+  },
+  "total_active_references": 93,
+  "init_py_exports": [
+    {
+      "init_file": "/Users/AI Workspace/Emo-AI/core/codegraph/__init__.py",
+      "target_module": "graph",
+      "export_content": "from .builder import build_codegraph\nfrom .bridge import (\n    CodeGraphEventSubscriber,\n    RuntimeAwareQueryEngine,\n    RuntimeStats,\n)\nfrom .drift import (\n    CodeGraphDriftDetector,\n    DriftDetector,\n    DriftStore,\n    build_snapshot,\n)\nfrom .graph import CodeGraph, Edge, EdgeType, Node, NodeType\nfrom .query_engine import CodeGraphQueryEngine\nfrom .serializer import to_json, to_llm_context\nfrom .storage import load, save"
+    },
+    {
+      "init_file": "/Users/AI Workspace/Emo-AI/core/codegraph/runtime_intelligence/__init__.py",
+      "target_module": "execution_topology",
+      "export_content": "\"\"\"3.8.1 \u2014 Runtime Trace Intelligence Layer.\n\nTransforms execution traces into:\n  - runtime hotspots\n  - execution topology graphs\n  - failure propagation maps\n  - runtime centrality scores\n  - execution frequency distributions\n\"\"\"\n\nfrom .hotspot_analyzer import HotspotAnalyzer, RuntimeHotspot\nfrom .execution_topology import ExecutionTopology, ExecutionGraph, ExecutionEdge\nfrom .failure_topology import FailureTopology, FailureNode, FailureEdge\nfrom .runtime_centrality import RuntimeCentrality, RuntimeCentralityScore\nfrom .execution_frequency import ExecutionFrequencyTracker"
+    }
+  ],
+  "verdict": {
+    "safe_to_remove": false,
+    "dead_files_without_refs": 1,
+    "dead_files_with_refs": 9
+  }
+}

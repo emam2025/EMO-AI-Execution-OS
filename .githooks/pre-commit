@@ -1,0 +1,18 @@
+#!/bin/sh
+# emo-guard pre-commit hook
+# Blocks commits that violate architectural rules.
+# Install: `git config core.hooksPath .githooks`
+
+echo "🔍 Running emo-guard — Architectural Control Plane Gate..."
+python3 scripts/emo-guard
+EXIT_CODE=$?
+
+if [ $EXIT_CODE -ne 0 ]; then
+    echo ""
+    echo "❌ Commit BLOCKED: Architectural violations must be resolved before commit."
+    echo "   Use --no-verify to bypass (NOT RECOMMENDED unless explicitly directed)."
+    exit 1
+fi
+
+echo "✅ Architecture clean — commit allowed."
+exit 0

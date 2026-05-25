@@ -1,0 +1,624 @@
+{
+  "document": "EMO AI Orchestrator — Core Features & API Specification",
+  "version": "1.2.0",
+  "date": "2026-05-17",
+  "author": "opencode AI Agent",
+  "status": "ALL DECISIONS CONFIRMED — Ready for exploration phase",
+  "project": {
+    "name": "EMO AI Orchestrator",
+    "current_version": "4.0.0",
+    "framework": "FastAPI",
+    "python_version": "3.14",
+    "platforms": ["macOS", "Windows", "Android (web-responsive)"],
+    "license": "Open Source (MIT/Apache 2.0 — TBD)",
+    "access": "Public — available for everyone",
+    "llm_mode": "API (OpenRouter/Groq/Gemini) or Local (Ollama)",
+    "database": "SQLite (default, no user preference)",
+    "api_keys": "User-provided (free tier or paid)",
+    "target_users_mvp": 3,
+    "compliance": ["GDPR", "SOC2"],
+    "deadline": "Task-driven (not time-based)",
+    "telegram_bot": "Must have in MVP"
+  },
+  "features": [
+    {
+      "id": "FR-01",
+      "name_ar": "إدارة المحادثات",
+      "name_en": "Conversation Management",
+      "priority": "Must",
+      "status": "partial",
+      "description": "إنشاء وإدارة محادثات متعددة مع حفظ السجل",
+      "acceptance_criteria": [
+        "إنشاء محادثة جديدة باسم مخصص",
+        "تفعيل محادثة والتبديل بينها",
+        "حذف محادثة مع جميع رسائلها",
+        "عرض قائمة المحادثات مع عدد الرسائل"
+      ],
+      "endpoints": [
+        "POST /api/conversations",
+        "GET /api/conversations",
+        "POST /api/conversations/{id}/activate",
+        "DELETE /api/conversations/{id}",
+        "GET /api/history"
+      ]
+    },
+    {
+      "id": "FR-02",
+      "name_ar": "نظام الوكلاء المتعددين",
+      "name_en": "Multi-Agent System",
+      "priority": "Must",
+      "status": "stub",
+      "description": "وكلاء متخصصون يتعاونون لتنفيذ المهام",
+      "agents": [
+        {"name": "planner", "role": "تخطيط وتوزيع المهام", "color": "#8b5cf6"},
+        {"name": "coder", "role": "كتابة وتصحيح الأكواد", "color": "#10b981"},
+        {"name": "writer", "role": "كتابة المستندات والمحتوى", "color": "#ec4899"},
+        {"name": "researcher", "role": "بحث وتحقق من الحقائق", "color": "#f59e0b"}
+      ],
+      "acceptance_criteria": [
+        "توجيه الطلب للوكيل المناسب تلقائياً",
+        "كل وكيل يتصل بنموذج LLM حقيقي",
+        "عرض حالة كل وكيل (idle/busy/error)",
+        "دعم إضافة وكلاء مخصصين"
+      ]
+    },
+    {
+      "id": "FR-03",
+      "name_ar": "التكامل مع نماذج LLM",
+      "name_en": "LLM Integration",
+      "priority": "Must",
+      "status": "stub",
+      "description": "الاتصال بنماذج ذكاء اصطناعي عبر مزودين متعددين",
+      "providers": [
+        {"name": "openrouter", "type": "api", "priority": 1, "env_key": "OPENROUTER_API_KEY"},
+        {"name": "groq", "type": "api", "priority": 2, "env_key": "GROQ_API_KEY"},
+        {"name": "gemini", "type": "api", "priority": 3, "env_key": "GEMINI_API_KEY"},
+        {"name": "ollama", "type": "local", "priority": 4, "env_key": "", "default_url": "http://localhost:11434", "note": "Local LLM via Ollama"}
+      ],
+      "acceptance_criteria": [
+        "الاتصال بنموذج LLM حقيقي واستقبال رد",
+        "اختبار الاتصال وعرض حالة المزود",
+        "التبديل بين المزودين من الإعدادات",
+        "fallback تلقائي عند فشل المزود الأساسي"
+      ]
+    },
+    {
+      "id": "FR-04",
+      "name_ar": "نظام الأدوات",
+      "name_en": "Tools System",
+      "priority": "Must",
+      "status": "exists-not-connected",
+      "description": "مكتبة أدوات ينفذها الوكلاء تلقائياً",
+      "categories": {
+        "DevOps": ["vercel_deploy", "docker_build", "docker_run", "env_manager"],
+        "Project Intelligence": ["auto_debugger", "ai_code_reviewer", "project_monitor", "project_scaffold", "project_analyzer", "dependency_manager", "codebase_refactor", "deployment_builder"],
+        "GitHub": ["github_create_repo", "github_clone_repo", "github_push_changes", "github_pull_repo", "github_read_file", "github_write_file", "github_create_branch"],
+        "Supabase": ["supabase_create_project", "supabase_create_table", "supabase_insert_data", "supabase_query", "supabase_auth_setup", "supabase_storage_upload"],
+        "Firebase": ["firebase_init_project", "firebase_auth_setup", "firebase_firestore_write", "firebase_firestore_read", "firebase_deploy"],
+        "System": ["shell", "files"]
+      },
+      "acceptance_criteria": [
+        "الوكلاء يمكنهم استدعاء الأدوات تلقائياً",
+        "كل أداة ترجع نتيجة منظمة (JSON)",
+        "حماية الأدوات الخطرة بنظام صلاحيات",
+        "عرض الأدوات المتاحة في الواجهة"
+      ]
+    },
+    {
+      "id": "FR-05",
+      "name_ar": "إدارة المهام",
+      "name_en": "Task Management",
+      "priority": "Must",
+      "status": "partial",
+      "description": "تتبع المهام من الإنشاء حتى الاكتمال",
+      "states": ["pending", "running", "complete", "error"],
+      "acceptance_criteria": [
+        "إنشاء مهمة بحالة pending",
+        "تحديث الحالة عند البدء والاكتمال",
+        "البث المباشر للتقدم عبر SSE",
+        "تنظيف المهام القديمة تلقائياً (بعد 24 ساعة)"
+      ]
+    },
+    {
+      "id": "FR-06",
+      "name_ar": "الذاكرة والسياق",
+      "name_en": "Memory & Context",
+      "priority": "Must",
+      "status": "partial",
+      "description": "بناء سياق المحادثة وإدارته",
+      "acceptance_criteria": [
+        "حد أقصى 12 رسالة في السياق",
+        "حد أقصى 1200 حرف لكل رسالة",
+        "تنظيف النصوص الصاخبة",
+        "الحفاظ على هيكل الأدوار (user/assistant/system)"
+      ]
+    },
+    {
+      "id": "FR-07",
+      "name_ar": "الواجهة الأمامية",
+      "name_en": "Web UI",
+      "priority": "Must",
+      "status": "exists",
+      "description": "واجهة دردشة تفاعلية بتصميم Glass Morphism",
+      "features": {
+        "languages": ["en", "ar"],
+        "themes": ["dark", "light"],
+        "components": ["chat", "settings", "tools_library", "execution_log", "task_list", "agent_status", "conversations"]
+      },
+      "acceptance_criteria": [
+        "واجهة متجاوبة (responsive) تعمل على الموبايل والديسكتوب",
+        "د RTL للعربية و LTR للإنجليزية",
+        "تبديل سلس بين الوضعين الداكن والفاتح",
+        "لوحة إعدادات كاملة"
+      ]
+    },
+    {
+      "id": "FR-08",
+      "name_ar": "تكامل Telegram",
+      "name_en": "Telegram Integration",
+      "priority": "Should",
+      "status": "exists",
+      "description": "بوت Telegram للتفاعل مع النظام",
+      "commands": ["/start", "/chat", "/status", "/help"],
+      "acceptance_criteria": [
+        "تفويض المستخدمين عبر /start",
+        "استقبال الرسائل وإعادة الرد",
+        "تقسيم الرسائل الطويلة (>4000 حرف)"
+      ]
+    },
+    {
+      "id": "FR-09",
+      "name_ar": "تطبيق System Tray",
+      "name_en": "System Tray App",
+      "priority": "Should",
+      "status": "exists",
+      "description": "تطبيق macOS لمراقبة الخادم",
+      "acceptance_criteria": [
+        "مراقبة حالة الخادم كل 5 ثوانٍ",
+        "إعادة تشغيل الخادم بنقرة واحدة",
+        "إشعارات عند تغير الحالة"
+      ]
+    },
+    {
+      "id": "FR-10",
+      "name_ar": "الأمان والمصادقة",
+      "name_en": "Security & Authentication",
+      "priority": "Must",
+      "status": "disabled",
+      "description": "حماية النظام والمصادقة",
+      "acceptance_criteria": [
+        "مصادقة username/password مع token",
+        "حماية مفاتيح API في .env",
+        "نظام صلاحيات للأدوات",
+        "تشفير البيانات الحساسة"
+      ]
+    }
+  ],
+  "api_specification": {
+    "base_url": "http://localhost:8080",
+    "auth": "Bearer token (when auth_enabled=true)",
+    "endpoints": {
+      "GET /": {
+        "description_ar": "حالة الخادم",
+        "auth_required": false,
+        "response": {
+          "200": {
+            "name": "Emo AI Orchestrator",
+            "version": "4.0.0",
+            "status": "running"
+          }
+        }
+      },
+      "POST /api/chat": {
+        "description_ar": "إرسال رسالة وبدء مهمة",
+        "auth_required": false,
+        "request_body": {
+          "message": {"type": "string", "required": true, "max_length": 10000},
+          "conversation_id": {"type": "string", "required": false, "format": "uuid"},
+          "file_name": {"type": "string", "required": false},
+          "file_type": {"type": "string", "required": false},
+          "file_size": {"type": "integer", "required": false},
+          "base64": {"type": "string", "required": false}
+        },
+        "response": {
+          "200": {
+            "task_id": "string (8-char UUID)",
+            "status": "started"
+          }
+        }
+      },
+      "GET /api/stream/{task_id}": {
+        "description_ar": "بث مباشر لتقدم المهمة (Server-Sent Events)",
+        "auth_required": false,
+        "content_type": "text/event-stream",
+        "events": [
+          {
+            "event": "step_start",
+            "data": {"step": "string", "agent": "string", "tool": "string"}
+          },
+          {
+            "event": "step_complete",
+            "data": {"step": "string", "result": "string"}
+          },
+          {
+            "event": "result",
+            "data": {"content": "string"}
+          },
+          {
+            "event": "error",
+            "data": {"message": "string", "code": "string"}
+          }
+        ]
+      },
+      "GET /api/tasks": {
+        "description_ar": "قائمة المهام",
+        "auth_required": false,
+        "query_params": {
+          "limit": {"type": "integer", "default": 10, "max": 100}
+        },
+        "response": {
+          "200": {
+            "tasks": [
+              {
+                "id": "string",
+                "message": "string",
+                "status": "string",
+                "created_at": "ISO8601",
+                "result": "string|null",
+                "error": "string|null"
+              }
+            ]
+          }
+        }
+      },
+      "GET /api/conversations": {
+        "description_ar": "قائمة المحادثات",
+        "auth_required": false,
+        "response": {
+          "200": {
+            "conversations": [
+              {"id": "string", "name": "string", "message_count": "integer"}
+            ],
+            "active": "string|null"
+          }
+        }
+      },
+      "POST /api/conversations": {
+        "description_ar": "إنشاء محادثة جديدة",
+        "auth_required": false,
+        "request_body": {
+          "name": {"type": "string", "required": true, "max_length": 100}
+        },
+        "response": {
+          "200": {
+            "id": "string",
+            "name": "string",
+            "created_at": "ISO8601"
+          }
+        }
+      },
+      "POST /api/conversations/{id}/activate": {
+        "description_ar": "تفعيل محادثة",
+        "auth_required": false,
+        "response": {
+          "200": {"status": "activated", "conversation_id": "string"}
+        }
+      },
+      "DELETE /api/conversations/{id}": {
+        "description_ar": "حذف محادثة",
+        "auth_required": true,
+        "response": {
+          "200": {"status": "deleted", "conversation_id": "string"}
+        }
+      },
+      "POST /api/settings": {
+        "description_ar": "تحديث إعداد",
+        "auth_required": true,
+        "request_body": {
+          "key": {"type": "string", "required": true},
+          "value": {"type": "string", "required": true}
+        },
+        "response": {
+          "200": {"status": "saved", "key": "string"}
+        }
+      },
+      "GET /api/status": {
+        "description_ar": "حالة الاتصال بالـ LLM",
+        "auth_required": false,
+        "response": {
+          "200": {
+            "connected": "boolean",
+            "provider": "string",
+            "model": "string",
+            "latency_ms": "integer"
+          }
+        }
+      },
+      "GET /api/history": {
+        "description_ar": "سجل المحادثة النشطة",
+        "auth_required": false,
+        "response": {
+          "200": {
+            "messages": [
+              {
+                "role": "enum[user, assistant, system]",
+                "content": "string",
+                "timestamp": "ISO8601",
+                "file_data": {
+                  "name": "string",
+                  "type": "string",
+                  "size": "integer",
+                  "base64": "string"
+                }
+              }
+            ]
+          }
+        }
+      },
+      "GET /api/global_stream": {
+        "description_ar": "بث عام للأحداث (SSE)",
+        "auth_required": false,
+        "content_type": "text/event-stream",
+        "events": [
+          {
+            "event": "task_update",
+            "data": {"task_id": "string", "status": "string", "progress": "integer"}
+          },
+          {
+            "event": "play_sound",
+            "data": {"message": "string"}
+          }
+        ]
+      },
+      "GET /api/project": {
+        "description_ar": "معلومات المشروع الحالي",
+        "auth_required": false,
+        "response": {
+          "200": {
+            "name": "string",
+            "path": "string",
+            "file_count": "integer"
+          }
+        }
+      }
+    }
+  },
+  "data_models": {
+    "Task": {
+      "id": {"type": "string", "format": "uuid-short", "example": "a1b2c3d4"},
+      "message": {"type": "string", "description": "نص الرسالة الأصلية"},
+      "status": {"type": "string", "enum": ["pending", "running", "complete", "error"]},
+      "result": {"type": "string", "nullable": true},
+      "error": {"type": "string", "nullable": true},
+      "created_at": {"type": "string", "format": "ISO8601"},
+      "updated_at": {"type": "string", "format": "ISO8601", "nullable": true},
+      "conversation_id": {"type": "string", "nullable": true}
+    },
+    "Conversation": {
+      "id": {"type": "string", "format": "uuid"},
+      "name": {"type": "string"},
+      "messages": {
+        "type": "array",
+        "items": {
+          "role": {"type": "string", "enum": ["user", "assistant", "system"]},
+          "content": {"type": "string"},
+          "timestamp": {"type": "string", "format": "ISO8601"},
+          "file_data": {
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "name": {"type": "string"},
+              "type": {"type": "string"},
+              "size": {"type": "integer"},
+              "base64": {"type": "string"}
+            }
+          }
+        }
+      },
+      "created_at": {"type": "string", "format": "ISO8601"}
+    },
+    "Settings": {
+      "lang": {"type": "string", "enum": ["en", "ar"], "default": "ar"},
+      "theme": {"type": "string", "enum": ["dark", "light"], "default": "dark"},
+      "provider": {"type": "string", "default": "openrouter"},
+      "model": {"type": "string", "default": ""},
+      "openrouter_key": {"type": "string", "sensitive": true},
+      "groq_key": {"type": "string", "sensitive": true},
+      "gemini_key": {"type": "string", "sensitive": true},
+      "system_instructions": {"type": "string", "default": ""},
+      "project_dir": {"type": "string", "default": "cuga-agent"},
+      "auth_enabled": {"type": "boolean", "default": false},
+      "auth_username": {"type": "string"},
+      "auth_password_hash": {"type": "string"},
+      "telegram_token": {"type": "string", "sensitive": true},
+      "telegram_enabled": {"type": "boolean", "default": true},
+      "permissions": {"type": "object", "default": {}},
+      "custom_providers": {"type": "object", "default": {}}
+    },
+    "Agent": {
+      "name": {"type": "string"},
+      "status": {"type": "string", "enum": ["idle", "busy", "error"]},
+      "current_task": {"type": "string", "nullable": true},
+      "brain": {"type": "Brain", "description": "LLM connection instance"}
+    }
+  },
+  "missing_information": [
+    {
+      "id": "M-01",
+      "question": "هل المشروع مفتوح المصدر أم خاص؟",
+      "impact": "يحدد الترخيص ومستوى التوثيق العام",
+      "default_assumption": "مفتوح المصدر — متاح للجميع",
+      "verification_method": "سؤال صاحب القرار",
+      "status": "confirmed"
+    },
+    {
+      "id": "M-02",
+      "question": "عدد المستخدمين المستهدف في MVP؟",
+      "impact": "يحدد متطلبات التوسع والأداء",
+      "default_assumption": "3 مستخدمين في المرحلة الأولى",
+      "verification_method": "سؤال صاحب القرار",
+      "status": "confirmed"
+    },
+    {
+      "id": "M-03",
+      "question": "الميزانية الشهرية لـ API Keys؟",
+      "impact": "يحدد اختيار النماذج",
+      "default_assumption": "حسب المستخدم — مجاني أو مدفوع",
+      "verification_method": "سؤال صاحب القرار",
+      "status": "confirmed"
+    },
+    {
+      "id": "M-04",
+      "question": "المنصات المستهدفة؟",
+      "impact": "يحدد tray.py والبديل",
+      "default_assumption": "macOS + Windows + Android (web-responsive)",
+      "verification_method": "سؤال صاحب القرار",
+      "status": "confirmed"
+    },
+    {
+      "id": "M-05",
+      "question": "هل هناك قاعدة بيانات مفضلة؟",
+      "impact": "يحدد اختيار DB",
+      "default_assumption": "SQLite (محلي، بدون تفضيل)",
+      "verification_method": "سؤال صاحب القرار",
+      "status": "confirmed"
+    },
+    {
+      "id": "M-06",
+      "question": "هل Telegram Bot مطلوب في MVP؟",
+      "impact": "يحدد الأولوية والجدول",
+      "default_assumption": "Must — بالتأكيد مطلوب",
+      "verification_method": "سؤال صاحب القرار",
+      "status": "confirmed"
+    },
+    {
+      "id": "M-07",
+      "question": "ما النماذج المحددة المطلوبة عبر OpenRouter؟",
+      "impact": "يحدد الإعدادات والأداء",
+      "default_assumption": "anthropic/claude-sonnet-4-20250514",
+      "verification_method": "سؤال صاحب القرار",
+      "status": "confirmed"
+    },
+    {
+      "id": "M-07b",
+      "question": "النماذج المحلية عبر Ollama",
+      "impact": "يحدد brain.py implementation",
+      "default_assumption": "Ollama هو المزود المحلي الوحيد",
+      "verification_method": "سؤال صاحب القرار",
+      "status": "confirmed"
+    },
+    {
+      "id": "M-08",
+      "question": "هل هناك متطلبات امتثال (GDPR, SOC2)؟",
+      "impact": "يحدد متطلبات الأمان والخصوصية",
+      "default_assumption": "نعم — يجب الالتزام بـ GDPR/SOC2",
+      "verification_method": "سؤال صاحب القرار",
+      "status": "confirmed"
+    },
+    {
+      "id": "M-09",
+      "question": "مَن هو صاحب القرار النهائي؟",
+      "impact": "يحدد سلسلة الموافقة",
+      "default_assumption": "أنت (صاحب القرار)",
+      "verification_method": "مطلوب تحديد صريح",
+      "status": "confirmed"
+    },
+    {
+      "id": "M-10",
+      "question": "هل هناك deadline محدد لإطلاق MVP؟",
+      "impact": "يحدد الجدول الزمني والأولويات",
+      "default_assumption": "محدد بالتاسك (Task-driven)",
+      "verification_method": "سؤال صاحب القرار",
+      "status": "confirmed"
+    }
+  ],
+  "risks": [
+    {
+      "id": "R-01",
+      "risk": "تسرب مفاتيح API (موجودة حالياً في JSON)",
+      "probability": "high",
+      "impact": "critical",
+      "mitigation": "نقل فوري لـ .env + إضافة .env لـ .gitignore"
+    },
+    {
+      "id": "R-02",
+      "risk": "عدم استقرار نماذج LLM الخارجية",
+      "probability": "medium",
+      "impact": "high",
+      "mitigation": "دعم مزودين متعددين + fallback تلقائي"
+    },
+    {
+      "id": "R-03",
+      "risk": "الأداء تحت الحمل الثقيل",
+      "probability": "medium",
+      "impact": "medium",
+      "mitigation": "اختبارات تحميل + تحسين async processing"
+    },
+    {
+      "id": "R-04",
+      "risk": "تعقيد الكود الحالي (ملفات كبيرة)",
+      "probability": "high",
+      "impact": "medium",
+      "mitigation": "إعادة هيكلة تدريجية بعد MVP"
+    },
+    {
+      "id": "R-05",
+      "risk": "عدم توافق Python 3.14 مع بعض المكتبات",
+      "probability": "low",
+      "impact": "medium",
+      "mitigation": "اختبار التوافق مبكراً"
+    },
+    {
+      "id": "R-06",
+      "risk": "فقدان بيانات المحادثات (JSON محلي)",
+      "probability": "medium",
+      "impact": "high",
+      "mitigation": "إضافة SQLite كقاعدة بيانات"
+    }
+  ],
+  "kpis": [
+    {"name": "زمن تطوير MVP", "target": "≤ 8 أسابيع", "measurement": "Git commit tracking"},
+    {"name": "معدل نجاح الاختبارات الحرجة", "target": "≥ 95%", "measurement": "pytest output"},
+    {"name": "زمن استجابة API المتوسط", "target": "≤ 300ms (100 concurrent)", "measurement": "Apache Bench / k6"},
+    {"name": "تغطية اختبارات الوحدة", "target": "≥ 60% (MVP), 80% (v2)", "measurement": "pytest-cov"},
+    {"name": "عدد الأخطاء الحرجة في الإنتاج", "target": "0", "measurement": "Sentry/logs"},
+    {"name": "رضا المستخدم", "target": "≥ 4/5", "measurement": "استبيان"}
+  ],
+  "next_steps_24h": [
+    {
+      "step": 1,
+      "action": "تأمين مفاتيح API",
+      "command": "mv .emo_settings.json .emo_settings.json.bak && create .env with keys",
+      "estimated_time": "30 minutes",
+      "priority": "critical"
+    },
+    {
+      "step": 2,
+      "action": "ربط brain.py بـ OpenRouter API",
+      "command": "pip install openai && implement Brain.ask() with OpenAI-compatible client",
+      "estimated_time": "2-3 hours",
+      "priority": "critical"
+    },
+    {
+      "step": 3,
+      "action": "تنفيذ SSE stream في routers/chat.py",
+      "command": "Add StreamingResponse endpoint for /api/stream/{task_id}",
+      "estimated_time": "3-4 hours",
+      "priority": "critical"
+    },
+    {
+      "step": 4,
+      "action": "تفعيل المصادقة الأساسية",
+      "command": "Implement JWT auth middleware + login endpoint",
+      "estimated_time": "4-6 hours",
+      "priority": "high"
+    },
+    {
+      "step": 5,
+      "action": "إنشاء Dockerfile",
+      "command": "Create Dockerfile with python:3.11-slim base",
+      "estimated_time": "2 hours",
+      "priority": "high"
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Operator Dashboard — Emo-AI</title>
+  <script src="https://unpkg.com/htmx.org@1.9.11"></script>
+  <script src="/static/script.js"></script>
+  <link href="/static/styles.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 text-gray-900 font-sans">
+  <nav class="bg-gray-900 text-white px-6 py-3 flex items-center gap-6">
+    <span class="font-bold text-lg">⚙ Emo-AI Operator</span>
+    <a href="/dashboard" class="hover:text-yellow-300">Dashboard</a>
+    <a href="/trace/trace_001" class="hover:text-yellow-300">Trace Explorer</a>
+    <a href="/replay/replay_001" class="hover:text-yellow-300">Replay Viewer</a>
+    <a href="/actions" class="hover:text-yellow-300">Actions</a>
+  </nav>
+  <main class="p-6 max-w-7xl mx-auto" id="dashboard">
+    <h1 class="text-2xl font-bold mb-4">Runtime Dashboard</h1>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+      <div class="bg-white rounded shadow p-4" id="health-card">
+        <h2 class="text-lg font-semibold mb-2">Cluster Health</h2>
+        <div hx-get="/api/health" hx-trigger="load, every 10s" hx-swap="innerHTML">
+          <p class="text-gray-400">Loading…</p>
+        </div>
+      </div>
+      <div class="bg-white rounded shadow p-4" id="dags-card">
+        <h2 class="text-lg font-semibold mb-2">Active DAGs</h2>
+        <div hx-get="/api/dags" hx-trigger="load, every 10s" hx-swap="innerHTML">
+          <p class="text-gray-400">Loading…</p>
+        </div>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="bg-white rounded shadow p-4">
+        <h2 class="text-lg font-semibold mb-2">Worker Topology</h2>
+        <div hx-get="/api/workers" hx-trigger="load, every 30s" hx-swap="innerHTML">
+          <p class="text-gray-400">Loading…</p>
+        </div>
+      </div>
+      <div class="bg-white rounded shadow p-4">
+        <h2 class="text-lg font-semibold mb-2">Operator Action Log</h2>
+        <div hx-get="/api/traces" hx-trigger="load, every 15s" hx-swap="innerHTML">
+          <p class="text-gray-400">Loading…</p>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

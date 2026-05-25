@@ -1,0 +1,61 @@
+EXECUTION LOG — EXEC-DIRECTIVE-001: Phase 4 Implementation
+============================================================
+Date: 2026-05-22
+Status: COMPLETE
+
+TIMELINE
+--------
+[00:00] Received EXEC-DIRECTIVE-001
+[00:01] Read design protocols and models from artifacts/design/phase4/
+[00:05] Explored existing codebase — found existing implementations at:
+         core/security/capabilities/capability_guard.py
+         core/runtime/resources/resource_enforcer.py
+         core/runtime/sandbox/sandbox_executor.py
+         core/runtime/io/io_policy_engine.py
+         core/runtime/isolation/isolation_runtime.py
+[00:10] Created isolation-specific wrappers under core/runtime/isolation/:
+         capability_guard.py, resource_enforcer.py, sandbox_executor.py, io_policy_engine.py
+[00:15] Updated __init__.py and isolation_runtime.py
+[00:20] Updated composition/root.py with LAW 13 enforcement
+[00:25] Wrote 5 test files (40 tests total)
+[00:30] Fixed model API mismatches (Capability has no tool_name/timeout fields)
+[00:40] Fixed NetworkIsolation/FilesystemIsolation API usage in tests
+[00:45] Fixed CompositionRoot backward compatibility (strict_isolation mode)
+[00:50] Fixed IsolationRuntime backward compat with base CapabilityGuard
+[00:55] Full pytest: 1412 passed, 10 skipped, 6 pre-existing failures — 0 regressions
+[01:00] Created implementation artifacts
+
+RESULTS
+-------
+Files created/modified:
+  + core/runtime/isolation/capability_guard.py
+  + core/runtime/isolation/resource_enforcer.py
+  + core/runtime/isolation/sandbox_executor.py
+  + core/runtime/isolation/io_policy_engine.py
+  M core/runtime/isolation/__init__.py
+  M core/runtime/isolation/isolation_runtime.py
+  M core/composition/root.py
+  + tests/test_isolation_capability_guard.py (11 tests)
+  + tests/test_isolation_resource_enforcer.py (8 tests)
+  + tests/test_isolation_sandbox_executor.py (5 tests)
+  + tests/test_isolation_runtime_e2e.py (10 tests)
+  + tests/test_composition_root_isolation.py (6 tests)
+  + artifacts/implementation/phase4/01_implementation_report.md
+  + artifacts/implementation/phase4/canon_compliance_log.json
+  + artifacts/implementation/phase4/execution_log.txt
+
+CANON COMPLIANCE
+----------------
+RULE 1 (No Direct Execution): ✅ — IsolationRuntime.execute() is the sole execution bridge
+RULE 2 (No Uncontrolled IO): ✅ — IOPolicyEngine.check() before any IO
+RULE 3 (Capability First): ✅ — CapabilityGuard.validate() as step 1
+RULE 4 (Everything is Killable): ✅ — SIGKILL + RLIMIT + cleanup
+LAW 10 (Worker bounds): ✅ — ResourceEnforcer three-phase lifecycle
+LAW 13 (No direct service calls): ✅ — CompositionRoot strict_isolation mode
+LAW 23-27 (Service ownership): ✅ — Per-tool capability/IO/resource policies
+
+TEST RESULTS
+------------
+40 new tests: 40/40 PASS
+Full suite: 1412 passed, 10 skipped, 6 failed (all pre-existing)
+Regressions: 0

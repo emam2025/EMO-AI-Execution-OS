@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Execution Cluster — Observability</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0d1117; color: #c9d1d9; padding: 20px; }
+  h1 { font-size: 1.5rem; margin-bottom: 4px; color: #58a6ff; }
+  h2 { font-size: 1.1rem; margin-bottom: 8px; color: #8b949e; }
+  .subtitle { color: #8b949e; font-size: 0.85rem; margin-bottom: 20px; }
+  .status-badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 0.75rem; font-weight: 600; }
+  .status-completed { background: #1b3a2d; color: #3fb950; }
+  .status-failed { background: #3d1a1a; color: #f85149; }
+  .status-cancelled { background: #3d2e1a; color: #d29922; }
+  .status-cached { background: #1a2d3d; color: #58a6ff; }
+  .grid { display: grid; grid-template-columns: 280px 1fr; gap: 16px; margin-bottom: 16px; }
+  .panel { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 16px; }
+  .panel-full { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 16px; margin-bottom: 16px; }
+  .session-item { padding: 8px; border-bottom: 1px solid #21262d; cursor: pointer; }
+  .session-item:hover { background: #1c2128; }
+  .session-item.active { background: #1f3a5f; }
+  .session-item .time { font-size: 0.75rem; color: #8b949e; }
+  .session-item .query { font-size: 0.85rem; }
+  .dag-svg { width: 100%; min-height: 300px; }
+  .dag-svg text { fill: #c9d1d9; font-size: 12px; }
+  .dag-svg .node-box { fill: #1c2128; stroke: #30363d; stroke-width: 1.5; rx: 6; ry: 6; }
+  .dag-svg .node-box.completed { stroke: #3fb950; }
+  .dag-svg .node-box.failed { stroke: #f85149; }
+  .dag-svg .node-box.running { stroke: #58a6ff; stroke-dasharray: 4; }
+  .dag-svg .node-box.cached { stroke: #58a6ff; }
+  .dag-svg .edge { stroke: #30363d; stroke-width: 1.5; fill: none; }
+  .dag-svg .edge-arrow { fill: #30363d; }
+  .step-entry { padding: 6px 8px; margin: 4px 0; border-left: 3px solid #30363d; font-size: 0.85rem; }
+  .step-entry:hover { background: #1c2128; }
+  .heatmap { display: grid; gap: 2px; }
+  .heatmap-row { display: flex; gap: 2px; align-items: center; }
+  .heatmap-cell { width: 40px; height: 24px; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; color: #fff; }
+  .heatmap-label { width: 180px; font-size: 0.8rem; color: #8b949e; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .btn { background: #21262d; border: 1px solid #30363d; color: #c9d1d9; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.85rem; }
+  .btn:hover { background: #30363d; }
+  .btn:disabled { opacity: 0.5; cursor: default; }
+  .flex { display: flex; gap: 8px; align-items: center; }
+  .mt-8 { margin-top: 8px; }
+  .mb-8 { margin-bottom: 8px; }
+  .empty { color: #8b949e; font-style: italic; padding: 20px; text-align: center; }
+  pre { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.8rem; white-space: pre-wrap; }
+  #viz-panel { overflow-x: auto; }
+  .tooltip { position: relative; }
+  .tooltip:hover::after { content: attr(data-tip); position: absolute; background: #1c2128; border: 1px solid #30363d; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; white-space: nowrap; z-index: 10; bottom: 100%; left: 0; }
+  .metric-card { display: inline-block; background: #1c2128; border: 1px solid #30363d; border-radius: 6px; padding: 8px 14px; text-align: center; margin-right: 8px; margin-bottom: 8px; min-width: 100px; }
+  .metric-card .value { font-size: 1.3rem; font-weight: 700; color: #58a6ff; }
+  .metric-card .label { font-size: 0.7rem; color: #8b949e; text-transform: uppercase; }
+  .metric-card.success .value { color: #3fb950; }
+  .metric-card.danger .value { color: #f85149; }
+  .metric-card.warn .value { color: #d29922; }
+  .grouped-step { border-bottom: 1px solid #21262d; padding: 4px 0; }
+  .grouped-step summary { cursor: pointer; padding: 4px; }
+  .grouped-step summary:hover { background: #1c2128; }
+</style>
+</head>
+<body>
+
+<h1>AI Execution Cluster</h1>
+<div class="subtitle">
+  DAG Execution Observability &middot;
+  <span id="status-text">loading...</span> &middot;
+  <span id="refresh-text"></span>
+</div>
+
+<!-- Production Metrics Bar -->
+<div style="margin-bottom: 16px;">
+  <div class="metric-card success"><div class="value" id="metric-success-rate">—</div><div class="label">Success Rate</div></div>
+  <div class="metric-card"><div class="value" id="metric-avg-latency">—</div><div class="label">Avg Latency</div></div>
+  <div class="metric-card"><div class="value" id="metric-p99-latency">—</div><div class="label">P99 Latency</div></div>
+  <div class="metric-card warn"><div class="value" id="metric-total-sessions">—</div><div class="label">Sessions</div></div>
+  <div class="metric-card danger"><div class="value" id="metric-error-count">—</div><div class="label">Errors</div></div>
+</div>
+
+<div class="grid">
+  <!-- Left: Sessions list -->
+  <div class="panel">
+    <h2>Sessions</h2>
+    <div class="flex mb-8">
+      <button class="btn" onclick="loadSessions()">↻ Refresh</button>
+    </div>
+    <div id="session-list"></div>
+  </div>
+
+  <!-- Right: DAG Visualization -->
+  <div class="panel" id="viz-panel">
+    <h2>DAG Visualization</h2>
+    <div id="dag-container" class="empty">Select a session to visualize</div>
+  </div>
+</div>
+
+<!-- Bottom row: Replay + Latency -->
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+  <div class="panel">
+    <h2>Step-by-Step Replay</h2>
+    <div class="flex mb-8">
+      <button class="btn" id="replay-prev" onclick="replayPrev()" disabled>◀ Prev</button>
+      <span id="replay-counter">0 / 0</span>
+      <button class="btn" id="replay-next" onclick="replayNext()" disabled>Next ▶</button>
+      <button class="btn" onclick="replayAuto()" id="replay-auto-btn">▶ Auto</button>
+    </div>
+    <div id="replay-container" class="empty">No steps to replay</div>
+  </div>
+
+  <div class="panel">
+    <h2>Node Latency Heatmap</h2>
+    <div id="heatmap-container" class="empty">No session selected</div>
+  </div>
+</div>
+
+<script>
+// ── State ────────────────────────────────────────────────────
+let sessions = [];
+let currentSessionId = null;
+let currentTrace = null;
+let replayIndex = 0;
+let replayAutoTimer = null;
+let replaySteps = [];
+let autoRefreshTimer = null;
+
+// ── Init ─────────────────────────────────────────────────────
+async function loadSessions() {
+  try {
+    const resp = await fetch('/api/ai/status');
+    const status = await resp.json();
+    document.getElementById('status-text').textContent =
+      status.initialized ? 'AI Cluster Online' : 'AI Cluster Offline';
+  } catch(e) {
+    document.getElementById('status-text').textContent = 'Cannot reach API';
+  }
+
+  try {
+    const resp = await fetch('/api/ai/trace?limit=20&has_trace=true');
+    const data = await resp.json();
+    sessions = data.sessions || [];
+    renderSessionList();
+    computeMetrics(data.sessions || []);
+  } catch(e) {
+    document.getElementById('session-list').innerHTML =
+      '<div class="empty">Failed to load sessions</div>';
+  }
+}
+
+function renderSessionList() {
+  const el = document.getElementById('session-list');
+  if (!sessions.length) {
+    el.innerHTML = '<div class="empty">No sessions with DAG traces</div>';
+    return;
+  }
+  el.innerHTML = sessions.map(s => {
+    const isActive = s.session_id === currentSessionId;
+    const status = s.status || 'unknown';
+    return `<div class="session-item ${isActive ? 'active' : ''}"
+                onclick="selectSession('${s.session_id}')">
+      <div class="query">${escapeHtml((s.query || 'N/A').substring(0, 50))}</div>
+      <div class="flex">
+        <span class="status-badge status-${status}">${status}</span>
+        <span class="time">${fmtTime(s.started_at)}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function computeMetrics(allSessions) {
+  const total = allSessions.length;
+  const completed = allSessions.filter(s => s.status === 'completed').length;
+  const failed = allSessions.filter(s => s.status === 'failed').length;
+  const successRate = total > 0 ? ((completed / total) * 100).toFixed(1) : '—';
+  document.getElementById('metric-success-rate').textContent = total > 0 ? `${successRate}%` : '—';
+  document.getElementById('metric-success-rate').parentElement.className = 'metric-card' + (total > 0 && completed / total >= 0.9 ? ' success' : total > 0 ? ' warn' : '');
+  document.getElementById('metric-total-sessions').textContent = total;
+  document.getElementById('metric-error-count').textContent = failed;
+
+  // Compute avg/P99 latency from session durations
+  let latencies = allSessions
+    .filter(s => s.completed_at && s.started_at)
+    .map(s => (s.completed_at - s.started_at) * 1000);
+  let avg = latencies.length ? (latencies.reduce((a,b) => a+b, 0) / latencies.length).toFixed(0) : '—';
+  document.getElementById('metric-avg-latency').textContent = avg !== '—' ? `${avg}ms` : '—';
+  if (latencies.length) {
+    latencies.sort((a,b) => a-b);
+    let p99 = latencies[Math.floor(latencies.length * 0.99)] || latencies[latencies.length - 1];
+    document.getElementById('metric-p99-latency').textContent = `${p99.toFixed(0)}ms`;
+  } else {
+    document.getElementById('metric-p99-latency').textContent = '—';
+  }
+}
+
+async function selectSession(sessionId) {
+  currentSessionId = sessionId;
+  renderSessionList();
+
+  try {
+    const resp = await fetch(`/api/ai/trace/${sessionId}`);
+    const data = await resp.json();
+    currentTrace = data.dag_trace;
+    renderDAG(currentTrace);
+    buildReplay(currentTrace);
+    buildHeatmap(currentTrace);
+  } catch(e) {
+    document.getElementById('dag-container').innerHTML = '<div class="empty">Failed to load trace</div>';
+  }
+}
+
+// ── DAG Visualization ────────────────────────────────────────
+function renderDAG(trace) {
+  if (!trace || !trace.nodes) {
+    document.getElementById('dag-container').innerHTML = '<div class="empty">No trace data</div>';
+    return;
+  }
+  const nodes = trace.nodes;
+  const edges = trace.edges || [];
+  const nodeIds = Object.keys(nodes);
+
+  const inDegree = {};
+  const children = {};
+  nodeIds.forEach(id => { inDegree[id] = 0; children[id] = []; });
+  edges.forEach(e => {
+    if (e.source_id in inDegree) {
+      inDegree[e.target_id] = (inDegree[e.target_id] || 0) + 1;
+      children[e.source_id] = children[e.source_id] || [];
+      children[e.source_id].push(e.target_id);
+    }
+  });
+
+  const levels = [];
+  let queue = nodeIds.filter(id => (inDegree[id] || 0) === 0);
+  const visited = new Set();
+  while (queue.length) {
+    levels.push(queue.slice());
+    const next = [];
+    queue.forEach(id => {
+      visited.add(id);
+      (children[id] || []).forEach(cid => {
+        if (!visited.has(cid)) {
+          inDegree[cid] = (inDegree[cid] || 1) - 1;
+          if (inDegree[cid] === 0) next.push(cid);
+        }
+      });
+    });
+    queue = next;
+  }
+
+  const BOX_W = 160, BOX_H = 50, GAP_X = 30, GAP_Y = 60, PAD = 30;
+  const maxInLevel = Math.max(...levels.map(l => l.length));
+  const svgW = Math.max(400, levels.length * (BOX_W + GAP_X) + PAD * 2);
+  const svgH = Math.max(200, maxInLevel * (BOX_H + GAP_Y) + PAD * 2);
+
+  const positions = {};
+  levels.forEach((level, li) => {
+    const x = PAD + li * (BOX_W + GAP_X);
+    level.forEach((id, ni) => {
+      const total = level.length;
+      const y = PAD + (ni + 0.5) * (svgH - PAD * 2) / Math.max(total, 1) - BOX_H / 2;
+      positions[id] = { x, y, level: li };
+    });
+  });
+
+  let svg = `<svg class="dag-svg" viewBox="0 0 ${svgW} ${svgH}" xmlns="http://www.w3.org/2000/svg">`;
+
+  edges.forEach(e => {
+    const src = positions[e.source_id], tgt = positions[e.target_id];
+    if (!src || !tgt) return;
+    const x1 = src.x + BOX_W, y1 = src.y + BOX_H / 2;
+    const x2 = tgt.x, y2 = tgt.y + BOX_H / 2;
+    svg += `<line class="edge" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`;
+    const angle = Math.atan2(y2 - y1, x2 - x1);
+    const aLen = 8;
+    svg += `<polygon class="edge-arrow" points="${x2},${y2} ${x2 - aLen * Math.cos(angle - 0.4)},${y2 - aLen * Math.sin(angle - 0.4)} ${x2 - aLen * Math.cos(angle + 0.4)},${y2 - aLen * Math.sin(angle + 0.4)}"/>`;
+  });
+
+  nodeIds.forEach(id => {
+    const n = nodes[id];
+    const pos = positions[id];
+    if (!pos) return;
+    const state = (n.state || 'pending').toLowerCase();
+    svg += `<rect class="node-box ${state}" x="${pos.x}" y="${pos.y}" width="${BOX_W}" height="${BOX_H}" data-tip="${escapeHtml(n.tool || id)}"/>`;
+    svg += `<text x="${pos.x + BOX_W / 2}" y="${pos.y + BOX_H / 2 - 4}" text-anchor="middle" dominant-baseline="middle">${escapeHtml(shortTool(n.tool || id))}</text>`;
+    const dur = n.completed_at && n.started_at ? ((n.completed_at - n.started_at) * 1000).toFixed(0) : '';
+    svg += `<text x="${pos.x + BOX_W / 2}" y="${pos.y + BOX_H / 2 + 12}" text-anchor="middle" font-size="10" fill="#8b949e">${dur ? dur + 'ms' : state}</text>`;
+  });
+
+  svg += '</svg>';
+  document.getElementById('dag-container').innerHTML = svg;
+}
+
+// ── Replay ───────────────────────────────────────────────────
+function buildReplay(trace) {
+  replaySteps = [];
+  replayIndex = 0;
+  const el = document.getElementById('replay-container');
+  if (!trace || !trace.nodes) {
+    el.innerHTML = '<div class="empty">No trace data</div>';
+    document.getElementById('replay-prev').disabled = true;
+    document.getElementById('replay-next').disabled = true;
+    document.getElementById('replay-counter').textContent = '0 / 0';
+    return;
+  }
+  const nodeIds = Object.keys(trace.nodes);
+  replaySteps = nodeIds.map(id => ({ id, ...trace.nodes[id] }));
+  document.getElementById('replay-counter').textContent = `0 / ${replaySteps.length}`;
+  document.getElementById('replay-prev').disabled = false;
+  document.getElementById('replay-next').disabled = false;
+  el.innerHTML = '<div class="empty">Use Prev/Next to step through nodes</div>';
+}
+
+function replayShow(index) {
+  const el = document.getElementById('replay-container');
+  if (!replaySteps.length || index < 0 || index >= replaySteps.length) return;
+  const step = replaySteps[index];
+  const dur = step.completed_at && step.started_at ? ((step.completed_at - step.started_at) * 1000).toFixed(1) + 'ms' : 'N/A';
+  const state = (step.state || 'unknown').toLowerCase();
+  el.innerHTML = `
+    <div class="step-entry" style="border-color: #58a6ff;">
+      <strong>${escapeHtml(step.id)}</strong> &mdash; ${escapeHtml(step.tool || '?')}
+      <span class="status-badge status-${state}">${state}</span>
+    </div>
+    <div class="step-entry">Duration: ${dur}${step.retry_count > 0 ? `, Retries: ${step.retry_count}` : ''}</div>
+    <div class="step-entry">Inputs: <pre>${escapeHtml(JSON.stringify(step.inputs, null, 2))}</pre></div>
+    ${step.error ? `<div class="step-entry" style="border-color: #f85149;">Error: ${escapeHtml(step.error)}</div>` : ''}
+    <div class="step-entry">Output: <pre>${escapeHtml(JSON.stringify(step.result || {}, null, 2).substring(0, 500))}</pre></div>
+  `;
+  document.getElementById('replay-counter').textContent = `${index + 1} / ${replaySteps.length}`;
+}
+
+function replayNext() {
+  if (replayIndex < replaySteps.length - 1) {
+    replayIndex++;
+    replayShow(replayIndex);
+  }
+}
+
+function replayPrev() {
+  if (replayIndex > 0) {
+    replayIndex--;
+    replayShow(replayIndex);
+  }
+}
+
+function replayAuto() {
+  const btn = document.getElementById('replay-auto-btn');
+  if (replayAutoTimer) {
+    clearInterval(replayAutoTimer);
+    replayAutoTimer = null;
+    btn.textContent = '▶ Auto';
+    return;
+  }
+  btn.textContent = '⏸ Stop';
+  replayAutoTimer = setInterval(() => {
+    if (replayIndex >= replaySteps.length - 1) {
+      clearInterval(replayAutoTimer);
+      replayAutoTimer = null;
+      btn.textContent = '▶ Auto';
+      return;
+    }
+    replayNext();
+  }, 800);
+}
+
+// ── Heatmap ──────────────────────────────────────────────────
+function buildHeatmap(trace) {
+  const el = document.getElementById('heatmap-container');
+  if (!trace || !trace.nodes) {
+    el.innerHTML = '<div class="empty">No session selected</div>';
+    return;
+  }
+  const nodes = trace.nodes;
+  const entries = Object.entries(nodes)
+    .map(([id, n]) => ({ id, ...n }))
+    .filter(n => n.completed_at && n.started_at);
+
+  if (!entries.length) {
+    el.innerHTML = '<div class="empty">No timing data available</div>';
+    return;
+  }
+
+  const times = entries.map(n => n.completed_at - n.started_at);
+  const maxTime = Math.max(...times, 0.001);
+
+  let html = '<div class="heatmap">';
+  entries.forEach((n, i) => {
+    const dur = (n.completed_at - n.started_at) * 1000;
+    const ratio = (n.completed_at - n.started_at) / maxTime;
+    const r = Math.round(255 * ratio);
+    const g = Math.round(255 * (1 - ratio));
+    const b = 50;
+    const state = (n.state || 'unknown').toLowerCase();
+    html += `<div class="heatmap-row">
+      <div class="heatmap-label">${escapeHtml(shortTool(n.tool || n.id))}</div>
+      <div class="heatmap-cell" style="background: rgb(${r}, ${g}, ${b})" title="${dur.toFixed(1)}ms">${dur.toFixed(0)}</div>
+      <span class="status-badge status-${state}" style="margin-left: 4px;">${state}</span>
+    </div>`;
+  });
+  html += '</div>';
+  el.innerHTML = html;
+}
+
+// ── Auto-refresh ─────────────────────────────────────────────
+function startAutoRefresh() {
+  if (autoRefreshTimer) clearInterval(autoRefreshTimer);
+  const updateTime = () => {
+    const now = new Date();
+    document.getElementById('refresh-text').textContent =
+      `Updated ${now.toLocaleTimeString()}`;
+  };
+  autoRefreshTimer = setInterval(() => {
+    loadSessions();
+    updateTime();
+  }, 15000);
+  updateTime();
+}
+
+// ── Utilities ────────────────────────────────────────────────
+function shortTool(name) {
+  const parts = name.split('.');
+  return parts.length > 1 ? parts[1] : name;
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+function fmtTime(ts) {
+  if (!ts) return '';
+  const d = new Date(ts * 1000);
+  return d.toLocaleTimeString();
+}
+
+// ── Boot ─────────────────────────────────────────────────────
+loadSessions();
+startAutoRefresh();
+</script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+{
+  "version": "3.10.0-a3-f2-h3",
+  "generated_at": "2026-05-22",
+  "classifications": {
+    "LAW_4": {
+      "description": "Interface imports implementation — interfaces/execution.py and interfaces/systems.py re-export types from execution_engine.py",
+      "status": "legacy_acceptable",
+      "reason": "These are re-exports for backward compatibility (e.g., DependencyGraph, PlanNode). The interface protocol itself (IExecutionEngine) is clean. Re-exports must be removed in a future cleanup pass.",
+      "affected_files": [
+        "core/interfaces/execution.py → core/execution_engine.py",
+        "core/interfaces/systems.py → core/execution_engine.py"
+      ]
+    },
+    "LAW_5": {
+      "description": "Adapter points outside allowed targets — governance_adapter.py uses core/contracts.py and core/api_compliance.py",
+      "status": "legacy_acceptable",
+      "reason": "Legacy adapters wrapping pre-3.x modules. The DefaultContractValidator and DefaultComplianceValidator will be replaced when the official service interfaces (D8.1) are implemented with real contracts.",
+      "affected_files": [
+        "core/adapters/governance_adapter.py → core/contracts.py",
+        "core/adapters/governance_adapter.py → core/api_compliance.py"
+      ]
+    },
+    "LAW_16_high_risk_nodes": {
+      "description": "Nodes with risk_score > 0.8 that have NOT been decomposed. Verified via emo-guard --diff-only on 2026-05-21.",
+      "status": "active_architectural_debt",
+      "reason": "These 7 modules exceed the 0.8 risk threshold. Most are central coordinators (graph.py, root.py, dag.py, execution_engine.py) where high coupling is structural — they sit at the center of the dependency graph. Phase 3.7 partially mitigated execution_engine.py via Core+Runtime extraction, but the CodeGraph risk model (coupling × complexity) still rates them high. Planned remediation in Phase 3.4/3.7 continues.",
+      "discovered": "2026-05-21",
+      "canonical_command": "python3 scripts/emo-guard --diff-only",
+      "verification_file": "artifacts/audit/06_canon_compliance_report.md",
+      "affected_files": [
+        {
+          "file": "core/codegraph/graph.py",
+          "risk_score": 1.0,
+          "classification": "central_coordinator",
+          "mitigation_plan": "Decompose into sub-graph managers in Phase 3.7 — CodeGraph domain model extraction to separate query/serialize/storage layers",
+          "target_phase": "Phase 3.4/3.7"
+        },
+        {
+          "file": "core/composition/root.py",
+          "risk_score": 0.9,
+          "classification": "central_coordinator",
+          "mitigation_plan": "DI container naturally has high coupling. Acceptable if DI enforcement gates remain in place. Consider modular composition in Phase D8.",
+          "target_phase": "Phase D8"
+        },
+        {
+          "file": "core/execution_engine.py",
+          "risk_score": 1.0,
+          "classification": "central_coordinator",
+          "mitigation_plan": "Partially mitigated via Phase 3.7 (ExecutionCore + ExecutionRuntime extraction). Risk persists because central coordinator still routes between extracted layers. Continued decomposition in Phase 3.7.",
+          "target_phase": "Phase 3.4/3.7"
+        },
+        {
+          "file": "core/interfaces/execution_engine.py",
+          "risk_score": 0.9,
+          "classification": "interface_accumulation",
+          "mitigation_plan": "Protocol interface gathering re-exports. Clean re-exports to move to models.dag. Component of Phase 3.4.",
+          "target_phase": "Phase 3.4/3.7"
+        },
+        {
+          "file": "core/models/dag.py",
+          "risk_score": 1.0,
+          "classification": "central_coordinator",
+          "mitigation_plan": "Behavior already extracted to dag_utils.py. Remaining risk from structural re-exports (PlanNode, DependencyGraph referenced everywhere). Acceptable as shared domain model. No decomposition planned — risk is inherent.",
+          "target_phase": "None (inherent)"
+        },
+        {
+          "file": "core/runtime/isolation/isolation_runtime.py",
+          "risk_score": 0.8,
+          "classification": "boundary_threshold",
+          "mitigation_plan": "IsolationRuntime combines filesystem/network/process checks into a single coordinator. Decompose into per-resource isolation modules in Phase 3.7.",
+          "target_phase": "Phase 3.7"
+        },
+        {
+          "file": "core/unified_runtime.py",
+          "risk_score": 0.8,
+          "classification": "boundary_threshold",
+          "mitigation_plan": "Dead params cleaned in Phase 3.3.3 but CodeGraph model still sees coupling from serialization API. Consider further thinning in Phase D8.",
+          "target_phase": "Phase D8"
+        }
+      ]
+    },
+    "H3-GAP-001": {
+      "description": "No payload size enforcement in IContractValidator (10MB accepted)",
+      "law_ref": "LAW 12 / LAW 9",
+      "risk_score": 0.65,
+      "target_phase": "Phase C.1 / Phase 4.3",
+      "mitigation": "Add MAX_PAYLOAD_SIZE constant + early validation in adapter layer",
+      "status": "active_architectural_debt",
+      "discovered": "2026-05-21",
+      "verification_file": "artifacts/audit/H3/05_h3_security_report.json"
+    },
+    "H3-GAP-002": {
+      "description": "No unicode/RTL control char sanitization in contract validation",
+      "law_ref": "LAW 12",
+      "risk_score": 0.55,
+      "target_phase": "Phase C.1",
+      "mitigation": "Integrate unicodedata sanitization strip in validation pipeline",
+      "status": "active_architectural_debt",
+      "discovered": "2026-05-21",
+      "verification_file": "artifacts/audit/H3/05_h3_security_report.json"
+    }
+  }
+}

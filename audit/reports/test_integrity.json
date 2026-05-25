@@ -1,0 +1,323 @@
+{
+  "total_test_files": 55,
+  "total_tests": 1388,
+  "assertionless_tests": [
+    {
+      "file": "tests/test_api_compliance.py",
+      "test": "test_engine_frozen_methods_exist",
+      "line": 17
+    },
+    {
+      "file": "tests/test_api_compliance.py",
+      "test": "test_planner_frozen_methods_exist",
+      "line": 41
+    },
+    {
+      "file": "tests/test_bootstrap.py",
+      "test": "test_engine_property_raises_before_build",
+      "line": 194
+    },
+    {
+      "file": "tests/test_bootstrap.py",
+      "test": "test_intelligence_property_raises_before_build",
+      "line": 199
+    },
+    {
+      "file": "tests/test_bootstrap.py",
+      "test": "test_root_property_raises_before_build",
+      "line": 204
+    },
+    {
+      "file": "tests/test_bootstrap.py",
+      "test": "test_convenience_execute_raises_before_build",
+      "line": 216
+    },
+    {
+      "file": "tests/test_capability_security.py",
+      "test": "test_load_from_yaml_missing_dependency",
+      "line": 157
+    },
+    {
+      "file": "tests/test_capability_security.py",
+      "test": "test_guard_rejects_unknown",
+      "line": 288
+    },
+    {
+      "file": "tests/test_codegraph.py",
+      "test": "test_load_nonexistent",
+      "line": 244
+    },
+    {
+      "file": "tests/test_contracts.py",
+      "test": "test_check_schema_version_raises_for_unknown",
+      "line": 124
+    },
+    {
+      "file": "tests/test_contracts.py",
+      "test": "test_register_tool_rejects_bad_version",
+      "line": 149
+    },
+    {
+      "file": "tests/test_control_plane_brain.py",
+      "test": "test_no_available_nodes_raises",
+      "line": 225
+    },
+    {
+      "file": "tests/test_execution_core.py",
+      "test": "test_check_schema_version_raises_for_unknown",
+      "line": 60
+    },
+    {
+      "file": "tests/test_execution_core.py",
+      "test": "test_topo_sort_cycle_detected",
+      "line": 142
+    },
+    {
+      "file": "tests/test_gaps_1_4.py",
+      "test": "test_call_no_handler_raises",
+      "line": 146
+    },
+    {
+      "file": "tests/test_gaps_1_4.py",
+      "test": "test_replay_raises_for_nonexistent",
+      "line": 422
+    },
+    {
+      "file": "tests/test_mesh_runtime.py",
+      "test": "test_execute_falls_back_when_no_engine",
+      "line": 34
+    },
+    {
+      "file": "tests/test_mesh_runtime.py",
+      "test": "test_execute_remote_unknown_worker_raises",
+      "line": 50
+    },
+    {
+      "file": "tests/test_phase5_distributed.py",
+      "test": "test_send_request_http_error",
+      "line": 105
+    },
+    {
+      "file": "tests/test_phase5_distributed.py",
+      "test": "test_call_remote_unknown_peer_raises",
+      "line": 264
+    },
+    {
+      "file": "tests/test_runtime_isolation.py",
+      "test": "test_get_executor_raises_for_invalid",
+      "line": 172
+    },
+    {
+      "file": "tests/test_runtime_isolation.py",
+      "test": "test_unregistered_tool_blocked",
+      "line": 427
+    },
+    {
+      "file": "tests/test_runtime_isolation.py",
+      "test": "test_network_tool_blocked_when_no_network",
+      "line": 432
+    },
+    {
+      "file": "tests/test_runtime_isolation.py",
+      "test": "test_filesystem_tool_blocked_when_none",
+      "line": 453
+    },
+    {
+      "file": "tests/test_runtime_isolation.py",
+      "test": "test_default_policy_blocks_all",
+      "line": 472
+    },
+    {
+      "file": "tests/test_runtime_isolation.py",
+      "test": "test_block_operation",
+      "line": 484
+    },
+    {
+      "file": "tests/test_runtime_isolation.py",
+      "test": "test_domain_restriction",
+      "line": 491
+    },
+    {
+      "file": "tests/test_runtime_isolation.py",
+      "test": "test_size_restriction",
+      "line": 501
+    },
+    {
+      "file": "tests/test_runtime_isolation.py",
+      "test": "test_outbound_blocked_by_default",
+      "line": 518
+    },
+    {
+      "file": "tests/test_runtime_isolation.py",
+      "test": "test_blocked_domain",
+      "line": 533
+    },
+    {
+      "file": "tests/test_runtime_isolation.py",
+      "test": "test_read_blocked_by_default",
+      "line": 550
+    },
+    {
+      "file": "tests/test_runtime_isolation.py",
+      "test": "test_write_blocked_in_read_only",
+      "line": 564
+    },
+    {
+      "file": "tests/test_runtime_isolation.py",
+      "test": "test_extension_filter",
+      "line": 582
+    },
+    {
+      "file": "tests/test_runtime_isolation.py",
+      "test": "test_execution_quota_exceeded",
+      "line": 651
+    },
+    {
+      "file": "tests/test_runtime_isolation.py",
+      "test": "test_global_quota_exceeded",
+      "line": 664
+    },
+    {
+      "file": "tests/test_runtime_isolation.py",
+      "test": "test_io_policy_blocks",
+      "line": 750
+    },
+    {
+      "file": "tests/test_runtime_isolation.py",
+      "test": "test_io_policy_allows",
+      "line": 755
+    },
+    {
+      "file": "tests/test_runtime_isolation.py",
+      "test": "test_network_blocked_by_default",
+      "line": 760
+    },
+    {
+      "file": "tests/test_runtime_isolation.py",
+      "test": "test_filesystem_read_blocked_by_default",
+      "line": 765
+    },
+    {
+      "file": "tests/test_trust_aware_scheduling.py",
+      "test": "test_select_worker_no_workers_raises",
+      "line": 117
+    },
+    {
+      "file": "tests/test_worker_runtime.py",
+      "test": "test_base_worker_run_tool_not_implemented",
+      "line": 132
+    }
+  ],
+  "assertionless_count": 41,
+  "over_mocked_tests": [
+    {
+      "file": "tests/test_context_compiler.py",
+      "mock_count": 13,
+      "mock_ratio": 0.085
+    },
+    {
+      "file": "tests/test_execution_runtime.py",
+      "mock_count": 9,
+      "mock_ratio": 0.045
+    },
+    {
+      "file": "tests/test_mesh_runtime.py",
+      "mock_count": 9,
+      "mock_ratio": 0.042
+    }
+  ],
+  "weak_assertion_tests": [
+    {
+      "file": "tests/test_api_compliance.py",
+      "count": 1,
+      "patterns": [
+        "False"
+      ]
+    },
+    {
+      "file": "tests/test_phase11.py",
+      "count": 1,
+      "patterns": [
+        "True"
+      ]
+    },
+    {
+      "file": "tests/test_phase15.py",
+      "count": 1,
+      "patterns": [
+        "False"
+      ]
+    },
+    {
+      "file": "tests/test_phase16.py",
+      "count": 1,
+      "patterns": [
+        "False"
+      ]
+    },
+    {
+      "file": "tests/test_service_registry.py",
+      "count": 2,
+      "patterns": [
+        "False"
+      ]
+    }
+  ],
+  "mock_ratio": {
+    "tests/test_api_compliance.py": 0.0,
+    "tests/test_async_task_manager.py": 0.0,
+    "tests/test_bootstrap.py": 0.0,
+    "tests/test_canon_validator.py": 0.0,
+    "tests/test_capability_negotiation.py": 0.0,
+    "tests/test_capability_security.py": 0.0,
+    "tests/test_codegraph.py": 0.0,
+    "tests/test_codegraph_bridge.py": 0.0,
+    "tests/test_codegraph_drift.py": 0.0,
+    "tests/test_context_compiler.py": 0.08496732026143791,
+    "tests/test_contracts.py": 0.0,
+    "tests/test_control_plane_brain.py": 0.002277904328018223,
+    "tests/test_control_plane_f2.py": 0.0,
+    "tests/test_cost_intel.py": 0.0,
+    "tests/test_dag_optimizer.py": 0.0,
+    "tests/test_distributed.py": 0.0,
+    "tests/test_distributed_checkpoint.py": 0.0,
+    "tests/test_distributed_replay.py": 0.0,
+    "tests/test_distributed_scheduler.py": 0.0,
+    "tests/test_docker_runtime.py": 0.0,
+    "tests/test_event_bus.py": 0.0,
+    "tests/test_execution_cache.py": 0.0,
+    "tests/test_execution_core.py": 0.0,
+    "tests/test_execution_engine_events.py": 0.0,
+    "tests/test_execution_runtime.py": 0.045454545454545456,
+    "tests/test_failure_governance.py": 0.0,
+    "tests/test_feedback_intel.py": 0.0,
+    "tests/test_firecracker_runtime.py": 0.0,
+    "tests/test_gaps_1_4.py": 0.0014641288433382138,
+    "tests/test_heartbeat_daemon.py": 0.0,
+    "tests/test_hybrid_retrieval.py": 0.0,
+    "tests/test_memory_pressure.py": 0.0,
+    "tests/test_mesh_runtime.py": 0.04205607476635514,
+    "tests/test_observability.py": 0.0,
+    "tests/test_observability_f4.py": 0.0,
+    "tests/test_ownership_manager.py": 0.0,
+    "tests/test_phase11.py": 0.0,
+    "tests/test_phase12.py": 0.0,
+    "tests/test_phase13.py": 0.0,
+    "tests/test_phase14.py": 0.0,
+    "tests/test_phase15.py": 0.0,
+    "tests/test_phase16.py": 0.0,
+    "tests/test_phase5_distributed.py": 0.005970149253731343,
+    "tests/test_recovery_coordinator.py": 0.005988023952095809,
+    "tests/test_replay_consolidation.py": 0.0,
+    "tests/test_resource_scheduler.py": 0.0,
+    "tests/test_runtime_intelligence.py": 0.0,
+    "tests/test_runtime_isolation.py": 0.0012515644555694619,
+    "tests/test_runtime_truth.py": 0.010256410256410256,
+    "tests/test_secrets_runtime.py": 0.0,
+    "tests/test_service_isolation.py": 0.0,
+    "tests/test_service_registry.py": 0.0,
+    "tests/test_trust_aware_scheduling.py": 0.0,
+    "tests/test_worker_runtime.py": 0.0,
+    "tests/test_worker_verifier.py": 0.0
+  }
+}

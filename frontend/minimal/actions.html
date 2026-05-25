@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Operator Actions — Emo-AI</title>
+  <script src="https://unpkg.com/htmx.org@1.9.11"></script>
+  <script src="/static/script.js"></script>
+  <link href="/static/styles.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 text-gray-900 font-sans">
+  <nav class="bg-gray-900 text-white px-6 py-3 flex items-center gap-6">
+    <span class="font-bold text-lg">⚙ Emo-AI Operator</span>
+    <a href="/dashboard" class="hover:text-yellow-300">Dashboard</a>
+    <a href="/trace/trace_001" class="hover:text-yellow-300">Trace Explorer</a>
+    <a href="/replay/replay_001" class="hover:text-yellow-300">Replay Viewer</a>
+    <a href="/actions" class="hover:text-yellow-300">Actions</a>
+  </nav>
+  <main class="p-6 max-w-4xl mx-auto">
+    <h1 class="text-2xl font-bold mb-4">Operator Actions</h1>
+    <p class="text-sm text-gray-500 mb-6">All actions emit <code>operator_trace_id</code> and require confirmation.</p>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+      <div class="bg-white rounded shadow p-4 border-l-4 border-yellow-400">
+        <h2 class="font-semibold mb-2">Pause Execution</h2>
+        <p class="text-sm text-gray-500 mb-3">Pause a running DAG execution.</p>
+        <input id="pause-id" type="text" placeholder="execution_id" class="border rounded px-2 py-1 w-full text-sm mb-2 font-mono">
+        <button onclick="confirmAndSend('pause')" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 w-full text-sm">Pause</button>
+      </div>
+      <div class="bg-white rounded shadow p-4 border-l-4 border-green-400">
+        <h2 class="font-semibold mb-2">Resume Execution</h2>
+        <p class="text-sm text-gray-500 mb-3">Resume a paused DAG execution.</p>
+        <input id="resume-id" type="text" placeholder="execution_id" class="border rounded px-2 py-1 w-full text-sm mb-2 font-mono">
+        <button onclick="confirmAndSend('resume')" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 w-full text-sm">Resume</button>
+      </div>
+      <div class="bg-white rounded shadow p-4 border-l-4 border-red-400">
+        <h2 class="font-semibold mb-2">Force Retry</h2>
+        <p class="text-sm text-gray-500 mb-3">Force retry a failed execution.</p>
+        <input id="retry-id" type="text" placeholder="execution_id" class="border rounded px-2 py-1 w-full text-sm mb-2 font-mono">
+        <button onclick="confirmAndSend('force-retry')" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 w-full text-sm">Force Retry</button>
+      </div>
+    </div>
+
+    <div id="action-result" class="bg-white rounded shadow p-4 hidden">
+      <h2 class="font-semibold mb-2">Result</h2>
+      <pre id="result-json" class="bg-gray-100 p-3 rounded text-sm font-mono overflow-x-auto"></pre>
+    </div>
+
+    <div class="bg-white rounded shadow p-4 mt-4">
+      <h2 class="font-semibold mb-2">Recent Operator Actions</h2>
+      <div hx-get="/api/traces" hx-trigger="load, every 10s" hx-swap="innerHTML">
+        <p class="text-gray-400">Loading…</p>
+      </div>
+    </div>
+  </main>
+  <script>
+    async function confirmAndSend(action) {
+      const idMap = {pause: 'pause-id', resume: 'resume-id', 'force-retry': 'retry-id'};
+      const input = document.getElementById(idMap[action]);
+      const executionId = input.value.trim();
+      if (!executionId) {
+        alert('Please enter an execution ID.');
+        return;
+      }
+      if (!confirm('Are you sure you want to ' + action + ' execution "' + executionId + '"?')) {
+        return;
+      }
+      const el = document.getElementById('action-result');
+      const jsonEl = document.getElementById('result-json');
+      el.classList.remove('hidden');
+      jsonEl.textContent = 'Sending…';
+      try {
+        const res = await fetch('/api/actions/' + action, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({execution_id: executionId}),
+        });
+        const data = await res.json();
+        jsonEl.textContent = JSON.stringify(data, null, 2);
+      } catch (e) {
+        jsonEl.textContent = 'Error: ' + e.message;
+      }
+    }
+  </script>
+</body>
+</html>

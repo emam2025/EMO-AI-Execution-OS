@@ -1,0 +1,57 @@
+{
+  "version": "1.0.0",
+  "repository": {
+    "name": "Emo AI Orchestrator",
+    "root": "/Users/AI Workspace/Emo-AI",
+    "ignore_patterns": [
+      "node_modules",
+      ".git",
+      "dist",
+      "build",
+      ".next",
+      "coverage",
+      "__pycache__",
+      "*.pyc",
+      ".env",
+      ".emo_*",
+      "logs/",
+      ".ai/cache/",
+      ".ai/embeddings/",
+      ".ai/summaries/",
+      ".ai/graphs/",
+      ".ai/decisions/",
+      ".ai/prompts/",
+      ".ai/index/",
+      ".ai/memory/"
+    ]
+  },
+  "indexing": {
+    "enabled": true,
+    "incremental": true,
+    "file_hash_algorithm": "sha256",
+    "batch_size": 100,
+    "languages": ["python", "javascript", "typescript", "json", "yaml", "markdown", "txt"]
+  },
+  "storage": {
+    "type": "sqlite",
+    "database_path": ".ai/index/repository.db",
+    "journal_mode": "WAL",
+    "synchronous": "NORMAL",
+    "cache_size": -2000,
+    "temp_store": "memory"
+  },
+  "memory": {
+    "max_entries": 10000,
+    "retention_days": 365,
+    "backup_enabled": true,
+    "backup_interval_hours": 24
+  },
+  "logging": {
+    "level": "INFO",
+    "ai_logger_name": "emo-ai",
+    "log_to_file": true,
+    "log_file_path": ".ai/logs/ai.log",
+    "max_bytes": 10485760,
+    "backup_count": 5
+  }
+}

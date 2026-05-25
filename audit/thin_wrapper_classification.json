@@ -1,0 +1,105 @@
+{
+  "generated_at": "2026-05-21",
+  "total_pure_delegates": 55,
+  "classification": {
+    "FACADE": {
+      "count": 25,
+      "reason": "Public API boundary isolation. Each wraps an internal subsystem behind a stable interface. Includes ControlPlaneBrain, RuntimeCoordinator, EmoRuntime, IsolationRuntime, MeshExecutionRuntime, MeshWorker, MeshNode, ResourceScheduler, OwnershipManager.",
+      "methods": [
+        {"file": "core/control_plane/brain.py", "class": "ControlPlaneBrain", "method": "allocate_resources", "target": "_scheduler.allocate"},
+        {"file": "core/control_plane/coordinator.py", "class": "RuntimeCoordinator", "method": "supervise_health", "target": "_supervisor.tick"},
+        {"file": "core/runtime/bootstrap.py", "class": "EmoRuntime", "method": "execute", "target": "engine.execute"},
+        {"file": "core/runtime/bootstrap.py", "class": "EmoRuntime", "method": "plan", "target": "engine.plan"},
+        {"file": "core/runtime/bootstrap.py", "class": "EmoRuntime", "method": "cancel", "target": "engine.cancel"},
+        {"file": "core/runtime/bootstrap.py", "class": "EmoRuntime", "method": "status", "target": "engine.status"},
+        {"file": "core/runtime/isolation/isolation_runtime.py", "class": "IsolationRuntime", "method": "check_filesystem_read", "target": "_filesystem.check_read"},
+        {"file": "core/runtime/isolation/isolation_runtime.py", "class": "IsolationRuntime", "method": "check_filesystem_write", "target": "_filesystem.check_write"},
+        {"file": "core/runtime/mesh/mesh_execution_runtime.py", "class": "MeshExecutionRuntime", "method": "execute_remote", "target": "_mesh.call"},
+        {"file": "core/runtime/mesh/mesh_worker.py", "class": "MeshWorker", "method": "heartbeat", "target": "registry.heartbeat"},
+        {"file": "core/runtime/mesh/remote/node.py", "class": "MeshNode", "method": "add_peer", "target": "_dist_registry.register_peer"},
+        {"file": "core/runtime/mesh/remote/node.py", "class": "MeshNode", "method": "remove_peer", "target": "_dist_registry.remove_peer"},
+        {"file": "core/runtime/mesh/remote/node.py", "class": "MeshNode", "method": "discover_remote", "target": "_dist_registry.discover_remote"},
+        {"file": "core/scheduler/resource_scheduler.py", "class": "ResourceScheduler", "method": "get_quota", "target": "_quotas.get"},
+        {"file": "core/scheduler/resource_scheduler.py", "class": "ResourceScheduler", "method": "select_next_task", "target": "_priority_scheduler.select"},
+        {"file": "core/ownership_manager.py", "class": "OwnershipManager", "method": "release", "target": "_store.release"},
+        {"file": "core/ownership_manager.py", "class": "OwnershipManager", "method": "owner_of", "target": "_store.owner_of"},
+        {"file": "core/ownership_manager.py", "class": "OwnershipManager", "method": "execution_attempt", "target": "_store.execution_attempt"},
+        {"file": "core/ownership_manager.py", "class": "OwnershipManager", "method": "active_count", "target": "_store.active_count"},
+        {"file": "core/ownership_manager.py", "class": "OwnershipManager", "method": "lease_count", "target": "_store.lease_count"},
+        {"file": "core/execution_core.py", "class": "ExecutionCore", "method": "validate_transition", "target": "state.can_transition_to"},
+        {"file": "core/execution_core.py", "class": "ExecutionCore", "method": "topo_sort", "target": "dag_utils.topo_sort"},
+        {"file": "core/execution_core.py", "class": "ExecutionCore", "method": "independent_branches", "target": "dag_utils.independent_branches"},
+        {"file": "core/execution_core.py", "class": "ExecutionCore", "method": "validate_dag", "target": "dag_utils.validate"},
+        {"file": "core/cost_intel.py", "class": "CostTracker", "method": "p50", "target": "self._percentile"}
+      ]
+    },
+    "ADAPTER": {
+      "count": 2,
+      "reason": "Interface adapter. Translates between protocol interfaces and legacy implementations.",
+      "methods": [
+        {"file": "core/adapters/governance_adapter.py", "class": "DefaultContractValidator", "method": "validate_inputs", "target": "ContractValidator.validate_inputs"},
+        {"file": "core/adapters/governance_adapter.py", "class": "DefaultContractValidator", "method": "validate_outputs", "target": "ContractValidator.validate_outputs"}
+      ]
+    },
+    "OBSERVABILITY": {
+      "count": 11,
+      "reason": "Telemetry/tracing wrappers. Capture calls for monitoring — valid architectural concern.",
+      "methods": [
+        {"file": "core/codegraph/bridge.py", "class": "CodeGraphEventSubscriber", "method": "stats_snapshot", "target": "_stats.snapshot"},
+        {"file": "core/observability/dashboard.py", "class": "RuntimeDashboard", "method": "system_overview", "target": "self._overview"},
+        {"file": "core/observability/dashboard.py", "class": "RuntimeDashboard", "method": "failure_trends", "target": "_failures.failure_trend"},
+        {"file": "core/metrics_store.py", "class": "MetricsStore", "method": "strategy_usage", "target": "self._aggregate_strategy_usage"},
+        {"file": "core/metrics_store.py", "class": "MetricsStore", "method": "rollback_count", "target": "self._count_rollbacks"},
+        {"file": "core/metrics_store.py", "class": "MetricsStore", "method": "drift_alert_count", "target": "self._count_drift_alerts"},
+        {"file": "core/metrics_store.py", "class": "MetricsStore", "method": "shadow_win_rate", "target": "self._shadow_win_rate"},
+        {"file": "core/cost_intel.py", "class": "CostTracker", "method": "p95", "target": "self._percentile"},
+        {"file": "core/cost_intel.py", "class": "CostTracker", "method": "p99", "target": "self._percentile"}
+      ]
+    },
+    "SECURITY": {
+      "count": 3,
+      "reason": "Security boundary. Policy enforcement or access control even if thin.",
+      "methods": [
+        {"file": "core/interfaces/failure_propagation.py", "class": "FailurePropagationPolicy", "method": "evaluate", "target": "PROPAGATION_MATRIX.get"},
+        {"file": "core/security/capabilities/capability_registry.py", "class": "CapabilityRegistry", "method": "get_capability", "target": "_capabilities.get"},
+        {"file": "core/security/capabilities/sensitive_tools.py", "class": "SensitiveToolRegistry", "method": "get_sensitivity", "target": "_classifications.get"}
+      ]
+    },
+    "COMPATIBILITY": {
+      "count": 3,
+      "reason": "Backward-compatible alias. Kept for callers that haven't migrated.",
+      "methods": [
+        {"file": "core/hybrid_retriever.py", "class": "HybridRetriever", "method": "hybrid_search", "target": "self.retrieve"},
+        {"file": "core/recovery_coordinator.py", "class": "ResumeToken", "method": "to_json", "target": "json.dumps"},
+        {"file": "core/recovery_coordinator.py", "class": "ResumeToken", "method": "from_json", "target": "cls.from_dict"}
+      ]
+    },
+    "DEAD_INDIRECTION": {
+      "count": 11,
+      "reason": "Pure dict getter. < 5 lines, no validation, no transformation, no tracing, no retry/cache/security. Callers can access the dict directly. Kept for API convenience but adds zero architectural value.",
+      "methods": [
+        {"file": "core/execution_core.py", "class": "ExecutionCore", "method": "get_event_type_for_transition", "target": "STATE_EVENT_MAP.get"},
+        {"file": "core/codegraph/graph.py", "class": "CodeGraph", "method": "get_node", "target": "nodes.get"},
+        {"file": "core/codegraph/runtime_intelligence/execution_topology.py", "class": "ExecutionTopology", "method": "get_graph", "target": "_graphs.get"},
+        {"file": "core/control_plane/cluster_manager.py", "class": "ClusterManager", "method": "get_cluster", "target": "_clusters.get"},
+        {"file": "core/control_plane/health_supervisor.py", "class": "HealthSupervisor", "method": "get_config", "target": "_configs.get"},
+        {"file": "core/control_plane/worker_drainer.py", "class": "WorkerDrainer", "method": "drain_status", "target": "_drains.get"},
+        {"file": "core/distributed_checkpoint.py", "class": "DistributedCheckpointManager", "method": "get_completed", "target": "_local_cp.completed_nodes"},
+        {"file": "core/observability/timeline.py", "class": "TimelineStore", "method": "get", "target": "_timelines.get"},
+        {"file": "core/observability/topology_viewer.py", "class": "TopologyViewer", "method": "get_node", "target": "_nodes.get"},
+        {"file": "core/observability/trace.py", "class": "ExecutionTrace", "method": "get_span", "target": "spans.get"},
+        {"file": "core/observability/trace.py", "class": "TraceStore", "method": "get_trace", "target": "_traces.get"}
+      ],
+      "removal_impact": "None of these 11 are called outside their defining file or test files. Safe to inline or remove."
+    }
+  },
+  "summary": {
+    "FACADE": 25,
+    "ADAPTER": 2,
+    "OBSERVABILITY": 11,
+    "SECURITY": 3,
+    "COMPATIBILITY": 3,
+    "DEAD_INDIRECTION": 11,
+    "total": 55
+  }
+}

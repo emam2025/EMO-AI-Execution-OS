@@ -1,0 +1,20 @@
+# Checkpoint Restoration Trace
+# Generated: 2026-05-21T06:37:37.030201Z
+
+[TASK 1] Failure Simulation
+  DAG: A → B → C
+  Failure at: Node B (RuntimeError)
+  Session: 1b5fd959-c2c...
+
+[TASK 2] Checkpoint Restoration
+  Restored: success
+  Completed nodes: ['A']
+  Hash verified: True
+  ResumeToken.completed: ['A']
+  ResumeToken.pending: ['B', 'C']
+  ResumeToken.failed: ['B']
+
+[STATE VERIFICATION]
+  A.post_failure: completed
+  B.post_failure: failed
+  C.post_failure: pending

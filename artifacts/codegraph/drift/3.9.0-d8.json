@@ -1,0 +1,16 @@
+{
+  "version": "3.9.0-d8",
+  "timestamp": 1779247974.1899168,
+  "coupling_score": 0.0,
+  "risk_score": 0.0263,
+  "dependency_entropy": 0.9922523694266058,
+  "node_count": 2604,
+  "edge_count": 2450,
+  "metadata": {
+    "coupling_score": 0.0,
+    "risk_score": 0.0263,
+    "max_risk": 1.0,
+    "high_risk_count": 24,
+    "timestamp": 1779247974.1899168
+  }
+}

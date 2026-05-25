@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+<html class="dark" dir="{{ is_rtl }}" lang="{{ lang }}">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Emo AI Orchestrator</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;family=Cairo:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<script>
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "tertiary-fixed": "#6ffbbe",
+          "secondary": "#ffb0cd",
+          "surface-card": "#18183a",
+          "tertiary-container": "#00a572",
+          "on-surface-variant": "#cbc3d7",
+          "surface-bright": "#383847",
+          "surface": "#121220",
+          "surface-tint": "#d0bcff",
+          "tertiary-fixed-dim": "#4edea3",
+          "secondary-container": "#aa0266",
+          "error-container": "#93000a",
+          "surface-container-lowest": "#0d0d1a",
+          "text-vibrant": "#eef2ff",
+          "on-secondary-fixed-variant": "#8c0053",
+          "surface-container-low": "#1a1a28",
+          "on-secondary": "#640039",
+          "on-primary-fixed": "#23005c",
+          "agent-planner": "#8b5cf6",
+          "on-secondary-fixed": "#3e0022",
+          "surface-dim": "#121220",
+          "on-primary": "#3c0091",
+          "agent-writer": "#ec4899",
+          "border-muted": "#28285a",
+          "surface-container": "#1e1e2c",
+          "agent-coder": "#10b981",
+          "surface-container-high": "#292937",
+          "outline-variant": "#494454",
+          "agent-researcher": "#f59e0b",
+          "on-primary-container": "#340080",
+          "text-dim": "#8899bb",
+          "on-secondary-container": "#ffbad3",
+          "inverse-on-surface": "#2f2f3e",
+          "surface-deep": "#0f0f24",
+          "primary": "#d0bcff",
+          "on-tertiary-fixed": "#002113",
+          "primary-fixed": "#e9ddff",
+          "outline": "#958ea0",
+          "error": "#ffb4ab",
+          "primary-fixed-dim": "#d0bcff",
+          "on-error": "#690005",
+          "on-tertiary": "#003824",
+          "background": "#121220",
+          "secondary-fixed": "#ffd9e4",
+          "on-tertiary-container": "#00311f",
+          "on-surface": "#e3e0f4",
+          "secondary-fixed-dim": "#ffb0cd",
+          "on-tertiary-fixed-variant": "#005236",
+          "on-primary-fixed-variant": "#5516be",
+          "status-error": "#ef4444",
+          "surface-container-highest": "#343342",
+          "primary-container": "#a078ff",
+          "inverse-primary": "#6d3bd7",
+          "on-error-container": "#ffdad6",
+          "tertiary": "#4edea3",
+          "inverse-surface": "#e3e0f4",
+          "surface-variant": "#343342",
+          "on-background": "#e3e0f4"
+        },
+        borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", "3xl": "1.5rem", full: "9999px" },
+        spacing: {
+          "header-height": "64px", "sidebar-nav": "260px", "sidebar-projects": "240px",
+          "sidebar-sessions": "220px", "workspace-panel": "300px"
+        }
+      }
+    }
+  }
+</script>
+<style>
+  :root { --primary: #d0bcff; --bg: #0f0f24; --surface: rgba(18, 18, 32, 0.85); --border: rgba(255, 255, 255, 0.08); --text: #e3e0f4; --text-dim: #8899bb; }
+  html.light { --primary: #5516be; --bg: #f5f0ff; --surface: rgba(255, 255, 255, 0.85); --border: rgba(0, 0, 0, 0.1); --text: #1c1b1f; --text-dim: #49454f; }
+  body { font-family: 'Inter', 'Cairo', sans-serif; background-color: var(--bg); color: var(--text); height: 100vh; overflow: hidden; }
+  .glass { background: var(--surface); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--border); }
+  .mesh-gradient { background-color: var(--bg); background-image: radial-gradient(at 0% 0%, rgba(139, 92, 246, 0.15) 0px, transparent 50%), radial-gradient(at 100% 0%, rgba(236, 72, 153, 0.1) 0px, transparent 50%), radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.05) 0px, transparent 50%), radial-gradient(at 0% 100%, rgba(245, 158, 11, 0.05) 0px, transparent 50%); }
+  .gradient-text { background: linear-gradient(135deg, #d0bcff, #ffb0cd); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  html.light .gradient-text { background: linear-gradient(135deg, #5516be, #aa0266); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .side-panel { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+  @media(max-width: 1023px) { .side-panel { position: fixed; top: 64px; bottom: 48px; z-index: 50; } .side-left { left: 0; transform: translateX(-100%); } .side-left-projects { left: 0; transform: translateX(-100%); } .side-left-sessions { left: 240px; transform: translateX(-100%); } .side-right { right: 0; transform: translateX(100%); } .side-workspace { right: 0; transform: translateX(100%); } .side-left.open, .side-left-projects.open, .side-left-sessions.open, .side-right.open, .side-workspace.open { transform: translateX(0); } }
+  .agent-card { position: relative; overflow: hidden; transition: all 0.3s ease; }
+  .agent-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.05), transparent); opacity: 0; transition: opacity 0.3s; }
+  .agent-card:hover::before { opacity: 1; }
+  .agent-card.running { border-color: rgba(245, 158, 11, 0.5); box-shadow: 0 0 20px rgba(245, 158, 11, 0.1); }
+  .chat-bubble-user { background: linear-gradient(135deg, #6d3bd7, #a078ff); box-shadow: 0 4px 15px rgba(109, 59, 215, 0.2); }
+  .chat-bubble-ai { background: rgba(30, 30, 44, 0.6); border: 1px solid rgba(255, 255, 255, 0.05); backdrop-filter: blur(4px); }
+  html.light .chat-bubble-ai { background: rgba(230, 224, 244, 0.6); border: 1px solid rgba(0, 0, 0, 0.08); }
+  ::-webkit-scrollbar { width: 4px; } ::-webkit-scrollbar-track { background: transparent; } ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; } ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.2); }
+  .modal-overlay { background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px); }
+  .step-enter { animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) both; }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  .typing-dot { width: 4px; height: 4px; border-radius: 50%; background: #d0bcff; animation: pulse 1s infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 0.3; transform: scale(1); } 50% { opacity: 1; transform: scale(1.2); } }
+  .item-hover { transition: all 0.2s; } .item-hover:hover { background: rgba(255,255,255,0.05); }
+  .item-actions { opacity: 0; transition: opacity 0.2s; } .item-hover:hover .item-actions { opacity: 1; }
+  .archive-item { opacity: 0.6; } .archive-item:hover { opacity: 1; }
+  .workspace-tab { transition: all 0.2s; } .workspace-tab.active { background: rgba(208, 188, 255, 0.15); color: var(--primary); border-bottom: 2px solid var(--primary); }
+  .op-running { border-left: 3px solid #f59e0b; } .op-complete { border-left: 3px solid #10b981; } .op-error { border-left: 3px solid #ef4444; } .op-pending { border-left: 3px solid #958ea0; }
+</style>
+</head>
+<body class="{{ theme }}">
+<div class="h-screen flex flex-col mesh-gradient">
+  <!-- Header -->
+  <header class="h-16 glass flex items-center justify-between px-4 shrink-0 z-50">
+    <div class="flex items-center gap-3">
+      <button class="lg:hidden p-2 rounded-lg hover:bg-white/5" onclick="togglePanel('projects')"><i class="fas fa-folder-tree"></i></button>
+      <button class="lg:hidden p-2 rounded-lg hover:bg-white/5" onclick="togglePanel('sessions')"><i class="fas fa-layer-group"></i></button>
+      <div class="flex items-center gap-2">
+        <div class="w-9 h-9 rounded-xl flex items-center justify-center bg-gradient-to-br from-primary to-secondary-container shadow-lg shadow-primary/20">
+          <i class="fas fa-robot text-on-primary text-sm"></i>
+        </div>
+        <div class="flex flex-col leading-tight">
+          <span class="font-bold text-base gradient-text tracking-tight uppercase">Emo AI</span>
+          <span class="text-[8px] font-medium tracking-widest opacity-40 uppercase">Orchestrator v1.2</span>
+        </div>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <div class="hidden md:flex items-center gap-2 px-2 py-1 rounded-full bg-surface-container-low border border-white/5 text-[10px] font-medium">
+        <span class="w-1.5 h-1.5 rounded-full bg-agent-coder animate-pulse" id="headerStatusDot"></span>
+        <span class="opacity-60" id="headerStatusText" data-i18n="status_online">متصل</span>
+      </div>
+      <div class="h-6 w-[1px] bg-white/10 mx-1"></div>
+      <button class="w-9 h-9 rounded-lg hover:bg-white/5 flex items-center justify-center transition-all" onclick="openArchiveModal()" title="Archive">
+        <i class="fas fa-archive text-outline hover:text-primary transition-colors"></i>
+      </button>
+      <button class="w-9 h-9 rounded-lg hover:bg-white/5 flex items-center justify-center transition-all" onclick="openSettings()" title="Settings">
+        <i class="fas fa-sliders text-outline group-hover:text-primary transition-colors"></i>
+      </button>
+      <select class="text-[10px] font-bold px-2 py-1 rounded-lg border-white/10 bg-surface-container-high focus:ring-1 focus:ring-primary/30 cursor-pointer" onchange="setLang(this.value)">
+        <option value="en" {{ selected_en }}>EN</option>
+        <option value="ar" {{ selected_ar }}>AR</option>
+      </select>
+      <button class="w-9 h-9 rounded-lg hover:bg-white/5 flex items-center justify-center transition-all" onclick="toggleTheme()">
+        <i class="fas fa-moon text-outline" id="themeIcon"></i>
+      </button>
+      <button class="lg:hidden w-9 h-9 rounded-lg hover:bg-white/5 flex items-center justify-center" onclick="togglePanel('workspace')"><i class="fas fa-diagram-project"></i></button>
+    </div>
+  </header>
+
+  <div class="flex flex-1 overflow-hidden">
+    <!-- Projects Sidebar -->
+    <aside class="side-panel side-left-projects w-sidebar-projects shrink-0 glass border-y-0 border-l-0 flex flex-col hidden lg:flex" id="projectsPanel">
+      <div class="p-4 border-b border-white/5">
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-[9px] font-bold tracking-[0.2em] text-outline uppercase" data-i18n="projects">Projects</span>
+          <button class="w-6 h-6 rounded-lg bg-white/5 flex items-center justify-center hover:bg-primary/10 hover:text-primary transition-all" onclick="openNewProject()" title="New Project">
+            <i class="fas fa-plus text-[10px]"></i>
+          </button>
+        </div>
+        <div class="text-[8px] font-bold text-primary uppercase mb-2">Current Project</div>
+        <div class="p-3 rounded-xl bg-primary/10 border border-primary/20 cursor-pointer" id="currentProjectCard" onclick="openWorkspacePanel()">
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center shrink-0"><i class="fas fa-folder-open text-primary"></i></div>
+            <div class="flex-1 min-w-0">
+              <div class="text-sm font-bold truncate text-primary" id="currentProjectName">{{ proj_name }}</div>
+              <div class="text-[9px] opacity-50 truncate" id="currentProjectPath">{{ proj_dir }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flex-1 overflow-y-auto px-3 py-3">
+        <div class="text-[8px] font-bold tracking-[0.15em] text-outline uppercase mb-2">Other Projects</div>
+        <div class="space-y-1" id="projectsList">
+          <div class="text-[10px] text-center py-4 opacity-30 italic">No projects yet</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Sessions Sidebar -->
+    <aside class="side-panel side-left-sessions w-sidebar-sessions shrink-0 glass border-y-0 border-l-0 border-r-0 flex flex-col hidden lg:flex" id="sessionsPanel">
+      <div class="p-4 border-b border-white/5">
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-[9px] font-bold tracking-[0.2em] text-outline uppercase" data-i18n="sessions">Sessions</span>
+          <button class="w-6 h-6 rounded-lg bg-white/5 flex items-center justify-center hover:bg-primary/10 hover:text-primary transition-all" onclick="createNewSession()" title="New Session">
+            <i class="fas fa-plus text-[10px]"></i>
+          </button>
+        </div>
+      </div>
+      <div class="flex-1 overflow-y-auto px-3 py-3">
+        <div class="text-[8px] font-bold tracking-[0.15em] text-outline uppercase mb-2">Current Session</div>
+        <div class="p-2 rounded-xl bg-primary/10 border border-primary/20 mb-3">
+          <div class="text-xs font-semibold truncate" id="currentSessionName">جلسة جديدة</div>
+          <div class="text-[8px] opacity-40" id="currentSessionInfo">0 conversations</div>
+        </div>
+        <div class="text-[8px] font-bold tracking-[0.15em] text-outline uppercase mb-2">Other Sessions</div>
+        <div class="space-y-1" id="sessionsList">
+          <div class="text-[10px] text-center py-4 opacity-30 italic">No sessions yet</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Chat Content -->
+    <main class="flex-1 flex flex-col min-w-0 relative">
+      <div class="flex-1 overflow-y-auto px-4 py-8 lg:px-12 space-y-6 scroll-smooth" id="chatArea">
+        <div class="flex flex-col items-center justify-center h-full text-center max-w-md mx-auto" id="welcome">
+          <div class="relative mb-8">
+            <div class="absolute inset-0 blur-3xl bg-primary/20 rounded-full"></div>
+            <div class="w-24 h-24 rounded-[2rem] bg-gradient-to-br from-primary to-secondary-container flex items-center justify-center relative border border-white/20">
+              <i class="fas fa-robot text-4xl text-on-primary"></i>
+            </div>
+          </div>
+          <h2 class="text-3xl font-extrabold tracking-tight mb-3 gradient-text" data-i18n="welcome_title">{{ tr.app_name }}</h2>
+          <p class="text-sm font-medium opacity-40 leading-relaxed mb-8" data-i18n="welcome_subtitle">{{ tr.tagline }}</p>
+          <div class="grid grid-cols-2 gap-3 w-full">
+            <div class="p-4 rounded-2xl glass border-white/5 text-left group hover:border-primary/30 transition-all cursor-pointer">
+              <i class="fas fa-code text-agent-coder mb-2"></i>
+              <div class="text-xs font-bold mb-1 tracking-tight" data-i18n="system_build">System Build</div>
+              <div class="text-[10px] opacity-40 font-medium" data-i18n="system_build_desc">Generate professional code structures instantly.</div>
+            </div>
+            <div class="p-4 rounded-2xl glass border-white/5 text-left group hover:border-primary/30 transition-all cursor-pointer">
+              <i class="fas fa-search-nodes text-agent-researcher mb-2"></i>
+              <div class="text-xs font-bold mb-1 tracking-tight" data-i18n="market_analysis">Market Analysis</div>
+              <div class="text-[10px] opacity-40 font-medium" data-i18n="market_analysis_desc">Deep research with grounded search results.</div>
+            </div>
+          </div>
+        </div>
+        <div class="max-w-4xl mx-auto space-y-8 w-full" id="messages"></div>
+      </div>
+      <!-- Input Section -->
+      <div class="px-4 py-6 lg:px-12 shrink-0">
+        <div class="max-w-4xl mx-auto">
+          <div class="hidden mb-4 p-3 rounded-2xl glass flex items-center gap-3 border-primary/20" id="filePreview">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center bg-primary/10 text-primary" id="filePreviewIcon"><i class="fas fa-file"></i></div>
+            <div class="flex-1 min-w-0"><div class="text-xs font-bold truncate" id="filePreviewName">file.png</div><div class="text-[10px] opacity-40" id="filePreviewSize">0 KB</div></div>
+            <button class="p-2 hover:text-status-error transition-colors" onclick="clearFileUpload()"><i class="fas fa-times"></i></button>
+          </div>
+          <div class="relative glass rounded-3xl p-2 flex flex-col shadow-2xl border-white/10 ring-1 ring-white/5">
+            <textarea class="w-full bg-transparent border-none focus:ring-0 text-sm py-4 px-6 resize-none min-h-[56px] max-h-48 leading-relaxed" id="chatInput" onkeydown="if(event.key==='Enter'&amp;&amp;!event.shiftKey){event.preventDefault();sendMessage()}" placeholder="{{ placeholder_send }}" rows="1"></textarea>
+            <div class="flex items-center justify-between px-3 py-2 border-t border-white/5">
+              <div class="flex items-center gap-1">
+                <button class="w-9 h-9 rounded-xl hover:bg-white/5 flex items-center justify-center transition-all text-outline hover:text-primary" onclick="document.getElementById('fileUploadInput').click()" title="Attach file"><i class="fas fa-paperclip text-sm"></i></button>
+                <button class="w-9 h-9 rounded-xl hover:bg-white/5 flex items-center justify-center transition-all text-outline hover:text-primary" onclick="toggleTools()" title="Tools"><i class="fas fa-terminal text-sm"></i></button>
+              </div>
+              <div class="flex items-center gap-3">
+                <div class="hidden sm:flex flex-col text-right pr-2">
+                  <span class="text-[8px] font-bold text-outline uppercase tracking-widest">Active Model</span>
+                  <span class="text-[10px] font-semibold text-primary truncate max-w-[120px]" id="statusModel">{{ cur_model }}</span>
+                </div>
+                <button class="h-10 px-6 rounded-2xl bg-gradient-to-r from-primary to-primary-container text-on-primary font-bold text-xs flex items-center gap-2 shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all disabled:opacity-50" id="sendBtn" onclick="sendMessage()">
+                  <span>Send</span><i class="fas fa-paper-plane text-[10px]"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Workspace Panel (Project Operations) -->
+    <aside class="side-panel side-workspace w-workspace-panel shrink-0 glass border-y-0 border-r-0 flex flex-col hidden lg:flex" id="workspacePanel">
+      <div class="p-4 border-b border-white/5 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i class="fas fa-diagram-project text-primary text-xs"></i>
+          <span class="text-[9px] font-bold tracking-[0.2em] text-outline uppercase">Workspace</span>
+        </div>
+        <button class="text-[10px] opacity-40 hover:opacity-100" onclick="closeWorkspacePanel()"><i class="fas fa-times"></i></button>
+      </div>
+      <!-- Tabs -->
+      <div class="flex border-b border-white/5">
+        <button class="workspace-tab active flex-1 py-2 text-[10px] font-bold uppercase tracking-wider" data-tab="files" onclick="switchWorkspaceTab('files')">
+          <i class="fas fa-folder-tree mr-1"></i> Files
+        </button>
+        <button class="workspace-tab flex-1 py-2 text-[10px] font-bold uppercase tracking-wider opacity-50" data-tab="plan" onclick="switchWorkspaceTab('plan')">
+          <i class="fas fa-map mr-1"></i> Plan
+        </button>
+        <button class="workspace-tab flex-1 py-2 text-[10px] font-bold uppercase tracking-wider opacity-50" data-tab="tasks" onclick="switchWorkspaceTab('tasks')">
+          <i class="fas fa-list-check mr-1"></i> Tasks
+        </button>
+        <button class="workspace-tab flex-1 py-2 text-[10px] font-bold uppercase tracking-wider opacity-50" data-tab="operations" onclick="switchWorkspaceTab('operations')">
+          <i class="fas fa-gears mr-1"></i> Ops
+        </button>
+      </div>
+      <!-- Tab Content -->
+      <div class="flex-1 overflow-y-auto">
+        <!-- Files Tab (VS Code style) -->
+        <div id="workspaceTabFiles" class="p-0">
+          <div class="p-2 border-b border-white/5 flex items-center justify-between">
+            <span class="text-[9px] font-bold text-outline uppercase">Project Files</span>
+            <button class="text-[10px] px-2 py-1 rounded-lg bg-primary/20 text-primary hover:bg-primary/30" onclick="sendSelectedFileToChat()">
+              <i class="fas fa-paper-plane mr-1"></i> Send to Chat
+            </button>
+          </div>
+          <div id="fileExplorer" class="text-xs p-2 space-y-1">
+            <div class="text-[10px] opacity-30 italic text-center py-8">Select a project to view files</div>
+          </div>
+        </div>
+        <!-- Plan Tab -->
+        <div id="workspaceTabPlan" class="p-4 space-y-3 hidden">
+          <div class="p-3 rounded-xl bg-surface-container-low border border-white/5">
+            <div class="text-[9px] font-bold text-outline uppercase mb-2">Work Plan</div>
+            <div id="workPlanList" class="space-y-2">
+              <div class="text-[10px] opacity-30 italic text-center py-4">No plan yet. Start a conversation to generate one.</div>
+            </div>
+          </div>
+          <div class="p-3 rounded-xl bg-surface-container-low border border-white/5">
+            <div class="text-[9px] font-bold text-outline uppercase mb-2">Active Agent</div>
+            <div id="activeAgentInfo" class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-lg bg-agent-planner/20 flex items-center justify-center"><i class="fas fa-brain text-agent-planner"></i></div>
+              <div>
+                <div class="text-xs font-semibold">Planner</div>
+                <div class="text-[8px] opacity-40">IDLE</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Tasks Tab -->
+        <div id="workspaceTabTasks" class="p-4 space-y-2 hidden">
+          <div id="workspaceTaskList">
+            <div class="text-[10px] opacity-30 italic text-center py-8">No tasks</div>
+          </div>
+        </div>
+        <!-- Operations Tab -->
+        <div id="workspaceTabOperations" class="p-4 space-y-2 hidden">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[9px] font-bold text-outline uppercase">Operations</span>
+            <button class="text-[10px] opacity-40 hover:opacity-100" onclick="clearOperations()"><i class="fas fa-trash-can mr-1"></i> Clear</button>
+          </div>
+          <div id="workspaceOpList">
+            <div class="text-[10px] opacity-30 italic text-center py-8">No operations yet</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Footer -->
+  <footer class="h-12 glass border-x-0 border-b-0 flex items-center px-6 text-[10px] gap-6 shrink-0 z-50">
+    <div class="flex items-center gap-2">
+      <span class="w-1.5 h-1.5 rounded-full bg-agent-coder" id="statusDot"></span>
+      <span class="font-bold opacity-60 uppercase tracking-tighter" id="statusProvider">{{ provider_sel }}</span>
+      <span class="font-bold px-1.5 py-0.5 rounded-full bg-agent-coder/20 text-agent-coder text-[8px]" data-i18n="online">Online</span>
+    </div>
+    <div class="h-4 w-[1px] bg-white/10"></div>
+    <div class="flex items-center gap-2 font-mono"><i class="fas fa-microchip opacity-30"></i><span class="opacity-60" id="statusModelFooter">{{ cur_model }}</span></div>
+    <div class="flex items-center gap-2"><i class="fas fa-bolt-lightning text-amber-400 opacity-60"></i><span class="opacity-60 font-medium" id="statusSpeed">-- ms</span></div>
+    <button class="ml-auto flex items-center gap-2 px-3 py-1 rounded-lg bg-white/5 hover:bg-white/10 transition-all font-bold" onclick="togglePanel('workspace')">
+      <i class="fas fa-diagram-project text-[10px] text-primary"></i>
+      <span class="hidden sm:inline uppercase tracking-widest text-[9px]">Workspace</span>
+    </button>
+    <div class="hidden sm:flex items-center gap-4">
+      <div class="hidden items-center gap-3 w-32" id="progressContainer">
+        <div class="flex-1 h-1 bg-white/5 rounded-full overflow-hidden"><div class="h-full bg-primary transition-all duration-500" id="progressBar" style="width:0%;"></div></div>
+        <span class="font-mono text-[9px]" id="progressText">0%</span>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<input class="hidden" id="fileUploadInput" type="file" onchange="onFileSelected(event)"/>
+
+<!-- Settings Modal -->
+<div class="modal-overlay fixed inset-0 z-[100] hidden items-center justify-center p-4" id="settingsModal">
+  <div class="w-full max-w-4xl max-h-[90vh] overflow-hidden glass rounded-[2.5rem] shadow-2xl flex flex-col">
+    <div class="p-8 border-b border-white/5 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <div class="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary text-xl"><i class="fas fa-cog"></i></div>
+        <div><h2 class="text-xl font-extrabold tracking-tight">{{ tr.settings_title }}</h2><p class="text-xs opacity-40 font-medium">{{ tr.select_ai_backend }}</p></div>
+      </div>
+      <button class="w-10 h-10 rounded-xl hover:bg-white/5 flex items-center justify-center transition-all" onclick="closeSettings()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="flex-1 overflow-y-auto p-8 space-y-10">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="space-y-6"><label class="text-[10px] font-bold tracking-[0.2em] text-outline uppercase">LLM Provider</label><div class="grid grid-cols-1 gap-2" id="providerList"></div></div>
+        <div class="space-y-6"><label class="text-[10px] font-bold tracking-[0.2em] text-outline uppercase">Connection</label>
+          <div class="p-6 rounded-3xl bg-surface-container-low border border-white/5 space-y-4">
+            <div><label class="text-[9px] font-bold opacity-40 uppercase mb-2 block">API Key</label>
+              <div class="relative"><input class="w-full bg-surface-container-lowest border-white/5 rounded-xl px-4 py-3 text-xs focus:ring-primary/20" id="settingsApiKey" placeholder="Enter API Key" type="password"/><button class="absolute right-3 top-3 text-outline" onclick="toggleApiKeyVisibility()"><i class="fas fa-eye" id="apiKeyEye"></i></button></div>
+            </div>
+            <div><label class="text-[9px] font-bold opacity-40 uppercase mb-2 block">Model</label><input class="w-full bg-surface-container-lowest border-white/5 rounded-xl px-4 py-3 text-xs focus:ring-primary/20" id="settingsModel" placeholder="e.g. gpt-4o" type="text"/></div>
+            <button class="w-full py-3 rounded-xl bg-white/5 hover:bg-white/10 font-bold text-xs transition-all flex items-center justify-center gap-2" id="testConnectionBtn" onclick="testConnection()"><i class="fas fa-plug-circle-bolt text-primary"></i> <span>Test API</span></button>
+            <div id="settingsConnectionStatus" class="text-center text-xs mt-2"></div>
+          </div>
+        </div>
+      </div>
+      <div class="space-y-4"><label class="text-[10px] font-bold tracking-[0.2em] text-outline uppercase" data-i18n="system_instructions">{{ tr.system_instructions }}</label><textarea class="w-full bg-surface-container-lowest border-white/5 rounded-xl px-4 py-3 text-xs focus:ring-primary/20 resize-y" id="settingsSystemInstructions" rows="4" data-i18n-placeholder="system_instructions_placeholder" placeholder="{{ tr.system_instructions_placeholder }}"></textarea></div>
+    </div>
+    <div class="p-8 border-t border-white/5 flex items-center justify-between bg-surface-container-lowest">
+      <div class="flex gap-3"><button class="px-6 py-3 rounded-xl hover:bg-white/5 font-bold text-xs transition-all" onclick="closeSettings()">Cancel</button><button class="px-8 py-3 rounded-xl bg-primary text-on-primary font-bold text-xs shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all" id="saveSettingsBtn" onclick="saveAllSettings()">Save &amp; Apply</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- Tools Modal -->
+<div class="modal-overlay fixed inset-0 z-[100] hidden items-center justify-center p-4" id="toolModal">
+  <div class="w-full max-w-3xl max-h-[80vh] overflow-hidden glass rounded-[2rem] shadow-2xl flex flex-col">
+    <div class="p-6 border-b border-white/5 flex items-center justify-between">
+      <h2 class="text-lg font-bold flex items-center gap-2"><i class="fas fa-wrench text-primary"></i> <span>{{ tr.tools_title }}</span></h2>
+      <button class="p-2 rounded-xl hover:bg-white/5" onclick="closeTools()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="p-6">
+      <input id="toolSearch" oninput="filterTools()" type="text" class="w-full text-sm px-4 py-3 rounded-xl glass border border-white/5 focus:border-primary/30 focus:outline-none mb-6" placeholder="Search tools...">
+      <div id="toolGrid" class="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[60vh] overflow-y-auto pr-2"></div>
+    </div>
+  </div>
+</div>
+
+<!-- New Project Modal -->
+<div class="modal-overlay fixed inset-0 z-[100] hidden items-center justify-center p-4" id="newProjectModal">
+  <div class="w-full max-w-md glass rounded-2xl p-6">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-lg font-bold flex items-center gap-2"><i class="fas fa-folder-plus text-agent-coder"></i> New Project</h3>
+      <button onclick="closeNewProject()" class="p-2 rounded-xl hover:bg-white/5"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="space-y-3">
+      <div>
+        <label class="text-[10px] font-medium opacity-40">Project Name</label>
+        <div class="flex gap-2">
+          <input id="newProjectName" type="text" placeholder="my-project" class="flex-1 px-3 py-2 rounded-xl glass border border-white/5 focus:border-primary/30" onkeydown="if(event.key==='Enter')createProject()">
+          <button onclick="browseFolder()" class="px-3 py-2 rounded-xl bg-white/5 hover:bg-white/10 font-bold text-xs flex items-center justify-center gap-1">
+            <i class="fas fa-folder-open"></i> Browse
+          </button>
+        </div>
+      </div>
+      <div id="selectedFolder" class="text-[10px] text-tertiary opacity-70 truncate hidden"></div>
+      <button onclick="createProject()" class="w-full py-2 rounded-xl bg-primary/20 text-primary hover:bg-primary/30 font-bold"><i class="fas fa-rocket mr-2"></i> Create</button>
+    </div>
+  </div>
+</div>
+
+<!-- Archive Modal -->
+<div class="modal-overlay fixed inset-0 z-[100] hidden items-center justify-center p-4" id="archiveModal">
+  <div class="w-full max-w-2xl max-h-[80vh] overflow-hidden glass rounded-[2rem] shadow-2xl flex flex-col">
+    <div class="p-6 border-b border-white/5 flex items-center justify-between">
+      <h2 class="text-lg font-bold flex items-center gap-2"><i class="fas fa-archive text-primary"></i> Archive</h2>
+      <button class="p-2 rounded-xl hover:bg-white/5" onclick="closeArchiveModal()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="flex border-b border-white/5">
+      <button class="archive-tab active flex-1 py-3 text-xs font-bold uppercase tracking-wider" data-tab="projects" onclick="switchArchiveTab('projects')">
+        <i class="fas fa-folder mr-1"></i> Projects
+      </button>
+      <button class="archive-tab flex-1 py-3 text-xs font-bold uppercase tracking-wider opacity-50" data-tab="sessions" onclick="switchArchiveTab('sessions')">
+        <i class="fas fa-layer-group mr-1"></i> Sessions
+      </button>
+    </div>
+    <div class="flex-1 overflow-y-auto p-6">
+      <div id="archiveProjectsList" class="space-y-2"></div>
+      <div id="archiveSessionsList" class="space-y-2 hidden"></div>
+    </div>
+  </div>
+</div>
+
+<!-- New Session Modal -->
+<div class="modal-overlay fixed inset-0 z-[100] hidden items-center justify-center p-4" id="newSessionModal">
+  <div class="w-full max-w-sm glass rounded-2xl p-6">
+    <div class="flex items-center justify-between mb-4"><h3 class="text-lg font-bold flex items-center gap-2"><i class="fas fa-layer-group text-tertiary"></i> New Session</h3><button onclick="closeNewSession()" class="p-2 rounded-xl hover:bg-white/5"><i class="fas fa-times"></i></button></div>
+    <div class="space-y-3">
+      <div><label class="text-[10px] font-medium opacity-40">Session Name</label><input id="newSessionName" type="text" placeholder="جلسة جديدة" class="w-full px-3 py-2 rounded-xl glass border border-white/5 focus:border-primary/30" onkeydown="if(event.key==='Enter')confirmCreateSession()"></div>
+      <button onclick="confirmCreateSession()" class="w-full py-2 rounded-xl bg-primary/20 text-primary hover:bg-primary/30 font-bold"><i class="fas fa-plus mr-2"></i> Create</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const TRANSLATIONS = {{ tr_json|safe }};
+  const LANG = '{{ lang }}';
+  const toolsData = {{ tools_json|safe }};
+  const settingsData = {{ settings_json|safe }};
+  const providersData = {{ providers_json|safe }};
+  let currentLang = LANG;
+  let currentTaskId = null;
+  let eventSource = null;
+  let isProcessing = false;
+  let speedInterval = null;
+  let selectedProvider = settingsData.provider || 'openrouter';
+  let activeConversationId = null;
+  let uploadedFileData = null;
+  let activeProjectId = null;
+  let activeSessionId = null;
+  let workspaceOperations = [];
+
+  document.addEventListener('DOMContentLoaded', () => {
+    console.log('Page loaded');
+    try {
+      // Basic functions
+      applyTheme(settingsData.theme || 'dark');
+      loadProjectInfo().then(() => loadProjectFiles());
+      loadProjects();
+      
+      // All functions to global scope for onclick handlers
+      window.togglePanel = togglePanel;
+      window.openSettings = openSettings;
+      window.openArchiveModal = openArchiveModal;
+      window.setLang = setLang;
+      window.toggleTheme = toggleTheme;
+      window.openNewProject = openNewProject;
+      window.openWorkspacePanel = openWorkspacePanel;
+      window.createNewSession = createNewSession;
+      window.activateProject = activateProject;
+      window.archiveProject = archiveProject;
+      window.deleteProject = deleteProject;
+      window.activateSession = activateSession;
+      window.archiveSession = archiveSession;
+      window.deleteSession = deleteSession;
+      window.unarchiveProject = unarchiveProject;
+      window.unarchiveSession = unarchiveSession;
+      window.confirmCreateSession = confirmCreateSession;
+      window.selectFile = selectFile;
+      window.sendSelectedFileToChat = sendSelectedFileToChat;
+      window.browseFolder = browseFolder;
+      window.importExistingProject = importExistingProject;
+      window.closeNewProject = closeNewProject;
+      window.closeNewSession = closeNewSession;
+      window.closeArchiveModal = closeArchiveModal;
+      window.switchArchiveTab = switchArchiveTab;
+      window.closeSettings = closeSettings;
+      window.testConnection = testConnection;
+      window.saveAllSettings = saveAllSettings;
+      window.selectProvider = selectProvider;
+      window.toggleApiKeyVisibility = toggleApiKeyVisibility;
+      window.toggleTools = toggleTools;
+      window.closeTools = closeTools;
+      window.filterTools = filterTools;
+      window.startSpeedTest = startSpeedTest;
+      window.refreshStatus = refreshStatus;
+      window.onFileSelected = onFileSelected;
+      window.clearFileUpload = clearFileUpload;
+      window.sendMessage = sendMessage;
+      window.closeWorkspacePanel = closeWorkspacePanel;
+      window.switchWorkspaceTab = switchWorkspaceTab;
+      
+      applyTranslations();
+      renderToolCategories();
+      renderProvidersList();
+      updateThemeButtons();
+    } catch(e) { console.error('Init error:', e); }
+  });
+
+  window.addEventListener('error', (e) => { console.error('Global error:', e.message, e.filename, e.lineno); });
+  window.addEventListener('unhandledrejection', (e) => { console.error('Unhandled rejection:', e.reason); });
+
+  function applyTranslations() {
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if(TRANSLATIONS[key]) el.textContent = TRANSLATIONS[key];
+    });
+  }
+  function t(key) { return TRANSLATIONS[key] || key; }
+
+  // Panel toggles
+  function togglePanel(panel) {
+    const panels = { projects: 'projectsPanel', sessions: 'sessionsPanel', workspace: 'workspacePanel' };
+    const el = document.getElementById(panels[panel]);
+    if(el) { el.classList.toggle('hidden'); el.classList.toggle('open'); }
+  }
+  function openWorkspacePanel() {
+    const el = document.getElementById('workspacePanel');
+    el.classList.remove('hidden'); el.classList.add('open');
+  }
+  function closeWorkspacePanel() {
+    const el = document.getElementById('workspacePanel');
+    el.classList.add('hidden'); el.classList.remove('open');
+  }
+  function switchWorkspaceTab(tab) {
+    document.querySelectorAll('.workspace-tab').forEach(t => { t.classList.remove('active'); t.classList.add('opacity-50'); });
+    document.querySelector(`.workspace-tab[data-tab="${tab}"]`).classList.add('active');
+    document.querySelector(`.workspace-tab[data-tab="${tab}"]`).classList.remove('opacity-50');
+    document.getElementById('workspaceTabFiles').classList.toggle('hidden', tab !== 'files');
+    document.getElementById('workspaceTabPlan').classList.toggle('hidden', tab !== 'plan');
+    document.getElementById('workspaceTabTasks').classList.toggle('hidden', tab !== 'tasks');
+    document.getElementById('workspaceTabOperations').classList.toggle('hidden', tab !== 'operations');
+    if(tab === 'files' && activeProjectId) {
+      loadProjectFiles();
+    }
+  }
+
+  // File Explorer
+  let selectedFile = null;
+  let projectFiles = [];
+
+  async function loadProjectFiles() {
+    console.log('loadProjectFiles called, activeProjectId:', activeProjectId);
+    const explorer = document.getElementById('fileExplorer');
+    if(!activeProjectId) {
+      explorer.innerHTML = '<div class="text-[10px] opacity-30 italic text-center py-8">Select a project to view files</div>';
+      return;
+    }
+    explorer.innerHTML = '<div class="text-[10px] opacity-40 text-center py-4"><i class="fas fa-spinner fa-spin"></i> Loading files...</div>';
+    try {
+      const res = await fetch(`/api/projects/files?project_id=${activeProjectId}`);
+      const data = await res.json();
+      console.log('Files loaded:', data.files?.length || 0);
+      projectFiles = data.files || [];
+      renderFileExplorer(projectFiles);
+    } catch(e) {
+      console.error('Load files error:', e);
+      explorer.innerHTML = '<div class="text-[10px] text-status-error">Failed to load files</div>';
+    }
+  }
+
+  function renderFileExplorer(files, parentPath = '', level = 0) {
+    const explorer = document.getElementById('fileExplorer');
+    if(level === 0) {
+      explorer.innerHTML = '';
+    }
+    files.forEach(file => {
+      const isSelected = selectedFile === file.path;
+      const isDir = file.is_directory;
+      const indent = level * 12;
+      const icon = isDir ? (file.expanded ? 'fa-folder-open' : 'fa-folder') : getFileIcon(file.name);
+      const color = isDir ? 'text-amber-400' : getFileColor(file.name);
+      const div = document.createElement('div');
+      div.className = `file-item flex items-center gap-2 py-1 px-2 rounded cursor-pointer hover:bg-white/5 ${isSelected ? 'bg-primary/20 border border-primary/30' : ''}`;
+      div.style.paddingLeft = `${indent + 8}px`;
+      div.innerHTML = `<i class="fas ${icon} ${color} text-[10px] shrink-0"></i><span class="truncate flex-1">${escapeHtml(file.name)}</span>${file.size ? `<span class="text-[8px] opacity-30">${file.size}</span>` : ''}`;
+      div.onclick = () => selectFile(file);
+      explorer.appendChild(div);
+      if(isDir && file.expanded && file.children) {
+        renderFileExplorer(file.children, file.path, level + 1);
+      }
+    });
+  }
+
+  function getFileIcon(filename) {
+    const ext = filename.split('.').pop().toLowerCase();
+    const icons = {
+      'xlsx': 'fa-file-excel text-green-500', 'xls': 'fa-file-excel text-green-500',
+      'pdf': 'fa-file-pdf text-red-500', 'doc': 'fa-file-word text-blue-500',
+      'docx': 'fa-file-word text-blue-500', 'txt': 'fa-file-lines text-gray-400',
+      'js': 'fa-file-js text-yellow-500', 'ts': 'fa-file-typescript text-blue-400',
+      'py': 'fa-file-python text-blue-500', 'json': 'fa-file-code text-yellow-400',
+      'html': 'fa-file-html text-orange-500', 'css': 'fa-file-css text-blue-400',
+      'png': 'fa-file-image text-purple-500', 'jpg': 'fa-file-image text-purple-500',
+      'jpeg': 'fa-file-image text-purple-500', 'gif': 'fa-file-image text-purple-500'
+    };
+    return icons[ext] || 'fa-file text-outline';
+  }
+
+  function getFileColor(filename) {
+    const ext = filename.split('.').pop().toLowerCase();
+    const colors = { 'xlsx': 'text-green-500', 'xls': 'text-green-500', 'pdf': 'text-red-500', 'doc': 'text-blue-500', 'docx': 'text-blue-500' };
+    return colors[ext] || '';
+  }
+
+  function selectFile(file) {
+    if(file.is_directory) {
+      file.expanded = !file.expanded;
+      projectFiles = toggleFolder(projectFiles, file.path, file.expanded);
+      renderFileExplorer(projectFiles);
+    } else {
+      selectedFile = file.path;
+      renderFileExplorer(projectFiles);
+    }
+  }
+
+  function toggleFolder(files, path, expanded) {
+    return files.map(f => {
+      if(f.path === path) {
+        return { ...f, expanded };
+      }
+      if(f.children) {
+        return { ...f, children: toggleFolder(f.children, path, expanded) };
+      }
+      return f;
+    });
+  }
+
+  function sendSelectedFileToChat() {
+    if(!selectedFile) {
+      showToast('Please select a file first', 'error');
+      return;
+    }
+    const file = findFile(projectFiles, selectedFile);
+    if(file) {
+      showToast('Reading file content...', 'info');
+      fetch(`/api/projects/read-file?project_id=${activeProjectId}&file_path=${encodeURIComponent(file.path)}`)
+        .then(res => res.json())
+        .then(data => {
+          const content = data.content || 'Could not read file content';
+          const preview = content.length > 500 ? content.substring(0, 500) + '...' : content;
+          const chatInput = document.getElementById('chatInput');
+          chatInput.value = `📄 File: ${file.path}\n\nContent Preview:\n${preview}\n\nPlease analyze this file and tell me about it.`;
+          chatInput.focus();
+          showToast('File content added to chat', 'success');
+        })
+        .catch(e => {
+          const chatInput = document.getElementById('chatInput');
+          chatInput.value = `Work on file: ${file.path}\nPlease analyze this file.`;
+          chatInput.focus();
+          showToast('File added (could not read content)', 'info');
+        });
+    }
+  }
+
+  function findFile(files, path) {
+    for(const f of files) {
+      if(f.path === path) return f;
+      if(f.children) {
+        const found = findFile(f.children, path);
+        if(found) return found;
+      }
+    }
+    return null;
+  }
+
+  // Theme
+  function toggleTheme() {
+    const current = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+    setTheme(current === 'dark' ? 'light' : 'dark');
+  }
+  function setTheme(theme) {
+    fetch('/api/settings', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({key:'theme',value:theme})});
+    applyTheme(theme); settingsData.theme = theme;
+  }
+  function applyTheme(theme) {
+    document.documentElement.classList.remove('dark','light');
+    document.documentElement.classList.add(theme);
+    const icon = document.getElementById('themeIcon');
+    if(icon) icon.className = theme === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+  }
+  function updateThemeButtons() {
+    const current = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+    const icon = document.getElementById('themeIcon');
+    if(icon) icon.className = current === 'dark' ? 'fas fa-moon' : 'fas fa-sun';
+  }
+  function setLang(lang) {
+    fetch('/api/settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({key:'lang',value:lang})}).then(()=>{
+      currentLang = lang; document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+      document.documentElement.lang = lang; applyTranslations(); loadConversations(); loadTasks();
+    });
+  }
+
+  // Global SSE
+  let globalEventSource = null;
+  function startGlobalStream() {
+    if(globalEventSource) globalEventSource.close();
+    globalEventSource = new EventSource('/api/stream/global');
+    globalEventSource.addEventListener('task_update', (e) => {
+      const data = JSON.parse(e.data); updateTaskStatus(data.task_id, data.status);
+    });
+    globalEventSource.onerror = () => {};
+  }
+
+  // Projects
+  async function loadProjects() {
+    try {
+      const res = await fetch('/api/projects');
+      const data = await res.json();
+      const projects = data.projects || [];
+      const active = data.active_project;
+      activeProjectId = active ? active.id : null;
+      const list = document.getElementById('projectsList');
+      if(projects.length === 0) { list.innerHTML = '<div class="text-[10px] text-center py-4 opacity-30 italic">No projects yet</div>'; return; }
+      list.innerHTML = '';
+      projects.forEach(p => {
+        if(active && p.id === active.id) return;
+        const div = document.createElement('div');
+        div.className = 'item-hover p-2 rounded-xl glass border border-white/5 cursor-pointer flex items-center justify-between text-xs';
+        div.innerHTML = `<div class="flex items-center gap-2 flex-1 min-w-0" onclick="activateProject('${p.id}')"><div class="w-6 h-6 rounded-lg bg-white/5 flex items-center justify-center shrink-0"><i class="fas fa-folder text-outline text-[10px]"></i></div><span class="truncate">${escapeHtml(p.name)}</span></div><div class="item-actions flex gap-1"><button class="w-5 h-5 rounded bg-white/5 hover:bg-amber-500/20 text-outline hover:text-amber-400 flex items-center justify-center" onclick="event.stopPropagation();archiveProject('${p.id}')" title="Archive"><i class="fas fa-archive text-[8px]"></i></button><button class="w-5 h-5 rounded bg-white/5 hover:bg-status-error/20 text-outline hover:text-status-error flex items-center justify-center" onclick="event.stopPropagation();deleteProject('${p.id}')" title="Delete"><i class="fas fa-trash text-[8px]"></i></button></div>`;
+        list.appendChild(div);
+      });
+      if(active) {
+        document.getElementById('currentProjectName').textContent = active.name;
+        document.getElementById('currentProjectPath').textContent = active.path;
+        loadSessions(active.id);
+      }
+    } catch(e) { console.error('Load projects error:', e); }
+  }
+
+async function activateProject(id) {
+    await fetch(`/api/projects/${id}/activate`, {method:'POST'});
+    activeProjectId = id;
+    await loadProjects();
+    await loadProjectInfo();
+    await loadProjectFiles();
+    showToast('Project changed', 'success');
+  }
+
+  async function archiveProject(id) {
+    if(!confirm('Archive this project?')) return;
+    await fetch(`/api/projects/${id}/archive`, {method:'POST'});
+    showToast('Project archived', 'success');
+    loadProjects();
+  }
+
+  async function deleteProject(id) {
+    if(!confirm('Delete this project permanently?')) return;
+    await fetch(`/api/projects/${id}`, {method:'DELETE'});
+    showToast('Project deleted', 'success');
+    loadProjects();
+  }
+
+  function openNewProject() {
+    document.getElementById('newProjectModal').classList.remove('hidden');
+    document.getElementById('newProjectModal').classList.add('flex');
+    document.getElementById('newProjectName').value = '';
+    document.getElementById('newProjectDesc').value = '';
+  }
+  function closeNewProject() {
+    document.getElementById('newProjectModal').classList.add('hidden');
+    document.getElementById('newProjectModal').classList.remove('flex');
+    document.getElementById('selectedFolder').classList.add('hidden');
+  }
+  let selectedFolderPath = '';
+  async function browseFolder() {
+    try {
+      if (window.showDirectoryPicker) {
+        const dirHandle = await window.showDirectoryPicker({mode:'read'});
+        selectedFolderPath = dirHandle.name;
+        const folderDisplay = document.getElementById('selectedFolder');
+        folderDisplay.textContent = 'Selected: ' + dirHandle.name;
+        folderDisplay.classList.remove('hidden');
+        showToast('Folder selected: ' + dirHandle.name, 'success');
+      }
+    } catch(e) {
+      if(e.name !== 'AbortError') showToast('Folder selection not supported in this browser', 'error');
+    }
+  }
+  async function importExistingProject() {
+    try {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.webkitdirectory = true;
+      input.style.display = 'none';
+      input.onchange = async (e) => {
+        const files = e.target.files;
+        if(files && files.length > 0) {
+          const folderName = files[0].webkitRelativePath.split('/')[0];
+          showToast('Importing project: ' + folderName + '...', 'info');
+          
+          const res = await fetch('/api/projects', {
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({
+              name: folderName,
+              description: 'Imported from Documents',
+              import_from_browser: true
+            })
+          });
+          const data = await res.json();
+          if(data.status === 'ok') {
+            showToast('Project imported: ' + data.name, 'success');
+            closeNewProject();
+            loadProjects();
+          } else {
+            showToast(data.message || 'Import failed', 'error');
+          }
+        }
+      };
+      document.body.appendChild(input);
+      input.click();
+      setTimeout(() => input.remove(), 1000);
+    } catch(e) {
+      showToast('Please use Browse to select a folder', 'error');
+    }
+  }
+  async function createProject() {
+    const name = document.getElementById('newProjectName').value.trim();
+    if(!name) { showToast('Project name required', 'error'); return; }
+    try {
+      const res = await fetch('/api/projects', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name, description: ''})});
+      const data = await res.json();
+      if(data.status === 'ok') {
+        showToast('Project created: ' + data.name, 'success');
+        closeNewProject(); loadProjects(); loadProjectInfo(); refreshStatus();
+      } else { showToast(data.message || 'Failed', 'error'); }
+    } catch(e) { showToast('Failed: ' + e.message, 'error'); }
+  }
+
+  // Sessions
+  async function loadSessions(projectId) {
+    try {
+      const res = await fetch(`/api/projects/${projectId}/sessions`);
+      const data = await res.json();
+      const sessions = data.sessions || [];
+      const list = document.getElementById('sessionsList');
+      if(sessions.length === 0) { list.innerHTML = '<div class="text-[10px] text-center py-4 opacity-30 italic">No sessions yet</div>'; return; }
+      list.innerHTML = '';
+      sessions.forEach(s => {
+        const div = document.createElement('div');
+        div.className = `item-hover p-2 rounded-xl glass border ${s.is_active ? 'border-primary bg-primary/10' : 'border-white/5'} cursor-pointer flex items-center justify-between text-xs`;
+        div.innerHTML = `<div class="flex-1 min-w-0" onclick="activateSession('${s.id}')"><div class="text-xs font-semibold truncate">${escapeHtml(s.name)}</div><div class="text-[8px] opacity-40">${s.conversation_count || 0} conversations</div></div><div class="item-actions flex gap-1"><button class="w-5 h-5 rounded bg-white/5 hover:bg-amber-500/20 text-outline hover:text-amber-400 flex items-center justify-center" onclick="event.stopPropagation();archiveSession('${s.id}')" title="Archive"><i class="fas fa-archive text-[8px]"></i></button><button class="w-5 h-5 rounded bg-white/5 hover:bg-status-error/20 text-outline hover:text-status-error flex items-center justify-center" onclick="event.stopPropagation();deleteSession('${s.id}')" title="Delete"><i class="fas fa-trash text-[8px]"></i></button></div>`;
+        list.appendChild(div);
+      });
+    } catch(e) { console.error('Load sessions error:', e); }
+  }
+
+  function createNewSession() {
+    document.getElementById('newSessionModal').classList.remove('hidden');
+    document.getElementById('newSessionModal').classList.add('flex');
+    document.getElementById('newSessionName').value = '';
+  }
+  function closeNewSession() {
+    document.getElementById('newSessionModal').classList.add('hidden');
+    document.getElementById('newSessionModal').classList.remove('flex');
+  }
+  async function confirmCreateSession() {
+    if(!activeProjectId) { showToast('Create a project first', 'error'); return; }
+    const name = document.getElementById('newSessionName').value.trim() || 'جلسة جديدة';
+    try {
+      const res = await fetch(`/api/projects/${activeProjectId}/sessions`, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name})});
+      const data = await res.json();
+      if(data.status === 'ok') {
+        showToast('Session created', 'success');
+        closeNewSession(); loadSessions(activeProjectId);
+      } else { showToast(data.message || 'Failed', 'error'); }
+    } catch(e) { showToast('Failed: ' + e.message, 'error'); }
+  }
+
+  async function activateSession(id) {
+    await fetch(`/api/projects/sessions/${id}/activate`, {method:'POST'});
+    activeSessionId = id;
+    loadSessions(activeProjectId);
+  }
+
+  async function archiveSession(id) {
+    if(!confirm('Archive this session?')) return;
+    await fetch(`/api/projects/sessions/${id}/archive`, {method:'POST'});
+    showToast('Session archived', 'success');
+    if(activeProjectId) loadSessions(activeProjectId);
+  }
+
+  async function deleteSession(id) {
+    if(!confirm('Delete this session?')) return;
+    await fetch(`/api/projects/sessions/${id}`, {method:'DELETE'});
+    showToast('Session deleted', 'success');
+    if(activeProjectId) loadSessions(activeProjectId);
+  }
+
+  // Archive Modal
+  function openArchiveModal() {
+    document.getElementById('archiveModal').classList.remove('hidden');
+    document.getElementById('archiveModal').classList.add('flex');
+    loadArchivedProjects();
+    loadArchivedSessions();
+  }
+  function closeArchiveModal() {
+    document.getElementById('archiveModal').classList.add('hidden');
+    document.getElementById('archiveModal').classList.remove('flex');
+  }
+  function switchArchiveTab(tab) {
+    document.querySelectorAll('.archive-tab').forEach(t => { t.classList.remove('active'); t.classList.add('opacity-50'); });
+    document.querySelector(`.archive-tab[data-tab="${tab}"]`).classList.add('active');
+    document.querySelector(`.archive-tab[data-tab="${tab}"]`).classList.remove('opacity-50');
+    document.getElementById('archiveProjectsList').classList.toggle('hidden', tab !== 'projects');
+    document.getElementById('archiveSessionsList').classList.toggle('hidden', tab !== 'sessions');
+    if(tab === 'sessions') {
+      loadArchivedSessions();
+    }
+  }
+
+  async function loadArchivedProjects() {
+    try {
+      const res = await fetch('/api/projects?archived=true');
+      const data = await res.json();
+      const projects = data.projects || [];
+      const list = document.getElementById('archiveProjectsList');
+      if(projects.length === 0) { list.innerHTML = '<div class="text-[10px] text-center py-8 opacity-30 italic">No archived projects</div>'; return; }
+      list.innerHTML = '';
+      projects.forEach(p => {
+        const div = document.createElement('div');
+        div.className = 'archive-item item-hover p-3 rounded-xl glass border border-white/5 flex items-center justify-between text-xs';
+        div.innerHTML = `<div class="flex items-center gap-2 flex-1 min-w-0"><div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center shrink-0"><i class="fas fa-folder text-outline"></i></div><div><div class="font-semibold">${escapeHtml(p.name)}</div><div class="text-[8px] opacity-40">${p.path}</div></div></div><div class="flex gap-1"><button class="px-2 py-1 rounded-lg bg-primary/20 text-primary hover:bg-primary/30 text-[10px]" onclick="unarchiveProject('${p.id}')"><i class="fas fa-undo mr-1"></i> Restore</button><button class="px-2 py-1 rounded-lg bg-status-error/20 text-status-error hover:bg-status-error/30 text-[10px]" onclick="deleteProject('${p.id}');loadArchivedProjects();"><i class="fas fa-trash mr-1"></i></button></div>`;
+        list.appendChild(div);
+      });
+    } catch(e) {}
+  }
+
+  async function loadArchivedSessions(projectId = null) {
+    const pid = projectId || activeProjectId;
+    if(!pid) {
+      document.getElementById('archiveSessionsList').innerHTML = '<div class="text-[10px] text-center py-8 opacity-30 italic">No archived sessions - activate a project first</div>';
+      return;
+    }
+    try {
+      const res = await fetch(`/api/projects/${pid}/sessions?archived=true`);
+      const data = await res.json();
+      const sessions = data.sessions || [];
+      const list = document.getElementById('archiveSessionsList');
+      if(sessions.length === 0) { list.innerHTML = '<div class="text-[10px] text-center py-8 opacity-30 italic">No archived sessions</div>'; return; }
+      list.innerHTML = '';
+      sessions.forEach(s => {
+        const div = document.createElement('div');
+        div.className = 'archive-item item-hover p-3 rounded-xl glass border border-white/5 flex items-center justify-between text-xs';
+        div.innerHTML = `<div class="flex items-center gap-2 flex-1 min-w-0"><div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center shrink-0"><i class="fas fa-layer-group text-outline"></i></div><div><div class="font-semibold">${escapeHtml(s.name)}</div><div class="text-[8px] opacity-40">${s.conversation_count || 0} conversations</div></div></div><div class="flex gap-1"><button class="px-2 py-1 rounded-lg bg-primary/20 text-primary hover:bg-primary/30 text-[10px]" onclick="unarchiveSession('${s.id}')"><i class="fas fa-undo mr-1"></i> Restore</button><button class="px-2 py-1 rounded-lg bg-status-error/20 text-status-error hover:bg-status-error/30 text-[10px]" onclick="deleteSession('${s.id}');loadArchivedSessions('${pid}');"><i class="fas fa-trash mr-1"></i></button></div>`;
+        list.appendChild(div);
+      });
+    } catch(e) { console.error('Load archived sessions error:', e); }
+  }
+
+  async function unarchiveProject(id) {
+    await fetch(`/api/projects/${id}/unarchive`, {method:'POST'});
+    showToast('Project restored', 'success');
+    loadArchivedProjects(); loadProjects();
+  }
+
+  async function unarchiveSession(id) {
+    await fetch(`/api/projects/sessions/${id}/unarchive`, {method:'POST'});
+    showToast('Session restored', 'success');
+    loadArchivedSessions(); if(activeProjectId) loadSessions(activeProjectId);
+  }
+
+  // Project info (backward compat)
+  async function loadProjectInfo() {
+    try {
+      const res = await fetch('/api/projects/info');
+      const data = await res.json();
+      document.getElementById('currentProjectName').textContent = data.name || 'Emo AI';
+      document.getElementById('currentProjectPath').textContent = data.path || '.';
+      activeProjectId = data.id || null;
+    } catch(e) {}
+  }
+
+  // Conversations
+  async function loadConversations(projectId = null, sessionId = null) {
+    try {
+      let url = '/api/conversations';
+      if(projectId) url += `?project_id=${projectId}`;
+      const res = await fetch(url);
+      const data = await res.json();
+      const convs = (data.conversations || []).filter(c => !c.is_archived);
+      activeConversationId = data.active;
+      if(convs.length === 0) {
+        document.getElementById('welcome')?.classList.remove('hidden');
+        document.getElementById('messages').innerHTML = '';
+        return;
+      }
+      // Load chat history for active conversation
+      if(activeConversationId) {
+        loadChatHistory();
+      }
+    } catch(e) { console.error('Load conversations error:', e); }
+  }
+
+  async function activateConversation(id) {
+    await fetch(`/api/conversations/${id}/activate`,{method:'POST'});
+    activeConversationId = id;
+    document.getElementById('messages').innerHTML = '';
+    loadChatHistory();
+  }
+
+  async function loadChatHistory() {
+    try {
+      const res = await fetch('/api/history');
+      const data = await res.json();
+      const msgs = data.messages || [];
+      const container = document.getElementById('messages');
+      container.innerHTML = '';
+      msgs.forEach(m => container.appendChild(createMessageBubble(m.role, m.content, m.file_data)));
+      if(msgs.length) {
+        document.getElementById('welcome')?.classList.add('hidden');
+        document.getElementById('chatArea').scrollTop = document.getElementById('chatArea').scrollHeight;
+      } else document.getElementById('welcome')?.classList.remove('hidden');
+    } catch(e) {}
+  }
+
+  function createMessageBubble(role, content, fileData) {
+    const div = document.createElement('div');
+    div.className = `flex items-start gap-3 ${role==='user'?'flex-row-reverse':''}`;
+    const avatar = role==='user' ? '<div class="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center"><i class="fas fa-user text-white text-xs"></i></div>' : '<div class="w-8 h-8 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center"><i class="fas fa-robot text-white text-xs"></i></div>';
+    let contentHtml = '';
+    if(fileData && fileData.base64 && fileData.type?.startsWith('image/')) contentHtml += `<img src="data:${fileData.type};base64,${fileData.base64}" class="max-w-[200px] rounded-lg mb-2">`;
+    contentHtml += `<div class="whitespace-pre-wrap">${escapeHtml(content)}</div>`;
+    div.innerHTML = avatar + `<div class="px-4 py-3 rounded-2xl max-w-[80%] ${role==='user'?'chat-bubble-user text-white':'chat-bubble-ai'}">${contentHtml}</div>`;
+    return div;
+  }
+
+  // File upload
+  function onFileSelected(event) {
+    const file = event.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const base64 = e.target.result.split(',')[1] || '';
+      uploadedFileData = { name: file.name, type: file.type, size: file.size, base64 };
+      document.getElementById('filePreviewName').textContent = file.name;
+      document.getElementById('filePreviewSize').textContent = (file.size/1024).toFixed(1)+' KB';
+      document.getElementById('filePreview').classList.remove('hidden');
+    };
+    reader.readAsDataURL(file);
+    event.target.value = '';
+  }
+  function clearFileUpload() { uploadedFileData = null; document.getElementById('filePreview').classList.add('hidden'); }
+
+  // Chat
+  async function sendMessage() {
+    const input = document.getElementById('chatInput');
+    let msg = input.value.trim();
+    if((!msg && !uploadedFileData) || isProcessing) return;
+    input.value = '';
+    isProcessing = true;
+    document.getElementById('sendBtn').disabled = true;
+    let fileToSend = null;
+    if(uploadedFileData) {
+      fileToSend = uploadedFileData;
+      msg = `📎 ${fileToSend.name} (${(fileToSend.size/1024).toFixed(1)} KB)\n` + msg;
+      uploadedFileData = null;
+      document.getElementById('filePreview').classList.add('hidden');
+    }
+    document.getElementById('welcome')?.classList.add('hidden');
+    const container = document.getElementById('messages');
+    container.appendChild(createMessageBubble('user', msg, fileToSend));
+    document.getElementById('chatArea').scrollTop = document.getElementById('chatArea').scrollHeight;
+    const typing = document.createElement('div');
+    typing.id = 'typing-indicator';
+    typing.className = 'flex items-start gap-3';
+    typing.innerHTML = '<div class="w-8 h-8 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center"><i class="fas fa-robot text-white text-xs"></i></div><div class="px-4 py-3 rounded-2xl chat-bubble-ai"><div class="flex gap-1"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div></div>';
+    container.appendChild(typing);
+    document.getElementById('chatArea').scrollTop = document.getElementById('chatArea').scrollHeight;
+    try {
+      const body = { message: msg };
+      if(activeConversationId) body.conversation_id = activeConversationId;
+      if(activeProjectId) body.project_id = activeProjectId;
+      if(activeSessionId) body.session_id = activeSessionId;
+      if(selectedFile) body.file_path = selectedFile;
+      if(fileToSend) { body.file_name = fileToSend.name; body.file_type = fileToSend.type; body.file_size = fileToSend.size; body.base64 = fileToSend.base64; }
+      const res = await fetch('/api/chat', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body) });
+      const data = await res.json();
+      currentTaskId = data.task_id;
+      listenToTask(currentTaskId, () => { isProcessing = false; document.getElementById('sendBtn').disabled = false; setProgress(100); loadTasks(); });
+      setProgress(10);
+    } catch(e) { showToast('Failed to send', 'error'); isProcessing = false; document.getElementById('sendBtn').disabled = false; typing.remove(); }
+  }
+
+  function listenToTask(taskId, onDone) {
+    if(eventSource) eventSource.close();
+    const log = document.getElementById('workspaceOpList');
+    if(log) log.innerHTML = '';
+    let stepsDone = 0, totalSteps = 0;
+    eventSource = new EventSource(`/api/stream/${taskId}`);
+    function handleStep(e) {
+      const data = JSON.parse(e.data);
+      addLogStep(data); addWorkspaceOperation(data);
+      if(data.status === 'complete') stepsDone++;
+      totalSteps = Math.max(totalSteps, stepsDone+3);
+      setProgress((stepsDone/totalSteps)*90+5);
+    }
+    eventSource.addEventListener('step_start', handleStep);
+    eventSource.addEventListener('step_running', handleStep);
+    eventSource.addEventListener('step_complete', handleStep);
+    eventSource.addEventListener('step_error', handleStep);
+    eventSource.addEventListener('result', (e) => {
+      const data = JSON.parse(e.data);
+      document.getElementById('typing-indicator')?.remove();
+      document.getElementById('messages').appendChild(createMessageBubble('assistant', data.content, null));
+      document.getElementById('chatArea').scrollTop = document.getElementById('chatArea').scrollHeight;
+      eventSource.close(); onDone();
+    });
+    eventSource.addEventListener('error', (e) => {
+      const data = JSON.parse(e.data);
+      document.getElementById('typing-indicator')?.remove();
+      showToast(data.message, 'error'); eventSource.close(); onDone();
+    });
+    eventSource.addEventListener('done', () => { eventSource.close(); onDone(); });
+    eventSource.onerror = () => { eventSource.close(); onDone(); };
+  }
+
+  function addLogStep(data) {
+    const log = document.getElementById('logSteps');
+    if(!log) return;
+    const placeholder = log.querySelector('.flex.items-center');
+    if(placeholder) placeholder.remove();
+    const el = document.createElement('div');
+    el.className = 'step-enter text-[10px] p-2 rounded-xl glass border border-white/5 flex items-start gap-2';
+    const iconMap = { planner:'fa-brain', coder:'fa-code', writer:'fa-pen', researcher:'fa-search', aggregator:'fa-layer-group' };
+    const colorMap = { planner:'#8b5cf6', coder:'#10b981', writer:'#ec4899', researcher:'#f59e0b', aggregator:'#60a5fa' };
+    const icon = iconMap[data.agent] || 'fa-cog';
+    const color = colorMap[data.agent] || '#a0a0c0';
+    let statusIcon = data.status==='running' ? '<i class="fas fa-spinner fa-spin"></i>' : (data.status==='complete' ? '<i class="fas fa-check-circle text-agent-coder"></i>' : '<i class="fas fa-circle text-outline"></i>');
+    el.innerHTML = `<i class="fas ${icon}" style="color:${color}"></i><div class="flex-1"><div class="flex justify-between"><span class="font-bold">${data.agent}</span><span>${statusIcon}</span></div><div>${escapeHtml(data.message||'')}</div></div>`;
+    log.appendChild(el); log.scrollTop = log.scrollHeight;
+    updateAgentCard(data.agent, data.status);
+    if(data.task_id && data.status) updateTaskStatus(data.task_id, data.status);
+  }
+
+  function updateAgentCard(agent, status) {
+    const info = document.getElementById('activeAgentInfo');
+    if(!info) return;
+    const colorMap = { planner:'#8b5cf6', coder:'#10b981', writer:'#ec4899', researcher:'#f59e0b' };
+    const iconMap = { planner:'fa-brain', coder:'fa-code', writer:'fa-pen', researcher:'fa-search' };
+    const statusText = { running:'RUNNING', complete:'DONE', error:'ERROR', pending:'IDLE', start:'STARTED' };
+    const color = colorMap[agent] || '#a0a0c0';
+    const icon = iconMap[agent] || 'fa-cog';
+    info.innerHTML = `<div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:${color}20"><i class="fas ${icon}" style="color:${color}"></i></div><div><div class="text-xs font-semibold capitalize">${agent}</div><div class="text-[8px]" style="color:${color}">${statusText[status] || status.toUpperCase()}</div></div>`;
+  }
+
+  // Workspace operations
+  function addWorkspaceOperation(data) {
+    const list = document.getElementById('workspaceOpList');
+    if(!list) return;
+    const placeholder = list.querySelector('.text-center');
+    if(placeholder) placeholder.remove();
+    const el = document.createElement('div');
+    const statusClass = data.status === 'running' ? 'op-running' : (data.status === 'complete' ? 'op-complete' : (data.status === 'error' ? 'op-error' : 'op-pending'));
+    el.className = `step-enter p-2 rounded-lg bg-surface-container-low border border-white/5 text-[10px] ${statusClass}`;
+    el.innerHTML = `<div class="flex justify-between items-center"><span class="font-bold">${data.agent || 'system'}</span><span class="text-[8px] opacity-40">${data.status}</span></div><div class="opacity-60 truncate">${escapeHtml(data.message || data.step || '')}</div>`;
+    list.prepend(el);
+    if(list.children.length > 50) list.removeChild(list.lastChild);
+  }
+
+  function clearOperations() {
+    document.getElementById('workspaceOpList').innerHTML = '<div class="text-[10px] opacity-30 italic text-center py-8">No operations yet</div>';
+  }
+
+  // Tasks
+  function loadTasks() {
+    fetch('/api/tasks?limit=10').then(res=>res.json()).then(data=>{
+      const tasks = data.tasks || [];
+      const list = document.getElementById('workspaceTaskList');
+      if(!list) return;
+      if(tasks.length===0) { list.innerHTML = '<div class="text-[10px] opacity-30 italic text-center py-8">No tasks</div>'; return; }
+      list.innerHTML = '';
+      tasks.forEach(task => {
+        const el = document.createElement('div');
+        const statusColor = task.status==='running' ? 'text-primary' : (task.status==='complete' ? 'text-agent-coder' : (task.status==='error' ? 'text-status-error' : 'text-outline'));
+        el.className = 'p-2 rounded-xl glass border border-white/5 text-[10px] flex items-start gap-2 mb-2';
+        el.innerHTML = `<div class="${statusColor}"><i class="fas fa-circle text-[6px]"></i></div><div class="flex-1"><div class="font-bold truncate">${escapeHtml(task.message||'Task')}</div><div class="text-[8px] opacity-40">${task.agent||'pending'} - ${task.progress||0}%</div></div>`;
+        list.appendChild(el);
+      });
+    }).catch(e=>console.error(e));
+  }
+
+  function updateTaskStatus(taskId, status) {
+    loadTasks();
+  }
+
+  // Settings
+  function openSettings() {
+    selectedProvider = settingsData.provider || 'openrouter';
+    setupSettingsFromData(); renderProvidersList();
+    document.getElementById('settingsModal').classList.remove('hidden');
+    document.getElementById('settingsModal').classList.add('flex');
+  }
+  function closeSettings() {
+    document.getElementById('settingsModal').classList.add('hidden');
+    document.getElementById('settingsModal').classList.remove('flex');
+  }
+  function setupSettingsFromData() {
+    document.getElementById('settingsModel').value = settingsData.model || '';
+    document.getElementById('settingsApiKey').value = '';
+    document.getElementById('settingsSystemInstructions').value = settingsData.system_instructions || '';
+    updateApiKeyInput();
+  }
+  function renderProvidersList() {
+    const container = document.getElementById('providerList');
+    if(!container) return; container.innerHTML = '';
+    Object.entries(providersData).forEach(([name,cfg])=>{
+      const div = document.createElement('div');
+      div.className = `provider-card p-2 rounded-xl glass border ${selectedProvider===name?'border-primary bg-primary/10':'border-white/5'} cursor-pointer flex items-center gap-2 text-xs`;
+      div.onclick = () => selectProvider(name);
+      div.innerHTML = `<div class="w-2 h-2 rounded-full ${selectedProvider===name?'bg-primary':'bg-outline'}"></div><span class="flex-1">${name}</span>`;
+      container.appendChild(div);
+    });
+  }
+  function selectProvider(name) { selectedProvider = name; renderProvidersList(); updateApiKeyInput(); }
+  function updateApiKeyInput() {
+    const provider = providersData[selectedProvider];
+    const input = document.getElementById('settingsApiKey');
+    if(!provider || !provider.api_key_env) { input.disabled = true; input.placeholder = 'No API key needed'; }
+    else { input.disabled = false; input.placeholder = 'Enter ' + selectedProvider + ' API key'; }
+  }
+  function toggleApiKeyVisibility() {
+    const input = document.getElementById('settingsApiKey');
+    const eye = document.getElementById('apiKeyEye');
+    if(input.type === 'password') { input.type = 'text'; eye.className = 'fas fa-eye-slash'; }
+    else { input.type = 'password'; eye.className = 'fas fa-eye'; }
+  }
+  async function testConnection() {
+    const btn = document.getElementById('testConnectionBtn');
+    btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Testing...';
+    const key = document.getElementById('settingsApiKey').value.trim();
+    const keyName = (providersData[selectedProvider]?.api_key_env||'').toLowerCase().replace('_api_key','')+'_key';
+    if(keyName && key) await fetch('/api/settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({key:keyName,value:key})});
+    if(selectedProvider !== settingsData.provider) await fetch('/api/settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({key:'provider',value:selectedProvider})});
+    const res = await fetch('/api/status'); const data = await res.json();
+    const statusEl = document.getElementById('settingsConnectionStatus');
+    if(data.connected) { if(statusEl) statusEl.innerHTML = '<span class="text-agent-coder">✅ Connected</span>'; }
+    else { if(statusEl) statusEl.innerHTML = '<span class="text-status-error">❌ Connection failed</span>'; }
+    btn.disabled = false; btn.innerHTML = '<i class="fas fa-plug-circle-bolt"></i> Test API';
+  }
+  async function saveAllSettings() {
+    const model = document.getElementById('settingsModel').value.trim();
+    const key = document.getElementById('settingsApiKey').value.trim();
+    const systemInstructions = document.getElementById('settingsSystemInstructions').value.trim();
+    const keyName = (providersData[selectedProvider]?.api_key_env||'').toLowerCase().replace('_api_key','')+'_key';
+    if(keyName && key) await fetch('/api/settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({key:keyName,value:key})});
+    if(model !== settingsData.model) await fetch('/api/settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({key:'model',value:model})});
+    if(selectedProvider !== settingsData.provider) await fetch('/api/settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({key:'provider',value:selectedProvider})});
+    if(systemInstructions !== settingsData.system_instructions) await fetch('/api/settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({key:'system_instructions',value:systemInstructions})});
+    settingsData.system_instructions = systemInstructions; settingsData.model = model; settingsData.provider = selectedProvider;
+    showToast('Settings saved', 'success'); closeSettings(); refreshStatus();
+  }
+
+  // Tools
+  function toggleTools() { document.getElementById('toolModal').classList.remove('hidden'); document.getElementById('toolModal').classList.add('flex'); }
+  function closeTools() { document.getElementById('toolModal').classList.add('hidden'); document.getElementById('toolModal').classList.remove('flex'); }
+  function renderToolCategories() {
+    const grid = document.getElementById('toolGrid'); if(!grid) return; grid.innerHTML = '';
+    const categories = {};
+    toolsData.forEach(tool => { const cat = tool.category || 'Other'; if(!categories[cat]) categories[cat] = { name: cat, icon: '🔧', tools: [] }; categories[cat].tools.push(tool); });
+    Object.values(categories).forEach(cat => {
+      const section = document.createElement('div'); section.className = 'mb-3';
+      section.innerHTML = `<div class="text-xs font-bold uppercase tracking-wider text-outline mb-2">${cat.icon} ${escapeHtml(cat.name)}</div><div class="grid grid-cols-1 gap-1"></div>`;
+      const gridInner = section.querySelector('.grid');
+      cat.tools.forEach(tool => {
+        const btn = document.createElement('div'); btn.className = 'p-2 rounded-xl glass border border-white/5 text-[10px] cursor-pointer hover:border-primary/30';
+        btn.innerHTML = `<span class="font-bold">${escapeHtml(tool.icon)} ${escapeHtml(tool.name)}</span><span class="opacity-40 block truncate">${escapeHtml(tool.description)}</span>`;
+        btn.onclick = () => { document.getElementById('chatInput').value = `Use tool ${tool.name}: `; closeTools(); document.getElementById('chatInput').focus(); };
+        gridInner.appendChild(btn);
+      });
+      grid.appendChild(section);
+    });
+  }
+  function filterTools() {
+    const q = document.getElementById('toolSearch')?.value.toLowerCase() || '';
+    document.querySelectorAll('#toolGrid > div').forEach(section => {
+      let hasMatch = false;
+      section.querySelectorAll('.p-2').forEach(card => { const text = card.textContent.toLowerCase(); if(text.includes(q)) { card.style.display = ''; hasMatch = true; } else card.style.display = 'none'; });
+      section.style.display = hasMatch ? '' : 'none';
+    });
+  }
+
+  // Status
+  function startSpeedTest() {
+    if(speedInterval) clearInterval(speedInterval);
+    const test = async () => {
+      const start = performance.now();
+      try {
+        const res = await fetch('/api/settings/status'); const data = await res.json();
+        const latency = data.latency_ms || Math.round(performance.now()-start);
+        document.getElementById('statusSpeed').textContent = data.connected ? `${latency}ms` : 'Offline';
+        document.getElementById('statusDot').style.backgroundColor = data.connected ? '#10b981' : '#ef4444';
+        document.getElementById('headerStatusDot').style.backgroundColor = data.connected ? '#10b981' : '#ef4444';
+        document.getElementById('headerStatusText').textContent = data.connected ? t('status_online') : t('offline');
+        if(data.provider) document.getElementById('statusProvider').textContent = data.provider;
+        if(data.model) { document.getElementById('statusModelFooter').textContent = data.model; document.getElementById('statusModel').textContent = data.model; }
+      } catch(e) {
+        document.getElementById('statusSpeed').textContent = 'Offline';
+        document.getElementById('statusDot').style.backgroundColor = '#ef4444';
+        document.getElementById('headerStatusDot').style.backgroundColor = '#ef4444';
+        document.getElementById('headerStatusText').textContent = t('offline');
+      }
+    };
+    test(); speedInterval = setInterval(test,30000);
+  }
+  async function refreshStatus() {
+    try {
+      const res = await fetch('/api/status'); const data = await res.json();
+      if(data.provider) document.getElementById('statusProvider').textContent = data.provider;
+      if(data.model) { document.getElementById('statusModelFooter').textContent = data.model; document.getElementById('statusModel').textContent = data.model; }
+      if(data.connected !== undefined) {
+        document.getElementById('statusDot').style.backgroundColor = data.connected ? '#10b981' : '#ef4444';
+      }
+    } catch(e) {}
+  }
+  function showToast(msg, type='info') {
+    const toast = document.createElement('div');
+    toast.className = 'fixed bottom-20 left-1/2 transform -translate-x-1/2 z-50 px-4 py-2 rounded-xl glass text-xs backdrop-blur-md';
+    toast.textContent = msg; document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 3000);
+  }
+  function escapeHtml(str) { if(str===null||str===undefined) return ''; return String(str).replace(/[&<>"']/g, function(m){if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; if(m==='"') return '&quot;'; return m;}); }
+  function startTrayPing() { setInterval(()=>fetch('/api/tray/ping').catch(e=>{}),15000); }
+  function setProgress(pct) {
+    const container = document.getElementById('progressContainer');
+    const bar = document.getElementById('progressBar'); const text = document.getElementById('progressText');
+    if(pct>0) container.style.display = 'flex';
+    bar.style.width = Math.min(pct,100)+'%'; text.textContent = Math.round(pct)+'%';
+    if(pct>=100) setTimeout(()=>container.style.display='none',2000);
+  }
+</script>
+</body>
+</html>

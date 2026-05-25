@@ -1,0 +1,33 @@
+Phase F3 — Resource Scheduler & Quota Arbitration — Execution Log
+Date: 2026-05-22
+Directive: EXEC-DIRECTIVE-005
+
+════════════════════════════════════════════════════════════════════════════════
+STEP 1/4 — Create directory structure & F3 models import
+STATUS: COMPLETED
+  core/runtime/resource_scheduler/ created
+  core/runtime/models/resource_scheduler_models.py imported
+
+STEP 2/4 — Implement 4 concrete protocol classes
+STATUS: COMPLETED
+  resource_scheduler.py   — ResourceScheduler ←→ IResourceScheduler
+  quota_arbitrator.py     — QuotaArbitrator ←→ IQuotaArbitrator
+  fairness_engine.py      — FairnessEngine ←→ IFairnessEngine
+  topology_mapper.py      — TopologyMapper ←→ ITopologyMapper
+  allocation_state_machine.py — 8-state SM with 4 preemption guards
+  starvation_handler.py   — Priority boost + fallback worker
+
+STEP 3/4 — Update CompositionRoot with F3 wiring
+STATUS: COMPLETED
+  resource_scheduler property with lazy construction
+  _build_resource_scheduler factory with all 5 dependencies injected
+  strict_quota_mode parameter
+
+STEP 4/4 — Create 48 tests + run full suite
+STATUS: COMPLETED
+  tests/test_f3_resource_scheduler_integration.py     — 31 tests (G1-G6)
+  tests/test_allocation_state_machine_preemption_guards.py — 8 preemption tests
+  tests/test_starvation_prevention_boosts_low_priority_task.py — 9 starvation tests
+  Total: 48 F3 tests — 48/48 PASS
+  Full suite: 1632 passed, 6 pre-existing failures, 10 skipped
+  Zero regressions (baseline 1583 → 1632 = +49)

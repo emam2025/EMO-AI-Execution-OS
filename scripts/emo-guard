@@ -1,0 +1,447 @@
+#!/usr/bin/env python3
+"""
+emo-guard — Architectural Control Plane Gate
+
+Runs before every commit as the first enforcement boundary.
+Blocks commits that violate architectural rules.
+
+Usage:
+    python3 scripts/emo-guard [--snapshot PATH] [--threshold FLOAT] [--diff-only]
+
+Exit codes:
+    0 — PASS (architecture clean)
+    1 — BLOCKED (architectural violation detected)
+"""
+
+import argparse
+import os
+import sys
+import time
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple
+
+# Ensure project root is on path
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(PROJECT_ROOT))
+
+from core.canon import CanonValidator, ValidationContext
+from core.codegraph import (
+    CodeGraph,
+    CodeGraphQueryEngine,
+    EdgeType,
+    Node,
+    NodeType,
+    build_codegraph,
+    load,
+    save,
+)
+
+
+# ── Configuration ─────────────────────────────────────────────────────────────
+
+DEFAULT_SNAPSHOT_DIR = str(PROJECT_ROOT / "artifacts" / "codegraph")
+DEFAULT_THRESHOLD = 0.8
+
+
+# ── Violation Model ───────────────────────────────────────────────────────────
+
+class Violation:
+    def __init__(self, law: int, severity: str, message: str):
+        self.law = law
+        self.severity = severity
+        self.message = message
+
+    def __str__(self) -> str:
+        return f"[LAW {self.law}] [{self.severity}] {self.message}"
+
+
+# ── Snapshot Loader ───────────────────────────────────────────────────────────
+
+def load_snapshot(snapshot_dir: str) -> Optional[CodeGraph]:
+    """Load the most recent CodeGraph snapshot from disk."""
+    try:
+        return load(snapshot_dir)
+    except (FileNotFoundError, Exception) as e:
+        return None
+
+
+def build_current_graph() -> CodeGraph:
+    """Build a fresh CodeGraph of the core/ directory."""
+    return build_codegraph(str(PROJECT_ROOT / "core"))
+
+
+# ── Diff Engine ───────────────────────────────────────────────────────────────
+
+def compute_coupling_delta(
+    old_graph: Optional[CodeGraph],
+    new_graph: CodeGraph,
+) -> Dict[str, float]:
+    """Compare coupling scores between two graph snapshots."""
+    deltas: Dict[str, float] = {}
+
+    if old_graph is None:
+        return deltas
+
+    old_qe = CodeGraphQueryEngine(old_graph)
+    new_qe = CodeGraphQueryEngine(new_graph)
+
+    old_nodes = old_graph.nodes
+    new_nodes = new_graph.nodes
+
+    all_paths = set()
+    for n in old_nodes.values():
+        if n.type == NodeType.FILE:
+            all_paths.add(n.path)
+    for n in new_nodes.values():
+        if n.type == NodeType.FILE:
+            all_paths.add(n.path)
+
+    for path in sorted(all_paths):
+        exists_old = _has_file(old_graph, path)
+        exists_new = _has_file(new_graph, path)
+        if not exists_old:
+            continue  # skip new files — no baseline to compare
+        old_score = old_qe.get_coupling_score(path) if exists_old else 0.0
+        new_score = new_qe.get_coupling_score(path) if exists_new else 0.0
+        delta = new_score - old_score
+        if abs(delta) > 0.01:
+            deltas[path] = delta
+
+    return deltas
+
+
+def compute_risk_delta(
+    old_graph: Optional[CodeGraph],
+    new_graph: CodeGraph,
+) -> Dict[str, float]:
+    """Compare risk scores between two graph snapshots."""
+    deltas: Dict[str, float] = {}
+
+    if old_graph is None:
+        return deltas
+
+    old_qe = CodeGraphQueryEngine(old_graph)
+    new_qe = CodeGraphQueryEngine(new_graph)
+
+    for path in ["core/execution_engine.py", "core/orchestrator.py"]:
+        if _has_file(old_graph, path) and _has_file(new_graph, path):
+            old_risk = old_qe.get_risk_profile(path).get("risk_score", 0.0)
+            new_risk = new_qe.get_risk_profile(path).get("risk_score", 0.0)
+            delta = new_risk - old_risk
+            if abs(delta) > 1.0:
+                deltas[path] = delta
+
+    return deltas
+
+
+def detect_cycles(graph: CodeGraph) -> List[Tuple[str, str]]:
+    """Detect circular dependencies in the graph using DFS."""
+    cycles: List[Tuple[str, str]] = []
+    visited: set = set()
+    rec_stack: set = set()
+    path_map: Dict[str, str] = {}
+
+    for nid, node in graph.nodes.items():
+        if node.type == NodeType.FILE:
+            path_map[nid] = node.path
+
+    def dfs(node_id: str) -> None:
+        if node_id in rec_stack:
+            return
+        if node_id in visited:
+            return
+        visited.add(node_id)
+        rec_stack.add(node_id)
+        for edge in graph.edges:
+            if edge.from_id == node_id and edge.type == EdgeType.DEPENDS_ON:
+                target = edge.to_id
+                if target in rec_stack:
+                    src_path = path_map.get(node_id, node_id)
+                    tgt_path = path_map.get(target, target)
+                    cycles.append((src_path, tgt_path))
+                elif target not in visited:
+                    dfs(target)
+        rec_stack.remove(node_id)
+
+    for nid in graph.nodes:
+        if nid not in visited:
+            dfs(nid)
+
+    return cycles
+
+
+def detect_illegal_dependencies(graph: CodeGraph) -> List[Violation]:
+    """Check for dependency direction violations.
+
+    Rules enforced:
+    - interfaces/ must not import from implementation modules
+    - adapters/ must only point to interfaces/ or legacy/
+    - composition/ must not contain business logic
+    - models/ must not import from runtime or execution
+    """
+    violations: List[Violation] = []
+
+    path_to_fid: Dict[str, str] = {}
+    for nid, node in graph.nodes.items():
+        if node.type == NodeType.FILE:
+            path_to_fid[node.path] = nid
+
+    for edge in graph.edges:
+        if edge.type != EdgeType.IMPORTS and edge.type != EdgeType.DEPENDS_ON:
+            continue
+
+        from_node = graph.get_node(edge.from_id)
+        to_node = graph.get_node(edge.to_id)
+        if from_node is None or to_node is None:
+            continue
+
+        src_path = from_node.path
+        tgt_path = to_node.path
+
+        # Rule: interfaces/ must not import implementation
+        if "/interfaces/" in src_path and "/interfaces/" not in tgt_path:
+            if "models/" not in tgt_path:  # interfaces may import models
+                violations.append(Violation(
+                    law=4,
+                    severity="ERROR",
+                    message=f"Interface imports implementation: {src_path} → {tgt_path}",
+                ))
+
+        # Rule: adapters/ must only point to interfaces/ or legacy modules
+        if "/adapters/" in src_path:
+            allowed = ["/interfaces/", "/legacy/", "core/models/"]
+            if not any(a in tgt_path for a in allowed):
+                violations.append(Violation(
+                    law=5,
+                    severity="WARN",
+                    message=f"Adapter points outside allowed targets: {src_path} → {tgt_path}",
+                ))
+
+        # Rule: models/ must not import from runtime or execution
+        if "/models/" in src_path:
+            if "runtime" in tgt_path or "execution" in tgt_path:
+                violations.append(Violation(
+                    law=6,
+                    severity="ERROR",
+                    message=f"Model imports runtime: {src_path} → {tgt_path}",
+                ))
+
+    return violations
+
+
+def _has_file(graph: CodeGraph, path: str) -> bool:
+    for node in graph.nodes.values():
+        if node.path == path:
+            return True
+    return False
+
+
+# ── Canon Validator ───────────────────────────────────────────────────────────
+
+def validate_canon(
+    graph: CodeGraph,
+    coupling_deltas: Dict[str, float],
+    risk_deltas: Dict[str, float],
+    threshold: float,
+) -> List[Violation]:
+    """Validate Canon laws against current graph state."""
+    violations: List[Violation] = []
+    qe = CodeGraphQueryEngine(graph)
+
+    # LAW 14: Boundary decisions must be derived from CodeGraph
+    for path, delta in coupling_deltas.items():
+        if delta > 0.05:
+            violations.append(Violation(
+                law=14,
+                severity="WARN" if delta < 0.1 else "ERROR",
+                message=f"Coupling increased on {path}: +{delta:.3f} — boundary drift detected",
+            ))
+
+    for path, delta in risk_deltas.items():
+        if delta > 5.0:
+            violations.append(Violation(
+                law=14,
+                severity="WARN" if delta < 10.0 else "ERROR",
+                message=f"Risk score increased on {path}: +{delta:.1f} — boundary drift detected",
+            ))
+
+    # LAW 16: Any node with risk_score > 0.8 MUST be decomposed
+    high_risk_paths = set()
+    for nid, node in graph.nodes.items():
+        if node.type == NodeType.FILE and node.risk_score is not None and node.risk_score > threshold:
+            high_risk_paths.add(node.path)
+
+    for path in sorted(high_risk_paths):
+        profile = qe.get_risk_profile(path)
+        violations.append(Violation(
+            law=16,
+            severity="ERROR",
+            message=f"{path} has risk_score={profile['risk_score']:.1f} > {threshold} — MUST be decomposed",
+        ))
+
+    return violations
+
+
+# ── Report Builder ────────────────────────────────────────────────────────────
+
+def build_report(
+    violations: List[Violation],
+    cycles: List[Tuple[str, str]],
+    coupling_deltas: Dict[str, float],
+    risk_deltas: Dict[str, float],
+    new_graph: CodeGraph,
+    old_graph: Optional[CodeGraph],
+) -> str:
+    """Build the human-readable guard report."""
+    lines: List[str] = []
+    errors = [v for v in violations if v.severity == "ERROR"]
+    warnings = [v for v in violations if v.severity == "WARN"]
+    blocked = len(errors) > 0 or len(cycles) > 0
+
+    # Header
+    if blocked:
+        lines.append("❌ BLOCKED: Architectural violation detected")
+    else:
+        lines.append("✅ PASSED: Architecture is clean")
+    lines.append("")
+
+    # Summary
+    lines.append(f"  Nodes:    {len(new_graph.nodes)}")
+    lines.append(f"  Edges:    {len(new_graph.edges)}")
+    if old_graph:
+        lines.append(f"  Snapshot: {len(old_graph.nodes)} nodes, {len(old_graph.edges)} edges")
+    lines.append("")
+
+    # Coupling deltas
+    if coupling_deltas:
+        lines.append("  Coupling Changes:")
+        for path, delta in sorted(coupling_deltas.items()):
+            symbol = "⬆" if delta > 0 else "⬇"
+            short_path = _shorten(path)
+            lines.append(f"    {symbol} {short_path}: {delta:+.3f}")
+        lines.append("")
+
+    # Risk deltas
+    if risk_deltas:
+        lines.append("  Risk Score Changes:")
+        for path, delta in sorted(risk_deltas.items()):
+            symbol = "⬆" if delta > 0 else "⬇"
+            short_path = _shorten(path)
+            lines.append(f"    {symbol} {short_path}: {delta:+.1f}")
+        lines.append("")
+
+    # Cycles
+    if cycles:
+        lines.append(f"  ⚠ Circular Dependencies ({len(cycles)}):")
+        for src, tgt in cycles:
+            lines.append(f"    {_shorten(src)} → {_shorten(tgt)}")
+        lines.append("")
+
+    # Violations
+    for v in errors:
+        lines.append(f"  ❌ {v}")
+    for v in warnings:
+        lines.append(f"  ⚠ {v}")
+    if errors or warnings:
+        lines.append("")
+
+    return "\n".join(lines)
+
+
+def _shorten(path: str) -> str:
+    """Shorten a file path for display."""
+    if "core/" in path:
+        return path[path.index("core/"):]
+    if len(path) > 60:
+        return "..." + path[-57:]
+    return path
+
+
+# ── Main ──────────────────────────────────────────────────────────────────────
+
+def main() -> int:
+    parser = argparse.ArgumentParser(
+        description="emo-guard — Architectural Control Plane Gate"
+    )
+    parser.add_argument(
+        "--snapshot",
+        default=DEFAULT_SNAPSHOT_DIR,
+        help=f"Path to CodeGraph snapshot (default: {DEFAULT_SNAPSHOT_DIR})",
+    )
+    parser.add_argument(
+        "--threshold",
+        type=float,
+        default=DEFAULT_THRESHOLD,
+        help=f"Risk score threshold for LAW 16 (default: {DEFAULT_THRESHOLD})",
+    )
+    parser.add_argument(
+        "--diff-only",
+        action="store_true",
+        help="Only show diff, do not enforce (exit 0)",
+    )
+    parser.add_argument(
+        "--update-snapshot",
+        action="store_true",
+        help="After validation, update the snapshot to current state",
+    )
+    args = parser.parse_args()
+
+    # Load previous snapshot
+    old_graph = load_snapshot(args.snapshot)
+    if old_graph is None:
+        print("⚠ No previous CodeGraph snapshot found — building baseline...")
+
+    # Build current graph
+    new_graph = build_current_graph()
+
+    # Compute diffs
+    coupling_deltas = compute_coupling_delta(old_graph, new_graph)
+    risk_deltas = compute_risk_delta(old_graph, new_graph)
+    cycles = detect_cycles(new_graph)
+    dep_violations = detect_illegal_dependencies(new_graph)
+    canon_violations = validate_canon(new_graph, coupling_deltas, risk_deltas, args.threshold)
+
+    # Canon runtime enforcement
+    if not args.diff_only:
+        canon_ctx = ValidationContext(graph=new_graph)
+        canon_result = CanonValidator().validate(canon_ctx)
+        for v in canon_result.violations:
+            canon_violations.append(Violation(
+                law=int(v.rule_id.split("_")[1]) if "_" in v.rule_id else 0,
+                severity=v.severity,
+                message=v.message,
+            ))
+
+    all_violations = dep_violations + canon_violations
+
+    # Deduplicate violations by message
+    seen_messages: set = set()
+    unique_violations: List[Violation] = []
+    for v in all_violations:
+        key = str(v)
+        if key not in seen_messages:
+            seen_messages.add(key)
+            unique_violations.append(v)
+
+    report = build_report(unique_violations, cycles, coupling_deltas, risk_deltas, new_graph, old_graph)
+
+    print(report)
+
+    # Update snapshot if requested
+    if args.update_snapshot:
+        save(new_graph, args.snapshot)
+        print(f"  Snapshot updated at {args.snapshot}")
+
+    # Decision
+    if args.diff_only:
+        return 0
+
+    errors = [v for v in unique_violations if v.severity == "ERROR"]
+    if len(errors) > 0 or len(cycles) > 0:
+        return 1
+
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

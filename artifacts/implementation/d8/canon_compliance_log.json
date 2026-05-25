@@ -1,0 +1,87 @@
+{
+  "directive": "EXEC-DIRECTIVE-002",
+  "phase": "Phase D8 — Service Mesh Contracts Implementation",
+  "date": "2026-05-22",
+  "status": "COMPLETE",
+  "compliance_entries": [
+    {
+      "component": "core/runtime/services/scheduler.py",
+      "service": "ExecutionScheduler",
+      "law_rule": "LAW 23",
+      "description": "Scheduler owns execution ordering — schedule(), run_with_timeout(), collect_futures()",
+      "forbidden": ["retry", "dispatch", "lease", "state"],
+      "verified_by": "test_d8_service_isolation.py::TestNoHiddenCrossServiceAccess, TestServiceInterfaceCompliance"
+    },
+    {
+      "component": "core/runtime/services/tool_dispatcher.py",
+      "service": "ExecutionToolDispatcher",
+      "law_rule": "LAW 24",
+      "description": "Dispatcher owns execution routing — dispatch_tool_call(), validate_contract(), route_service()",
+      "forbidden": ["state", "lease", "retry", "scheduling"],
+      "verified_by": "test_d8_service_isolation.py::TestServiceInterfaceCompliance::test_dispatcher_has_no_extra_public_methods"
+    },
+    {
+      "component": "core/runtime/services/retry_handler.py",
+      "service": "ExecutionRetryHandler",
+      "law_rule": "LAW 25",
+      "description": "RetryHandler owns retry semantics — decide_retry(), apply_backoff(), record_failure()",
+      "forbidden": ["scheduling", "dispatch", "state", "lease"],
+      "verified_by": "test_d8_service_isolation.py::TestServiceInterfaceCompliance::test_retry_handler_has_no_extra_public_methods"
+    },
+    {
+      "component": "core/runtime/services/state_store.py",
+      "service": "ExecutionStateStore",
+      "law_rule": "LAW 26",
+      "description": "StateStore owns persistence + traces — save_state(), load_state(), store_checkpoint(), read_trace()",
+      "forbidden": ["dispatch", "retry", "lease", "scheduling"],
+      "verified_by": "test_d8_service_isolation.py::TestServiceInterfaceCompliance::test_state_store_has_no_extra_public_methods"
+    },
+    {
+      "component": "core/runtime/services/lease_manager.py",
+      "service": "ExecutionLeaseManager",
+      "law_rule": "LAW 23",
+      "description": "LeaseManager manages distributed ownership — acquire_lease(), renew_lease(), release_lease(), monitor_heartbeat()",
+      "forbidden": ["retry", "dispatch", "state", "scheduling"],
+      "verified_by": "test_d8_service_isolation.py::TestCanonServiceOwnership"
+    },
+    {
+      "component": "core/runtime/services/failure_propagation.py",
+      "service": "FailureMatrix",
+      "law_rule": "LAW 20-22",
+      "description": "Failure propagation matrix — F01-F08 scenarios with action sequences",
+      "forbidden": ["swallowing exceptions without EventBus publication"],
+      "verified_by": "test_d8_service_isolation.py::TestFailurePropagationCompliance"
+    },
+    {
+      "component": "core/runtime/services/*.py",
+      "service": "ALL",
+      "law_rule": "LAW 27",
+      "description": "No shared mutable state between services",
+      "forbidden": ["direct mutation of another service's private state"],
+      "verified_by": "test_d8_service_isolation.py::TestNoSharedMutableState (G1-T1 through G1-T5)"
+    },
+    {
+      "component": "core/runtime/services/*.py",
+      "service": "ALL",
+      "law_rule": "D8.3 Rule 10",
+      "description": "No hidden cross-service implementation imports",
+      "forbidden": ["from core.runtime.services.X import Y across domains"],
+      "verified_by": "test_d8_service_isolation.py::TestNoHiddenCrossServiceAccess (G2-T1 through G2-T4)"
+    },
+    {
+      "component": "core/composition/root.py",
+      "service": "CompositionRoot",
+      "law_rule": "LAW 23-27",
+      "description": "Explicit dependency injection of all 5 D8 services",
+      "forbidden": ["cross-service import chains bypassing CompositionRoot"],
+      "verified_by": "pytest full suite regression check"
+    }
+  ],
+  "conformance_summary": {
+    "protocols_verified": ["IExecutionScheduler", "IExecutionStateStore", "IExecutionDispatcher", "IExecutionRetryHandler", "IExecutionLeaseManager"],
+    "test_groups": ["G1-NoSharedMutableState", "G2-NoHiddenCrossServiceAccess", "G3-ServiceInterfaceCompliance", "G4-FailurePropagationCompliance", "G5-CanonServiceOwnership"],
+    "total_tests": 41,
+    "test_pass_rate": "100%",
+    "regressions": 0
+  }
+}

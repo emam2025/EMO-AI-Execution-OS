@@ -1,0 +1,92 @@
+[
+  {
+    "canon_ref": "LAW 5",
+    "requirement": "Observability — all decisions return reason",
+    "status": "pass",
+    "evidence": "SchedulingDecision has reason field; match_resources, preempt_if_needed, release_resources all return reason strings"
+  },
+  {
+    "canon_ref": "LAW 8",
+    "requirement": "Fair distribution — no starvation",
+    "status": "pass",
+    "evidence": "FairnessEngine.detect_starvation (6 thresholds), StarvationHandler.priority_boost + fallback, AllocationStateMachine.guard_preempted (priority diff check)"
+  },
+  {
+    "canon_ref": "LAW 10",
+    "requirement": "Resource limits enforced",
+    "status": "pass",
+    "evidence": "QuotaArbitrator.check_quota, enforce_limit (soft + hard), refund_on_failure; TopologyMapper.validate_constraints"
+  },
+  {
+    "canon_ref": "LAW 11",
+    "requirement": "No global state",
+    "status": "pass",
+    "evidence": "All classes are per-instance; CompositionRoot creates fresh ResourceScheduler per root; no module-level mutable state"
+  },
+  {
+    "canon_ref": "RULE 1",
+    "requirement": "Deterministic computation",
+    "status": "pass",
+    "evidence": "TopologyMapper.map_to_hardware scoring is pure + deterministic; FairnessEngine.compute_fair_share is deterministic"
+  },
+  {
+    "canon_ref": "RULE 2",
+    "requirement": "Reversibility — refund on failure",
+    "status": "pass",
+    "evidence": "QuotaArbitrator.refund_on_failure clears usage; release_resources removes assignment"
+  },
+  {
+    "canon_ref": "RULE 3",
+    "requirement": "Recoverability — preemption + fallback",
+    "status": "pass",
+    "evidence": "AllocationStateMachine PREEMPTED→QUEUED with guards; StarvationHandler.find_fallback after repeated starvation"
+  },
+  {
+    "canon_ref": "RULE 4",
+    "requirement": "Terminal states defined",
+    "status": "pass",
+    "evidence": "AllocationStateMachine TERMINAL_STATES = {COMPLETED, FAILED, REJECTED}; no transitions allowed from terminal states"
+  },
+  {
+    "canon_ref": "RULE 5",
+    "requirement": "Idempotent operations",
+    "status": "pass",
+    "evidence": "assign_worker returns True if worker already assigned; QuotaArbitrator.consume_usage returns existing usage on duplicate execution_id"
+  },
+  {
+    "canon_ref": "§15.9",
+    "requirement": "Preemption requires all 4 guards",
+    "status": "pass",
+    "evidence": "AllocationStateMachine.guard_preempted checks priority_diff >= 2, age > 60s, checkpoint_available"
+  },
+  {
+    "canon_ref": "§15.9",
+    "requirement": "Starvation boost one-directional",
+    "status": "pass",
+    "evidence": "BOOST_MAP: BATCH→LOW→NORMAL→HIGH; HIGH and CRITICAL do not boost further"
+  },
+  {
+    "canon_ref": "§15.9",
+    "requirement": "Starvation fallback after repeated boost",
+    "status": "pass",
+    "evidence": "StarvationHandler.scan_queued triggers find_fallback when boost_count > 1"
+  },
+  {
+    "canon_ref": "§15.9",
+    "requirement": "ASSIGNED→RUNNING→COMPLETED/FAILED/PREEMPTED sequence",
+    "status": "pass",
+    "evidence": "AllocationStateMachine TRANSITIONS table enforces correct flow; guard_running checks worker_ready"
+  },
+  {
+    "canon_ref": "§15.9 / design §2",
+    "requirement": "Soft + hard resource limits",
+    "status": "pass",
+    "evidence": "QuotaPolicy defines soft_limit (warn) and hard_limit (reject); enforce_limit gates accordingly"
+  },
+  {
+    "canon_ref": "§15.9 / design §2",
+    "requirement": "Three-tier quotas (execution, worker, global)",
+    "status": "pass",
+    "evidence": "QuotaType enum: EXECUTION, WORKER, GLOBAL; QuotaArbitrator.check_quota branches on type"
+  }
+]

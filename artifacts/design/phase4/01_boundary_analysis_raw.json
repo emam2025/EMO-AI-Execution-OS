@@ -1,0 +1,223 @@
+{
+  "scanned_files": 50,
+  "findings": [
+    {
+      "category": "POTENTIAL_LEAK",
+      "file": "core/runtime/control/control_plane.py",
+      "line": 68,
+      "detail": "Non-daemon thread \u2014 may violate RULE 4 (killable)",
+      "canon_ref": "RULE 4"
+    },
+    {
+      "category": "POTENTIAL_LEAK",
+      "file": "core/runtime/control/control_plane.py",
+      "line": 95,
+      "detail": "Non-daemon thread \u2014 may violate RULE 4 (killable)",
+      "canon_ref": "RULE 4"
+    },
+    {
+      "category": "BRIDGE_IMPORT",
+      "file": "core/runtime/io/network_isolation.py",
+      "line": 10,
+      "detail": "Direct import socket \u2014 needs IsolationRuntime bridge",
+      "canon_ref": "RULE 1/2"
+    },
+    {
+      "category": "BRIDGE_IMPORT",
+      "file": "core/runtime/mesh/remote/transport.py",
+      "line": 18,
+      "detail": "Direct import socket \u2014 needs IsolationRuntime bridge",
+      "canon_ref": "RULE 1/2"
+    },
+    {
+      "category": "POTENTIAL_LEAK",
+      "file": "core/runtime/mesh/remote/transport.py",
+      "line": 212,
+      "detail": "Non-daemon thread \u2014 may violate RULE 4 (killable)",
+      "canon_ref": "RULE 4"
+    },
+    {
+      "category": "POTENTIAL_LEAK",
+      "file": "core/runtime/mesh/remote/transport.py",
+      "line": 231,
+      "detail": "Non-daemon thread \u2014 may violate RULE 4 (killable)",
+      "canon_ref": "RULE 4"
+    },
+    {
+      "category": "OS_TOUCH",
+      "file": "core/runtime/sandbox/docker_runtime.py",
+      "line": 65,
+      "detail": "Direct call subprocess.run \u2014 LAW 10 \u2014 direct subprocess bypasses sandbox",
+      "canon_ref": "LAW 10"
+    },
+    {
+      "category": "OS_TOUCH",
+      "file": "core/runtime/sandbox/docker_runtime.py",
+      "line": 135,
+      "detail": "Direct call subprocess.run \u2014 LAW 10 \u2014 direct subprocess bypasses sandbox",
+      "canon_ref": "LAW 10"
+    },
+    {
+      "category": "OS_TOUCH",
+      "file": "core/runtime/sandbox/docker_runtime.py",
+      "line": 169,
+      "detail": "Direct call subprocess.run \u2014 LAW 10 \u2014 direct subprocess bypasses sandbox",
+      "canon_ref": "LAW 10"
+    },
+    {
+      "category": "OS_TOUCH",
+      "file": "core/runtime/sandbox/docker_runtime.py",
+      "line": 195,
+      "detail": "Direct call subprocess.run \u2014 LAW 10 \u2014 direct subprocess bypasses sandbox",
+      "canon_ref": "LAW 10"
+    },
+    {
+      "category": "OS_TOUCH",
+      "file": "core/runtime/sandbox/docker_runtime.py",
+      "line": 208,
+      "detail": "Direct call subprocess.run \u2014 LAW 10 \u2014 direct subprocess bypasses sandbox",
+      "canon_ref": "LAW 10"
+    },
+    {
+      "category": "OS_TOUCH",
+      "file": "core/runtime/sandbox/docker_runtime.py",
+      "line": 234,
+      "detail": "Direct call subprocess.run \u2014 LAW 10 \u2014 direct subprocess bypasses sandbox",
+      "canon_ref": "LAW 10"
+    },
+    {
+      "category": "OS_TOUCH",
+      "file": "core/runtime/sandbox/docker_runtime.py",
+      "line": 153,
+      "detail": "Direct call subprocess.run \u2014 LAW 10 \u2014 direct subprocess bypasses sandbox",
+      "canon_ref": "LAW 10"
+    },
+    {
+      "category": "OS_TOUCH",
+      "file": "core/runtime/sandbox/docker_runtime.py",
+      "line": 156,
+      "detail": "Direct call subprocess.run \u2014 LAW 10 \u2014 direct subprocess bypasses sandbox",
+      "canon_ref": "LAW 10"
+    },
+    {
+      "category": "BRIDGE_IMPORT",
+      "file": "core/runtime/sandbox/docker_runtime.py",
+      "line": 21,
+      "detail": "Direct import subprocess \u2014 needs IsolationRuntime bridge",
+      "canon_ref": "RULE 1/2"
+    },
+    {
+      "category": "BRIDGE_IMPORT",
+      "file": "core/runtime/sandbox/docker_runtime.py",
+      "line": 22,
+      "detail": "Direct import tempfile \u2014 needs IsolationRuntime bridge",
+      "canon_ref": "RULE 1/2"
+    },
+    {
+      "category": "OS_TOUCH",
+      "file": "core/runtime/sandbox/firecracker_runtime.py",
+      "line": 74,
+      "detail": "Direct call subprocess.run \u2014 LAW 10 \u2014 direct subprocess bypasses sandbox",
+      "canon_ref": "LAW 10"
+    },
+    {
+      "category": "OS_TOUCH",
+      "file": "core/runtime/sandbox/firecracker_runtime.py",
+      "line": 127,
+      "detail": "Direct call tempfile.mkdtemp \u2014 RULE 2 \u2014 uncontrolled filesystem IO",
+      "canon_ref": "RULE 2"
+    },
+    {
+      "category": "OS_TOUCH",
+      "file": "core/runtime/sandbox/firecracker_runtime.py",
+      "line": 185,
+      "detail": "Direct call subprocess.Popen \u2014 LAW 10 \u2014 direct subprocess bypasses sandbox",
+      "canon_ref": "LAW 10"
+    },
+    {
+      "category": "BRIDGE_IMPORT",
+      "file": "core/runtime/sandbox/firecracker_runtime.py",
+      "line": 23,
+      "detail": "Direct import socket \u2014 needs IsolationRuntime bridge",
+      "canon_ref": "RULE 1/2"
+    },
+    {
+      "category": "BRIDGE_IMPORT",
+      "file": "core/runtime/sandbox/firecracker_runtime.py",
+      "line": 24,
+      "detail": "Direct import subprocess \u2014 needs IsolationRuntime bridge",
+      "canon_ref": "RULE 1/2"
+    },
+    {
+      "category": "BRIDGE_IMPORT",
+      "file": "core/runtime/sandbox/firecracker_runtime.py",
+      "line": 25,
+      "detail": "Direct import tempfile \u2014 needs IsolationRuntime bridge",
+      "canon_ref": "RULE 1/2"
+    },
+    {
+      "category": "OS_TOUCH",
+      "file": "core/runtime/sandbox/sandbox_executor.py",
+      "line": 96,
+      "detail": "Direct call tempfile.NamedTemporaryFile \u2014 RULE 2 \u2014 uncontrolled filesystem IO",
+      "canon_ref": "RULE 2"
+    },
+    {
+      "category": "OS_TOUCH",
+      "file": "core/runtime/sandbox/sandbox_executor.py",
+      "line": 103,
+      "detail": "Direct call subprocess.Popen \u2014 LAW 10 \u2014 direct subprocess bypasses sandbox",
+      "canon_ref": "LAW 10"
+    },
+    {
+      "category": "BRIDGE_IMPORT",
+      "file": "core/runtime/sandbox/sandbox_executor.py",
+      "line": 16,
+      "detail": "Direct import subprocess \u2014 needs IsolationRuntime bridge",
+      "canon_ref": "RULE 1/2"
+    },
+    {
+      "category": "BRIDGE_IMPORT",
+      "file": "core/runtime/sandbox/sandbox_executor.py",
+      "line": 18,
+      "detail": "Direct import tempfile \u2014 needs IsolationRuntime bridge",
+      "canon_ref": "RULE 1/2"
+    },
+    {
+      "category": "RULE4_ENFORCEMENT",
+      "file": "core/runtime/sandbox/sandbox_executor.py",
+      "line": 273,
+      "detail": "Found kill/limit enforcement: For subprocess executions: sends SIGKILL to the process.",
+      "canon_ref": "RULE 4"
+    },
+    {
+      "category": "RULE4_ENFORCEMENT",
+      "file": "core/runtime/sandbox/sandbox_executor.py",
+      "line": 345,
+      "detail": "Found kill/limit enforcement: resource.RLIMIT_AS,",
+      "canon_ref": "RULE 4"
+    },
+    {
+      "category": "RULE4_ENFORCEMENT",
+      "file": "core/runtime/sandbox/sandbox_executor.py",
+      "line": 350,
+      "detail": "Found kill/limit enforcement: resource.RLIMIT_CPU,",
+      "canon_ref": "RULE 4"
+    }
+  ],
+  "summary": {
+    "by_category": {
+      "POTENTIAL_LEAK": 4,
+      "BRIDGE_IMPORT": 9,
+      "OS_TOUCH": 13,
+      "RULE4_ENFORCEMENT": 3
+    },
+    "by_canon_ref": {
+      "RULE 4": 7,
+      "RULE 1/2": 9,
+      "LAW 10": 11,
+      "RULE 2": 2
+    },
+    "total": 29
+  }
+}

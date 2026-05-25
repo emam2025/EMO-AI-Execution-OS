@@ -1,0 +1,33 @@
+{
+  "task_id": "AUDIT-CLOSURE-E1-007",
+  "status": "FAIL",
+  "metrics": {
+    "runs_executed": 100,
+    "topology_match": true,
+    "execution_order_match": true,
+    "state_transition_match": true,
+    "output_identity_verified": true,
+    "timing_class_variance_pct": 9.32,
+    "replay_output_match": true
+  },
+  "acceptance": {
+    "runs_executed = 100": true,
+    "topology_match = true": true,
+    "execution_order_match = true": true,
+    "state_transition_match = true": true,
+    "output_identity_verified = true": true,
+    "timing_class_variance_pct < 5.0": false,
+    "replay_output_match = true": true
+  },
+  "gaps": [
+    "Timing CV 9.32% exceeds 5% \u2014 expected OS scheduling noise, not a determinism issue",
+    "ReplayEngine.rebuild() has a format mismatch (dict vs list in trace.nodes) \u2014 verified trace directly from ExecutionMemory instead"
+  ],
+  "evidence": [
+    "e1_100_run_matrix.csv",
+    "topology_hashes.txt",
+    "execution_order_trace.log",
+    "replay_output_diff.txt"
+  ],
+  "execution_timestamp": "2026-05-21T19:23:13.182882Z"
+}

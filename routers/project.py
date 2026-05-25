@@ -1,0 +1,348 @@
+import os
+import uuid
+from pathlib import Path
+from fastapi import APIRouter
+from fastapi.responses import JSONResponse
+from pydantic import BaseModel
+
+router = APIRouter(prefix="/api/projects", tags=["projects"])
+
+
+class ProjectCreate(BaseModel):
+    name: str
+    description: str = ""
+
+
+class ProjectUpdate(BaseModel):
+    name: str = ""
+    description: str = ""
+
+
+class SessionCreate(BaseModel):
+    name: str = "جلسة جديدة"
+
+
+from project_tools import WORKSPACE_ROOT, EMO_AI_PROJECT_DIR
+
+
+@router.get("")
+async def list_projects(archived: bool = False):
+    """List all projects (active or archived)."""
+    from core.db import db
+    await db.initialize()
+    projects = await db.get_projects(archived=archived)
+    active = await db.get_active_project()
+    return JSONResponse({
+        "projects": projects,
+        "active_project": active,
+    })
+
+
+@router.post("")
+async def create_project(req: ProjectCreate):
+    """Create a new project with directory in isolated workspace."""
+    from core.db import db
+    await db.initialize()
+
+    name = req.name.strip()
+    if not name:
+        return JSONResponse({"status": "error", "message": "Project name required"})
+    if ".." in name or name.startswith("/") or name.startswith("~") or name.startswith("\\") or "/" in name or "\\" in name:
+        return JSONResponse({"status": "error", "message": "Invalid project name"})
+    if name.startswith("."):
+        return JSONResponse({"status": "error", "message": "Project name cannot start with dot"})
+
+    blocked_names = {".env", ".emo_settings.json", "brain.py", "agent.py", "main.py", "emo_ai.db", "requirements.txt"}
+    if name.lower() in blocked_names:
+        return JSONResponse({"status": "error", "message": "Project name conflicts with system files"})
+
+    project_path = WORKSPACE_ROOT / name
+    if project_path.exists():
+        return JSONResponse({"status": "error", "message": "Project already exists"})
+
+    try:
+        project_path.mkdir(parents=True, exist_ok=True)
+        project_id = str(uuid.uuid4())[:8]
+        await db.create_project(project_id, name, str(project_path), req.description)
+        await db.activate_project(project_id)
+
+        import json
+        settings_file = Path(".emo_settings.json")
+        settings = {}
+        if settings_file.exists():
+            try:
+                settings = json.loads(settings_file.read_text())
+            except Exception:
+                pass
+        settings["project_dir"] = str(project_path)
+        settings_file.write_text(json.dumps(settings, indent=2, ensure_ascii=False))
+
+        return JSONResponse({"status": "ok", "id": project_id, "path": str(project_path), "name": name})
+    except Exception as e:
+        return JSONResponse({"status": "error", "message": str(e)})
+
+
+@router.post("/{project_id}/activate")
+async def activate_project(project_id: str):
+    """Set a project as active."""
+    from core.db import db
+    await db.initialize()
+    await db.activate_project(project_id)
+    project = await db.get_active_project()
+    if project:
+        import json
+        settings_file = Path(".emo_settings.json")
+        settings = {}
+        if settings_file.exists():
+            try:
+                settings = json.loads(settings_file.read_text())
+            except Exception:
+                pass
+        settings["project_dir"] = project["path"]
+        settings_file.write_text(json.dumps(settings, indent=2, ensure_ascii=False))
+    return JSONResponse({"status": "ok", "project": project})
+
+
+@router.post("/{project_id}/archive")
+async def archive_project(project_id: str):
+    """Archive a project."""
+    from core.db import db
+    await db.initialize()
+    await db.archive_project(project_id)
+    return JSONResponse({"status": "ok"})
+
+
+@router.post("/{project_id}/unarchive")
+async def unarchive_project(project_id: str):
+    """Restore an archived project."""
+    from core.db import db
+    await db.initialize()
+    await db.unarchive_project(project_id)
+    return JSONResponse({"status": "ok"})
+
+
+@router.delete("/{project_id}")
+async def delete_project(project_id: str):
+    """Delete a project and its directory."""
+    from core.db import db
+    await db.initialize()
+    project = None
+    projects = await db.get_projects(archived=False)
+    for p in projects:
+        if p["id"] == project_id:
+            project = p
+            break
+    if not project:
+        projects = await db.get_projects(archived=True)
+        for p in projects:
+            if p["id"] == project_id:
+                project = p
+                break
+    if project:
+        try:
+            p = Path(project["path"])
+            if p.exists() and p.is_relative_to(WORKSPACE_ROOT):
+                import shutil
+                shutil.rmtree(p)
+        except Exception:
+            pass
+    await db.delete_project(project_id)
+    return JSONResponse({"status": "ok"})
+
+
+@router.get("/{project_id}/sessions")
+async def list_sessions(project_id: str, archived: bool = False):
+    """List sessions for a project."""
+    from core.db import db
+    await db.initialize()
+    sessions = await db.get_sessions(project_id, archived=archived)
+    return JSONResponse({"sessions": sessions})
+
+
+@router.post("/{project_id}/sessions")
+async def create_session(project_id: str, req: SessionCreate):
+    """Create a new session for a project."""
+    from core.db import db
+    await db.initialize()
+    session_id = str(uuid.uuid4())[:8]
+    await db.create_session(session_id, project_id, req.name)
+    await db.activate_session(session_id)
+    return JSONResponse({"status": "ok", "id": session_id, "name": req.name})
+
+
+@router.post("/sessions/{session_id}/activate")
+async def activate_session(session_id: str):
+    """Set a session as active."""
+    from core.db import db
+    await db.initialize()
+    await db.activate_session(session_id)
+    return JSONResponse({"status": "ok"})
+
+
+@router.post("/sessions/{session_id}/archive")
+async def archive_session(session_id: str):
+    """Archive a session."""
+    from core.db import db
+    await db.initialize()
+    await db.archive_session(session_id)
+    return JSONResponse({"status": "ok"})
+
+
+@router.post("/sessions/{session_id}/unarchive")
+async def unarchive_session(session_id: str):
+    """Restore an archived session."""
+    from core.db import db
+    await db.initialize()
+    await db.unarchive_session(session_id)
+    return JSONResponse({"status": "ok"})
+
+
+@router.delete("/sessions/{session_id}")
+async def delete_session(session_id: str):
+    """Delete a session."""
+    from core.db import db
+    await db.initialize()
+    await db.delete_session(session_id)
+    return JSONResponse({"status": "ok"})
+
+
+@router.post("/sessions/{session_id}/rename")
+async def rename_session(session_id: str, req: SessionCreate):
+    """Rename a session."""
+    from core.db import db
+    await db.initialize()
+    await db.update_session(session_id, name=req.name)
+    return JSONResponse({"status": "ok"})
+
+
+@router.get("/info")
+async def get_project_info():
+    """Get current project information (backward compatibility)."""
+    from core.db import db
+    await db.initialize()
+    active = await db.get_active_project()
+    if not active:
+        project_path = WORKSPACE_ROOT
+        return JSONResponse({
+            "name": "Emo AI",
+            "path": str(project_path),
+            "file_count": 0,
+            "workspace": str(WORKSPACE_ROOT),
+        })
+
+    project_path = Path(active["path"])
+    file_count = 0
+    if project_path.exists():
+        file_count = sum(1 for _ in project_path.rglob("*") if _.is_file())
+
+    return JSONResponse({
+        "id": active["id"],
+        "name": active["name"],
+        "path": active["path"],
+        "description": active.get("description", ""),
+        "file_count": file_count,
+        "workspace": str(WORKSPACE_ROOT),
+    })
+
+
+@router.get("/files")
+async def get_project_files(project_id: str = ""):
+    """Get files in a project directory."""
+    from core.db import db
+    await db.initialize()
+
+    project = None
+    if project_id:
+        projects = await db.get_projects(archived=False)
+        for p in projects:
+            if p["id"] == project_id:
+                project = p
+                break
+
+    if not project:
+        project = await db.get_active_project()
+
+    if not project:
+        return JSONResponse({"files": []})
+
+    project_path = Path(project["path"])
+    if not project_path.exists():
+        return JSONResponse({"files": []})
+
+    def get_files_recursive(path, base_path):
+        items = []
+        try:
+            for item in sorted(path.iterdir()):
+                if item.name.startswith('.'):
+                    continue
+                rel_path = str(item.relative_to(base_path))
+                size = ""
+                if item.is_file():
+                    size_bytes = item.stat().st_size
+                    if size_bytes > 1024:
+                        size = f"{size_bytes/1024:.1f}KB"
+                    elif size_bytes > 1024*1024:
+                        size = f"{size_bytes/1024/1024:.1f}MB"
+                    else:
+                        size = f"{size_bytes}B"
+                items.append({
+                    "name": item.name,
+                    "path": rel_path,
+                    "is_directory": item.is_dir(),
+                    "size": size,
+                    "expanded": False,
+                    "children": get_files_recursive(item, base_path) if item.is_dir() else []
+                })
+        except PermissionError:
+            pass
+        return items
+
+    files = get_files_recursive(project_path, project_path)
+    return JSONResponse({"files": files})
+
+
+@router.get("/read-file")
+async def read_file_content(project_id: str = "", file_path: str = ""):
+    """Read content of a specific file."""
+    from core.db import db
+    from project_tools import WORKSPACE_ROOT, _safe_path
+    await db.initialize()
+
+    if not file_path:
+        return JSONResponse({"content": "No file path provided"})
+
+    project = None
+    if project_id:
+        projects = await db.get_projects(archived=False)
+        for p in projects:
+            if p["id"] == project_id:
+                project = p
+                break
+
+    if not project:
+        project = await db.get_active_project()
+
+    if not project:
+        return JSONResponse({"content": "No project selected"})
+
+    try:
+        file_full_path = _safe_path(Path(project["path"]) / file_path)
+        
+        if not file_full_path.exists():
+            return JSONResponse({"content": "File not found"})
+        
+        # Handle Excel files - read as text for now
+        ext = file_full_path.suffix.lower()
+        if ext in ['.xlsx', '.xls', '.xlsm']:
+            return JSONResponse({
+                "content": f"This is an Excel file: {file_path}\n\nTo analyze Excel files properly, the AI should use Python to read and analyze this file with pandas.\n\nFile info:\n- Size: {file_full_path.stat().st_size / 1024:.1f} KB\n- Created: {file_full_path.stat().st_ctime}"
+            })
+        
+        # Read text files
+        content = file_full_path.read_text(encoding='utf-8', errors='replace')
+        if len(content) > 10000:
+            content = content[:10000] + "\n\n... (truncated)"
+        
+        return JSONResponse({"content": content})
+    except Exception as e:
+        return JSONResponse({"content": f"Error reading file: {str(e)}"})

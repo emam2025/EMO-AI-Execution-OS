@@ -1,0 +1,26 @@
+ 271 py
+ 243 pyc
+  22 md
+  21 json
+  13 DS_Store
+  11 txt
+   6 log
+   5 db
+   3 html
+   2 yml
+   2 gitignore
+   1 sh
+   1 save
+   1 pdf
+   1 ini
+   1 example
+   1 env
+   1 db-journal
+   1 TAG
+=== TOTAL FILES (excluding .git, venv, __pycache__) ===
+     370
+files total
+
+=== FILES INCLUDING VENV ===
+    4873
+files total (with venv)

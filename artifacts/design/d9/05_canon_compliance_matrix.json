@@ -1,0 +1,257 @@
+{
+  "meta": {
+    "task_id": "PHASE-D9-RUNTIME-INTELLIGENCE-FEEDBACK-DESIGN-012",
+    "generated": "2026-05-21",
+    "purpose": "Traceability matrix linking every D9 design element to Canon Laws 5, 7, 11, 14-16 and DEVELOPER.md references.",
+    "coverage": "100% of design elements mapped — no orphan components."
+  },
+  "feedback_loop_protocols": {
+    "file": "protocols/01_feedback_loop_protocols.py",
+    "elements": [
+      {
+        "element": "IRuntimeFeedbackLoop",
+        "methods": ["capture_trace", "analyze_impact", "apply_weight_adjustment", "publish_drift_alert"],
+        "law_ref": ["LAW 5", "LAW 7", "LAW 11", "LAW 12"],
+        "section_ref": ["§5.3", "§15.6"],
+        "evidence": "Core loop subscribes to EventBus (LAW 5), analyzes deterministically (LAW 7), no global state (LAW 11), trace_id propagation (LAW 12).",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "IDynamicCouplingAdjuster",
+        "methods": ["compute_new_scores", "validate_threshold", "commit_boundary_update"],
+        "law_ref": ["LAW 14", "LAW 15", "LAW 16"],
+        "section_ref": ["§17.9", "§3.4.5"],
+        "evidence": "Writes to CodeGraph via atomic file swap only (LAW 15), validates coupling/risk thresholds (LAW 14/16), never imports CodeGraph classes (§17.9).",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "IHotspotDetector",
+        "methods": ["track_execution_frequency", "identify_failure_patterns", "suggest_decomposition"],
+        "law_ref": ["LAW 16", "LAW 5", "LAW 10"],
+        "section_ref": ["§5.3", "§5.4"],
+        "evidence": "Flags nodes with risk_score > 0.8 (LAW 16), tracks observability data (LAW 5), classifies failure patterns from unreliable workers (LAW 10).",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "IRuntimeArchitectureAlert",
+        "methods": ["evaluate_violation", "classify_severity", "trigger_enforcement_gate"],
+        "law_ref": ["LAW 14", "LAW 15", "LAW 16"],
+        "rule_ref": ["RULE 4 (Everything Killable)"],
+        "section_ref": ["§3.4.5"],
+        "evidence": "Classifies drift severity per emo-guard thresholds, triggers enforcement gate for BLOCKING/CRITICAL severity.",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "Interaction Contracts (6 entries)",
+        "law_ref": ["LAW 5", "LAW 12", "LAW 14-16", "LAW 11"],
+        "section_ref": ["§5.3", "§17.9"],
+        "evidence": "EventBus→FeedbackLoop→CouplingAdjuster→CodeGraph→Alert→EventBus, all with trace_id.",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "Shared Types (4 enums)",
+        "enums": ["DriftSeverity", "ViolationType", "UpdateOutcome", "FeedbackSignal"],
+        "law_ref": ["LAW 14-16"],
+        "section_ref": ["§3.4.5"],
+        "evidence": "DriftSeverity maps to emo-guard thresholds, ViolationType maps to Canon violation types.",
+        "status": "COMPLIANT"
+      }
+    ]
+  },
+  "trace_and_feedback_models": {
+    "file": "models/02_trace_and_feedback_models.py",
+    "elements": [
+      {
+        "element": "TraceEvent",
+        "fields": 9,
+        "law_ref": ["LAW 5", "LAW 12"],
+        "section_ref": ["§5.5"],
+        "evidence": "trace_id, execution_id, node_id, outcome, duration_ms, resource_consumed, feedback_signals, timestamp.",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "WeightUpdateSignal",
+        "fields": 9,
+        "law_ref": ["LAW 7", "LAW 11", "LAW 14"],
+        "section_ref": ["§5.3"],
+        "evidence": "confidence, sample_size, delta with boost threshold references, target_component (w_graph/w_sem), SafeWeightBoundaries [0.2, 0.8].",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "DriftAlert",
+        "fields": 11,
+        "law_ref": ["LAW 14", "LAW 15", "LAW 16"],
+        "section_ref": ["§3.4.5"],
+        "evidence": "baseline_hash, current_hash, deviation_score, violation_type, severity, source_module, target_module, law_refs.",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "HotspotProfile",
+        "fields": 12,
+        "law_ref": ["LAW 16", "LAW 5"],
+        "section_ref": ["§5.3"],
+        "evidence": "execution_count, failure_rate, coupling_increase, risk_score, is_hotspot, recommendation.",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "FeedbackPolicy",
+        "fields": 12,
+        "law_ref": ["LAW 7", "LAW 11", "LAW 14"],
+        "section_ref": ["§5.3", "§5.4"],
+        "evidence": "min_confidence=0.75, min_sample_size=20, weight_min=0.2, weight_max=0.8, drift thresholds matching emo-guard.",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "FeedbackState (8 states)",
+        "states": ["IDLE", "TRACE_CAPTURED", "METRIC_AGGREGATED", "THRESHOLD_CHECKED", "WEIGHT_ADJUSTED", "ALERT_TRIGGERED", "COOLDOWN", "ERROR"],
+        "law_ref": ["LAW 7"],
+        "section_ref": ["§5.3"],
+        "evidence": "State machine for weight update lifecycle.",
+        "status": "COMPLIANT"
+      }
+    ]
+  },
+  "drift_feedback_state_machine": {
+    "file": "03_drift_feedback_state_machine.md",
+    "elements": [
+      {
+        "element": "State Machine (11 states)",
+        "states": 11,
+        "transitions": 16,
+        "law_ref": ["LAW 7", "LAW 11"],
+        "section_ref": ["§5.3", "§5.4"],
+        "evidence": "IDLE → TRACE_CAPTURED → METRIC_AGGREGATED → THRESHOLD_CHECKED → [WEIGHT_ADJUSTED|ALERT_TRIGGERED|NO_OP|REJECTED] → COOLDOWN → IDLE",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "Weight Adjustment Guards (7 guards)",
+        "law_ref": ["LAW 7", "LAW 11", "LAW 14", "LAW 16"],
+        "section_ref": ["§5.3", "§5.4", "§3.4.5"],
+        "evidence": "min_confidence >= 0.75, min_sample_size >= 20, SafeWeightBoundaries [0.2, 0.8], rate limit 3/hr (LAW 11), coupling delta <= 0.1 (LAW 14), risk delta <= 10 (LAW 16).",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "Feedback → CodeGraph Sync Protocol",
+        "law_ref": ["LAW 15", "§17.9"],
+        "section_ref": ["§17.9", "§17.10"],
+        "evidence": "Atomic file swap protocol, 4 forbidden patterns (§17.9), 6-step sync matrix with determinism guarantees.",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "Determinism Guarantees",
+        "law_ref": ["LAW 7", "§17.6"],
+        "section_ref": ["§17.6"],
+        "evidence": "metadata.json write is deterministic (atomic swap + SHA-256), score computation is pure function (baseline + traces). Only file watch is non-deterministic (read-only).",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "Cooldown & Rate Limiting (5 rules)",
+        "law_ref": ["LAW 11"],
+        "section_ref": ["§5.3"],
+        "evidence": "Max 3 adjustments/hr, 20 min cooldown, 5 min between alerts, 6 alerts/hr/node.",
+        "status": "COMPLIANT"
+      }
+    ]
+  },
+  "integration_blueprint": {
+    "file": "04_integration_blueprint.md",
+    "elements": [
+      {
+        "element": "Architecture Overview (5-layer diagram)",
+        "layers": ["EventBus", "IRuntimeFeedbackLoopSubscriber", "IDynamicCouplingAdjuster", "CodeGraph", "MetricsStore"],
+        "law_ref": ["LAW 5", "LAW 11", "LAW 14-16", "§17.9"],
+        "section_ref": ["§5.3", "§5.5", "§17.9"],
+        "evidence": "Full 5-layer flow from ExecutionEngine → EventBus → FeedbackLoop → CodeGraph → Enforcement Gate.",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "E2E Flow (7 steps)",
+        "steps": 7,
+        "law_ref": ["LAW 5", "LAW 12", "LAW 14", "LAW 15", "LAW 16"],
+        "section_ref": ["§5.3"],
+        "evidence": "trace_id propagates through all 7 steps from EventBus to MetricsStore.",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "Correlation ID Flow (trace_id)",
+        "law_ref": ["LAW 12"],
+        "section_ref": ["§5.5"],
+        "evidence": "trace_id in EventBus payload → TraceEvent → WeightUpdateSignal → DriftAlert → MetricsStore.",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "Event Hooks (3 subscription + 3 publication patterns)",
+        "topics": ["runtime.execution.*", "runtime.drift.*", "runtime.feedback.*", "runtime.hotspot.*"],
+        "total_events": 14,
+        "hook_points": 4,
+        "law_ref": ["LAW 5"],
+        "section_ref": ["§5.3"],
+        "evidence": "14 event types across 4 namespaces with explicit hook points per FeedbackLoop method.",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "Latency Budgets (6 operations)",
+        "law_ref": ["LAW 5"],
+        "section_ref": ["§5.3"],
+        "evidence": "capture <1ms, analyze <10ms, adjust <5ms, commit <50ms, alert <2ms, full loop <100ms.",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "Idempotency Guarantees (5 operations)",
+        "law_ref": ["LAW 7"],
+        "section_ref": ["§5.3"],
+        "evidence": "capture_trace(duplicate trace_id → no-op), analyze_impact(pure function), apply_adjustment(same signal_id → dedup), commit(atomic swap), publish(alert_id dedup).",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "Backpressure Handling (5 scenarios)",
+        "law_ref": ["LAW 11"],
+        "section_ref": ["§15.6"],
+        "evidence": "EventBus flood → SAMPLE, ring buffer full → DROP_OLDEST, FS contention → RETRY, CodeGraph locked → DEFER, alert flood → RATE_LIMIT.",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "§17.9 CodeGraph Purity Enforcement",
+        "law_ref": ["§17.9"],
+        "section_ref": ["§17.9"],
+        "evidence": "4 allowed patterns, 3 forbidden patterns, pre-commit AST scan for runtime imports in CodeGraph.",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "LAW 11 Enforcement (No Global State)",
+        "law_ref": ["LAW 11"],
+        "section_ref": ["§15.6"],
+        "evidence": "Per-instance ring buffer, per-scope rate limiter, scoped weight adjustments, pre-commit scan for `_global_`.",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "Weight Update Sampling Policy (4 windows)",
+        "law_ref": ["LAW 7"],
+        "section_ref": ["§5.3"],
+        "evidence": "10-trace real-time, 50-trace standard, 200-trace trend, 1000-trace baseline with sliding windows.",
+        "status": "COMPLIANT"
+      }
+    ]
+  },
+  "coverage_summary": {
+    "total_design_elements": 15,
+    "elements_mapped": 15,
+    "coverage_percent": 100,
+    "canon_refs_used": {
+      "LAW 5": "Observable — capture_trace via EventBus subscription, all models carry trace_id",
+      "LAW 7": "Deterministic — score computation is pure function, idempotency guarantees on all operations",
+      "LAW 11": "No global state — per-instance ring buffers, per-scope rate limiters, scoped weights",
+      "LAW 12": "Traceable — trace_id propagated through all events, models, alerts",
+      "LAW 14": "CodeGraph-derived boundaries — coupling thresholds, boundary violation detection",
+      "LAW 15": "Graph update before refactor — atomic file swap, commit_boundary_update",
+      "LAW 16": "Decompose risk > 0.8 — HotspotDetector, IRuntimeArchitectureAlert, emo-guard thresholds",
+      "§5.3": "Self-Tuning — boost thresholds, w_graph/w_sem, SafeWeightBoundaries [0.2, 0.8]",
+      "§5.4": "Guardrails — DriftMonitor thresholds (weight drift > 0.35, strategy collapse > 70%)",
+      "§5.5": "Execution Memory — trace_id propagation, session event log",
+      "§3.4.5": "emo-guard — coupling delta >0.05 warning, >0.1 block, risk >10 block",
+      "§15.6": "Dependency Governance — allowed/forbidden dependency patterns",
+      "§17.9": "CodeGraph MUST NOT depend on runtime — file protocol only, 4 forbidden import patterns",
+      "§17.10": "CodeGraph outputs — metadata.json, edges.json, atomic file swap protocol"
+    }
+  }
+}

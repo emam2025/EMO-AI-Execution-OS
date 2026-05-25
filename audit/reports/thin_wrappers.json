@@ -1,0 +1,5975 @@
+{
+  "total_thin_methods": 684,
+  "pure_delegates": 55,
+  "pure_delegate_list": [
+    {
+      "file": "core/adapters/governance_adapter.py",
+      "class": "DefaultContractValidator",
+      "method": "validate_inputs",
+      "line": 9,
+      "delegates_to": [
+        "ContractValidator.validate_inputs"
+      ]
+    },
+    {
+      "file": "core/adapters/governance_adapter.py",
+      "class": "DefaultContractValidator",
+      "method": "validate_outputs",
+      "line": 13,
+      "delegates_to": [
+        "ContractValidator.validate_outputs"
+      ]
+    },
+    {
+      "file": "core/adaptive_weights.py",
+      "class": "AdaptiveWeightEngine",
+      "method": "check_regression",
+      "line": 252,
+      "delegates_to": [
+        "regression.detect_all"
+      ]
+    },
+    {
+      "file": "core/adaptive_weights.py",
+      "class": "AdaptiveWeightEngine",
+      "method": "shadow_status",
+      "line": 327,
+      "delegates_to": [
+        "shadow.status"
+      ]
+    },
+    {
+      "file": "core/codegraph/bridge.py",
+      "class": "CodeGraphEventSubscriber",
+      "method": "stats_snapshot",
+      "line": 164,
+      "delegates_to": [
+        "_stats.snapshot"
+      ]
+    },
+    {
+      "file": "core/codegraph/graph.py",
+      "class": "CodeGraph",
+      "method": "get_node",
+      "line": 67,
+      "delegates_to": [
+        "nodes.get"
+      ]
+    },
+    {
+      "file": "core/codegraph/runtime_intelligence/execution_topology.py",
+      "class": "ExecutionTopology",
+      "method": "get_graph",
+      "line": 92,
+      "delegates_to": [
+        "_graphs.get"
+      ]
+    },
+    {
+      "file": "core/control_plane/brain.py",
+      "class": "ControlPlaneBrain",
+      "method": "allocate_resources",
+      "line": 292,
+      "delegates_to": [
+        "_scheduler.allocate"
+      ]
+    },
+    {
+      "file": "core/control_plane/cluster_manager.py",
+      "class": "ClusterManager",
+      "method": "get_cluster",
+      "line": 74,
+      "delegates_to": [
+        "_clusters.get"
+      ]
+    },
+    {
+      "file": "core/control_plane/coordinator.py",
+      "class": "RuntimeCoordinator",
+      "method": "supervise_health",
+      "line": 195,
+      "delegates_to": [
+        "_supervisor.tick"
+      ]
+    },
+    {
+      "file": "core/control_plane/health_supervisor.py",
+      "class": "HealthSupervisor",
+      "method": "get_config",
+      "line": 79,
+      "delegates_to": [
+        "_configs.get"
+      ]
+    },
+    {
+      "file": "core/control_plane/worker_drainer.py",
+      "class": "WorkerDrainer",
+      "method": "drain_status",
+      "line": 81,
+      "delegates_to": [
+        "_drains.get"
+      ]
+    },
+    {
+      "file": "core/cost_intel.py",
+      "class": "CostTracker",
+      "method": "p50",
+      "line": 88,
+      "delegates_to": [
+        "self._percentile"
+      ]
+    },
+    {
+      "file": "core/cost_intel.py",
+      "class": "CostTracker",
+      "method": "p95",
+      "line": 92,
+      "delegates_to": [
+        "self._percentile"
+      ]
+    },
+    {
+      "file": "core/cost_intel.py",
+      "class": "CostTracker",
+      "method": "p99",
+      "line": 96,
+      "delegates_to": [
+        "self._percentile"
+      ]
+    },
+    {
+      "file": "core/distributed_checkpoint.py",
+      "class": "DistributedCheckpointManager",
+      "method": "get_completed",
+      "line": 238,
+      "delegates_to": [
+        "_local_cp.completed_nodes"
+      ]
+    },
+    {
+      "file": "core/execution_core.py",
+      "class": "ExecutionCore",
+      "method": "get_event_type_for_transition",
+      "line": 132,
+      "delegates_to": [
+        "STATE_EVENT_MAP.get"
+      ]
+    },
+    {
+      "file": "core/execution_core.py",
+      "class": "ExecutionCore",
+      "method": "validate_transition",
+      "line": 140,
+      "delegates_to": [
+        "state.can_transition_to"
+      ]
+    },
+    {
+      "file": "core/execution_core.py",
+      "class": "ExecutionCore",
+      "method": "topo_sort",
+      "line": 153,
+      "delegates_to": [
+        "dag_utils.topo_sort"
+      ]
+    },
+    {
+      "file": "core/execution_core.py",
+      "class": "ExecutionCore",
+      "method": "independent_branches",
+      "line": 157,
+      "delegates_to": [
+        "dag_utils.independent_branches"
+      ]
+    },
+    {
+      "file": "core/execution_core.py",
+      "class": "ExecutionCore",
+      "method": "validate_dag",
+      "line": 161,
+      "delegates_to": [
+        "dag_utils.validate"
+      ]
+    },
+    {
+      "file": "core/hybrid_retriever.py",
+      "class": "HybridRetriever",
+      "method": "hybrid_search",
+      "line": 574,
+      "delegates_to": [
+        "self.retrieve"
+      ]
+    },
+    {
+      "file": "core/interfaces/failure_propagation.py",
+      "class": "FailurePropagationPolicy",
+      "method": "evaluate",
+      "line": 199,
+      "delegates_to": [
+        "PROPAGATION_MATRIX.get"
+      ]
+    },
+    {
+      "file": "core/metrics_store.py",
+      "class": "MetricsStore",
+      "method": "strategy_usage",
+      "line": 198,
+      "delegates_to": [
+        "self._aggregate_strategy_usage"
+      ]
+    },
+    {
+      "file": "core/metrics_store.py",
+      "class": "MetricsStore",
+      "method": "rollback_count",
+      "line": 209,
+      "delegates_to": [
+        "self._count_rollbacks"
+      ]
+    },
+    {
+      "file": "core/metrics_store.py",
+      "class": "MetricsStore",
+      "method": "drift_alert_count",
+      "line": 212,
+      "delegates_to": [
+        "self._count_drift_alerts"
+      ]
+    },
+    {
+      "file": "core/metrics_store.py",
+      "class": "MetricsStore",
+      "method": "shadow_win_rate",
+      "line": 215,
+      "delegates_to": [
+        "self._shadow_win_rate"
+      ]
+    },
+    {
+      "file": "core/observability/dashboard.py",
+      "class": "RuntimeDashboard",
+      "method": "system_overview",
+      "line": 116,
+      "delegates_to": [
+        "self._overview"
+      ]
+    },
+    {
+      "file": "core/observability/dashboard.py",
+      "class": "RuntimeDashboard",
+      "method": "failure_trends",
+      "line": 162,
+      "delegates_to": [
+        "_failures.failure_trend"
+      ]
+    },
+    {
+      "file": "core/observability/timeline.py",
+      "class": "TimelineStore",
+      "method": "get",
+      "line": 106,
+      "delegates_to": [
+        "_timelines.get"
+      ]
+    },
+    {
+      "file": "core/observability/topology_viewer.py",
+      "class": "TopologyViewer",
+      "method": "get_node",
+      "line": 155,
+      "delegates_to": [
+        "_nodes.get"
+      ]
+    },
+    {
+      "file": "core/observability/trace.py",
+      "class": "ExecutionTrace",
+      "method": "get_span",
+      "line": 94,
+      "delegates_to": [
+        "spans.get"
+      ]
+    },
+    {
+      "file": "core/observability/trace.py",
+      "class": "TraceStore",
+      "method": "get_trace",
+      "line": 165,
+      "delegates_to": [
+        "_traces.get"
+      ]
+    },
+    {
+      "file": "core/ownership_manager.py",
+      "class": "OwnershipManager",
+      "method": "release",
+      "line": 338,
+      "delegates_to": [
+        "_store.release"
+      ]
+    },
+    {
+      "file": "core/ownership_manager.py",
+      "class": "OwnershipManager",
+      "method": "owner_of",
+      "line": 365,
+      "delegates_to": [
+        "_store.owner_of"
+      ]
+    },
+    {
+      "file": "core/ownership_manager.py",
+      "class": "OwnershipManager",
+      "method": "execution_attempt",
+      "line": 369,
+      "delegates_to": [
+        "_store.execution_attempt"
+      ]
+    },
+    {
+      "file": "core/ownership_manager.py",
+      "class": "OwnershipManager",
+      "method": "active_count",
+      "line": 375,
+      "delegates_to": [
+        "_store.active_count"
+      ]
+    },
+    {
+      "file": "core/ownership_manager.py",
+      "class": "OwnershipManager",
+      "method": "lease_count",
+      "line": 378,
+      "delegates_to": [
+        "_store.lease_count"
+      ]
+    },
+    {
+      "file": "core/recovery_coordinator.py",
+      "class": "ResumeToken",
+      "method": "to_json",
+      "line": 97,
+      "delegates_to": [
+        "json.dumps"
+      ]
+    },
+    {
+      "file": "core/recovery_coordinator.py",
+      "class": "ResumeToken",
+      "method": "from_json",
+      "line": 101,
+      "delegates_to": [
+        "cls.from_dict"
+      ]
+    },
+    {
+      "file": "core/runtime/bootstrap.py",
+      "class": "EmoRuntime",
+      "method": "execute",
+      "line": 177,
+      "delegates_to": [
+        "engine.execute"
+      ]
+    },
+    {
+      "file": "core/runtime/bootstrap.py",
+      "class": "EmoRuntime",
+      "method": "plan",
+      "line": 192,
+      "delegates_to": [
+        "engine.plan"
+      ]
+    },
+    {
+      "file": "core/runtime/bootstrap.py",
+      "class": "EmoRuntime",
+      "method": "cancel",
+      "line": 196,
+      "delegates_to": [
+        "engine.cancel"
+      ]
+    },
+    {
+      "file": "core/runtime/bootstrap.py",
+      "class": "EmoRuntime",
+      "method": "status",
+      "line": 200,
+      "delegates_to": [
+        "engine.status"
+      ]
+    },
+    {
+      "file": "core/runtime/isolation/isolation_runtime.py",
+      "class": "IsolationRuntime",
+      "method": "check_filesystem_read",
+      "line": 257,
+      "delegates_to": [
+        "_filesystem.check_read"
+      ]
+    },
+    {
+      "file": "core/runtime/isolation/isolation_runtime.py",
+      "class": "IsolationRuntime",
+      "method": "check_filesystem_write",
+      "line": 264,
+      "delegates_to": [
+        "_filesystem.check_write"
+      ]
+    },
+    {
+      "file": "core/runtime/mesh/mesh_execution_runtime.py",
+      "class": "MeshExecutionRuntime",
+      "method": "execute_remote",
+      "line": 114,
+      "delegates_to": [
+        "_mesh.call"
+      ]
+    },
+    {
+      "file": "core/runtime/mesh/mesh_worker.py",
+      "class": "MeshWorker",
+      "method": "heartbeat",
+      "line": 68,
+      "delegates_to": [
+        "registry.heartbeat"
+      ]
+    },
+    {
+      "file": "core/runtime/mesh/remote/node.py",
+      "class": "MeshNode",
+      "method": "add_peer",
+      "line": 111,
+      "delegates_to": [
+        "_dist_registry.register_peer"
+      ]
+    },
+    {
+      "file": "core/runtime/mesh/remote/node.py",
+      "class": "MeshNode",
+      "method": "remove_peer",
+      "line": 115,
+      "delegates_to": [
+        "_dist_registry.remove_peer"
+      ]
+    },
+    {
+      "file": "core/runtime/mesh/remote/node.py",
+      "class": "MeshNode",
+      "method": "discover_remote",
+      "line": 185,
+      "delegates_to": [
+        "_dist_registry.discover_remote"
+      ]
+    },
+    {
+      "file": "core/scheduler/resource_scheduler.py",
+      "class": "ResourceScheduler",
+      "method": "get_quota",
+      "line": 326,
+      "delegates_to": [
+        "_quotas.get"
+      ]
+    },
+    {
+      "file": "core/scheduler/resource_scheduler.py",
+      "class": "ResourceScheduler",
+      "method": "select_next_task",
+      "line": 340,
+      "delegates_to": [
+        "_priority_scheduler.select"
+      ]
+    },
+    {
+      "file": "core/security/capabilities/capability_registry.py",
+      "class": "CapabilityRegistry",
+      "method": "get_capability",
+      "line": 71,
+      "delegates_to": [
+        "_capabilities.get"
+      ]
+    },
+    {
+      "file": "core/security/capabilities/sensitive_tools.py",
+      "class": "SensitiveToolRegistry",
+      "method": "get_sensitivity",
+      "line": 60,
+      "delegates_to": [
+        "_classifications.get"
+      ]
+    }
+  ],
+  "all_thin_methods": [
+    {
+      "file": "core/adapters/governance_adapter.py",
+      "class": "DefaultContractValidator",
+      "method": "validate_inputs",
+      "line": 9,
+      "body_length": 1,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/adapters/governance_adapter.py",
+      "class": "DefaultContractValidator",
+      "method": "validate_outputs",
+      "line": 13,
+      "body_length": 1,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/adapters/governance_adapter.py",
+      "class": "DefaultComplianceValidator",
+      "method": "verify_frozen_methods",
+      "line": 19,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/adaptive_weights.py",
+      "class": "AdaptiveWeightEngine",
+      "method": "check_drift",
+      "line": 242,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/adaptive_weights.py",
+      "class": "AdaptiveWeightEngine",
+      "method": "check_regression",
+      "line": 252,
+      "body_length": 2,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/adaptive_weights.py",
+      "class": "AdaptiveWeightEngine",
+      "method": "set_shadow_weights",
+      "line": 306,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/adaptive_weights.py",
+      "class": "AdaptiveWeightEngine",
+      "method": "evaluate_shadow",
+      "line": 310,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/adaptive_weights.py",
+      "class": "AdaptiveWeightEngine",
+      "method": "shadow_status",
+      "line": 327,
+      "body_length": 1,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/canon/result.py",
+      "class": "CanonValidationResult",
+      "method": "block",
+      "line": 32,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/capability_negotiation.py",
+      "class": "CapabilityNegotiator",
+      "method": "version",
+      "line": 110,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/codegraph/bridge.py",
+      "class": "RuntimeStats",
+      "method": "to_metadata",
+      "line": 61,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/codegraph/bridge.py",
+      "class": "RuntimeStats",
+      "method": "snapshot",
+      "line": 71,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/codegraph/bridge.py",
+      "class": "CodeGraphEventSubscriber",
+      "method": "merge_into",
+      "line": 119,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/codegraph/bridge.py",
+      "class": "CodeGraphEventSubscriber",
+      "method": "stats_snapshot",
+      "line": 164,
+      "body_length": 1,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/codegraph/bridge.py",
+      "class": "CodeGraphEventSubscriber",
+      "method": "event_count",
+      "line": 168,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/codegraph/bridge.py",
+      "class": "CodeGraphEventSubscriber",
+      "method": "session_count",
+      "line": 172,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/codegraph/drift/drift_classifier.py",
+      "class": "DriftReport",
+      "method": "is_blocking",
+      "line": 38,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/codegraph/drift/drift_classifier.py",
+      "class": "DriftReport",
+      "method": "to_dict",
+      "line": 41,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/codegraph/drift/drift_classifier.py",
+      "class": "DriftClassifier",
+      "method": "classify_session",
+      "line": 131,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/codegraph/drift/runtime_drift_detector.py",
+      "class": "RuntimeDriftResult",
+      "method": "total_events",
+      "line": 27,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/codegraph/drift/runtime_drift_detector.py",
+      "class": "RuntimeDriftResult",
+      "method": "is_blocking",
+      "line": 33,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/codegraph/drift/runtime_drift_detector.py",
+      "class": "RuntimeDriftResult",
+      "method": "to_dict",
+      "line": 36,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/codegraph/drift/runtime_graph_builder.py",
+      "class": "RuntimeExecutionGraph",
+      "method": "to_dict",
+      "line": 32,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/codegraph/drift/runtime_graph_builder.py",
+      "class": "RuntimeGraphBuilder",
+      "method": "graph",
+      "line": 128,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/codegraph/drift/store.py",
+      "class": "DriftStore",
+      "method": "list_versions",
+      "line": 36,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/codegraph/drift/store.py",
+      "class": "DriftStore",
+      "method": "clear",
+      "line": 46,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/codegraph/graph.py",
+      "class": "Edge",
+      "method": "sort_key",
+      "line": 49,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/codegraph/graph.py",
+      "class": "CodeGraph",
+      "method": "add_node",
+      "line": 61,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/codegraph/graph.py",
+      "class": "CodeGraph",
+      "method": "add_edge",
+      "line": 64,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/codegraph/graph.py",
+      "class": "CodeGraph",
+      "method": "get_node",
+      "line": 67,
+      "body_length": 1,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/codegraph/graph.py",
+      "class": "CodeGraph",
+      "method": "has_node",
+      "line": 70,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/codegraph/graph.py",
+      "class": "CodeGraph",
+      "method": "sorted_edges",
+      "line": 73,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/codegraph/graph.py",
+      "class": "CodeGraph",
+      "method": "to_dict",
+      "line": 76,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/codegraph/integration.py",
+      "class": "CodeGraphRuntime",
+      "method": "wire",
+      "line": 76,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/codegraph/integration.py",
+      "class": "CodeGraphRuntime",
+      "method": "register_tool_mapping",
+      "line": 92,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/codegraph/integration.py",
+      "class": "CodeGraphRuntime",
+      "method": "register_tool_mappings",
+      "line": 99,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/codegraph/integration.py",
+      "class": "CodeGraphRuntime",
+      "method": "record_execution",
+      "line": 104,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/codegraph/integration.py",
+      "class": "CodeGraphRuntime",
+      "method": "get_frequency_trends",
+      "line": 214,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/codegraph/integration.py",
+      "class": "CodeGraphRuntime",
+      "method": "is_wired",
+      "line": 243,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/codegraph/integration.py",
+      "class": "CodeGraphRuntime",
+      "method": "tool_count",
+      "line": 247,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/codegraph/integration.py",
+      "class": "CodeGraphRuntime",
+      "method": "graph",
+      "line": 251,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/codegraph/runtime_intelligence/execution_frequency.py",
+      "class": "FrequencyRecord",
+      "method": "failure_rate",
+      "line": 20,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/codegraph/runtime_intelligence/execution_frequency.py",
+      "class": "ExecutionFrequencyTracker",
+      "method": "record_execution",
+      "line": 43,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/codegraph/runtime_intelligence/execution_frequency.py",
+      "class": "ExecutionFrequencyTracker",
+      "method": "get_tool_frequency",
+      "line": 62,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/codegraph/runtime_intelligence/execution_frequency.py",
+      "class": "ExecutionFrequencyTracker",
+      "method": "get_all_frequencies",
+      "line": 65,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/codegraph/runtime_intelligence/execution_frequency.py",
+      "class": "ExecutionFrequencyTracker",
+      "method": "top_frequency",
+      "line": 108,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/codegraph/runtime_intelligence/execution_topology.py",
+      "class": "ExecutionGraph",
+      "method": "to_dict",
+      "line": 27,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/codegraph/runtime_intelligence/execution_topology.py",
+      "class": "ExecutionTopology",
+      "method": "get_graph",
+      "line": 92,
+      "body_length": 1,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/codegraph/runtime_intelligence/failure_topology.py",
+      "class": "FailurePath",
+      "method": "is_storm",
+      "line": 41,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/codegraph/runtime_intelligence/failure_topology.py",
+      "class": "FailureTopology",
+      "method": "paths",
+      "line": 131,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/codegraph/runtime_intelligence/failure_topology.py",
+      "class": "FailureTopology",
+      "method": "storm_paths",
+      "line": 134,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/codegraph/runtime_intelligence/runtime_centrality.py",
+      "class": "RuntimeCentrality",
+      "method": "silently_critical",
+      "line": 87,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/composition/root.py",
+      "class": "CompositionRoot",
+      "method": "start",
+      "line": 121,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/composition/root.py",
+      "class": "CompositionRoot",
+      "method": "is_started",
+      "line": 136,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/composition/root.py",
+      "class": "CompositionRoot",
+      "method": "event_bus",
+      "line": 142,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/composition/root.py",
+      "class": "CompositionRoot",
+      "method": "event_store",
+      "line": 146,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/composition/root.py",
+      "class": "CompositionRoot",
+      "method": "codegraph_bridge",
+      "line": 150,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/composition/root.py",
+      "class": "CompositionRoot",
+      "method": "drift_store",
+      "line": 154,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/composition/root.py",
+      "class": "CompositionRoot",
+      "method": "codegraph_drift",
+      "line": 158,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/composition/root.py",
+      "class": "CompositionRoot",
+      "method": "canon_validator",
+      "line": 162,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/composition/root.py",
+      "class": "CompositionRoot",
+      "method": "runtime_intelligence",
+      "line": 166,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/composition/root.py",
+      "class": "CompositionRoot",
+      "method": "execution_core",
+      "line": 170,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/composition/root.py",
+      "class": "CompositionRoot",
+      "method": "execution_runtime",
+      "line": 176,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/composition/root.py",
+      "class": "CompositionRoot",
+      "method": "codegraph_runtime",
+      "line": 180,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/context_compiler.py",
+      "class": "ContextCompiler",
+      "method": "version",
+      "line": 38,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/autoscaler.py",
+      "class": "Autoscaler",
+      "method": "config",
+      "line": 63,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/autoscaler.py",
+      "class": "Autoscaler",
+      "method": "record_scaling",
+      "line": 148,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/autoscaler.py",
+      "class": "Autoscaler",
+      "method": "scaling_history",
+      "line": 153,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/autoscaler.py",
+      "class": "Autoscaler",
+      "method": "reset_cooldown",
+      "line": 156,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/brain.py",
+      "class": "ControlPlaneBrain",
+      "method": "state",
+      "line": 86,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/brain.py",
+      "class": "ControlPlaneBrain",
+      "method": "reconciler",
+      "line": 90,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/brain.py",
+      "class": "ControlPlaneBrain",
+      "method": "orchestrator",
+      "line": 94,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/brain.py",
+      "class": "ControlPlaneBrain",
+      "method": "health",
+      "line": 98,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/brain.py",
+      "class": "ControlPlaneBrain",
+      "method": "scheduler",
+      "line": 102,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/brain.py",
+      "class": "ControlPlaneBrain",
+      "method": "traces",
+      "line": 106,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/brain.py",
+      "class": "ControlPlaneBrain",
+      "method": "timelines",
+      "line": 110,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/brain.py",
+      "class": "ControlPlaneBrain",
+      "method": "failures",
+      "line": 114,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/brain.py",
+      "class": "ControlPlaneBrain",
+      "method": "topology",
+      "line": 118,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/brain.py",
+      "class": "ControlPlaneBrain",
+      "method": "codegraph",
+      "line": 122,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/brain.py",
+      "class": "ControlPlaneBrain",
+      "method": "on_correction",
+      "line": 125,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/brain.py",
+      "class": "ControlPlaneBrain",
+      "method": "shutdown",
+      "line": 145,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/brain.py",
+      "class": "ControlPlaneBrain",
+      "method": "register_worker_resources",
+      "line": 259,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/brain.py",
+      "class": "ControlPlaneBrain",
+      "method": "unregister_worker_resources",
+      "line": 283,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/brain.py",
+      "class": "ControlPlaneBrain",
+      "method": "set_user_quota",
+      "line": 287,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/brain.py",
+      "class": "ControlPlaneBrain",
+      "method": "allocate_resources",
+      "line": 292,
+      "body_length": 1,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/control_plane/brain.py",
+      "class": "ControlPlaneBrain",
+      "method": "release_resources",
+      "line": 297,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/brain.py",
+      "class": "ControlPlaneBrain",
+      "method": "snapshot",
+      "line": 352,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/cluster_manager.py",
+      "class": "ClusterManager",
+      "method": "delete_cluster",
+      "line": 53,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/cluster_manager.py",
+      "class": "ClusterManager",
+      "method": "get_cluster",
+      "line": 74,
+      "body_length": 1,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/control_plane/cluster_manager.py",
+      "class": "ClusterManager",
+      "method": "list_clusters",
+      "line": 77,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/cluster_manager.py",
+      "class": "ClusterManager",
+      "method": "clusters_for_node",
+      "line": 80,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/cluster_manager.py",
+      "class": "ClusterManager",
+      "method": "cluster_summary",
+      "line": 112,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/coordinator.py",
+      "class": "RuntimeCoordinator",
+      "method": "brain",
+      "line": 59,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/coordinator.py",
+      "class": "RuntimeCoordinator",
+      "method": "autoscaler",
+      "line": 63,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/coordinator.py",
+      "class": "RuntimeCoordinator",
+      "method": "drainer",
+      "line": 67,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/coordinator.py",
+      "class": "RuntimeCoordinator",
+      "method": "supervisor",
+      "line": 71,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/coordinator.py",
+      "class": "RuntimeCoordinator",
+      "method": "supervise_health",
+      "line": 195,
+      "body_length": 2,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/control_plane/coordinator.py",
+      "class": "RuntimeCoordinator",
+      "method": "status_summary",
+      "line": 201,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/health.py",
+      "class": "HealthManager",
+      "method": "state",
+      "line": 61,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/health.py",
+      "class": "HealthManager",
+      "method": "on_alert",
+      "line": 64,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/health.py",
+      "class": "HealthManager",
+      "method": "topology_events",
+      "line": 196,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/health.py",
+      "class": "HealthManager",
+      "method": "recent_alerts",
+      "line": 222,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/health_supervisor.py",
+      "class": "HealthSupervisor",
+      "method": "set_config",
+      "line": 75,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/health_supervisor.py",
+      "class": "HealthSupervisor",
+      "method": "get_config",
+      "line": 79,
+      "body_length": 1,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/control_plane/health_supervisor.py",
+      "class": "HealthSupervisor",
+      "method": "record_failure",
+      "line": 108,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/health_supervisor.py",
+      "class": "HealthSupervisor",
+      "method": "record_success",
+      "line": 113,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/health_supervisor.py",
+      "class": "HealthSupervisor",
+      "method": "quarantine",
+      "line": 189,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/health_supervisor.py",
+      "class": "HealthSupervisor",
+      "method": "unquarantine",
+      "line": 192,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/health_supervisor.py",
+      "class": "HealthSupervisor",
+      "method": "is_quarantined",
+      "line": 196,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/health_supervisor.py",
+      "class": "HealthSupervisor",
+      "method": "recovery_history",
+      "line": 199,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/health_supervisor.py",
+      "class": "HealthSupervisor",
+      "method": "clear_failures",
+      "line": 211,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/orchestrator.py",
+      "class": "ExecutionOrchestrator",
+      "method": "decisions",
+      "line": 207,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/reconciler.py",
+      "class": "Correction",
+      "method": "key",
+      "line": 53,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/reconciler.py",
+      "class": "Reconciler",
+      "method": "desired",
+      "line": 75,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/reconciler.py",
+      "class": "Reconciler",
+      "method": "reset_circuit_breaker",
+      "line": 78,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/reconciler.py",
+      "class": "Reconciler",
+      "method": "record_correction_outcome",
+      "line": 110,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/state/system_state.py",
+      "class": "SystemStateBrain",
+      "method": "on_state_change",
+      "line": 121,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/state/system_state.py",
+      "class": "SystemStateBrain",
+      "method": "update_worker_heartbeat",
+      "line": 160,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/state/system_state.py",
+      "class": "SystemStateBrain",
+      "method": "get_worker",
+      "line": 172,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/state/system_state.py",
+      "class": "SystemStateBrain",
+      "method": "all_workers",
+      "line": 177,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/state/system_state.py",
+      "class": "SystemStateBrain",
+      "method": "workers_by_node",
+      "line": 181,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/state/system_state.py",
+      "class": "SystemStateBrain",
+      "method": "healthy_workers",
+      "line": 185,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/state/system_state.py",
+      "class": "SystemStateBrain",
+      "method": "get_execution",
+      "line": 220,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/state/system_state.py",
+      "class": "SystemStateBrain",
+      "method": "active_executions",
+      "line": 225,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/state/system_state.py",
+      "class": "SystemStateBrain",
+      "method": "all_executions",
+      "line": 229,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/state/system_state.py",
+      "class": "SystemStateBrain",
+      "method": "update_node_health",
+      "line": 248,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/state/system_state.py",
+      "class": "SystemStateBrain",
+      "method": "get_node",
+      "line": 260,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/state/system_state.py",
+      "class": "SystemStateBrain",
+      "method": "all_nodes",
+      "line": 265,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/state/system_state.py",
+      "class": "SystemStateBrain",
+      "method": "healthy_nodes",
+      "line": 269,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/state/system_state.py",
+      "class": "SystemStateBrain",
+      "method": "failure_clusters",
+      "line": 307,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/state/system_state.py",
+      "class": "SystemStateBrain",
+      "method": "update_load_metrics",
+      "line": 313,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/state/system_state.py",
+      "class": "SystemStateBrain",
+      "method": "get_load_metrics",
+      "line": 317,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/state/system_state.py",
+      "class": "SystemStateBrain",
+      "method": "aggregate_load",
+      "line": 321,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/state/system_state.py",
+      "class": "SystemStateBrain",
+      "method": "snapshot",
+      "line": 344,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/worker_drainer.py",
+      "class": "WorkerDrainer",
+      "method": "drain_status",
+      "line": 81,
+      "body_length": 1,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/control_plane/worker_drainer.py",
+      "class": "WorkerDrainer",
+      "method": "is_draining",
+      "line": 84,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/control_plane/worker_drainer.py",
+      "class": "WorkerDrainer",
+      "method": "list_draining",
+      "line": 87,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/cost_intel.py",
+      "class": "NodeCost",
+      "method": "total_cost",
+      "line": 54,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/cost_intel.py",
+      "class": "CostTracker",
+      "method": "record",
+      "line": 80,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/cost_intel.py",
+      "class": "CostTracker",
+      "method": "p50",
+      "line": 88,
+      "body_length": 2,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/cost_intel.py",
+      "class": "CostTracker",
+      "method": "p95",
+      "line": 92,
+      "body_length": 2,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/cost_intel.py",
+      "class": "CostTracker",
+      "method": "p99",
+      "line": 96,
+      "body_length": 2,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/cost_intel.py",
+      "class": "CostTracker",
+      "method": "mean",
+      "line": 100,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/cost_intel.py",
+      "class": "CostTracker",
+      "method": "count",
+      "line": 106,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/cost_intel.py",
+      "class": "CostTracker",
+      "method": "estimate_cost",
+      "line": 111,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/cost_intel.py",
+      "class": "CostTracker",
+      "method": "all_tools",
+      "line": 118,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/cost_intel.py",
+      "class": "CostAwareScheduler",
+      "method": "schedule",
+      "line": 217,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/db.py",
+      "class": "Database",
+      "method": "cleanup_old_tasks",
+      "line": 221,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/db.py",
+      "class": "Database",
+      "method": "get_projects",
+      "line": 250,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/db.py",
+      "class": "Database",
+      "method": "activate_project",
+      "line": 273,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/db.py",
+      "class": "Database",
+      "method": "delete_project",
+      "line": 300,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/db.py",
+      "class": "Database",
+      "method": "get_sessions",
+      "line": 334,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/db.py",
+      "class": "Database",
+      "method": "activate_session",
+      "line": 348,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/db.py",
+      "class": "Database",
+      "method": "delete_session",
+      "line": 375,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/db.py",
+      "class": "Database",
+      "method": "get_conversations",
+      "line": 408,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/db.py",
+      "class": "Database",
+      "method": "activate_conversation",
+      "line": 421,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/db.py",
+      "class": "Database",
+      "method": "delete_conversation",
+      "line": 470,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/db.py",
+      "class": "Database",
+      "method": "get_messages",
+      "line": 504,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/db.py",
+      "class": "Database",
+      "method": "get_users_count",
+      "line": 541,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/db.py",
+      "class": "Database",
+      "method": "log_action",
+      "line": 549,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/distributed_checkpoint.py",
+      "class": "DistributedCheckpointManager",
+      "method": "version",
+      "line": 122,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/distributed_checkpoint.py",
+      "class": "DistributedCheckpointManager",
+      "method": "get_checkpoint",
+      "line": 233,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/distributed_checkpoint.py",
+      "class": "DistributedCheckpointManager",
+      "method": "get_completed",
+      "line": 238,
+      "body_length": 2,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/distributed_checkpoint.py",
+      "class": "DistributedCheckpointManager",
+      "method": "clear",
+      "line": 242,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/distributed_checkpoint.py",
+      "class": "DistributedRecoveryManager",
+      "method": "version",
+      "line": 275,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/distributed_checkpoint.py",
+      "class": "DistributedRecoveryManager",
+      "method": "count_pending",
+      "line": 404,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/distributed_replay.py",
+      "class": "DistributedReplayEngine",
+      "method": "version",
+      "line": 182,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/distributed_scheduler.py",
+      "class": "DistributedScheduler",
+      "method": "version",
+      "line": 52,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/distributed_scheduler.py",
+      "class": "DistributedScheduler",
+      "method": "release",
+      "line": 135,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/distributed_types.py",
+      "class": "WorkerNode",
+      "method": "available_capacity",
+      "line": 77,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/distributed_types.py",
+      "class": "WorkerNode",
+      "method": "is_available",
+      "line": 81,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/distributed_types.py",
+      "class": "WorkerNode",
+      "method": "supports_tool",
+      "line": 87,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/distributed_types.py",
+      "class": "WorkerNode",
+      "method": "can_execute",
+      "line": 90,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/distributed_types.py",
+      "class": "TaskAssignment",
+      "method": "is_leased",
+      "line": 124,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/distributed_types.py",
+      "class": "TaskAssignment",
+      "method": "is_expired",
+      "line": 130,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/embedding_engine.py",
+      "class": "EmbeddingEngine",
+      "method": "available",
+      "line": 65,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/embedding_engine.py",
+      "class": "EmbeddingEngine",
+      "method": "dimension",
+      "line": 69,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/embedding_engine.py",
+      "class": "EmbeddingEngine",
+      "method": "embed_symbol",
+      "line": 82,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/embedding_engine.py",
+      "class": "EmbeddingEngine",
+      "method": "embed_file",
+      "line": 87,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_cache.py",
+      "class": "ExecutionCache",
+      "method": "get",
+      "line": 57,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_cache.py",
+      "class": "ExecutionCache",
+      "method": "invalidate",
+      "line": 90,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_cache.py",
+      "class": "ExecutionCache",
+      "method": "stats",
+      "line": 100,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_cache.py",
+      "class": "ExecutionCache",
+      "method": "close",
+      "line": 115,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_core.py",
+      "class": "FailureIntelligence",
+      "method": "record_result",
+      "line": 58,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_core.py",
+      "class": "FailureIntelligence",
+      "method": "failure_rate",
+      "line": 67,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_core.py",
+      "class": "FailureIntelligence",
+      "method": "report",
+      "line": 97,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_core.py",
+      "class": "ExecutionCore",
+      "method": "get_event_type_for_transition",
+      "line": 132,
+      "body_length": 1,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/execution_core.py",
+      "class": "ExecutionCore",
+      "method": "validate_transition",
+      "line": 140,
+      "body_length": 1,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/execution_core.py",
+      "class": "ExecutionCore",
+      "method": "check_schema_version",
+      "line": 146,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_core.py",
+      "class": "ExecutionCore",
+      "method": "topo_sort",
+      "line": 153,
+      "body_length": 1,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/execution_core.py",
+      "class": "ExecutionCore",
+      "method": "independent_branches",
+      "line": 157,
+      "body_length": 1,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/execution_core.py",
+      "class": "ExecutionCore",
+      "method": "validate_dag",
+      "line": 161,
+      "body_length": 1,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/execution_core.py",
+      "class": "ExecutionCore",
+      "method": "default_tool_runner",
+      "line": 182,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_core.py",
+      "class": "ExecutionCore",
+      "method": "compute_backoff",
+      "line": 189,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_core.py",
+      "class": "ExecutionCore",
+      "method": "should_retry",
+      "line": 202,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_core.py",
+      "class": "DAGBuilder",
+      "method": "depends",
+      "line": 225,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_engine.py",
+      "class": "ExecutionEngine",
+      "method": "registry",
+      "line": 136,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_engine.py",
+      "class": "ExecutionEngine",
+      "method": "registry",
+      "line": 140,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_engine.py",
+      "class": "ExecutionEngine",
+      "method": "memory",
+      "line": 144,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_engine.py",
+      "class": "ExecutionEngine",
+      "method": "fi",
+      "line": 148,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_engine.py",
+      "class": "ExecutionEngine",
+      "method": "cancel",
+      "line": 340,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_engine.py",
+      "class": "ExecutionEngine",
+      "method": "shutdown",
+      "line": 343,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_engine.py",
+      "class": "ExecutionEngine",
+      "method": "check_api_compliance",
+      "line": 353,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_engine.py",
+      "class": "ExecutionEngine",
+      "method": "status",
+      "line": 373,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_engine.py",
+      "class": "ExecutionEngine",
+      "method": "register_tool",
+      "line": 407,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_memory.py",
+      "class": "ExecutionMemory",
+      "method": "complete_session",
+      "line": 168,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_memory.py",
+      "class": "ExecutionMemory",
+      "method": "fail_session",
+      "line": 177,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_memory.py",
+      "class": "ExecutionMemory",
+      "method": "rollback_session",
+      "line": 186,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_memory.py",
+      "class": "ExecutionMemory",
+      "method": "get_session",
+      "line": 195,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_memory.py",
+      "class": "ExecutionMemory",
+      "method": "recent_sessions",
+      "line": 199,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_memory.py",
+      "class": "ExecutionMemory",
+      "method": "session_events",
+      "line": 220,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_memory.py",
+      "class": "ExecutionMemory",
+      "method": "add_reasoning",
+      "line": 230,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_memory.py",
+      "class": "ExecutionMemory",
+      "method": "session_reasoning",
+      "line": 243,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_memory.py",
+      "class": "ExecutionMemory",
+      "method": "reasoning_by_type",
+      "line": 249,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_memory.py",
+      "class": "ExecutionMemory",
+      "method": "update_task",
+      "line": 278,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_memory.py",
+      "class": "ExecutionMemory",
+      "method": "get_task",
+      "line": 289,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_memory.py",
+      "class": "ExecutionMemory",
+      "method": "find_tasks",
+      "line": 293,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_memory.py",
+      "class": "ExecutionMemory",
+      "method": "complete_task",
+      "line": 300,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_memory.py",
+      "class": "ExecutionMemory",
+      "method": "fail_task",
+      "line": 305,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_memory.py",
+      "class": "ExecutionMemory",
+      "method": "update_plan_result",
+      "line": 328,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_memory.py",
+      "class": "ExecutionMemory",
+      "method": "succeed_plan",
+      "line": 336,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_memory.py",
+      "class": "ExecutionMemory",
+      "method": "fail_plan",
+      "line": 342,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_memory.py",
+      "class": "ExecutionMemory",
+      "method": "get_plan",
+      "line": 350,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_memory.py",
+      "class": "ExecutionMemory",
+      "method": "task_plans",
+      "line": 354,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_memory.py",
+      "class": "ExecutionMemory",
+      "method": "session_plans",
+      "line": 359,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_memory.py",
+      "class": "ExecutionMemory",
+      "method": "latest_plan",
+      "line": 363,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_memory.py",
+      "class": "ExecutionMemory",
+      "method": "clear",
+      "line": 372,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_memory.py",
+      "class": "ExecutionMemory",
+      "method": "store_dag_trace",
+      "line": 567,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_memory.py",
+      "class": "ExecutionMemory",
+      "method": "get_dag_trace",
+      "line": 582,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_runtime.py",
+      "class": "ExecutionRuntime",
+      "method": "set_trace_id",
+      "line": 83,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_runtime.py",
+      "class": "ExecutionRuntime",
+      "method": "cancel_flag",
+      "line": 87,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_runtime.py",
+      "class": "ExecutionRuntime",
+      "method": "pool",
+      "line": 91,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_runtime.py",
+      "class": "ExecutionRuntime",
+      "method": "memory",
+      "line": 95,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_runtime.py",
+      "class": "ExecutionRuntime",
+      "method": "registry",
+      "line": 99,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_runtime.py",
+      "class": "ExecutionRuntime",
+      "method": "registry",
+      "line": 103,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_runtime.py",
+      "class": "ExecutionRuntime",
+      "method": "fi",
+      "line": 107,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_runtime.py",
+      "class": "ExecutionRuntime",
+      "method": "rollback_subgraph",
+      "line": 366,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/execution_runtime.py",
+      "class": "ExecutionRuntime",
+      "method": "shutdown",
+      "line": 414,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/failure_governance.py",
+      "class": "FixSuggestionEngine",
+      "method": "suggest_batch",
+      "line": 263,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/feedback_intel.py",
+      "class": "FeedbackIntelligence",
+      "method": "ingest",
+      "line": 135,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/feedback_intel.py",
+      "class": "FeedbackIntelligence",
+      "method": "total_observations",
+      "line": 275,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/feedback_intel.py",
+      "class": "FeedbackIntelligence",
+      "method": "known_intents",
+      "line": 279,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/feedback_intel.py",
+      "class": "FeedbackIntelligence",
+      "method": "report",
+      "line": 283,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/feedback_loop.py",
+      "class": "StrategyStats",
+      "method": "success_rate",
+      "line": 48,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/feedback_loop.py",
+      "class": "RankingFeedbackLoop",
+      "method": "success_rate",
+      "line": 110,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/feedback_loop.py",
+      "class": "RankingFeedbackLoop",
+      "method": "get_strategy_stats",
+      "line": 116,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/feedback_loop.py",
+      "class": "RankingFeedbackLoop",
+      "method": "all_strategies",
+      "line": 121,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/feedback_loop.py",
+      "class": "RankingFeedbackLoop",
+      "method": "recent_feedback",
+      "line": 124,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/feedback_loop.py",
+      "class": "RankingFeedbackLoop",
+      "method": "quality_report",
+      "line": 147,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/graph_query.py",
+      "class": "GraphQuery",
+      "method": "top_symbols",
+      "line": 473,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/graph_query.py",
+      "class": "GraphQuery",
+      "method": "resolve_symbol_name",
+      "line": 515,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/graph_query.py",
+      "class": "GraphQuery",
+      "method": "get_file_symbols",
+      "line": 587,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/graph_query.py",
+      "class": "GraphQuery",
+      "method": "get_file_dependencies",
+      "line": 604,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/graph_retrieval.py",
+      "class": "HeuristicRanker",
+      "method": "importance",
+      "line": 44,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/graph_retrieval.py",
+      "class": "HeuristicRanker",
+      "method": "recursion_risk",
+      "line": 96,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/graph_retrieval.py",
+      "class": "HeuristicRanker",
+      "method": "risk_breakdown",
+      "line": 127,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/graph_retrieval.py",
+      "class": "SmartFilter",
+      "method": "by_min_importance",
+      "line": 167,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/graph_retrieval.py",
+      "class": "SmartFilter",
+      "method": "by_max_depth",
+      "line": 176,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/graph_retrieval.py",
+      "class": "SmartFilter",
+      "method": "exclude_unresolved",
+      "line": 182,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/graph_retrieval.py",
+      "class": "SmartFilter",
+      "method": "limit",
+      "line": 188,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/graph_retrieval.py",
+      "class": "GraphRetrievalEngine",
+      "method": "retrieve_callees",
+      "line": 258,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/guardrails.py",
+      "class": "DriftMonitor",
+      "method": "set_baseline",
+      "line": 67,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/guardrails.py",
+      "class": "SafeWeightBoundaries",
+      "method": "clamp",
+      "line": 162,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/guardrails.py",
+      "class": "SafeWeightBoundaries",
+      "method": "is_safe",
+      "line": 176,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/guardrails.py",
+      "class": "ConfidenceDecay",
+      "method": "apply",
+      "line": 206,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/guardrails.py",
+      "class": "PerformanceRegressionDetector",
+      "method": "record",
+      "line": 282,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/guardrails.py",
+      "class": "ShadowEvaluator",
+      "method": "status",
+      "line": 430,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/guardrails.py",
+      "class": "RollbackManager",
+      "method": "record_manual_rollback",
+      "line": 524,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/guardrails.py",
+      "class": "RollbackManager",
+      "method": "is_rolled_back",
+      "line": 534,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/guardrails.py",
+      "class": "RollbackManager",
+      "method": "history",
+      "line": 543,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/guardrails.py",
+      "class": "RollbackManager",
+      "method": "status",
+      "line": 556,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/heartbeat_daemon.py",
+      "class": "WorkerHeartbeatDaemon",
+      "method": "version",
+      "line": 93,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/heartbeat_daemon.py",
+      "class": "WorkerHeartbeatDaemon",
+      "method": "is_running",
+      "line": 97,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/heartbeat_daemon.py",
+      "class": "WorkerHeartbeatDaemon",
+      "method": "register_task",
+      "line": 135,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/heartbeat_daemon.py",
+      "class": "WorkerHeartbeatDaemon",
+      "method": "unregister_task",
+      "line": 162,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/heartbeat_daemon.py",
+      "class": "WorkerHeartbeatDaemon",
+      "method": "registered_count",
+      "line": 172,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/heartbeat_daemon.py",
+      "class": "WorkerHeartbeatDaemon",
+      "method": "registered_tasks",
+      "line": 176,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/heartbeat_daemon.py",
+      "class": "WorkerHeartbeatDaemon",
+      "method": "get_entry",
+      "line": 180,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/hybrid_retriever.py",
+      "class": "HybridRetriever",
+      "method": "semantic_available",
+      "line": 167,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/hybrid_retriever.py",
+      "class": "HybridRetriever",
+      "method": "normalize_scores",
+      "line": 383,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/hybrid_retriever.py",
+      "class": "HybridRetriever",
+      "method": "hybrid_search",
+      "line": 574,
+      "body_length": 2,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/interfaces/dispatcher.py",
+      "class": "IExecutionDispatcher",
+      "method": "resolve_tool",
+      "line": 24,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/interfaces/dispatcher.py",
+      "class": "IExecutionDispatcher",
+      "method": "can_dispatch",
+      "line": 27,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/interfaces/dispatcher.py",
+      "class": "IExecutionDispatcher",
+      "method": "dispatch_local",
+      "line": 30,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/interfaces/dispatcher.py",
+      "class": "IExecutionDispatcher",
+      "method": "dispatch_remote",
+      "line": 38,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/interfaces/dispatcher.py",
+      "class": "IExecutionDispatcher",
+      "method": "validate_contract",
+      "line": 45,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/interfaces/dispatcher.py",
+      "class": "IExecutionDispatcher",
+      "method": "validate_output",
+      "line": 52,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/interfaces/event_bus.py",
+      "class": "IEventBus",
+      "method": "publish",
+      "line": 11,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/interfaces/event_bus.py",
+      "class": "IEventBus",
+      "method": "subscribe",
+      "line": 14,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/interfaces/event_bus.py",
+      "class": "IEventBus",
+      "method": "unsubscribe",
+      "line": 17,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/interfaces/event_bus.py",
+      "class": "IEventBus",
+      "method": "get_events",
+      "line": 20,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/interfaces/event_bus.py",
+      "class": "IEventBus",
+      "method": "get_all_events",
+      "line": 23,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/interfaces/event_bus.py",
+      "class": "IEventBus",
+      "method": "clear",
+      "line": 26,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/interfaces/execution.py",
+      "class": "IDAGOptimizer",
+      "method": "optimize",
+      "line": 7,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/interfaces/execution_engine.py",
+      "class": "IExecutionEngine",
+      "method": "execute",
+      "line": 8,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/interfaces/execution_engine.py",
+      "class": "IExecutionEngine",
+      "method": "plan",
+      "line": 17,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/interfaces/execution_engine.py",
+      "class": "IExecutionEngine",
+      "method": "cancel",
+      "line": 20,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/interfaces/execution_engine.py",
+      "class": "IExecutionEngine",
+      "method": "status",
+      "line": 23,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/interfaces/execution_engine.py",
+      "class": "IExecutionEngine",
+      "method": "register_tool",
+      "line": 26,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/interfaces/failure_propagation.py",
+      "class": "FailurePropagationPolicy",
+      "method": "evaluate",
+      "line": 199,
+      "body_length": 2,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/interfaces/governance.py",
+      "class": "IContractValidator",
+      "method": "validate_inputs",
+      "line": 7,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/interfaces/governance.py",
+      "class": "IContractValidator",
+      "method": "validate_outputs",
+      "line": 11,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/interfaces/governance.py",
+      "class": "IComplianceValidator",
+      "method": "verify_frozen_methods",
+      "line": 16,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/interfaces/governance.py",
+      "class": "IComplianceValidator",
+      "method": "validate_outputs",
+      "line": 20,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/interfaces/lease.py",
+      "class": "IExecutionLeaseManager",
+      "method": "acquire",
+      "line": 22,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/interfaces/lease.py",
+      "class": "IExecutionLeaseManager",
+      "method": "release",
+      "line": 25,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/interfaces/lease.py",
+      "class": "IExecutionLeaseManager",
+      "method": "heartbeat",
+      "line": 28,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/interfaces/lease.py",
+      "class": "IExecutionLeaseManager",
+      "method": "is_expired",
+      "line": 31,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/interfaces/lease.py",
+      "class": "IExecutionLeaseManager",
+      "method": "owner",
+      "line": 34,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/interfaces/lease.py",
+      "class": "IExecutionLeaseManager",
+      "method": "release_all",
+      "line": 37,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/interfaces/retry.py",
+      "class": "IExecutionRetryHandler",
+      "method": "classify_failure",
+      "line": 24,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/interfaces/retry.py",
+      "class": "IExecutionRetryHandler",
+      "method": "should_retry",
+      "line": 27,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/interfaces/retry.py",
+      "class": "IExecutionRetryHandler",
+      "method": "compute_backoff",
+      "line": 34,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/interfaces/retry.py",
+      "class": "IExecutionRetryHandler",
+      "method": "handle_exhaustion",
+      "line": 41,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/interfaces/retry.py",
+      "class": "IExecutionRetryHandler",
+      "method": "record_attempt",
+      "line": 48,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/interfaces/scheduler.py",
+      "class": "IExecutionScheduler",
+      "method": "order_levels",
+      "line": 23,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/interfaces/scheduler.py",
+      "class": "IExecutionScheduler",
+      "method": "select_ready_nodes",
+      "line": 26,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/interfaces/scheduler.py",
+      "class": "IExecutionScheduler",
+      "method": "allocate_worker",
+      "line": 34,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/interfaces/scheduler.py",
+      "class": "IExecutionScheduler",
+      "method": "estimate_execution_order",
+      "line": 42,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/interfaces/state_store.py",
+      "class": "IExecutionStateStore",
+      "method": "get_state",
+      "line": 24,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/interfaces/state_store.py",
+      "class": "IExecutionStateStore",
+      "method": "set_state",
+      "line": 27,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/interfaces/state_store.py",
+      "class": "IExecutionStateStore",
+      "method": "store_trace",
+      "line": 34,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/interfaces/state_store.py",
+      "class": "IExecutionStateStore",
+      "method": "save_checkpoint",
+      "line": 43,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/interfaces/state_store.py",
+      "class": "IExecutionStateStore",
+      "method": "restore_checkpoint",
+      "line": 51,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/interfaces/systems.py",
+      "class": "ICostTracker",
+      "method": "record",
+      "line": 7,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/interfaces/systems.py",
+      "class": "ICostTracker",
+      "method": "estimate_cost",
+      "line": 9,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/interfaces/systems.py",
+      "class": "IDAGSizeLimiter",
+      "method": "check",
+      "line": 13,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/interfaces/systems.py",
+      "class": "ICheckpointManager",
+      "method": "save",
+      "line": 17,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/interfaces/systems.py",
+      "class": "ICheckpointManager",
+      "method": "restore",
+      "line": 19,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/memory_pressure.py",
+      "class": "StreamingExecutor",
+      "method": "cancel",
+      "line": 174,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/memory_pressure.py",
+      "class": "CheckpointManager",
+      "method": "save",
+      "line": 221,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/memory_pressure.py",
+      "class": "CheckpointManager",
+      "method": "restore",
+      "line": 250,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/memory_pressure.py",
+      "class": "CheckpointManager",
+      "method": "list_sessions",
+      "line": 304,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/memory_pressure.py",
+      "class": "CheckpointManager",
+      "method": "delete",
+      "line": 325,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/memory_pressure.py",
+      "class": "CheckpointManager",
+      "method": "completed_nodes",
+      "line": 341,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/metrics_store.py",
+      "class": "MetricsStore",
+      "method": "record_shadow_evaluation",
+      "line": 148,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/metrics_store.py",
+      "class": "MetricsStore",
+      "method": "query_events",
+      "line": 167,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/metrics_store.py",
+      "class": "MetricsStore",
+      "method": "query_drift_alerts",
+      "line": 178,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/metrics_store.py",
+      "class": "MetricsStore",
+      "method": "query_rollback_events",
+      "line": 184,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/metrics_store.py",
+      "class": "MetricsStore",
+      "method": "query_shadow_evaluations",
+      "line": 190,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/metrics_store.py",
+      "class": "MetricsStore",
+      "method": "strategy_usage",
+      "line": 198,
+      "body_length": 2,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/metrics_store.py",
+      "class": "MetricsStore",
+      "method": "weight_change_history",
+      "line": 202,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/metrics_store.py",
+      "class": "MetricsStore",
+      "method": "rollback_count",
+      "line": 209,
+      "body_length": 1,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/metrics_store.py",
+      "class": "MetricsStore",
+      "method": "drift_alert_count",
+      "line": 212,
+      "body_length": 1,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/metrics_store.py",
+      "class": "MetricsStore",
+      "method": "shadow_win_rate",
+      "line": 215,
+      "body_length": 2,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/metrics_store.py",
+      "class": "MetricsStore",
+      "method": "clear",
+      "line": 219,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/models/dag.py",
+      "class": "NodeState",
+      "method": "can_transition_to",
+      "line": 22,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/models/dag.py",
+      "class": "DependencyGraph",
+      "method": "add_node",
+      "line": 104,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/models/dag.py",
+      "class": "DependencyGraph",
+      "method": "add_edge",
+      "line": 107,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/models/dag.py",
+      "class": "DependencyGraph",
+      "method": "predecessors",
+      "line": 111,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/models/dag.py",
+      "class": "DependencyGraph",
+      "method": "successors",
+      "line": 116,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/models/dag.py",
+      "class": "DependencyGraph",
+      "method": "entry_nodes",
+      "line": 121,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/models/dag.py",
+      "class": "DependencyGraph",
+      "method": "leaf_nodes",
+      "line": 126,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/models/dag.py",
+      "class": "DependencyGraph",
+      "method": "topo_sort",
+      "line": 131,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/models/dag.py",
+      "class": "DependencyGraph",
+      "method": "independent_branches",
+      "line": 135,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/models/dag.py",
+      "class": "DependencyGraph",
+      "method": "validate",
+      "line": 139,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/models/dag.py",
+      "class": "DependencyGraph",
+      "method": "to_dict",
+      "line": 143,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/observability/dashboard.py",
+      "class": "RuntimeDashboard",
+      "method": "traces",
+      "line": 48,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/observability/dashboard.py",
+      "class": "RuntimeDashboard",
+      "method": "timelines",
+      "line": 52,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/observability/dashboard.py",
+      "class": "RuntimeDashboard",
+      "method": "failures",
+      "line": 56,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/observability/dashboard.py",
+      "class": "RuntimeDashboard",
+      "method": "topology",
+      "line": 60,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/observability/dashboard.py",
+      "class": "RuntimeDashboard",
+      "method": "system_overview",
+      "line": 116,
+      "body_length": 2,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/observability/dashboard.py",
+      "class": "RuntimeDashboard",
+      "method": "failure_trends",
+      "line": 162,
+      "body_length": 2,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/observability/failure_explorer.py",
+      "class": "FailureExplorer",
+      "method": "top_errors",
+      "line": 83,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/observability/failure_explorer.py",
+      "class": "FailureExplorer",
+      "method": "top_error_types",
+      "line": 88,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/observability/failure_explorer.py",
+      "class": "FailureExplorer",
+      "method": "top_failing_services",
+      "line": 92,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/observability/failure_explorer.py",
+      "class": "FailureExplorer",
+      "method": "top_failing_workers",
+      "line": 96,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/observability/failure_explorer.py",
+      "class": "FailureExplorer",
+      "method": "top_failing_nodes",
+      "line": 100,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/observability/failure_explorer.py",
+      "class": "FailureExplorer",
+      "method": "summary",
+      "line": 209,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/observability/failure_explorer.py",
+      "class": "FailureExplorer",
+      "method": "clear",
+      "line": 224,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/observability/timeline.py",
+      "class": "TimelineEvent",
+      "method": "age_seconds",
+      "line": 43,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/observability/timeline.py",
+      "class": "Timeline",
+      "method": "events_since",
+      "line": 68,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/observability/timeline.py",
+      "class": "Timeline",
+      "method": "summary",
+      "line": 80,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/observability/timeline.py",
+      "class": "TimelineStore",
+      "method": "get_or_create",
+      "line": 100,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/observability/timeline.py",
+      "class": "TimelineStore",
+      "method": "get",
+      "line": 106,
+      "body_length": 1,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/observability/timeline.py",
+      "class": "TimelineStore",
+      "method": "add_event",
+      "line": 109,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/observability/timeline.py",
+      "class": "TimelineStore",
+      "method": "clear",
+      "line": 146,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/observability/topology_viewer.py",
+      "class": "TopologyViewer",
+      "method": "update_status",
+      "line": 113,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/observability/topology_viewer.py",
+      "class": "TopologyViewer",
+      "method": "get_node",
+      "line": 155,
+      "body_length": 1,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/observability/topology_viewer.py",
+      "class": "TopologyViewer",
+      "method": "nodes_by_type",
+      "line": 158,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/observability/topology_viewer.py",
+      "class": "TopologyViewer",
+      "method": "nodes_by_status",
+      "line": 161,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/observability/topology_viewer.py",
+      "class": "TopologyViewer",
+      "method": "workers_on_node",
+      "line": 164,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/observability/topology_viewer.py",
+      "class": "TopologyViewer",
+      "method": "connections_from",
+      "line": 171,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/observability/topology_viewer.py",
+      "class": "TopologyViewer",
+      "method": "connections_to",
+      "line": 174,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/observability/topology_viewer.py",
+      "class": "TopologyViewer",
+      "method": "to_graph",
+      "line": 179,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/observability/topology_viewer.py",
+      "class": "TopologyViewer",
+      "method": "clear",
+      "line": 220,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/observability/trace.py",
+      "class": "Span",
+      "method": "is_complete",
+      "line": 42,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/observability/trace.py",
+      "class": "Span",
+      "method": "is_error",
+      "line": 46,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/observability/trace.py",
+      "class": "ExecutionTrace",
+      "method": "get_span",
+      "line": 94,
+      "body_length": 1,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/observability/trace.py",
+      "class": "ExecutionTrace",
+      "method": "spans_by_service",
+      "line": 97,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/observability/trace.py",
+      "class": "ExecutionTrace",
+      "method": "error_spans",
+      "line": 100,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/observability/trace.py",
+      "class": "ExecutionTrace",
+      "method": "to_dict",
+      "line": 127,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/observability/trace.py",
+      "class": "TraceStore",
+      "method": "get_trace",
+      "line": 165,
+      "body_length": 1,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/observability/trace.py",
+      "class": "TraceStore",
+      "method": "all_traces",
+      "line": 178,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/observability/trace.py",
+      "class": "TraceStore",
+      "method": "recent_errors",
+      "line": 182,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/observability/trace.py",
+      "class": "TraceStore",
+      "method": "clear",
+      "line": 196,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/orchestrator.py",
+      "class": "QueryPlanner",
+      "method": "check_api_compliance",
+      "line": 109,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/orchestrator.py",
+      "class": "QueryPlanner",
+      "method": "get_tool_weights",
+      "line": 129,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/orchestrator.py",
+      "class": "QueryPlanner",
+      "method": "get_confidence_adjustment",
+      "line": 138,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/ownership_manager.py",
+      "class": "LeaseStore",
+      "method": "insert",
+      "line": 102,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/ownership_manager.py",
+      "class": "LeaseStore",
+      "method": "get",
+      "line": 128,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/ownership_manager.py",
+      "class": "LeaseStore",
+      "method": "update_heartbeat",
+      "line": 138,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/ownership_manager.py",
+      "class": "LeaseStore",
+      "method": "release",
+      "line": 157,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/ownership_manager.py",
+      "class": "LeaseStore",
+      "method": "find_expired",
+      "line": 171,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/ownership_manager.py",
+      "class": "LeaseStore",
+      "method": "expire",
+      "line": 183,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/ownership_manager.py",
+      "class": "LeaseStore",
+      "method": "clear",
+      "line": 217,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/ownership_manager.py",
+      "class": "LeaseStore",
+      "method": "delete",
+      "line": 224,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/ownership_manager.py",
+      "class": "LeaseStore",
+      "method": "lease_count",
+      "line": 235,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/ownership_manager.py",
+      "class": "LeaseStore",
+      "method": "active_count",
+      "line": 241,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/ownership_manager.py",
+      "class": "OwnershipManager",
+      "method": "version",
+      "line": 265,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/ownership_manager.py",
+      "class": "OwnershipManager",
+      "method": "release",
+      "line": 338,
+      "body_length": 2,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/ownership_manager.py",
+      "class": "OwnershipManager",
+      "method": "owner_of",
+      "line": 365,
+      "body_length": 2,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/ownership_manager.py",
+      "class": "OwnershipManager",
+      "method": "execution_attempt",
+      "line": 369,
+      "body_length": 2,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/ownership_manager.py",
+      "class": "OwnershipManager",
+      "method": "active_count",
+      "line": 375,
+      "body_length": 1,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/ownership_manager.py",
+      "class": "OwnershipManager",
+      "method": "lease_count",
+      "line": 378,
+      "body_length": 1,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/parsers.py",
+      "class": "LanguageParser",
+      "method": "parse",
+      "line": 153,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/query_analytics.py",
+      "class": "QueryAnalytics",
+      "method": "full_report",
+      "line": 111,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/query_replay.py",
+      "class": "QueryReplay",
+      "method": "find_similar",
+      "line": 112,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/query_replay.py",
+      "class": "QueryReplay",
+      "method": "recent",
+      "line": 125,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/query_replay.py",
+      "class": "QueryReplay",
+      "method": "update_feedback",
+      "line": 130,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/query_replay.py",
+      "class": "QueryReplay",
+      "method": "clear",
+      "line": 176,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/query_replay.py",
+      "class": "QueryReplay",
+      "method": "count",
+      "line": 186,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/recovery_coordinator.py",
+      "class": "ResumeToken",
+      "method": "to_dict",
+      "line": 90,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/recovery_coordinator.py",
+      "class": "ResumeToken",
+      "method": "from_dict",
+      "line": 94,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/recovery_coordinator.py",
+      "class": "ResumeToken",
+      "method": "to_json",
+      "line": 97,
+      "body_length": 1,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/recovery_coordinator.py",
+      "class": "ResumeToken",
+      "method": "from_json",
+      "line": 101,
+      "body_length": 1,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/recovery_coordinator.py",
+      "class": "ResumeToken",
+      "method": "is_empty",
+      "line": 105,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/recovery_coordinator.py",
+      "class": "ResumeToken",
+      "method": "is_complete",
+      "line": 109,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/recovery_coordinator.py",
+      "class": "RecoveryCoordinator",
+      "method": "version",
+      "line": 170,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/recovery_coordinator.py",
+      "class": "RecoveryCoordinator",
+      "method": "recover",
+      "line": 236,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/recovery_coordinator.py",
+      "class": "RecoveryCoordinator",
+      "method": "recovering_count",
+      "line": 330,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/replay/engine.py",
+      "class": "ReplayEngine",
+      "method": "available_sessions",
+      "line": 70,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/replay/engine.py",
+      "class": "QueryReplayEngine",
+      "method": "get_log",
+      "line": 318,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/replay/engine.py",
+      "class": "QueryReplayEngine",
+      "method": "recent",
+      "line": 324,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/replay/engine.py",
+      "class": "QueryReplayEngine",
+      "method": "find_similar",
+      "line": 327,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/replay/engine.py",
+      "class": "QueryReplayEngine",
+      "method": "import_logs",
+      "line": 353,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/repository_indexer.py",
+      "class": "RepositoryIndexer",
+      "method": "get_file_dependencies",
+      "line": 880,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/repository_indexer.py",
+      "class": "RepositoryIndexer",
+      "method": "get_file_symbols",
+      "line": 901,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/repository_indexer.py",
+      "class": "RepositoryIndexer",
+      "method": "get_symbol_references",
+      "line": 919,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/repository_indexer.py",
+      "class": "RepositoryIndexer",
+      "method": "search_todos",
+      "line": 947,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/repository_indexer.py",
+      "class": "RepositoryIndexer",
+      "method": "get_file_info",
+      "line": 976,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/bootstrap.py",
+      "class": "EmoRuntime",
+      "method": "engine",
+      "line": 144,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/bootstrap.py",
+      "class": "EmoRuntime",
+      "method": "intelligence",
+      "line": 150,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/bootstrap.py",
+      "class": "EmoRuntime",
+      "method": "root",
+      "line": 156,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/bootstrap.py",
+      "class": "EmoRuntime",
+      "method": "os",
+      "line": 162,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/bootstrap.py",
+      "class": "EmoRuntime",
+      "method": "is_started",
+      "line": 168,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/bootstrap.py",
+      "class": "EmoRuntime",
+      "method": "is_built",
+      "line": 172,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/bootstrap.py",
+      "class": "EmoRuntime",
+      "method": "execute",
+      "line": 177,
+      "body_length": 2,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/runtime/bootstrap.py",
+      "class": "EmoRuntime",
+      "method": "plan",
+      "line": 192,
+      "body_length": 2,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/runtime/bootstrap.py",
+      "class": "EmoRuntime",
+      "method": "cancel",
+      "line": 196,
+      "body_length": 2,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/runtime/bootstrap.py",
+      "class": "EmoRuntime",
+      "method": "status",
+      "line": 200,
+      "body_length": 2,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/runtime/bootstrap.py",
+      "class": "EmoRuntime",
+      "method": "register_tool",
+      "line": 204,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/control/control_plane.py",
+      "class": "ControlPlane",
+      "method": "state",
+      "line": 72,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/control/control_plane.py",
+      "class": "ControlPlane",
+      "method": "reconciler",
+      "line": 76,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/control/control_plane.py",
+      "class": "ControlPlane",
+      "method": "orchestrator",
+      "line": 80,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/control/control_plane.py",
+      "class": "ControlPlane",
+      "method": "health",
+      "line": 84,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/control/control_plane.py",
+      "class": "ControlPlane",
+      "method": "decisions",
+      "line": 131,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/control/health_monitor.py",
+      "class": "HealthMonitor",
+      "method": "record_heartbeat",
+      "line": 28,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/control/health_monitor.py",
+      "class": "HealthMonitor",
+      "method": "mark_unhealthy",
+      "line": 33,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/control/health_monitor.py",
+      "class": "HealthMonitor",
+      "method": "mark_degraded",
+      "line": 43,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/control/health_monitor.py",
+      "class": "HealthMonitor",
+      "method": "recent_alerts",
+      "line": 84,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/control/reconciler.py",
+      "class": "Reconciler",
+      "method": "desired",
+      "line": 38,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/control/system_state.py",
+      "class": "SystemState",
+      "method": "get",
+      "line": 44,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/control/system_state.py",
+      "class": "SystemState",
+      "method": "set",
+      "line": 48,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/control/system_state.py",
+      "class": "SystemState",
+      "method": "set_phase",
+      "line": 54,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/control/system_state.py",
+      "class": "SystemState",
+      "method": "snapshot",
+      "line": 58,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/control/system_state.py",
+      "class": "SystemState",
+      "method": "increment",
+      "line": 72,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/control/worker_orchestrator.py",
+      "class": "WorkerOrchestrator",
+      "method": "terminate_worker",
+      "line": 98,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/control/worker_orchestrator.py",
+      "class": "WorkerOrchestrator",
+      "method": "get_worker",
+      "line": 108,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/control/worker_orchestrator.py",
+      "class": "WorkerOrchestrator",
+      "method": "active_workers",
+      "line": 112,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/control/worker_orchestrator.py",
+      "class": "WorkerOrchestrator",
+      "method": "active_count",
+      "line": 120,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/control/worker_orchestrator.py",
+      "class": "WorkerOrchestrator",
+      "method": "scale_down",
+      "line": 130,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/control/worker_orchestrator.py",
+      "class": "WorkerOrchestrator",
+      "method": "heartbeat",
+      "line": 146,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/control/worker_orchestrator.py",
+      "class": "WorkerOrchestrator",
+      "method": "shutdown_all",
+      "line": 156,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/control/worker_orchestrator.py",
+      "class": "WorkerOrchestrator",
+      "method": "assign_task",
+      "line": 167,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/control/worker_orchestrator.py",
+      "class": "WorkerOrchestrator",
+      "method": "complete_task",
+      "line": 178,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/event_bus.py",
+      "class": "InMemoryEventBus",
+      "method": "subscribe",
+      "line": 26,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/event_bus.py",
+      "class": "InMemoryEventBus",
+      "method": "unsubscribe",
+      "line": 30,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/event_bus.py",
+      "class": "InMemoryEventBus",
+      "method": "get_events",
+      "line": 35,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/event_bus.py",
+      "class": "InMemoryEventBus",
+      "method": "get_all_events",
+      "line": 38,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/event_store.py",
+      "class": "EventStore",
+      "method": "append",
+      "line": 24,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/event_store.py",
+      "class": "EventStore",
+      "method": "clear",
+      "line": 65,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/evolution/canon_evolver.py",
+      "class": "EvolutionPolicy",
+      "method": "min_confidence",
+      "line": 56,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/evolution/canon_evolver.py",
+      "class": "EvolutionPolicy",
+      "method": "mode",
+      "line": 60,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/evolution/canon_evolver.py",
+      "class": "CanonEvolver",
+      "method": "refiner",
+      "line": 97,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/evolution/canon_evolver.py",
+      "class": "CanonEvolver",
+      "method": "policy",
+      "line": 101,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/evolution/canon_evolver.py",
+      "class": "CanonEvolver",
+      "method": "audit_trail",
+      "line": 105,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/evolution/canon_evolver.py",
+      "class": "CanonEvolver",
+      "method": "rollback",
+      "line": 108,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/evolution/canon_evolver.py",
+      "class": "CanonEvolver",
+      "method": "request_approval",
+      "line": 114,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/evolution/feedback_actuator.py",
+      "class": "FeedbackActuator",
+      "method": "evolver",
+      "line": 68,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/evolution/feedback_actuator.py",
+      "class": "FeedbackActuator",
+      "method": "on_report",
+      "line": 71,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/evolution/feedback_actuator.py",
+      "class": "FeedbackActuator",
+      "method": "recent_reports",
+      "line": 124,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/evolution/feedback_actuator.py",
+      "class": "FeedbackActuator",
+      "method": "summarize",
+      "line": 128,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/evolution/rule_refiner.py",
+      "class": "RuleRefiner",
+      "method": "suggestions",
+      "line": 106,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/evolution/rule_refiner.py",
+      "class": "RuleRefiner",
+      "method": "apply_suggestion",
+      "line": 110,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/io/filesystem_isolation.py",
+      "class": "FilesystemIsolation",
+      "method": "set_policy",
+      "line": 60,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/io/filesystem_isolation.py",
+      "class": "FilesystemIsolation",
+      "method": "map_virtual",
+      "line": 64,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/io/filesystem_isolation.py",
+      "class": "FilesystemIsolation",
+      "method": "resolve_path",
+      "line": 68,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/io/io_policy_engine.py",
+      "class": "IOPolicyEngine",
+      "method": "allow",
+      "line": 94,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/io/io_policy_engine.py",
+      "class": "IOPolicyEngine",
+      "method": "block",
+      "line": 98,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/io/network_isolation.py",
+      "class": "NetworkIsolation",
+      "method": "set_policy",
+      "line": 56,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/isolation/isolation_runtime.py",
+      "class": "IsolationRuntime",
+      "method": "sandbox_manager",
+      "line": 90,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/isolation/isolation_runtime.py",
+      "class": "IsolationRuntime",
+      "method": "capability_guard",
+      "line": 94,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/isolation/isolation_runtime.py",
+      "class": "IsolationRuntime",
+      "method": "resource_enforcer",
+      "line": 98,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/isolation/isolation_runtime.py",
+      "class": "IsolationRuntime",
+      "method": "io_policy_engine",
+      "line": 102,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/isolation/isolation_runtime.py",
+      "class": "IsolationRuntime",
+      "method": "network_isolation",
+      "line": 106,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/isolation/isolation_runtime.py",
+      "class": "IsolationRuntime",
+      "method": "filesystem_isolation",
+      "line": 110,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/isolation/isolation_runtime.py",
+      "class": "IsolationRuntime",
+      "method": "execute",
+      "line": 113,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/isolation/isolation_runtime.py",
+      "class": "IsolationRuntime",
+      "method": "check_io",
+      "line": 237,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/isolation/isolation_runtime.py",
+      "class": "IsolationRuntime",
+      "method": "check_network",
+      "line": 250,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/isolation/isolation_runtime.py",
+      "class": "IsolationRuntime",
+      "method": "check_filesystem_read",
+      "line": 257,
+      "body_length": 2,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/runtime/isolation/isolation_runtime.py",
+      "class": "IsolationRuntime",
+      "method": "check_filesystem_write",
+      "line": 264,
+      "body_length": 2,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/runtime/isolation/isolation_runtime.py",
+      "class": "IsolationRuntime",
+      "method": "shutdown",
+      "line": 271,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/mesh/failure_propagator.py",
+      "class": "FailurePropagator",
+      "method": "on_failure",
+      "line": 39,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/mesh/failure_propagator.py",
+      "class": "FailurePropagator",
+      "method": "recent_failures",
+      "line": 96,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/mesh/failure_propagator.py",
+      "class": "FailurePropagator",
+      "method": "failure_count",
+      "line": 100,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/mesh/mesh_execution_runtime.py",
+      "class": "MeshExecutionRuntime",
+      "method": "engine",
+      "line": 47,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/mesh/mesh_execution_runtime.py",
+      "class": "MeshExecutionRuntime",
+      "method": "mesh",
+      "line": 51,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/mesh/mesh_execution_runtime.py",
+      "class": "MeshExecutionRuntime",
+      "method": "execute",
+      "line": 54,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/mesh/mesh_execution_runtime.py",
+      "class": "MeshExecutionRuntime",
+      "method": "execute_remote",
+      "line": 114,
+      "body_length": 2,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/runtime/mesh/mesh_protocol.py",
+      "class": "MeshProtocol",
+      "method": "create_request",
+      "line": 42,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/mesh/mesh_protocol.py",
+      "class": "MeshProtocol",
+      "method": "create_response",
+      "line": 59,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/mesh/mesh_protocol.py",
+      "class": "MeshProtocol",
+      "method": "create_error",
+      "line": 73,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/mesh/mesh_protocol.py",
+      "class": "MeshProtocol",
+      "method": "create_heartbeat",
+      "line": 87,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/mesh/mesh_protocol.py",
+      "class": "MeshProtocol",
+      "method": "is_request",
+      "line": 94,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/mesh/mesh_protocol.py",
+      "class": "MeshProtocol",
+      "method": "is_response",
+      "line": 98,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/mesh/mesh_protocol.py",
+      "class": "MeshProtocol",
+      "method": "is_error",
+      "line": 102,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/mesh/mesh_worker.py",
+      "class": "MeshWorker",
+      "method": "worker_id",
+      "line": 61,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/mesh/mesh_worker.py",
+      "class": "MeshWorker",
+      "method": "instance_id",
+      "line": 65,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/mesh/mesh_worker.py",
+      "class": "MeshWorker",
+      "method": "heartbeat",
+      "line": 68,
+      "body_length": 2,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/runtime/mesh/remote/discovery.py",
+      "class": "PeerNode",
+      "method": "base_url",
+      "line": 41,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/mesh/remote/discovery.py",
+      "class": "DistributedRegistry",
+      "method": "local",
+      "line": 70,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/mesh/remote/discovery.py",
+      "class": "DistributedRegistry",
+      "method": "peers",
+      "line": 74,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/mesh/remote/discovery.py",
+      "class": "DistributedRegistry",
+      "method": "remove_peer",
+      "line": 86,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/mesh/remote/node.py",
+      "class": "MeshNode",
+      "method": "node_id",
+      "line": 82,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/mesh/remote/node.py",
+      "class": "MeshNode",
+      "method": "host",
+      "line": 86,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/mesh/remote/node.py",
+      "class": "MeshNode",
+      "method": "port",
+      "line": 90,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/mesh/remote/node.py",
+      "class": "MeshNode",
+      "method": "mesh",
+      "line": 96,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/mesh/remote/node.py",
+      "class": "MeshNode",
+      "method": "registry",
+      "line": 100,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/mesh/remote/node.py",
+      "class": "MeshNode",
+      "method": "distributed_registry",
+      "line": 104,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/mesh/remote/node.py",
+      "class": "MeshNode",
+      "method": "register_handler",
+      "line": 107,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/mesh/remote/node.py",
+      "class": "MeshNode",
+      "method": "add_peer",
+      "line": 111,
+      "body_length": 2,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/runtime/mesh/remote/node.py",
+      "class": "MeshNode",
+      "method": "remove_peer",
+      "line": 115,
+      "body_length": 2,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/runtime/mesh/remote/node.py",
+      "class": "MeshNode",
+      "method": "discover_remote",
+      "line": 185,
+      "body_length": 2,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/runtime/mesh/remote/transport.py",
+      "class": "RemoteTransportClient",
+      "method": "send_heartbeat",
+      "line": 74,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/mesh/remote/transport.py",
+      "class": "RemoteTransportServer",
+      "method": "host",
+      "line": 215,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/mesh/remote/transport.py",
+      "class": "RemoteTransportServer",
+      "method": "port",
+      "line": 219,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/mesh/remote/transport.py",
+      "class": "RemoteTransportServer",
+      "method": "shutdown",
+      "line": 242,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/mesh/remote/transport.py",
+      "class": "_MeshRequestHandler",
+      "method": "log_message",
+      "line": 116,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/mesh/remote/transport.py",
+      "class": "_MeshRequestHandler",
+      "method": "do_POST",
+      "line": 181,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/mesh/service_mesh.py",
+      "class": "ServiceMesh",
+      "method": "registry",
+      "line": 56,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/mesh/service_mesh.py",
+      "class": "ServiceMesh",
+      "method": "register_local_handler",
+      "line": 59,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/mesh/service_registry.py",
+      "class": "ServiceRegistry",
+      "method": "register",
+      "line": 57,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/mesh/service_registry.py",
+      "class": "ServiceRegistry",
+      "method": "deregister",
+      "line": 90,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/mesh/service_registry.py",
+      "class": "ServiceRegistry",
+      "method": "heartbeat",
+      "line": 102,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/mesh/service_registry.py",
+      "class": "ServiceRegistry",
+      "method": "discover",
+      "line": 112,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/mesh/service_registry.py",
+      "class": "ServiceRegistry",
+      "method": "discover_by_capability",
+      "line": 131,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/mesh/service_registry.py",
+      "class": "ServiceRegistry",
+      "method": "all_services",
+      "line": 144,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/mesh/service_registry.py",
+      "class": "ServiceRegistry",
+      "method": "get_instance",
+      "line": 152,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/mesh/service_registry.py",
+      "class": "ServiceRegistry",
+      "method": "prune_expired",
+      "line": 159,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/os/runtime_os.py",
+      "class": "RuntimeOS",
+      "method": "engine",
+      "line": 114,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/os/runtime_os.py",
+      "class": "RuntimeOS",
+      "method": "brain",
+      "line": 118,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/os/runtime_os.py",
+      "class": "RuntimeOS",
+      "method": "control",
+      "line": 122,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/os/runtime_os.py",
+      "class": "RuntimeOS",
+      "method": "isolation",
+      "line": 126,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/os/runtime_os.py",
+      "class": "RuntimeOS",
+      "method": "mesh",
+      "line": 130,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/os/runtime_os.py",
+      "class": "RuntimeOS",
+      "method": "mesh_runtime",
+      "line": 134,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/os/runtime_os.py",
+      "class": "RuntimeOS",
+      "method": "registry",
+      "line": 138,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/resources/quota_manager.py",
+      "class": "QuotaManager",
+      "method": "set_global_quota",
+      "line": 71,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/resources/quota_manager.py",
+      "class": "QuotaManager",
+      "method": "set_worker_quota",
+      "line": 76,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/resources/quota_manager.py",
+      "class": "QuotaManager",
+      "method": "set_execution_quota",
+      "line": 81,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/resources/quota_manager.py",
+      "class": "QuotaManager",
+      "method": "record_usage",
+      "line": 86,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/resources/quota_manager.py",
+      "class": "QuotaManager",
+      "method": "check",
+      "line": 101,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/resources/resource_enforcer.py",
+      "class": "ResourceEnforcer",
+      "method": "tracker",
+      "line": 36,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/resources/resource_enforcer.py",
+      "class": "ResourceEnforcer",
+      "method": "quota_manager",
+      "line": 40,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/resources/resource_enforcer.py",
+      "class": "ResourceEnforcer",
+      "method": "enforce",
+      "line": 62,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/resources/resource_enforcer.py",
+      "class": "ResourceEnforcer",
+      "method": "finish",
+      "line": 91,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/resources/resource_tracker.py",
+      "class": "ResourceTracker",
+      "method": "start_execution",
+      "line": 43,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/resources/resource_tracker.py",
+      "class": "ResourceTracker",
+      "method": "update",
+      "line": 57,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/resources/resource_tracker.py",
+      "class": "ResourceTracker",
+      "method": "complete_execution",
+      "line": 80,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/resources/resource_tracker.py",
+      "class": "ResourceTracker",
+      "method": "get_usage",
+      "line": 91,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/resources/resource_tracker.py",
+      "class": "ResourceTracker",
+      "method": "get_active",
+      "line": 96,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/resources/resource_tracker.py",
+      "class": "ResourceTracker",
+      "method": "active_count",
+      "line": 101,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/resources/resource_tracker.py",
+      "class": "ResourceTracker",
+      "method": "total_cpu",
+      "line": 106,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/resources/resource_tracker.py",
+      "class": "ResourceTracker",
+      "method": "recent_usage",
+      "line": 111,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/sandbox/docker_runtime.py",
+      "class": "DockerRuntime",
+      "method": "cleanup",
+      "line": 215,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/sandbox/docker_runtime.py",
+      "class": "DockerRuntime",
+      "method": "list_active",
+      "line": 227,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/sandbox/docker_runtime.py",
+      "class": "DockerRuntime",
+      "method": "is_available",
+      "line": 231,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/sandbox/firecracker_runtime.py",
+      "class": "FirecrackerRuntime",
+      "method": "is_available",
+      "line": 97,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/sandbox/firecracker_runtime.py",
+      "class": "FirecrackerRuntime",
+      "method": "list_active",
+      "line": 300,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/sandbox/sandbox_manager.py",
+      "class": "SandboxManager",
+      "method": "active_count",
+      "line": 86,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/secrets/credentials.py",
+      "class": "CredentialManager",
+      "method": "validate_credential",
+      "line": 100,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/secrets/credentials.py",
+      "class": "CredentialManager",
+      "method": "list_active",
+      "line": 139,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/secrets/injector.py",
+      "class": "SecretInjector",
+      "method": "injection_log",
+      "line": 93,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/secrets/vault.py",
+      "class": "RuntimeVault",
+      "method": "retrieve",
+      "line": 86,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/secrets/vault.py",
+      "class": "RuntimeVault",
+      "method": "exists",
+      "line": 119,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/secrets/vault.py",
+      "class": "RuntimeVault",
+      "method": "list_secrets",
+      "line": 130,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime/secrets/vault.py",
+      "class": "RuntimeVault",
+      "method": "stats",
+      "line": 197,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/runtime_intelligence.py",
+      "class": "RuntimeIntelligence",
+      "method": "record_execution",
+      "line": 165,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/scheduler/resource_scheduler.py",
+      "class": "ResourceRequirements",
+      "method": "requires_gpu",
+      "line": 36,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/scheduler/resource_scheduler.py",
+      "class": "WorkerResource",
+      "method": "cpu_available",
+      "line": 57,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/scheduler/resource_scheduler.py",
+      "class": "WorkerResource",
+      "method": "memory_available",
+      "line": 61,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/scheduler/resource_scheduler.py",
+      "class": "WorkerResource",
+      "method": "gpu_available",
+      "line": 65,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/scheduler/resource_scheduler.py",
+      "class": "WorkerResource",
+      "method": "gpu_memory_available",
+      "line": 69,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/scheduler/resource_scheduler.py",
+      "class": "WorkerResource",
+      "method": "cpu_utilization",
+      "line": 73,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/scheduler/resource_scheduler.py",
+      "class": "WorkerResource",
+      "method": "memory_utilization",
+      "line": 77,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/scheduler/resource_scheduler.py",
+      "class": "WorkerResource",
+      "method": "can_fit",
+      "line": 80,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/scheduler/resource_scheduler.py",
+      "class": "UserQuota",
+      "method": "has_quota",
+      "line": 116,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/scheduler/resource_scheduler.py",
+      "class": "FairnessModel",
+      "method": "set_weight",
+      "line": 156,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/scheduler/resource_scheduler.py",
+      "class": "FairnessModel",
+      "method": "record_usage",
+      "line": 159,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/scheduler/resource_scheduler.py",
+      "class": "FairnessModel",
+      "method": "record_release",
+      "line": 162,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/scheduler/resource_scheduler.py",
+      "class": "PriorityQueue",
+      "method": "push",
+      "line": 190,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/scheduler/resource_scheduler.py",
+      "class": "PriorityQueue",
+      "method": "pop",
+      "line": 193,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/scheduler/resource_scheduler.py",
+      "class": "PriorityQueue",
+      "method": "size",
+      "line": 199,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/scheduler/resource_scheduler.py",
+      "class": "ResourceScheduler",
+      "method": "unregister_worker",
+      "line": 291,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/scheduler/resource_scheduler.py",
+      "class": "ResourceScheduler",
+      "method": "set_quota",
+      "line": 310,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/scheduler/resource_scheduler.py",
+      "class": "ResourceScheduler",
+      "method": "get_quota",
+      "line": 326,
+      "body_length": 1,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/scheduler/resource_scheduler.py",
+      "class": "ResourceScheduler",
+      "method": "set_user_weight",
+      "line": 331,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/scheduler/resource_scheduler.py",
+      "class": "ResourceScheduler",
+      "method": "submit_task",
+      "line": 336,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/scheduler/resource_scheduler.py",
+      "class": "ResourceScheduler",
+      "method": "select_next_task",
+      "line": 340,
+      "body_length": 1,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/security/capabilities/capability_guard.py",
+      "class": "CapabilityGuard",
+      "method": "registry",
+      "line": 49,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/security/capabilities/capability_guard.py",
+      "class": "CapabilityGuard",
+      "method": "sensitive_registry",
+      "line": 53,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/security/capabilities/capability_model.py",
+      "class": "Capability",
+      "method": "null",
+      "line": 77,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/security/capabilities/capability_model.py",
+      "class": "Capability",
+      "method": "full",
+      "line": 82,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/security/capabilities/capability_model.py",
+      "class": "Capability",
+      "method": "restricted",
+      "line": 95,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/security/capabilities/capability_model.py",
+      "class": "Capability",
+      "method": "has_scope",
+      "line": 107,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/security/capabilities/capability_registry.py",
+      "class": "CapabilityRegistry",
+      "method": "register",
+      "line": 66,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/security/capabilities/capability_registry.py",
+      "class": "CapabilityRegistry",
+      "method": "get_capability",
+      "line": 71,
+      "body_length": 2,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/security/capabilities/capability_registry.py",
+      "class": "CapabilityRegistry",
+      "method": "has_capability",
+      "line": 75,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/security/capabilities/capability_registry.py",
+      "class": "CapabilityRegistry",
+      "method": "remove",
+      "line": 79,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/security/capabilities/capability_registry.py",
+      "class": "CapabilityRegistry",
+      "method": "all_capabilities",
+      "line": 83,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/security/capabilities/capability_registry.py",
+      "class": "CapabilityRegistry",
+      "method": "load_from_specs",
+      "line": 87,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/security/capabilities/capability_registry.py",
+      "class": "CapabilityRegistry",
+      "method": "load_from_json",
+      "line": 114,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/security/capabilities/capability_registry.py",
+      "class": "CapabilityRegistry",
+      "method": "tools_with_scope",
+      "line": 139,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/security/capabilities/sensitive_tools.py",
+      "class": "SensitiveToolRegistry",
+      "method": "classify",
+      "line": 55,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/security/capabilities/sensitive_tools.py",
+      "class": "SensitiveToolRegistry",
+      "method": "get_sensitivity",
+      "line": 60,
+      "body_length": 2,
+      "is_pure_delegate": true
+    },
+    {
+      "file": "core/security/capabilities/sensitive_tools.py",
+      "class": "SensitiveToolRegistry",
+      "method": "sensitive_tools",
+      "line": 70,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/security/capabilities/sensitive_tools.py",
+      "class": "SensitiveToolRegistry",
+      "method": "audit_log",
+      "line": 99,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/security/capabilities/sensitive_tools.py",
+      "class": "SensitiveToolRegistry",
+      "method": "recent_audit_log",
+      "line": 103,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/security/capabilities/sensitive_tools.py",
+      "class": "SensitiveToolRegistry",
+      "method": "clear_audit_log",
+      "line": 107,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/security/worker_verifier.py",
+      "class": "WorkerVerifier",
+      "method": "compute_worker_response",
+      "line": 141,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/security/worker_verifier.py",
+      "class": "WorkerVerifier",
+      "method": "get_trust_level",
+      "line": 147,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/security/worker_verifier.py",
+      "class": "WorkerVerifier",
+      "method": "is_verified",
+      "line": 153,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/security/worker_verifier.py",
+      "class": "WorkerVerifier",
+      "method": "unblacklist",
+      "line": 161,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/security/worker_verifier.py",
+      "class": "WorkerVerifier",
+      "method": "set_trust_override",
+      "line": 167,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/security/worker_verifier.py",
+      "class": "WorkerVerifier",
+      "method": "clear_trust",
+      "line": 171,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/security/worker_verifier.py",
+      "class": "WorkerVerifier",
+      "method": "verification_log",
+      "line": 202,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/security/worker_verifier.py",
+      "class": "WorkerVerifier",
+      "method": "stats",
+      "line": 205,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/semantic_store.py",
+      "class": "SemanticStore",
+      "method": "available",
+      "line": 76,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/semantic_store.py",
+      "class": "SemanticStore",
+      "method": "size",
+      "line": 80,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/semantic_store.py",
+      "class": "SemanticStore",
+      "method": "upsert_symbol",
+      "line": 85,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/semantic_store.py",
+      "class": "SemanticStore",
+      "method": "upsert_batch",
+      "line": 108,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/semantic_store.py",
+      "class": "SemanticStore",
+      "method": "remove_symbol",
+      "line": 135,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/service_registry.py",
+      "class": "ToolEndpoint",
+      "method": "execute",
+      "line": 48,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/service_registry.py",
+      "class": "LocalEndpoint",
+      "method": "execute",
+      "line": 59,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/service_registry.py",
+      "class": "RemoteEndpoint",
+      "method": "get_status",
+      "line": 82,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/service_registry.py",
+      "class": "RemoteEndpoint",
+      "method": "capabilities",
+      "line": 105,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/service_registry.py",
+      "class": "ServiceRegistry",
+      "method": "register_local",
+      "line": 219,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/service_registry.py",
+      "class": "ServiceRegistry",
+      "method": "register_remote",
+      "line": 223,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/service_registry.py",
+      "class": "ServiceRegistry",
+      "method": "register_endpoint",
+      "line": 227,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/service_registry.py",
+      "class": "ServiceRegistry",
+      "method": "unregister",
+      "line": 230,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/service_registry.py",
+      "class": "ServiceRegistry",
+      "method": "can_execute",
+      "line": 246,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/service_registry.py",
+      "class": "ServiceRegistry",
+      "method": "registered_tools",
+      "line": 251,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/service_registry.py",
+      "class": "ServiceRegistry",
+      "method": "get_spec",
+      "line": 257,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/service_registry.py",
+      "class": "ServiceRegistry",
+      "method": "clear",
+      "line": 261,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/state.py",
+      "class": "AppState",
+      "method": "get_brain",
+      "line": 21,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/static_analyzer.py",
+      "class": "StaticAnalyzer",
+      "method": "analyze",
+      "line": 45,
+      "body_length": 3,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/task_manager.py",
+      "class": "TaskManager",
+      "method": "create_task",
+      "line": 109,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/task_manager.py",
+      "class": "TaskManager",
+      "method": "update_task",
+      "line": 113,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/task_manager.py",
+      "class": "TaskManager",
+      "method": "get_task",
+      "line": 117,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/tool_executor.py",
+      "class": "ToolRegistry",
+      "method": "to_list",
+      "line": 93,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/types.py",
+      "class": "ExecutionPlan",
+      "method": "to_dict",
+      "line": 55,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/worker_registry.py",
+      "class": "WorkerRegistry",
+      "method": "register",
+      "line": 36,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/worker_registry.py",
+      "class": "WorkerRegistry",
+      "method": "unregister",
+      "line": 48,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/worker_registry.py",
+      "class": "WorkerRegistry",
+      "method": "heartbeat",
+      "line": 59,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/worker_registry.py",
+      "class": "WorkerRegistry",
+      "method": "get",
+      "line": 72,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/worker_registry.py",
+      "class": "WorkerRegistry",
+      "method": "list_workers",
+      "line": 77,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/worker_registry.py",
+      "class": "WorkerRegistry",
+      "method": "worker_count",
+      "line": 82,
+      "body_length": 1,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/worker_registry.py",
+      "class": "WorkerRegistry",
+      "method": "available_workers",
+      "line": 88,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/worker_registry.py",
+      "class": "WorkerRegistry",
+      "method": "any_worker_for",
+      "line": 104,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/worker_registry.py",
+      "class": "WorkerRegistry",
+      "method": "workers_by_tag",
+      "line": 124,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/worker_registry.py",
+      "class": "WorkerRegistry",
+      "method": "mark_offline",
+      "line": 156,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/worker_registry.py",
+      "class": "WorkerRegistry",
+      "method": "increment_load",
+      "line": 167,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/worker_registry.py",
+      "class": "WorkerRegistry",
+      "method": "decrement_load",
+      "line": 178,
+      "body_length": 2,
+      "is_pure_delegate": false
+    },
+    {
+      "file": "core/worker_runtime.py",
+      "class": "WorkerRuntime",
+      "method": "version",
+      "line": 92,
+      "body_length": 1,
+      "is_pure_delegate": false
+    }
+  ]
+}

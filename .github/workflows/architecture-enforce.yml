@@ -1,0 +1,35 @@
+name: Architecture Enforcement
+
+on:
+  pull_request:
+    paths:
+      - "core/**/*.py"
+  workflow_dispatch:
+
+jobs:
+  emo-guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest  # needed for CodeGraph dependencies
+
+      - name: Run emo-guard (Architecture Gate)
+        run: |
+          python scripts/emo-guard --snapshot artifacts/codegraph
+        continue-on-error: false
+
+      - name: Update baseline snapshot
+        if: success()
+        run: |
+          python scripts/emo-guard --snapshot artifacts/codegraph --update-snapshot --diff-only

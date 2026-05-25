@@ -1,0 +1,21 @@
+[
+  {
+    "test": "without_lease_id",
+    "rejected": false,
+    "accepted": true,
+    "detail": "Transport accepts requests without lease_id \u2014 no lease enforcement at HTTP layer"
+  },
+  {
+    "test": "with_valid_lease_id",
+    "rejected": false,
+    "accepted": true,
+    "detail": "Request with lease_id in payload is accepted"
+  },
+  {
+    "test": "mesh_envelope_schema",
+    "rejected": false,
+    "accepted": true,
+    "has_lease_field": false,
+    "detail": "MeshEnvelope dataclass has no lease_id field; lease embedded via payload"
+  }
+]

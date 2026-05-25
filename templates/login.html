@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}" dir="{{ is_rtl }}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emo AI — Welcome</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Cairo:wght@300;400;500;600;700&display=swap');
+:root { --primary: #8b5cf6; --primary-hover: #7c3aed; --secondary: #ec4899; --accent: #10b981; --bg: #070714; --surface: #0f0f24; --card: #18183a; --border: #28285a; --text: #eef2ff; --text2: #8899bb; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.gradient-text { background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.gradient-bar { background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent)); }
+.btn-primary { background: linear-gradient(135deg, var(--primary), #6d28d9); color: white; transition: all .2s; cursor: pointer; }
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 20px rgba(139,92,246,.3); }
+.btn-ghost { transition: all .2s; cursor: pointer; }
+.btn-ghost:hover { background: rgba(139,92,246,.1); }
+.particles { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+.particle { position: absolute; width: 4px; height: 4px; background: var(--primary); border-radius: 50%; opacity: .3; animation: float 20s infinite linear; }
+@keyframes float { 0% { transform: translateY(100vh) rotate(0deg); opacity: 0; } 10% { opacity: .3; } 90% { opacity: .3; } 100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; } }
+.modal-card { position: relative; z-index: 1; background: var(--surface); border: 1px solid var(--border); border-radius: 24px; padding: 48px; width: 420px; max-width: 90vw; box-shadow: 0 25px 80px rgba(0,0,0,.5); }
+.logo { width: 64px; height: 64px; border-radius: 18px; background: linear-gradient(135deg, var(--primary), var(--secondary)); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 28px; }
+.input-field { width: 100%; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--border); background: var(--card); color: var(--text); font-size: 14px; transition: all .2s; outline: none; }
+.input-field:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(139,92,246,.15); }
+.input-field::placeholder { color: var(--text2); }
+.alert { padding: 10px 14px; border-radius: 10px; font-size: 13px; display: none; }
+.alert-error { background: rgba(239,68,68,.12); border: 1px solid rgba(239,68,68,.25); color: #ef4444; display: block; }
+.alert-success { background: rgba(16,185,129,.12); border: 1px solid rgba(16,185,129,.25); color: var(--accent); display: block; }
+</style>
+</head>
+<body>
+
+<div class="particles" id="particles"></div>
+
+<div class="modal-card">
+  <div class="logo"><span style="color:white;">E</span></div>
+  <h1 class="text-2xl font-bold text-center gradient-text mb-1">Emo AI</h1>
+  <p class="text-sm text-center" style="color:var(--text2);">by: Eng.Emam AbdullAziz</p>
+  <p class="text-xs text-center mt-4" style="color:var(--text2);" id="subtitle">Welcome back — sign in to continue</p>
+
+  <div class="mt-6 space-y-3" id="loginForm">
+    <input id="loginUsername" class="input-field" type="text" placeholder="Username" autocomplete="username">
+    <input id="loginPassword" class="input-field" type="password" placeholder="Password" autocomplete="current-password">
+    <div id="loginAlert" class="alert"></div>
+    <button onclick="doLogin()" id="loginBtn" class="btn-primary w-full py-3 rounded-xl font-medium text-sm">Sign In</button>
+    <p class="text-xs text-center mt-3" style="color:var(--text2);">
+      No account? <a href="#" onclick="showSignup()" style="color:var(--primary);" class="hover:underline">Create one</a>
+    </p>
+  </div>
+
+  <div class="mt-6 space-y-3 hidden" id="signupForm">
+    <input id="signupUsername" class="input-field" type="text" placeholder="Choose a username" autocomplete="username">
+    <input id="signupPassword" class="input-field" type="password" placeholder="Choose a password" autocomplete="new-password">
+    <input id="signupConfirm" class="input-field" type="password" placeholder="Confirm password" autocomplete="new-password">
+    <div id="signupAlert" class="alert"></div>
+    <button onclick="doSignup()" id="signupBtn" class="btn-primary w-full py-3 rounded-xl font-medium text-sm">Create Account</button>
+    <p class="text-xs text-center mt-3" style="color:var(--text2);">
+      Already have an account? <a href="#" onclick="showLogin()" style="color:var(--primary);" class="hover:underline">Sign in</a>
+    </p>
+  </div>
+</div>
+
+<script>
+function createParticles() {
+  const c = document.getElementById('particles');
+  for (let i = 0; i < 30; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDuration = (15 + Math.random() * 20) + 's';
+    p.style.animationDelay = Math.random() * 20 + 's';
+    p.style.width = p.style.height = (2 + Math.random() * 4) + 'px';
+    c.appendChild(p);
+  }
+}
+createParticles();
+
+function showError(id, msg) {
+  const el = document.getElementById(id);
+  el.textContent = msg;
+  el.className = 'alert alert-error';
+}
+function showSuccess(id, msg) {
+  const el = document.getElementById(id);
+  el.textContent = msg;
+  el.className = 'alert alert-success';
+}
+function clearAlert(id) {
+  document.getElementById(id).className = 'alert';
+}
+
+function showSignup() {
+  document.getElementById('loginForm').classList.add('hidden');
+  document.getElementById('signupForm').classList.remove('hidden');
+  document.getElementById('subtitle').textContent = 'Create your account to get started';
+}
+function showLogin() {
+  document.getElementById('signupForm').classList.add('hidden');
+  document.getElementById('loginForm').classList.remove('hidden');
+  document.getElementById('subtitle').textContent = 'Welcome back — sign in to continue';
+}
+
+async function doLogin() {
+  const u = document.getElementById('loginUsername').value.trim();
+  const p = document.getElementById('loginPassword').value;
+  if (!u || !p) { showError('loginAlert', 'Please fill in all fields'); return; }
+  clearAlert('loginAlert');
+  document.getElementById('loginBtn').disabled = true;
+  document.getElementById('loginBtn').textContent = 'Signing in...';
+  try {
+    const r = await fetch('/api/auth/login', { method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({username: u, password: p})
+    });
+    const d = await r.json();
+    if (d.status === 'ok') {
+      localStorage.setItem('emo_token', d.token);
+      window.location.href = '/?token=' + d.token;
+    } else {
+      showError('loginAlert', d.message || 'Login failed');
+    }
+  } catch(e) { showError('loginAlert', 'Connection error'); }
+  document.getElementById('loginBtn').disabled = false;
+  document.getElementById('loginBtn').textContent = 'Sign In';
+}
+
+async function doSignup() {
+  const u = document.getElementById('signupUsername').value.trim();
+  const p = document.getElementById('signupPassword').value;
+  const c = document.getElementById('signupConfirm').value;
+  if (!u || !p || !c) { showError('signupAlert', 'Please fill in all fields'); return; }
+  if (p !== c) { showError('signupAlert', 'Passwords do not match'); return; }
+  if (p.length < 4) { showError('signupAlert', 'Password must be at least 4 characters'); return; }
+  clearAlert('signupAlert');
+  document.getElementById('signupBtn').disabled = true;
+  document.getElementById('signupBtn').textContent = 'Creating account...';
+  try {
+    const r = await fetch('/api/auth/signup', { method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({username: u, password: p})
+    });
+    const d = await r.json();
+    if (d.status === 'ok') {
+      showSuccess('signupAlert', 'Account created! Please sign in.');
+      setTimeout(() => showLogin(), 1200);
+    } else {
+      showError('signupAlert', d.message || 'Signup failed');
+    }
+  } catch(e) { showError('signupAlert', 'Connection error'); }
+  document.getElementById('signupBtn').disabled = false;
+  document.getElementById('signupBtn').textContent = 'Create Account';
+}
+
+// Check auto-login from token
+(async function() {
+  const token = new URLSearchParams(window.location.search).get('token') || localStorage.getItem('emo_token');
+  if (token) {
+    const r = await fetch('/api/auth/verify', { headers:{'Authorization':'Bearer '+token} });
+    const d = await r.json();
+    if (d.status === 'ok') {
+      window.location.href = '/?token=' + token;
+      return;
+    }
+    localStorage.removeItem('emo_token');
+  }
+})();
+</script>
+</body>
+</html>

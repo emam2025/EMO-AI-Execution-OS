@@ -1,0 +1,89 @@
+Phase F4 — Observability Layer — Design Execution Log
+TASK ID: PHASE-F4-OBSERVABILITY-DESIGN-015
+Date: 2026-05-22
+Status: COMPLETE
+
+════════════════════════════════════════════════════════════════════════════════
+MILESTONE 1/5 — Formal Observability Protocols (protocols/01_observability_protocols.py)
+STATUS: COMPLETED
+  ITraceCollector       — start_span, end_span, add_attribute, propagate_context
+  ITelemetryAggregator  — ingest_event, compute_metrics, flush_window, publish_summary
+  IDashboardDataProvider — get_execution_timeline, get_dag_visualization,
+                           get_worker_topology, get_failure_explorer
+  IAlertRouter          — evaluate_threshold, route_alert, suppress_duplicate, acknowledge
+  Shared types: SpanStatus, Severity, WindowStrategy, TelemetryEventType,
+                AggregatedMetric, AggregationSummary, AlertRule, AlertReceipt,
+                ExecutionTimelineSegment, WorkerTopologyView, FailureExplorerResult,
+                DAGVisualizationResult
+  Total: 4 protocols + 12 shared types = 16 design contracts
+
+MILESTONE 2/5 — Trace & Telemetry Models (models/02_trace_and_telemetry_models.py)
+STATUS: COMPLETED
+  TraceSpan               — trace_id, span_id, parent_id, operation_name,
+                            start_ns, end_ns, status, attributes, domain, worker_id
+  ExecutionTimelineEvent  — sequence_id, node_id, state_transition, timestamp_ns,
+                            worker_id, span_id, error_message
+  DAGVisualizationNode    — id, label, status, duration_ms, dependencies, error_trace
+  WorkerTopologySnapshot  — worker_id, status, active_leases, resource_utilization,
+                            memory_utilization, health_score, affinity_tags
+  AlertPayload            — alert_id, severity, source_domain, condition_met,
+                            suppression_key, routing_target, metric_value, threshold
+  Enums: SpanStatus, NodeStateTransition, WorkerHealthStatus, Severity
+  Every model has correlation_id property linking to trace_id:span_id (LAW 12)
+
+MILESTONE 3/5 — Telemetry Aggregation State Machine (03_telemetry_aggregation_machine.md)
+STATUS: COMPLETED
+  7 states: RAW_EVENT → VALIDATED → BUFFERED → AGGREGATING → COMPUTED → FLUSHING → PERSISTED
+  8 transitions with guards (validate_fields, buffer_capacity_check, window_boundary_check,
+    flush_retry_guard)
+  Field validation rules for trace_id, span_id, event_type, payload
+  Correlation rules table: F1→D8→F3→Worker→F4 propagation chain
+  Cross-domain span hierarchy with parent_id chaining
+  Windowing strategy: Sliding (5s), Tumbling (1m), Session (per-execution-id)
+  Adaptive sampling table: CRITICAL always ingested; DEBUG dropped under load
+  Validation & acceptance criteria with latency budgets and zero-critical-drop guarantee
+
+MILESTONE 4/5 — Integration Blueprint (04_integration_blueprint.md)
+STATUS: COMPLETED
+  System data flow diagram: Service Mesh/Control Plane → EventBus → TraceCollector
+    → TelemetryAggregator → PersistentStore → Dashboard Provider
+  EventBus topic map (6 topics with schemas, publishers, subscribers, retention)
+  Backpressure & adaptive sampling (5 buffer thresholds with precise actions)
+  Fallback buffer design (JSONL, gzip, 10MB rotate, CRITICAL+WARNING only)
+  Adaptive sampling algorithm (buffer_usage → SamplingConfig)
+  Hook points: TraceLoss, AggregationLag, AlertStorm, FlushFailure
+  Alert suppression matrix (4 suppression keys with cooldowns)
+  Acceptance criteria: latency budgets (6 operations), idempotency guarantees (4 ops),
+    zero-dropped critical spans (design guarantee + fallback buffer)
+  Interaction contracts with F1, D8, F2, F3, D9, EventBus
+
+MILESTONE 5/5 — Canon Compliance Matrix (05_canon_compliance_matrix.json)
+STATUS: COMPLETED
+  29 compliance entries
+  LAW 5: 8 entries (Ingestion, Metrics, Alerts, Workers, Failures, DAG Viz, Payload, Explorer)
+  LAW 12: 6 entries (Span IDs, Parent Ordering, Cross-domain Propagation, Timeline Links,
+    correlation_id, State Transitions)
+  RULE 1: 2 entries (Deterministic Aggregation, Deterministic Visualisation)
+  RULE 2: 2 entries (Immutable Spans, Flush Reversibility)
+  RULE 3: 3 entries (Flush Retry, Fallback Buffer, Critical Spans)
+  RULE 4: 1 entry (Terminal States)
+  RULE 5: 2 entries (Ingestion Idempotency, Alert Idempotency)
+  §15.8: 1 entry (Distributed Tracing Propagation)
+  §15.13: 5 entries (Timeline, DAG Viz, Worker Topology, Failure Explorer, Alert Routing)
+  Status: 29/29 COMPLIANT
+
+════════════════════════════════════════════════════════════════════════════════
+STOP-CONDITION CHECKS (all PASS):
+  ✅ No model missing parent_id or correlation_id
+  ✅ TelemetryAggregator preserves CRITICAL spans under backpressure
+  ✅ Integration Blueprint aligns with LAW 5 + RULE 3
+  ✅ Zero production code written (core/ and tests/ untouched)
+════════════════════════════════════════════════════════════════════════════════
+
+DELIVERY MANIFEST (6/6 files):
+  artifacts/design/f4/protocols/01_observability_protocols.py       — 4 protocols + shared types
+  artifacts/design/f4/models/02_trace_and_telemetry_models.py        — 5 dataclasses + 4 enums
+  artifacts/design/f4/03_telemetry_aggregation_machine.md           — SM + correlation + windowing
+  artifacts/design/f4/04_integration_blueprint.md                   — flow + backpressure + hooks
+  artifacts/design/f4/05_canon_compliance_matrix.json               — 29 COMPLIANT entries
+  artifacts/design/f4/execution_log.txt                              — this file

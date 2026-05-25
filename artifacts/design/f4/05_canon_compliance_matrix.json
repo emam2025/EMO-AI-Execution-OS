@@ -1,0 +1,205 @@
+[
+  {
+    "canon_ref": "LAW 5",
+    "requirement": "Observability Mandatory — every decision must be observable",
+    "design_element": "ITelemetryAggregator.ingest_event() — all state transitions published as events",
+    "design_evidence_path": "protocols/01_observability_protocols.py::ITelemetryAggregator",
+    "status": "COMPLIANT"
+  },
+  {
+    "canon_ref": "LAW 5",
+    "requirement": "Observability Mandatory — aggregated metrics must be available",
+    "design_element": "AggregatedMetric, AggregationSummary, compute_metrics(), flush_window()",
+    "design_evidence_path": "protocols/01_observability_protocols.py::ITelemetryAggregator::compute_metrics",
+    "status": "COMPLIANT"
+  },
+  {
+    "canon_ref": "LAW 5",
+    "requirement": "Observability Mandatory — alerts must be routable and suppressible",
+    "design_element": "IAlertRouter with evaluate_threshold, route_alert, suppress_duplicate, acknowledge",
+    "design_evidence_path": "protocols/01_observability_protocols.py::IAlertRouter",
+    "status": "COMPLIANT"
+  },
+  {
+    "canon_ref": "LAW 5",
+    "requirement": "Observability Mandatory — worker health must be observable",
+    "design_element": "WorkerTopologySnapshot with status, active_leases, health_score; IDashboardDataProvider.get_worker_topology()",
+    "design_evidence_path": "protocols/01_observability_protocols.py::IDashboardDataProvider::get_worker_topology",
+    "status": "COMPLIANT"
+  },
+  {
+    "canon_ref": "LAW 5",
+    "requirement": "Observability Mandatory — failure explorer must be available",
+    "design_element": "FailureExplorerResult with root_span_id, error_message, affected_spans; IDashboardDataProvider.get_failure_explorer()",
+    "design_evidence_path": "protocols/01_observability_protocols.py::IDashboardDataProvider::get_failure_explorer",
+    "status": "COMPLIANT"
+  },
+  {
+    "canon_ref": "LAW 5",
+    "requirement": "Observability Mandatory — DAG visualisation must reflect execution status",
+    "design_element": "DAGVisualizationNode with status, duration_ms, dependencies, error_trace; IDashboardDataProvider.get_dag_visualization()",
+    "design_evidence_path": "protocols/01_observability_protocols.py::IDashboardDataProvider::get_dag_visualization",
+    "status": "COMPLIANT"
+  },
+  {
+    "canon_ref": "LAW 5",
+    "requirement": "Observability Mandatory — alert payload must include severity, source, suppression key",
+    "design_element": "AlertPayload with severity, source_domain, suppression_key, routing_target, metric_value, threshold",
+    "design_evidence_path": "models/02_trace_and_telemetry_models.py::AlertPayload",
+    "status": "COMPLIANT"
+  },
+  {
+    "canon_ref": "LAW 12",
+    "requirement": "Traceability — every span must carry trace_id and span_id",
+    "design_element": "TraceSpan with trace_id, span_id, parent_id, correlation_id property",
+    "design_evidence_path": "models/02_trace_and_telemetry_models.py::TraceSpan",
+    "status": "COMPLIANT"
+  },
+  {
+    "canon_ref": "LAW 12",
+    "requirement": "Traceability — parent_id must establish causal ordering",
+    "design_element": "ITraceCollector.start_span() accepts parent_id; TraceSpan.parent_id field mandatory for non-root spans",
+    "design_evidence_path": "protocols/01_observability_protocols.py::ITraceCollector::start_span",
+    "status": "COMPLIANT"
+  },
+  {
+    "canon_ref": "LAW 12",
+    "requirement": "Traceability — trace context must propagate across domains",
+    "design_element": "ITraceCollector.propagate_context() returns serialisable headers for cross-domain routing; correlation rules table in 03_telemetry_aggregation_machine.md",
+    "design_evidence_path": "03_telemetry_aggregation_machine.md::§4 Correlation Rules",
+    "status": "COMPLIANT"
+  },
+  {
+    "canon_ref": "LAW 12",
+    "requirement": "Traceability — execution timeline must link to spans",
+    "design_element": "ExecutionTimelineEvent.span_id links to TraceSpan; correlation_id property links trace_id:span_id",
+    "design_evidence_path": "models/02_trace_and_telemetry_models.py::ExecutionTimelineEvent",
+    "status": "COMPLIANT"
+  },
+  {
+    "canon_ref": "LAW 12",
+    "requirement": "Traceability — every span must have correlation_id",
+    "design_element": "TraceSpan.correlation_id = f\"{trace_id}:{span_id}\"; ExecutionTimelineEvent.correlation_id",
+    "design_evidence_path": "models/02_trace_and_telemetry_models.py::TraceSpan::correlation_id",
+    "status": "COMPLIANT"
+  },
+  {
+    "canon_ref": "LAW 12",
+    "requirement": "Traceability — node state transitions link back to spans",
+    "design_element": "NodeStateTransition enum captured in ExecutionTimelineEvent; all transitions carry span_id",
+    "design_evidence_path": "models/02_trace_and_telemetry_models.py::NodeStateTransition",
+    "status": "COMPLIANT"
+  },
+  {
+    "canon_ref": "RULE 1",
+    "requirement": "Determinism — same trace data → same aggregation",
+    "design_element": "Windowed aggregation is pure deterministic computation; AggregationSummary metrics computed by key(window_key, strategy)",
+    "design_evidence_path": "protocols/01_observability_protocols.py::ITelemetryAggregator::compute_metrics",
+    "status": "COMPLIANT"
+  },
+  {
+    "canon_ref": "RULE 1",
+    "requirement": "Determinism — same DAG + execution → same visualisation",
+    "design_element": "IDashboardDataProvider.get_dag_visualization returns deterministic result per (dag_id, execution_id)",
+    "design_evidence_path": "protocols/01_observability_protocols.py::IDashboardDataProvider::get_dag_visualization",
+    "status": "COMPLIANT"
+  },
+  {
+    "canon_ref": "RULE 2",
+    "requirement": "Reversibility — ended span is immutable",
+    "design_element": "ITraceCollector.end_span() marks span immutable; no mutation after end_span",
+    "design_evidence_path": "protocols/01_observability_protocols.py::ITraceCollector::end_span",
+    "status": "COMPLIANT"
+  },
+  {
+    "canon_ref": "RULE 2",
+    "requirement": "Reversibility — flush failure preserves buffer",
+    "design_element": "FLUSHING → BUFFERED transition on flush failure; buffer preserved for retry",
+    "design_evidence_path": "03_telemetry_aggregation_machine.md::§2 State Machine",
+    "status": "COMPLIANT"
+  },
+  {
+    "canon_ref": "RULE 3",
+    "requirement": "Recoverability — flush failure retry with backoff",
+    "design_element": "FLUSHING state has flush_retry_guard with 3 attempts and exponential backoff; FallbackBuffer on-disk spillover",
+    "design_evidence_path": "03_telemetry_aggregation_machine.md::§6 Validation & Acceptance",
+    "status": "COMPLIANT"
+  },
+  {
+    "canon_ref": "RULE 3",
+    "requirement": "Recoverability — backpressure fallback buffer",
+    "design_element": "FallbackBuffer (JSONL, gzip, 10MB rotate) activates at 100% buffer; only CRITICAL + WARNING persisted",
+    "design_evidence_path": "04_integration_blueprint.md::§3.2 Fallback Buffer",
+    "status": "COMPLIANT"
+  },
+  {
+    "canon_ref": "RULE 3",
+    "requirement": "Recoverability — critical spans never dropped",
+    "design_element": "Adaptive sampling algorithm preserves CRITICAL at all buffer levels; dropped_count counter monitors loss",
+    "design_evidence_path": "04_integration_blueprint.md::§3.3 Adaptive Sampling",
+    "status": "COMPLIANT"
+  },
+  {
+    "canon_ref": "RULE 4",
+    "requirement": "Terminal states — persisted spans and flushed windows are terminal",
+    "design_element": "PERSISTED is terminal for a window; RAW_EVENT error validation has explicit drop path",
+    "design_evidence_path": "03_telemetry_aggregation_machine.md::§2 State Machine",
+    "status": "COMPLIANT"
+  },
+  {
+    "canon_ref": "RULE 5",
+    "requirement": "Idempotency — duplicate event ingestion merges",
+    "design_element": "ITelemetryAggregator.ingest_event() merges duplicate (event_type, trace_id, span_id); flush_window() upserts",
+    "design_evidence_path": "04_integration_blueprint.md::§5.2 Idempotency Guarantees",
+    "status": "COMPLIANT"
+  },
+  {
+    "canon_ref": "RULE 5",
+    "requirement": "Idempotency — route_alert returns existing receipt",
+    "design_element": "IAlertRouter.route_alert() returns existing AlertReceipt for duplicate alert_id",
+    "design_evidence_path": "04_integration_blueprint.md::§5.2 Idempotency Guarantees",
+    "status": "COMPLIANT"
+  },
+  {
+    "canon_ref": "§15.8",
+    "requirement": "Distributed Tracing — trace_id must propagate through all subsystems",
+    "design_element": "ITraceCollector.propagate_context() for cross-domain propagation; correlation rules table covers F1→D8→F3→Worker→F4",
+    "design_evidence_path": "03_telemetry_aggregation_machine.md::§4 Correlation Rules",
+    "status": "COMPLIANT"
+  },
+  {
+    "canon_ref": "§15.13",
+    "requirement": "Runtime Dashboard — execution timeline queryable by execution_id",
+    "design_element": "IDashboardDataProvider.get_execution_timeline() returns ExecutionTimelineSegment with nodes, duration, errors",
+    "design_evidence_path": "protocols/01_observability_protocols.py::IDashboardDataProvider::get_execution_timeline",
+    "status": "COMPLIANT"
+  },
+  {
+    "canon_ref": "§15.13",
+    "requirement": "Runtime Dashboard — DAG visualisation renderable with status overlay",
+    "design_element": "DAGVisualizationResult with nodes, edges, critical_path_ms; IDashboardDataProvider.get_dag_visualization()",
+    "design_evidence_path": "protocols/01_observability_protocols.py::IDashboardDataProvider::get_dag_visualization",
+    "status": "COMPLIANT"
+  },
+  {
+    "canon_ref": "§15.13",
+    "requirement": "Runtime Dashboard — worker topology viewable",
+    "design_element": "WorkerTopologyView with healthy/degraded/offline counts; WorkerTopologySnapshot with health_score and utilisation",
+    "design_evidence_path": "protocols/01_observability_protocols.py::IDashboardDataProvider::get_worker_topology",
+    "status": "COMPLIANT"
+  },
+  {
+    "canon_ref": "§15.13",
+    "requirement": "Runtime Dashboard — failure explorer traces root cause",
+    "design_element": "FailureExplorerResult with root_span_id, affected_spans, suggested_remedy; IDashboardDataProvider.get_failure_explorer()",
+    "design_evidence_path": "protocols/01_observability_protocols.py::IDashboardDataProvider::get_failure_explorer",
+    "status": "COMPLIANT"
+  },
+  {
+    "canon_ref": "§15.13",
+    "requirement": "Runtime Dashboard — alert routing with deduplication",
+    "design_element": "IAlertRouter with suppress_duplicate() using suppression_key + cooldown; alert suppression matrix in 04_integration_blueprint.md",
+    "design_evidence_path": "protocols/01_observability_protocols.py::IAlertRouter::suppress_duplicate",
+    "status": "COMPLIANT"
+  }
+]

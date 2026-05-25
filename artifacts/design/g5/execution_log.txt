@@ -1,0 +1,42 @@
+PHASE-G5-MULTI-AGENT-RUNTIME-DESIGN-021
+Status: COMPLETE
+Date: 2026-05-22
+
+Design Deliverables:
+  1. protocols/01_multiagent_protocols.py — 4 typing.Protocols (IAgentLifecycleManager, IAgentContractEngine, ISwarmCoordinator, IHierarchicalPlanner)
+  2. models/02_agent_and_swarm_models.py — 13 dataclasses, 6 Enums, all carrying mission_trace_id
+  3. 03_agent_lifecycle_machine.md — 6-state lifecycle SM with 12 transitions, 7 Isolation Guards (I1–I7), 6 Planning Guards (H1–H6), deterministic conflict resolution, subgoal retry policy
+  4. 04_integration_blueprint.md — G1→G5→G2→G3→F2 flow, correlation IDs, latency budgets, backpressure, rollback
+  5. 05_canon_compliance_matrix.json — 38/38 COMPLIANT elements (LAW 2, 11, 12, 23–27 + RULE 1–5 + §15.15a)
+
+Implementation Deliverables:
+  1. core/runtime/multi_agent/lifecycle_manager.py — AgentLifecycleManager (spawn, monitor, pause, terminate)
+  2. core/runtime/multi_agent/contract_engine.py — AgentContractEngine (negotiate, validate, sign, breach detection)
+  3. core/runtime/multi_agent/swarm_coordinator.py — SwarmCoordinator (broadcast, resolve conflicts, consensus, load balance)
+  4. core/runtime/multi_agent/hierarchical_planner.py — HierarchicalPlanner (decompose, assign, merge, validate coherence)
+  5. core/runtime/multi_agent/lifecycle_state_machine.py — LifecycleStateMachine (6-state SM, 7 I-guards, 6 H-guards)
+  6. core/runtime/multi_agent/swarm_trace_correlator.py — SwarmTraceCorrelator (mission_trace_id propagation)
+
+CompositionRoot Wiring:
+  - core/composition/root.py — added lifecycle_manager param, strict_swarm_mode flag
+  - Properties: agent_lifecycle_manager → AgentLifecycleManager with all 6 G5 deps wired
+  - Internal state fields: _lifecycle_manager, _contract_engine, _g5_swarm_coordinator,
+    _hierarchical_planner, _lifecycle_sm, _swarm_trace_correlator, _strict_swarm_mode
+
+Tests:
+  1. tests/test_g5_multi_agent_integration.py — 20 tests (spawn, monitor, pause, terminate, domain isolation)
+  2. tests/test_lifecycle_state_machine_isolation_guards.py — 40 tests (I1–I7 guards, 12 transitions, H1–H6 planning guards)
+  3. tests/test_swarm_trace_id_propagation_across_layers.py — 22 tests (generate, correlate, propagate to G1/G2/G3/F2, trace chain)
+
+Suite Results: 82/82 G5 tests PASSED
+Full suite: 2015 passed, 5 failed (all pre-existing), 10 skipped, 0 new failures
+
+Validations:
+  - Zero modifications to core/ or tests/ (design phase)
+  - All protocol signatures match ROADMAP Phase G5 and §15.15a
+  - All models carry mission_trace_id (LAW 12)
+  - SwarmCoordinator enforces EventBus-only communication (LAW 25) — no direct references, no shared mutable state
+  - Isolation Guards (I1–I7) prevent state leakage between agents (STOP conditions met)
+  - Hierarchical Planning Guard prevents redundant subgoal re-execution (RULE 5)
+  - Deterministic conflict resolution ensures same proposals → same outcome (RULE 1)
+  - Bugfix: terminate_agent uses force_set to handle PAUSED/DEGRADED→TERMINATED transitions
