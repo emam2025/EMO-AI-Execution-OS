@@ -61,8 +61,13 @@ class OperatorHooks:
     records an audit checkpoint for traceability (LAW-12).
     """
 
-    def __init__(self, event_bus: Optional[IEventBus] = None) -> None:
+    def __init__(
+        self,
+        event_bus: Optional[IEventBus] = None,
+        runtime: Optional[Any] = None,  # LAW 13 compliance
+    ) -> None:
         self._event_bus = event_bus
+        self._runtime = runtime
         self._checkpoints: List[OperatorActionResult] = []
 
     def _emit(self, req: OperatorActionRequest, result: OperatorActionResult) -> None:
@@ -117,8 +122,10 @@ class OperatorHooks:
         return result
 
     def operator_replay(self, req: OperatorActionRequest) -> OperatorActionResult:
-        from core.runtime.api.unified_runtime_api import UnifiedRuntime
-        runtime = UnifiedRuntime()
+        runtime = self._runtime
+        if runtime is None:
+            from core.composition.root import build_minimal_runtime
+            runtime = build_minimal_runtime()
         ticket = runtime.replay(req.target_id, deterministic=True)
         result = OperatorActionResult(
             request=req,

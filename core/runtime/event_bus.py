@@ -21,7 +21,10 @@ class InMemoryEventBus(IEventBus):
         self._history[topic].append(event)
         self._global_history.append(event)
         for handler in self._handlers.get(topic, []):
-            handler(event)
+            try:
+                handler(event)
+            except Exception:
+                pass  # Isolate subscriber failures per CHAOS-001
 
     def subscribe(self, topic: str, handler: EventHandler) -> None:
         if handler not in self._handlers[topic]:

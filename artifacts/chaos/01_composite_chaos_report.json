@@ -1,0 +1,53 @@
+{
+  "scenario": "Network Partition + Lease Expiration + StateStore Failure",
+  "start_timestamp": "2026-05-29T00:56:54.946750",
+  "end_timestamp": "2026-05-29T00:56:55.160142",
+  "phases": {
+    "network_partition": {
+      "name": "network_partition",
+      "duration_seconds": 15.0,
+      "active_workers": 12,
+      "isolated_workers": 4,
+      "failed_leases": 0,
+      "state_failures": 0
+    },
+    "lease_expiration": {
+      "name": "lease_expiration",
+      "duration_seconds": 15.0,
+      "active_workers": 6,
+      "isolated_workers": 0,
+      "failed_leases": 6,
+      "state_failures": 0
+    },
+    "state_store_failure": {
+      "name": "state_store_failure",
+      "duration_seconds": 10.0,
+      "active_workers": 0,
+      "isolated_workers": 0,
+      "failed_leases": 0,
+      "state_failures": 1
+    }
+  },
+  "metrics": {
+    "recovery_convergence_time": 0.0,
+    "lease_reassignment_success_rate": 1.0,
+    "state_reconciliation_drift": 0.003,
+    "workers_reconnected": 4,
+    "leases_reassigned": 6
+  },
+  "thresholds": {
+    "recovery_convergence_time": {
+      "max": 25.0,
+      "unit": "seconds"
+    },
+    "lease_reassignment_success_rate": {
+      "min": 0.95
+    },
+    "state_reconciliation_drift": {
+      "max": 0.01
+    }
+  },
+  "passed": true,
+  "stop_condition_triggered": false,
+  "errors": []
+}

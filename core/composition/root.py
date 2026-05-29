@@ -41,6 +41,13 @@ Ref: Canon RULE 1 (No Direct Execution)
 
 from typing import Any, Dict, Optional
 
+from core.composition.factories import (
+    enterprise_factory,
+    intelligence_factory,
+    observability_factory,
+    runtime_factory,
+)
+
 from core.canon import CanonValidator
 from core.codegraph.bridge import CodeGraphEventSubscriber
 from core.codegraph.drift import CodeGraphDriftDetector, DriftDetector, DriftStore
@@ -179,6 +186,20 @@ class CompositionRoot:
         # EXEC-DIRECTIVE-PILOT-001 — Production Pilot
         strict_pilot_mode: bool = False,
         pilot_trace_correlator: Any = None,
+        # Phase L — Cognitive Memory Layer
+        memory_hierarchy: Any = None,
+        context_compiler: Any = None,
+        skill_graph_manager: Any = None,
+        memory_state_machine: Any = None,
+        cognitive_trace_correlator: Any = None,
+        strict_memory_mode: bool = False,
+        # Phase G — Cognitive Orchestration Layer
+        planner_agent: Any = None,
+        critic_agent: Any = None,
+        optimizer_agent: Any = None,
+        orchestration_state_machine: Any = None,
+        orchestration_trace_correlator: Any = None,
+        strict_orchestration_mode: bool = False,
     ):
         self._started = False
         self._tool_registry = tool_registry
@@ -329,6 +350,22 @@ class CompositionRoot:
         # EXEC-DIRECTIVE-PILOT-001 — Production Pilot
         self._strict_pilot_mode = strict_pilot_mode
         self._pilot_trace_correlator = pilot_trace_correlator
+
+        # Phase L — Cognitive Memory Layer
+        self._memory_hierarchy = memory_hierarchy
+        self._context_compiler = context_compiler
+        self._skill_graph_manager = skill_graph_manager
+        self._memory_state_machine = memory_state_machine
+        self._cognitive_trace_correlator = cognitive_trace_correlator
+        self._strict_memory_mode = strict_memory_mode
+
+        # Phase G — Cognitive Orchestration Layer
+        self._planner_agent = planner_agent
+        self._critic_agent = critic_agent
+        self._optimizer_agent = optimizer_agent
+        self._orchestration_state_machine = orchestration_state_machine
+        self._orchestration_trace_correlator = orchestration_trace_correlator
+        self._strict_orchestration_mode = strict_orchestration_mode
 
         # Phase F1 — Unified Runtime API
         self._unified_runtime: Any = None
@@ -1852,6 +1889,155 @@ class CompositionRoot:
     @pilot_trace_correlator.setter
     def pilot_trace_correlator(self, value: Any) -> None:
         self._pilot_trace_correlator = value
+
+    # ── Phase L — Cognitive Memory Layer ──────────────────────
+
+    @property
+    def memory_hierarchy(self) -> Any:
+        if self._memory_hierarchy is None:
+            self._memory_hierarchy = self._build_memory_hierarchy()
+        return self._memory_hierarchy
+
+    @property
+    def context_compiler(self) -> Any:
+        if self._context_compiler is None:
+            self._context_compiler = self._build_context_compiler()
+        return self._context_compiler
+
+    @property
+    def skill_graph_manager(self) -> Any:
+        if self._skill_graph_manager is None:
+            self._skill_graph_manager = self._build_skill_graph_manager()
+        return self._skill_graph_manager
+
+    @property
+    def memory_state_machine(self) -> Any:
+        if self._memory_state_machine is None:
+            self._memory_state_machine = self._build_memory_state_machine()
+        return self._memory_state_machine
+
+    @property
+    def cognitive_trace_correlator(self) -> Any:
+        if self._cognitive_trace_correlator is None:
+            self._cognitive_trace_correlator = self._build_cognitive_trace_correlator()
+        return self._cognitive_trace_correlator
+
+    @property
+    def strict_memory_mode(self) -> bool:
+        return self._strict_memory_mode
+
+    @strict_memory_mode.setter
+    def strict_memory_mode(self, value: bool) -> None:
+        self._strict_memory_mode = value
+
+    def _build_memory_hierarchy(self) -> Any:
+        from core.memory.memory_hierarchy import MemoryHierarchy
+        return MemoryHierarchy()
+
+    def _build_context_compiler(self) -> Any:
+        from core.memory.context_compiler import ContextCompiler
+        return ContextCompiler()
+
+    def _build_skill_graph_manager(self) -> Any:
+        from core.memory.skill_graph_manager import SkillGraphManager
+        return SkillGraphManager()
+
+    def _build_memory_state_machine(self) -> Any:
+        from core.memory.memory_state_machine import MemoryStateMachine
+        return MemoryStateMachine()
+
+    def _build_cognitive_trace_correlator(self) -> Any:
+        from core.memory.trace_correlator import CognitiveTraceCorrelator
+        return CognitiveTraceCorrelator()
+
+    def build_memory_layer(self) -> None:
+        """Construct all Phase L memory components.
+        
+        LAW 6: Memory models defined outside runtime.
+        LAW 8: Every operation recoverable via cognitive_trace_id.
+        LAW 11: Tenant isolation — no global state.
+        LAW 14: Deterministic retrieval.
+        RULE 1: Each layer has its own import boundary.
+        """
+        self.memory_hierarchy
+        self.context_compiler
+        self.skill_graph_manager
+        self.memory_state_machine
+        self.cognitive_trace_correlator
+
+    # ── Phase G — Cognitive Orchestration Layer ─────────────────
+
+    @property
+    def planner_agent(self) -> Any:
+        if self._planner_agent is None:
+            self._planner_agent = self._build_planner_agent()
+        return self._planner_agent
+
+    @property
+    def critic_agent(self) -> Any:
+        if self._critic_agent is None:
+            self._critic_agent = self._build_critic_agent()
+        return self._critic_agent
+
+    @property
+    def optimizer_agent(self) -> Any:
+        if self._optimizer_agent is None:
+            self._optimizer_agent = self._build_optimizer_agent()
+        return self._optimizer_agent
+
+    @property
+    def orchestration_state_machine(self) -> Any:
+        if self._orchestration_state_machine is None:
+            self._orchestration_state_machine = self._build_orchestration_state_machine()
+        return self._orchestration_state_machine
+
+    @property
+    def orchestration_trace_correlator(self) -> Any:
+        if self._orchestration_trace_correlator is None:
+            self._orchestration_trace_correlator = self._build_orchestration_trace_correlator()
+        return self._orchestration_trace_correlator
+
+    @property
+    def strict_orchestration_mode(self) -> bool:
+        return self._strict_orchestration_mode
+
+    @strict_orchestration_mode.setter
+    def strict_orchestration_mode(self, value: bool) -> None:
+        self._strict_orchestration_mode = value
+
+    def _build_planner_agent(self) -> Any:
+        from core.orchestration.planner_agent import PlannerAgent
+        return PlannerAgent()
+
+    def _build_critic_agent(self) -> Any:
+        from core.orchestration.critic_agent import CriticAgent
+        return CriticAgent()
+
+    def _build_optimizer_agent(self) -> Any:
+        from core.orchestration.optimizer_agent import OptimizerAgent
+        return OptimizerAgent()
+
+    def _build_orchestration_state_machine(self) -> Any:
+        from core.orchestration.orchestration_state_machine import OrchestrationStateMachine
+        return OrchestrationStateMachine()
+
+    def _build_orchestration_trace_correlator(self) -> Any:
+        from core.orchestration.trace_correlator import OrchestrationTraceCorrelator
+        return OrchestrationTraceCorrelator()
+
+    def build_orchestration_layer(self) -> None:
+        """Construct all Phase G orchestration components.
+
+        LAW 1: Deterministic planning.
+        LAW 9: Governance independence.
+        LAW 11: Tenant isolation.
+        RULE 1: No cross-layer imports.
+        """
+        self.planner_agent
+        self.critic_agent
+        self.optimizer_agent
+        self.orchestration_state_machine
+        self.orchestration_trace_correlator
 
     def enforce_readonly_core_modules(self) -> None:  # EXEC-DIRECTIVE-PILOT-001
         """Enforce read-only access to core modules during pilot.

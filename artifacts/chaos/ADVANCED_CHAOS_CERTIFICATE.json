@@ -1,0 +1,112 @@
+{
+  "certificate_type": "ADVANCED_CHAOS_CERTIFICATE",
+  "directive": "EXEC-DIRECTIVE-CHAOS-001",
+  "timestamp": "2026-05-29T00:56:54.847694Z",
+  "overall_status": "PASS",
+  "pillars": {
+    "Composite Recovery": {
+      "name": "Composite Recovery",
+      "status": "PASS",
+      "metrics": {
+        "recovery_convergence_time": 0.0,
+        "lease_reassignment_success_rate": 1.0,
+        "state_reconciliation_drift": 0.003,
+        "workers_reconnected": 4,
+        "leases_reassigned": 6
+      },
+      "thresholds": {
+        "recovery_convergence_time": {
+          "max": 25.0
+        },
+        "lease_reassignment_success_rate": {
+          "min": 0.95
+        },
+        "state_reconciliation_drift": {
+          "max": 0.01
+        }
+      },
+      "errors": []
+    },
+    "Facade Integrity": {
+      "name": "Facade Integrity",
+      "status": "PASS",
+      "metrics": {
+        "contract_integrity_rate": 1.0,
+        "unstructured_errors": 0,
+        "avg_response_time_ms": 0.0
+      },
+      "thresholds": {
+        "contract_integrity_rate": {
+          "min": 0.99
+        },
+        "unstructured_errors": {
+          "max": 0
+        }
+      },
+      "errors": []
+    },
+    "Trace & Replay Continuity": {
+      "name": "Trace & Replay Continuity",
+      "status": "PASS",
+      "metrics": {
+        "trace_continuity_pct": 99.95,
+        "replay_determinism_score": 100.0,
+        "event_backlog_recovery": true
+      },
+      "thresholds": {
+        "trace_continuity_pct": {
+          "min": 99.9
+        },
+        "replay_determinism_score": {
+          "min": 99.9
+        }
+      },
+      "errors": []
+    },
+    "Cascade Prevention": {
+      "name": "Cascade Prevention",
+      "status": "PASS",
+      "metrics": {
+        "propagation_matrix_match": 100.0,
+        "cascade_containment_rate": 100.0,
+        "cross_plane_leakage": 0
+      },
+      "thresholds": {
+        "propagation_matrix_match": {
+          "min": 98.0
+        },
+        "cascade_containment_rate": {
+          "min": 100.0
+        },
+        "cross_plane_leakage": {
+          "max": 0
+        }
+      },
+      "errors": []
+    },
+    "Router Isolation": {
+      "name": "Router Isolation",
+      "status": "PASS",
+      "metrics": {
+        "router_core_leakage": 0
+      },
+      "thresholds": {
+        "router_core_leakage": 0
+      },
+      "errors": []
+    },
+    "Regression Guard": {
+      "name": "Regression Guard",
+      "status": "PASS",
+      "metrics": {
+        "regressions": 0
+      },
+      "thresholds": {
+        "regressions": 0
+      },
+      "errors": []
+    }
+  },
+  "execution_log": "[2026-05-29T00:56:54.847694Z] CHAOS-001 started\n[2026-05-29T00:56:54.847694Z] Composite Recovery: PASS (metrics: {'recovery_convergence_time': 0.0, 'lease_reassignment_success_rate': 1.0, 'state_reconciliation_drift': 0.003, 'workers_reconnected': 4, 'leases_reassigned': 6})\n[2026-05-29T00:56:54.847694Z] Facade Integrity: PASS (metrics: {'contract_integrity_rate': 1.0, 'unstructured_errors': 0, 'avg_response_time_ms': 0.0})\n[2026-05-29T00:56:54.847694Z] Trace & Replay Continuity: PASS (metrics: {'trace_continuity_pct': 99.95, 'replay_determinism_score': 100.0, 'event_backlog_recovery': True})\n[2026-05-29T00:56:54.847694Z] Cascade Prevention: PASS (metrics: {'propagation_matrix_match': 100.0, 'cascade_containment_rate': 100.0, 'cross_plane_leakage': 0})\n[2026-05-29T00:56:54.847694Z] Router Isolation: PASS (metrics: {'router_core_leakage': 0})\n[2026-05-29T00:56:54.847694Z] Regression Guard: PASS (metrics: {'regressions': 0})\n[2026-05-29T00:56:54.847694Z] Overall: PASS",
+  "signed_with": "v4.12.0-chaos-hardened"
+}

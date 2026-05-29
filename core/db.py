@@ -1,8 +1,35 @@
 import os
 import json
+import logging
 import aiosqlite
 from typing import Dict, List, Optional
 from datetime import datetime
+
+
+logger = logging.getLogger("emo_ai.db")
+
+
+class SecurityError(Exception):
+    """Base exception for security violations in the database layer."""
+
+class InvalidColumnError(SecurityError):
+    """Raised when an unwhitelisted column name is used in a dynamic query."""
+
+
+# Per-table whitelists for dynamic UPDATE SET clauses.
+# Each frozenset defines the ONLY column names allowed in UPDATE ... SET {fields}.
+ALLOWED_TASK_COLUMNS = frozenset({
+    "status", "result", "error", "progress", "message", "agent", "tool_used",
+})
+ALLOWED_PROJECT_COLUMNS = frozenset({
+    "name", "description", "path", "is_active", "is_archived",
+})
+ALLOWED_SESSION_COLUMNS = frozenset({
+    "name", "is_active", "is_archived",
+})
+ALLOWED_CONVERSATION_COLUMNS = frozenset({
+    "name", "is_active", "is_archived",
+})
 
 
 DB_PATH = os.getenv("EMO_DB_PATH", "emo_ai.db")
@@ -150,6 +177,28 @@ class Database:
             await db.commit()
         self._initialized = True
 
+    # ── Security helpers ──────────────────────────────────────────────
+
+    @staticmethod
+    def _whitelist_columns(
+        allowed: frozenset,
+        provided: Dict[str, object],
+        table_label: str = "table",
+    ) -> str:
+        """Build a safe ``SET col = ?, col2 = ?`` string from *provided*
+        after validating every key against *allowed*.
+
+        Raises *InvalidColumnError* (a ``SecurityError``) if any key in
+        *provided* is not in *allowed*.
+        """
+        bad = [k for k in provided if k not in allowed]
+        if bad:
+            raise InvalidColumnError(
+                f"Unwhitelisted column(s) {bad} for {table_label}. "
+                f"Allowed: {sorted(allowed)}."
+            )
+        return ", ".join(f"{k} = ?" for k in provided.keys())
+
     # --- Tasks ---
 
     async def create_task(
@@ -179,7 +228,7 @@ class Database:
         **kwargs,
     ) -> Optional[Dict]:
         now = datetime.utcnow().isoformat()
-        fields = ", ".join(f"{k} = ?" for k in kwargs.keys())
+        fields = self._whitelist_columns(ALLOWED_TASK_COLUMNS, kwargs, "tasks")
         values = list(kwargs.values()) + [now, task_id]
         async with aiosqlite.connect(self.db_path) as db:
             await db.execute(
@@ -306,7 +355,7 @@ class Database:
 
     async def update_project(self, project_id: str, **kwargs) -> bool:
         now = datetime.utcnow().isoformat()
-        fields = ", ".join(f"{k} = ?" for k in kwargs.keys())
+        fields = self._whitelist_columns(ALLOWED_PROJECT_COLUMNS, kwargs, "projects")
         values = list(kwargs.values()) + [now, project_id]
         async with aiosqlite.connect(self.db_path) as db:
             await db.execute(f"UPDATE projects SET {fields}, updated_at = ? WHERE id = ?", values)
@@ -380,7 +429,7 @@ class Database:
 
     async def update_session(self, session_id: str, **kwargs) -> bool:
         now = datetime.utcnow().isoformat()
-        fields = ", ".join(f"{k} = ?" for k in kwargs.keys())
+        fields = self._whitelist_columns(ALLOWED_SESSION_COLUMNS, kwargs, "sessions")
         values = list(kwargs.values()) + [now, session_id]
         async with aiosqlite.connect(self.db_path) as db:
             await db.execute(f"UPDATE project_sessions SET {fields}, updated_at = ? WHERE id = ?", values)
@@ -440,7 +489,7 @@ class Database:
 
     async def update_conversation(self, conv_id: str, **kwargs) -> bool:
         now = datetime.utcnow().isoformat()
-        fields = ", ".join(f"{k} = ?" for k in kwargs.keys())
+        fields = self._whitelist_columns(ALLOWED_CONVERSATION_COLUMNS, kwargs, "conversations")
         values = list(kwargs.values()) + [now, conv_id]
         async with aiosqlite.connect(self.db_path) as db:
             await db.execute(f"UPDATE conversations SET {fields}, updated_at = ? WHERE id = ?", values)

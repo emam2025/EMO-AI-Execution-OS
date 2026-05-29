@@ -28,6 +28,11 @@ ALLOWED_EXECUTION_ENGINE_FILES: Set[str] = {
     os.path.normpath("core/execution_engine.py"),
     # Composition root (internal)
     os.path.normpath("core/composition/root.py"),
+    # Factory modules (delegated from CompositionRoot)
+    os.path.normpath("core/composition/factories/runtime_factory.py"),
+    os.path.normpath("core/composition/factories/intelligence_factory.py"),
+    os.path.normpath("core/composition/factories/enterprise_factory.py"),
+    os.path.normpath("core/composition/factories/observability_factory.py"),
     # Bootstrap wrapper
     os.path.normpath("core/runtime/bootstrap.py"),
 }

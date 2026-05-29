@@ -5,9 +5,8 @@ from fastapi import APIRouter
 from pydantic import BaseModel
 from fastapi.responses import JSONResponse
 
-from core.state import state
+from core.runtime.data_providers import get_db, get_state
 from routers.utils.context_builder import build_conversation_context
-from core.db import db
 from routers.stream import (
     publish_step,
     publish_result,
@@ -33,27 +32,27 @@ async def chat(req: ChatRequest):
     conversation_id = req.conversation_id
 
     # Create conversation if missing
-    if conversation_id and conversation_id not in state.conversations:
-        state.conversations[conversation_id] = {"messages": []}
-        await db.create_conversation(conversation_id)
+    if conversation_id and conversation_id not in get_state().conversations:
+        get_state().conversations[conversation_id] = {"messages": []}
+        await get_db().create_conversation(conversation_id)
 
     # Save user message
     if conversation_id:
-        state.conversations[conversation_id]["messages"].append({
+        get_state().conversations[conversation_id]["messages"].append({
             "role": "user",
             "content": req.message,
         })
         msg_id = str(uuid.uuid4())[:8]
-        await db.add_message(msg_id, conversation_id, "user", req.message)
+        await get_db().add_message(msg_id, conversation_id, "user", req.message)
 
     # Create task in DB with project/session context
-    await db.create_task(task_id, req.message, conversation_id)
+    await get_db().create_task(task_id, req.message, conversation_id)
     if req.project_id:
-        await db.update_task(task_id, project_id=req.project_id)
+        await get_db().update_task(task_id, project_id=req.project_id)
     if req.session_id:
-        await db.update_task(task_id, session_id=req.session_id)
+        await get_db().update_task(task_id, session_id=req.session_id)
     if req.file_path:
-        await db.update_task(task_id, tool_used=req.file_path)
+        await get_db().update_task(task_id, tool_used=req.file_path)
 
     # Start background processing
     asyncio.create_task(
@@ -77,7 +76,7 @@ async def process_task(
     """Background task processor with SSE streaming."""
     try:
         # Update task status
-        await db.update_task(task_id, status="running")
+        await get_db().update_task(task_id, status="running")
         publish_step(task_id, "start", step="processing", agent="planner")
         publish_global("task_update", {
             "task_id": task_id,
@@ -88,9 +87,9 @@ async def process_task(
         # Get conversation history for context
         conversation_messages = []
         if conversation_id:
-            if conversation_id not in state.conversations:
-                state.conversations[conversation_id] = {"messages": []}
-            conversation_messages = state.conversations[conversation_id]["messages"]
+            if conversation_id not in get_state().conversations:
+                get_state().conversations[conversation_id] = {"messages": []}
+            conversation_messages = get_state().conversations[conversation_id]["messages"]
 
         publish_step(task_id, "complete", step="context_built", progress=20)
         publish_global("task_update", {
@@ -175,12 +174,12 @@ File Content:
                 publish_step(task_id, "error", step="project_analysis_failed", agent="planner", result=str(e), progress=30)
 
         # Route to appropriate agent
-        agent = state.agents["planner"]
+        agent = get_state().agents["planner"]
 
         # Simple classification: if code-related → coder, else → planner
         code_keywords = ["كود", "code", "دالة", "function", "class", "برمج", "script"]
         if any(kw in message.lower() for kw in code_keywords):
-            agent = state.agents.get("coder", agent)
+            agent = get_state().agents.get("coder", agent)
 
         publish_step(
             task_id, "start",
@@ -229,15 +228,15 @@ File Content:
 
         # Save assistant response
         if conversation_id:
-            state.conversations[conversation_id]["messages"].append({
+            get_state().conversations[conversation_id]["messages"].append({
                 "role": "assistant",
                 "content": result,
             })
             msg_id = str(uuid.uuid4())[:8]
-            await db.add_message(msg_id, conversation_id, "assistant", result)
+            await get_db().add_message(msg_id, conversation_id, "assistant", result)
 
         # Complete task
-        await db.update_task(
+        await get_db().update_task(
             task_id,
             status="complete",
             result=result,
@@ -256,7 +255,7 @@ File Content:
         close_stream(task_id)
 
     except Exception as e:
-        await db.update_task(
+        await get_db().update_task(
             task_id,
             status="error",
             error=str(e),

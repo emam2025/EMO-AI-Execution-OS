@@ -37,6 +37,7 @@ from core.ownership_manager import LeaseStore, OwnershipManager
 from core.memory_pressure import CheckpointManager
 from core.execution_memory import ExecutionMemory
 from core.execution_engine import ExecutionEngine
+from core.composition.root import build_minimal_engine  # LAW 13 compliance
 from core.recovery_coordinator import (
     RecoveryCoordinator, DeterministicResume, ResumeToken,
     FailedTask,
@@ -166,7 +167,9 @@ def build_sequential_dag() -> DependencyGraph:
 # TASK 1: Mid-Execution Failure Simulation
 # ═══════════════════════════════════════════════════════════════════
 
-def task1_failure_simulation() -> Dict[str, Any]:
+def task1_failure_simulation(
+    engine: Optional["ExecutionEngine"] = None,  # LAW 13 compliance
+) -> Dict[str, Any]:
     E.write(f"\n{'=' * 70}")
     E.write(f"TASK 1: MID-EXECUTION FAILURE SIMULATION")
     E.write(f"{'=' * 70}")
@@ -186,7 +189,7 @@ def task1_failure_simulation() -> Dict[str, Any]:
     pool = ThreadPoolExecutor(max_workers=2)
     cancel_flag = Event()
 
-    engine = ExecutionEngine(
+    engine = engine or build_minimal_engine(
         tool_registry={},
         memory=memory,
         checkpoint_manager=checkpoint_mgr,
@@ -357,7 +360,11 @@ def task2_checkpoint_restoration(t1: Dict[str, Any]) -> Dict[str, Any]:
 # TASK 3: DAG Resumption & Ownership Reassignment
 # ═══════════════════════════════════════════════════════════════════
 
-def task3_resumption(t1: Dict[str, Any], t2: Dict[str, Any]) -> Dict[str, Any]:
+def task3_resumption(
+    t1: Dict[str, Any],
+    t2: Dict[str, Any],
+    engine: Optional["ExecutionEngine"] = None,  # LAW 13 compliance
+) -> Dict[str, Any]:
     E.write(f"\n{'=' * 70}")
     E.write(f"TASK 3: DAG RESUMPTION & OWNERSHIP REASSIGNMENT")
     E.write(f"{'=' * 70}")
@@ -409,7 +416,7 @@ def task3_resumption(t1: Dict[str, Any], t2: Dict[str, Any]) -> Dict[str, Any]:
 
     # 3b. Resume DAG execution (B → C with skip-completed runner)
     E.write(f"\n[3b] Execute resumed DAG [B → C]")
-    engine = ExecutionEngine(
+    engine = engine or build_minimal_engine(
         tool_registry={},
         memory=ExecutionMemory(db_path=str(MEMORY_DB)),
         checkpoint_manager=checkpoint_mgr,

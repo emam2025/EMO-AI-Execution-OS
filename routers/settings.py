@@ -54,8 +54,8 @@ async def update_setting(req: SettingsUpdate):
     # Reload agents if system_instructions, provider, or model changed
     if req.key in ("system_instructions", "provider", "model"):
         try:
-            from core.state import state
-            state.reload_agents()
+            from core.runtime.data_providers import get_state
+            get_state().reload_agents()
         except Exception:
             pass
     return JSONResponse({"status": "saved", "key": req.key})

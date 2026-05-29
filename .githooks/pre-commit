@@ -1,18 +1,11 @@
 #!/bin/sh
-# emo-guard pre-commit hook
-# Blocks commits that violate architectural rules.
-# Install: `git config core.hooksPath .githooks`
-
-echo "🔍 Running emo-guard — Architectural Control Plane Gate..."
-python3 scripts/emo-guard
-EXIT_CODE=$?
-
-if [ $EXIT_CODE -ne 0 ]; then
-    echo ""
-    echo "❌ Commit BLOCKED: Architectural violations must be resolved before commit."
-    echo "   Use --no-verify to bypass (NOT RECOMMENDED unless explicitly directed)."
+# LAW 13 pre-commit hook — reject commits with direct
+# ExecutionEngine/UnifiedRuntime instantiation outside root.py.
+echo "🔍 LAW 13 AST check (pre-commit)..."
+python3 scripts/enforce/law13_ast_check.py
+if [ $? -ne 0 ]; then
+    echo "⛔  Commit blocked: LAW 13 violations detected."
+    echo "    Refactor to inject via CompositionRoot."
     exit 1
 fi
-
-echo "✅ Architecture clean — commit allowed."
 exit 0

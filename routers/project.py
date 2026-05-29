@@ -4,6 +4,7 @@ from pathlib import Path
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
+from core.runtime.data_providers import get_db
 
 router = APIRouter(prefix="/api/projects", tags=["projects"])
 
@@ -28,10 +29,9 @@ from project_tools import WORKSPACE_ROOT, EMO_AI_PROJECT_DIR
 @router.get("")
 async def list_projects(archived: bool = False):
     """List all projects (active or archived)."""
-    from core.db import db
-    await db.initialize()
-    projects = await db.get_projects(archived=archived)
-    active = await db.get_active_project()
+    await get_db().initialize()
+    projects = await get_db().get_projects(archived=archived)
+    active = await get_db().get_active_project()
     return JSONResponse({
         "projects": projects,
         "active_project": active,
@@ -41,8 +41,7 @@ async def list_projects(archived: bool = False):
 @router.post("")
 async def create_project(req: ProjectCreate):
     """Create a new project with directory in isolated workspace."""
-    from core.db import db
-    await db.initialize()
+    await get_db().initialize()
 
     name = req.name.strip()
     if not name:
@@ -63,8 +62,8 @@ async def create_project(req: ProjectCreate):
     try:
         project_path.mkdir(parents=True, exist_ok=True)
         project_id = str(uuid.uuid4())[:8]
-        await db.create_project(project_id, name, str(project_path), req.description)
-        await db.activate_project(project_id)
+        await get_db().create_project(project_id, name, str(project_path), req.description)
+        await get_db().activate_project(project_id)
 
         import json
         settings_file = Path(".emo_settings.json")
@@ -85,10 +84,9 @@ async def create_project(req: ProjectCreate):
 @router.post("/{project_id}/activate")
 async def activate_project(project_id: str):
     """Set a project as active."""
-    from core.db import db
-    await db.initialize()
-    await db.activate_project(project_id)
-    project = await db.get_active_project()
+    await get_db().initialize()
+    await get_db().activate_project(project_id)
+    project = await get_db().get_active_project()
     if project:
         import json
         settings_file = Path(".emo_settings.json")
@@ -106,34 +104,31 @@ async def activate_project(project_id: str):
 @router.post("/{project_id}/archive")
 async def archive_project(project_id: str):
     """Archive a project."""
-    from core.db import db
-    await db.initialize()
-    await db.archive_project(project_id)
+    await get_db().initialize()
+    await get_db().archive_project(project_id)
     return JSONResponse({"status": "ok"})
 
 
 @router.post("/{project_id}/unarchive")
 async def unarchive_project(project_id: str):
     """Restore an archived project."""
-    from core.db import db
-    await db.initialize()
-    await db.unarchive_project(project_id)
+    await get_db().initialize()
+    await get_db().unarchive_project(project_id)
     return JSONResponse({"status": "ok"})
 
 
 @router.delete("/{project_id}")
 async def delete_project(project_id: str):
     """Delete a project and its directory."""
-    from core.db import db
-    await db.initialize()
+    await get_db().initialize()
     project = None
-    projects = await db.get_projects(archived=False)
+    projects = await get_db().get_projects(archived=False)
     for p in projects:
         if p["id"] == project_id:
             project = p
             break
     if not project:
-        projects = await db.get_projects(archived=True)
+        projects = await get_db().get_projects(archived=True)
         for p in projects:
             if p["id"] == project_id:
                 project = p
@@ -146,81 +141,73 @@ async def delete_project(project_id: str):
                 shutil.rmtree(p)
         except Exception:
             pass
-    await db.delete_project(project_id)
+    await get_db().delete_project(project_id)
     return JSONResponse({"status": "ok"})
 
 
 @router.get("/{project_id}/sessions")
 async def list_sessions(project_id: str, archived: bool = False):
     """List sessions for a project."""
-    from core.db import db
-    await db.initialize()
-    sessions = await db.get_sessions(project_id, archived=archived)
+    await get_db().initialize()
+    sessions = await get_db().get_sessions(project_id, archived=archived)
     return JSONResponse({"sessions": sessions})
 
 
 @router.post("/{project_id}/sessions")
 async def create_session(project_id: str, req: SessionCreate):
     """Create a new session for a project."""
-    from core.db import db
-    await db.initialize()
+    await get_db().initialize()
     session_id = str(uuid.uuid4())[:8]
-    await db.create_session(session_id, project_id, req.name)
-    await db.activate_session(session_id)
+    await get_db().create_session(session_id, project_id, req.name)
+    await get_db().activate_session(session_id)
     return JSONResponse({"status": "ok", "id": session_id, "name": req.name})
 
 
 @router.post("/sessions/{session_id}/activate")
 async def activate_session(session_id: str):
     """Set a session as active."""
-    from core.db import db
-    await db.initialize()
-    await db.activate_session(session_id)
+    await get_db().initialize()
+    await get_db().activate_session(session_id)
     return JSONResponse({"status": "ok"})
 
 
 @router.post("/sessions/{session_id}/archive")
 async def archive_session(session_id: str):
     """Archive a session."""
-    from core.db import db
-    await db.initialize()
-    await db.archive_session(session_id)
+    await get_db().initialize()
+    await get_db().archive_session(session_id)
     return JSONResponse({"status": "ok"})
 
 
 @router.post("/sessions/{session_id}/unarchive")
 async def unarchive_session(session_id: str):
     """Restore an archived session."""
-    from core.db import db
-    await db.initialize()
-    await db.unarchive_session(session_id)
+    await get_db().initialize()
+    await get_db().unarchive_session(session_id)
     return JSONResponse({"status": "ok"})
 
 
 @router.delete("/sessions/{session_id}")
 async def delete_session(session_id: str):
     """Delete a session."""
-    from core.db import db
-    await db.initialize()
-    await db.delete_session(session_id)
+    await get_db().initialize()
+    await get_db().delete_session(session_id)
     return JSONResponse({"status": "ok"})
 
 
 @router.post("/sessions/{session_id}/rename")
 async def rename_session(session_id: str, req: SessionCreate):
     """Rename a session."""
-    from core.db import db
-    await db.initialize()
-    await db.update_session(session_id, name=req.name)
+    await get_db().initialize()
+    await get_db().update_session(session_id, name=req.name)
     return JSONResponse({"status": "ok"})
 
 
 @router.get("/info")
 async def get_project_info():
     """Get current project information (backward compatibility)."""
-    from core.db import db
-    await db.initialize()
-    active = await db.get_active_project()
+    await get_db().initialize()
+    active = await get_db().get_active_project()
     if not active:
         project_path = WORKSPACE_ROOT
         return JSONResponse({
@@ -248,19 +235,18 @@ async def get_project_info():
 @router.get("/files")
 async def get_project_files(project_id: str = ""):
     """Get files in a project directory."""
-    from core.db import db
-    await db.initialize()
+    await get_db().initialize()
 
     project = None
     if project_id:
-        projects = await db.get_projects(archived=False)
+        projects = await get_db().get_projects(archived=False)
         for p in projects:
             if p["id"] == project_id:
                 project = p
                 break
 
     if not project:
-        project = await db.get_active_project()
+        project = await get_db().get_active_project()
 
     if not project:
         return JSONResponse({"files": []})
@@ -304,23 +290,22 @@ async def get_project_files(project_id: str = ""):
 @router.get("/read-file")
 async def read_file_content(project_id: str = "", file_path: str = ""):
     """Read content of a specific file."""
-    from core.db import db
     from project_tools import WORKSPACE_ROOT, _safe_path
-    await db.initialize()
+    await get_db().initialize()
 
     if not file_path:
         return JSONResponse({"content": "No file path provided"})
 
     project = None
     if project_id:
-        projects = await db.get_projects(archived=False)
+        projects = await get_db().get_projects(archived=False)
         for p in projects:
             if p["id"] == project_id:
                 project = p
                 break
 
     if not project:
-        project = await db.get_active_project()
+        project = await get_db().get_active_project()
 
     if not project:
         return JSONResponse({"content": "No project selected"})

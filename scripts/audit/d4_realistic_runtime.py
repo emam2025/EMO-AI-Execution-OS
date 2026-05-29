@@ -80,7 +80,14 @@ def sha256(obj: Any) -> str:
     ).hexdigest()
 
 
-def make_engine(memory_path: str = "", ckpt_path: str = "") -> ExecutionEngine:
+def make_engine(
+    memory_path: str = "",
+    ckpt_path: str = "",
+    engine: Optional[ExecutionEngine] = None,  # LAW 13 compliance
+) -> ExecutionEngine:
+    if engine is not None:
+        return engine
+    from core.composition.root import build_minimal_engine
     kwargs: Dict[str, Any] = {
         "tool_registry": {},
         "contract_validator": None,
@@ -90,7 +97,7 @@ def make_engine(memory_path: str = "", ckpt_path: str = "") -> ExecutionEngine:
         kwargs["memory"] = ExecutionMemory(db_path=memory_path)
     if ckpt_path:
         kwargs["checkpoint_manager"] = CheckpointManager(db_path=Path(ckpt_path))
-    return ExecutionEngine(**kwargs)
+    return build_minimal_engine(**kwargs)
 
 
 def safe_runner(node: PlanNode) -> Dict[str, Any]:

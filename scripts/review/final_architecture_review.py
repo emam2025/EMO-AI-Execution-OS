@@ -76,6 +76,30 @@ KNOWN_CONSTRAINTS: List[Tuple[str, str, str, str, str, str]] = [
         "Deferred to K6 phase. No runtime impact — layer is not wired in CompositionRoot.",
         "low",
     ),
+    (
+        "PC-008",
+        "Auth — Rate Limiting",
+        "`/api/auth/refresh` has no rate limiting — brute-force refresh token rotation possible.",
+        "LAW 3, RULE 2",
+        "Add in-memory rate limiter (10 req/min per user) before wider deployment. Acceptable for pilot ≤5 tenants.",
+        "medium",
+    ),
+    (
+        "PC-009",
+        "Auth — Token Replay Persistence",
+        "Refresh token replay detection uses in-memory store — server restart loses token state.",
+        "LAW 3, RULE 2",
+        "Migrate to persistent store (Redis/DB) post-freeze. Acceptable for single-node pilot.",
+        "low",
+    ),
+    (
+        "PC-010",
+        "Auth — Migration",
+        "JWT lifecycle hardening (2h expiry, refresh rotation, one-time-use) deployed in-place — no active session migration path.",
+        "LAW 3",
+        "Existing sessions expire within 2h requiring re-login. Acceptable for pilot.",
+        "low",
+    ),
 ]
 
 

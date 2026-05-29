@@ -11,6 +11,8 @@ from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from fastapi import Depends
+from starlette.middleware.base import BaseHTTPMiddleware
 
 # Load environment variables
 load_dotenv()
@@ -31,7 +33,7 @@ from routers.project import router as project_router
 from core.state import state
 from core.tasks import cleanup_old_tasks_loop
 from core.db import db
-from middleware.auth import auth_middleware
+from middleware.auth import auth_middleware, require_auth
 from brain import Brain
 
 # Global Telegram bot instance
@@ -151,7 +153,11 @@ async def lifespan(app: FastAPI):
             import bcrypt
             admin_id = str(uuid.uuid4())
             admin_username = os.getenv("EMO_AUTH_USERNAME", "admin")
-            admin_password = os.getenv("EMO_AUTH_PASSWORD", "admin123456")
+            admin_password = os.getenv("EMO_AUTH_PASSWORD")
+            if not admin_password:
+                raise RuntimeError(
+                    "EMO_AUTH_PASSWORD environment variable is required when auth is enabled"
+                )
             password_hash = bcrypt.hashpw(
                 admin_password.encode("utf-8"), bcrypt.gensalt()
             ).decode("utf-8")
@@ -189,6 +195,23 @@ async def lifespan(app: FastAPI):
         pass
 
 
+# ── Security Headers Middleware ────────────────────────────────
+class SecurityHeadersMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request: Request, call_next):
+        response = await call_next(request)
+        response.headers["Content-Security-Policy"] = (
+            "default-src 'self'; script-src 'self' 'unsafe-inline'; "
+            "style-src 'self' 'unsafe-inline'; img-src 'self' data:; "
+            "font-src 'self'; connect-src 'self'"
+        )
+        response.headers["Strict-Transport-Security"] = (
+            "max-age=31536000; includeSubDomains"
+        )
+        response.headers["X-Frame-Options"] = "DENY"
+        response.headers["X-Content-Type-Options"] = "nosniff"
+        return response
+
+
 app = FastAPI(
     title="Emo AI Orchestrator",
     version="4.2.0",
@@ -218,6 +241,9 @@ app = FastAPI(
         "url": "https://opensource.org/licenses/MIT",
     },
 )
+
+# Add security headers middleware (applied before auth)
+app.add_middleware(SecurityHeadersMiddleware)
 
 # Add auth middleware
 app.middleware("http")(auth_middleware)
@@ -264,8 +290,8 @@ except Exception as e:
 
 
 @app.get("/api/status")
-async def api_status():
-    """Get server status."""
+async def api_status(user: dict = Depends(require_auth(role="operator"))):
+    """Get server status.  Requires operator role."""
     from routers.settings import load_settings
     settings = load_settings()
     return JSONResponse({

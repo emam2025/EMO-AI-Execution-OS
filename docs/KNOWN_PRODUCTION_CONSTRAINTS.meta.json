@@ -1,7 +1,7 @@
 {
-  "constraint_count": 7,
-  "signature": "2afe9c2d5e486e208fafa5963c6d0e6ab9ded4e528a4331561c22a00c4f896ca",
-  "output_path": "/Users/AI Workspace/Emo-AI/docs/KNOWN_PRODUCTION_CONSTRAINTS.md",
+  "constraint_count": 10,
+  "signature": "c7a58c7a6a1710284690cf44d6cb5fea87023075686f269d027e56dee583a2a3",
+  "output_path": "docs/KNOWN_PRODUCTION_CONSTRAINTS.md",
   "constraints": [
     {
       "id": "PC-001",
@@ -57,6 +57,30 @@
       "description": "Multi-agent layer (G5) has zero test coverage \u2014 conceptual only. Not activated in production.",
       "canon_law": "LAW 5, RULE 2",
       "mitigation": "Deferred to K6 phase. No runtime impact \u2014 layer is not wired in CompositionRoot.",
+      "severity": "low"
+    },
+    {
+      "id": "PC-008",
+      "area": "Auth \u2014 Rate Limiting",
+      "description": "`/api/auth/refresh` has no rate limiting \u2014 brute-force refresh token rotation possible.",
+      "canon_law": "LAW 3, RULE 2",
+      "mitigation": "Add in-memory rate limiter (10 req/min per user) before wider deployment. Acceptable for pilot \u22645 tenants.",
+      "severity": "medium"
+    },
+    {
+      "id": "PC-009",
+      "area": "Auth \u2014 Token Replay Persistence",
+      "description": "Refresh token replay detection uses in-memory store \u2014 server restart loses token state.",
+      "canon_law": "LAW 3, RULE 2",
+      "mitigation": "Migrate to persistent store (Redis/DB) post-freeze. Acceptable for single-node pilot.",
+      "severity": "low"
+    },
+    {
+      "id": "PC-010",
+      "area": "Auth \u2014 Migration",
+      "description": "JWT lifecycle hardening (2h expiry, refresh rotation, one-time-use) deployed in-place \u2014 no active session migration path.",
+      "canon_law": "LAW 3",
+      "mitigation": "Existing sessions expire within 2h requiring re-login. Acceptable for pilot.",
       "severity": "low"
     }
   ]

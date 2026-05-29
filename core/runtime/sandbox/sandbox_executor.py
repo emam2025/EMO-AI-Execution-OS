@@ -30,23 +30,10 @@ from core.runtime.sandbox.sandbox_errors import (
 
 logger = logging.getLogger("emo_ai.sandbox.executor")
 
-SANDBOX_PY = """
-import json, sys, traceback
-
-def run():
-    payload = json.loads(sys.stdin.read())
-    try:
-        tool_fn = payload["tool"]
-        inputs = payload.get("inputs", {})
-        result = __import__("builtins").eval(f"exec(open('/dev/stdin').read())")
-    except Exception as e:
-        result = {"error": str(e), "traceback": traceback.format_exc()}
-    sys.stdout.write(json.dumps(result))
-    sys.stdout.flush()
-
-if __name__ == "__main__":
-    run()
-"""
+# NOTE: SANDBOX_PY removed in EXEC-DIRECTIVE-SEC-001.
+# The constant contained eval()+exec() — a CRITICAL sandbox escape vector.
+# All sandbox execution goes through _build_worker_script() which uses
+# safe subprocess execution (no eval/exec). See execute() method below.
 
 
 class SandboxExecutor:

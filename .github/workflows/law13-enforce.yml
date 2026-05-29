@@ -1,0 +1,19 @@
+name: LAW 13 Enforcement
+
+on:
+  push:
+    branches: [main, develop, 'v*.*.*']
+  pull_request:
+    branches: [main]
+
+jobs:
+  law13-ast-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+      - name: Run LAW 13 AST scanner
+        run: python scripts/enforce/law13_ast_check.py

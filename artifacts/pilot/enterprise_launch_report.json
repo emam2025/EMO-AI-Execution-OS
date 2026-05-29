@@ -1,0 +1,119 @@
+{
+  "timestamp": "2026-05-29T01:09:21.959175+00:00",
+  "strict_enterprise_mode": true,
+  "tenant_count": 10,
+  "tenants": [
+    {
+      "tenant_id": "tenant-alpha",
+      "tier": "starter",
+      "isolated_repo_path": "/Users/AI Workspace/Emo-AI/scripts/pilot/../../artifacts/pilot/tenants/tenant-alpha",
+      "dedicated_worker_pool_size": 2,
+      "quota_limits": {
+        "dag_execution": "1000",
+        "api_call": "5000",
+        "storage_gb": "50"
+      }
+    },
+    {
+      "tenant_id": "tenant-beta",
+      "tier": "professional",
+      "isolated_repo_path": "/Users/AI Workspace/Emo-AI/scripts/pilot/../../artifacts/pilot/tenants/tenant-beta",
+      "dedicated_worker_pool_size": 4,
+      "quota_limits": {
+        "dag_execution": "5000",
+        "api_call": "20000",
+        "storage_gb": "200"
+      }
+    },
+    {
+      "tenant_id": "tenant-gamma",
+      "tier": "enterprise",
+      "isolated_repo_path": "/Users/AI Workspace/Emo-AI/scripts/pilot/../../artifacts/pilot/tenants/tenant-gamma",
+      "dedicated_worker_pool_size": 8,
+      "quota_limits": {
+        "dag_execution": "20000",
+        "api_call": "100000",
+        "storage_gb": "1000"
+      }
+    },
+    {
+      "tenant_id": "tenant-delta",
+      "tier": "starter",
+      "isolated_repo_path": "/Users/AI Workspace/Emo-AI/scripts/pilot/../../artifacts/pilot/tenants/tenant-delta",
+      "dedicated_worker_pool_size": 2,
+      "quota_limits": {
+        "dag_execution": "500",
+        "api_call": "2500",
+        "storage_gb": "25"
+      }
+    },
+    {
+      "tenant_id": "tenant-epsilon",
+      "tier": "professional",
+      "isolated_repo_path": "/Users/AI Workspace/Emo-AI/scripts/pilot/../../artifacts/pilot/tenants/tenant-epsilon",
+      "dedicated_worker_pool_size": 4,
+      "quota_limits": {
+        "dag_execution": "3000",
+        "api_call": "15000",
+        "storage_gb": "150"
+      }
+    },
+    {
+      "tenant_id": "tenant-zeta",
+      "tier": "enterprise",
+      "isolated_repo_path": "/Users/AI Workspace/Emo-AI/scripts/pilot/../../artifacts/pilot/tenants/tenant-zeta",
+      "dedicated_worker_pool_size": 6,
+      "quota_limits": {
+        "dag_execution": "15000",
+        "api_call": "75000",
+        "storage_gb": "750"
+      }
+    },
+    {
+      "tenant_id": "tenant-eta",
+      "tier": "starter",
+      "isolated_repo_path": "/Users/AI Workspace/Emo-AI/scripts/pilot/../../artifacts/pilot/tenants/tenant-eta",
+      "dedicated_worker_pool_size": 2,
+      "quota_limits": {
+        "dag_execution": "750",
+        "api_call": "4000",
+        "storage_gb": "40"
+      }
+    },
+    {
+      "tenant_id": "tenant-theta",
+      "tier": "professional",
+      "isolated_repo_path": "/Users/AI Workspace/Emo-AI/scripts/pilot/../../artifacts/pilot/tenants/tenant-theta",
+      "dedicated_worker_pool_size": 4,
+      "quota_limits": {
+        "dag_execution": "4000",
+        "api_call": "18000",
+        "storage_gb": "180"
+      }
+    },
+    {
+      "tenant_id": "tenant-iota",
+      "tier": "enterprise",
+      "isolated_repo_path": "/Users/AI Workspace/Emo-AI/scripts/pilot/../../artifacts/pilot/tenants/tenant-iota",
+      "dedicated_worker_pool_size": 8,
+      "quota_limits": {
+        "dag_execution": "25000",
+        "api_call": "120000",
+        "storage_gb": "1200"
+      }
+    },
+    {
+      "tenant_id": "tenant-kappa",
+      "tier": "starter",
+      "isolated_repo_path": "/Users/AI Workspace/Emo-AI/scripts/pilot/../../artifacts/pilot/tenants/tenant-kappa",
+      "dedicated_worker_pool_size": 2,
+      "quota_limits": {
+        "dag_execution": "600",
+        "api_call": "3000",
+        "storage_gb": "30"
+      }
+    }
+  ],
+  "errors": [],
+  "passed": true
+}
