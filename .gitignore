@@ -1,14 +1,29 @@
 __pycache__/
 *.pyc
 *.pyo
+*.pyc.save
 .env
 .emo_settings.json
+.emo_chat_history.json
+.emo_conversations.json
 venv/
 .env.example
 *.egg-info/
 dist/
 build/
 .DS_Store
+**/.DS_Store
 *.tar.gz
+*.pdf
 # Database files — contain user/password hashes; never commit
 *.db
+*.db-shm
+*.db-wal
+# Logs
+logs/
+# Cache
+.pytest_cache/
+.ai/
+.memory/
+user_projects/
+static/
