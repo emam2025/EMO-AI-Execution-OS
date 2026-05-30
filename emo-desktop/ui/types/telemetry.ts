@@ -66,8 +66,39 @@ export type RuntimeHealth = {
  * RuntimeEvent — Single event from the runtime.events stream.
  */
 export type RuntimeEvent = {
-  type: "task_started" | "node_completed" | "agent_warning" | "runtime_error" | "trace_indexed";
+  type: "task_started" | "node_completed" | "agent_warning" | "runtime_error" | "trace_indexed" | "gateway_request" | "gateway_failover" | "gateway_health";
   trace_id?: string;
   timestamp: string;
   payload: Record<string, unknown>;
+};
+
+/**
+ * GatewayMetrics — Cost, latency, and failover telemetry for Model Gateway.
+ * Updated by TelemetryAggregator and consumed by Runtime Monitor.
+ */
+export type GatewayMetrics = {
+  cost_per_token: number;
+  total_session_cost: number;
+  avg_latency_ms: number;
+  failover_count: number;
+  provider_success_rate: number;
+  total_requests: number;
+  failed_requests: number;
+};
+
+/**
+ * GatewayRoutingStatus — Live routing table from get_gateway_routing_status().
+ */
+export type GatewayRoutingStatus = {
+  active_routes: string[];
+  failover_ready: boolean;
+  cost_tracking: {
+    total_spent_usd: number;
+    budget_limit_usd: number;
+  };
+  routing_table: Array<{
+    provider: string;
+    priority: number;
+    status: "active" | "degraded" | "rate_limited" | "down";
+  }>;
 };

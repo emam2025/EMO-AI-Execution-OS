@@ -11,6 +11,8 @@ import type {
   RuntimeTelemetry,
   RuntimeEvent,
   ExecutionTrace,
+  GatewayMetrics,
+  GatewayRoutingStatus,
 } from "../../types/telemetry";
 
 interface RuntimeState {
@@ -30,6 +32,10 @@ interface RuntimeState {
   isConnected: boolean;
   error: string | null;
 
+  // Gateway routing
+  gatewayMetrics: GatewayMetrics | null;
+  routingStatus: GatewayRoutingStatus | null;
+
   // Actions
   setSession: (session: RuntimeSession | null) => void;
   setHealth: (health: RuntimeHealth) => void;
@@ -39,6 +45,8 @@ interface RuntimeState {
   cacheTrace: (trace: ExecutionTrace) => void;
   setConnected: (v: boolean) => void;
   setError: (e: string | null) => void;
+  setGatewayMetrics: (m: GatewayMetrics) => void;
+  setRoutingStatus: (s: GatewayRoutingStatus) => void;
   reset: () => void;
 }
 
@@ -51,6 +59,8 @@ const initialState = {
   traceCache: new Map(),
   isConnected: false,
   error: null,
+  gatewayMetrics: null,
+  routingStatus: null,
 };
 
 export const useRuntimeStore = create<RuntimeState>((set, get) => ({
@@ -89,6 +99,10 @@ export const useRuntimeStore = create<RuntimeState>((set, get) => ({
   setConnected: (v) => set({ isConnected: v }),
 
   setError: (e) => set({ error: e }),
+
+  setGatewayMetrics: (m) => set({ gatewayMetrics: m }),
+
+  setRoutingStatus: (s) => set({ routingStatus: s }),
 
   reset: () => set(initialState),
 }));

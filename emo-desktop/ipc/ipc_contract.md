@@ -149,6 +149,59 @@ or `/health`) through the Model Gateway and returns the result.
 }
 ```
 
+### `submit_request(routing_decision: RoutingDecision) -> SubmitResult`
+
+Submits a user request to the optimal provider selected by the GatewayRouter.
+The request is routed through emo-runtime-service → Model Gateway → provider.
+
+**Parameters:**
+```json
+{
+  "routing_decision": {
+    "selected_provider": "openai",
+    "alternatives": ["anthropic", "groq"],
+    "score": 0.87,
+    "reason": "Weighted score: latency=0.5, cost=0.5"
+  },
+  "intent": "summarize",
+  "payload": { "text": "..." }
+}
+```
+
+**Returns:**
+```json
+{
+  "request_id": "rq_<uuid>",
+  "provider": "openai",
+  "status": "accepted",
+  "estimated_cost_usd": 0.0023
+}
+```
+
+### `notify_failover(trigger: FailoverTrigger) -> FailoverAck`
+
+Notifies the runtime that a failover occurred. The runtime updates its
+internal routing table and returns the new active route.
+
+**Parameters:**
+```json
+{
+  "provider_id": "openai",
+  "trigger": "http_429",
+  "idempotency_key": "fk_1717000000000_1_a1b2c3d4",
+  "latency_ms": 3200
+}
+```
+
+**Returns:**
+```json
+{
+  "acknowledged": true,
+  "new_active_route": "anthropic",
+  "failover_count": 1
+}
+```
+
 ### `get_gateway_routing_status() -> GatewayRoutingStatus`
 
 Returns the current state of the Model Gateway routing table, including
@@ -215,6 +268,6 @@ and all referenced contracts in `desktop/docs/` are designed for forward compati
 
 ## Contract Version
 
-- **Version**: 1.1.0
-- **Status**: DRAFT — Phase P2 (Credential Management + Gateway Routing)
-- **Last Updated**: 2026-05-29
+- **Version**: 1.2.0
+- **Status**: DRAFT — Phase P3 (Gateway Routing Engine + Telemetry Integration)
+- **Last Updated**: 2026-05-30

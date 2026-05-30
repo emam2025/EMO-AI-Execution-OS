@@ -12,6 +12,7 @@ import type {
   RuntimeSession,
   RuntimeHealth,
   ExecutionTrace,
+  GatewayRoutingStatus,
 } from "../../../ui/types/telemetry";
 
 /**
@@ -81,16 +82,7 @@ export type ConnectionTestResult = {
   model_count: number;
 };
 
-export type GatewayRoutingStatus = {
-  active_routes: string[];
-  failover_ready: boolean;
-  cost_tracking: { total_spent_usd: number; budget_limit_usd: number };
-  routing_table: Array<{
-    provider: string;
-    priority: number;
-    status: "active" | "rate_limited" | "down";
-  }>;
-};
+// type GatewayRoutingStatus imported from types/telemetry
 
 /**
  * Inject a provider API key ephemerally into the runtime process.
@@ -120,4 +112,62 @@ export async function testProviderConnection(
  */
 export async function getGatewayRoutingStatus(): Promise<GatewayRoutingStatus> {
   return invoke<GatewayRoutingStatus>("get_gateway_routing_status");
+}
+
+// ── Phase P3: Gateway Routing & Telemetry ──────────────
+
+export type RoutingDecisionPayload = {
+  selected_provider: string;
+  alternatives: string[];
+  score: number;
+  reason: string;
+};
+
+export type SubmitResult = {
+  request_id: string;
+  provider: string;
+  status: "accepted" | "rejected" | "queued";
+  estimated_cost_usd: number;
+};
+
+/**
+ * Submit a user request through the Model Gateway.
+ * The request is routed to the optimal provider by the GatewayRouter.
+ */
+export async function submitRequest(
+  decision: RoutingDecisionPayload,
+  intent: string,
+  payload: Record<string, unknown>
+): Promise<SubmitResult> {
+  return invoke<SubmitResult>("submit_request", { decision, intent, payload });
+}
+
+export type FailoverTrigger =
+  | "http_429"
+  | "http_5xx"
+  | "timeout"
+  | "rate_limited"
+  | "down";
+
+export type FailoverAck = {
+  acknowledged: boolean;
+  new_active_route: string;
+  failover_count: number;
+};
+
+/**
+ * Notify the runtime that a failover occurred.
+ */
+export async function notifyFailover(
+  providerId: string,
+  trigger: FailoverTrigger,
+  idempotencyKey: string,
+  latencyMs: number
+): Promise<FailoverAck> {
+  return invoke<FailoverAck>("notify_failover", {
+    providerId,
+    trigger,
+    idempotencyKey,
+    latencyMs,
+  });
 }
