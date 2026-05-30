@@ -1,0 +1,63 @@
+{
+  "certificate_id": "R5-PREP-CERT-001",
+  "directive": "EXEC-DIRECTIVE-R5-PREP-001",
+  "stage": "R5 — Big EMO AI OS Foundation & Self-Governance Protocol Design",
+  "status": "PASSED",
+  "timestamp": "2026-05-30T00:00:00Z",
+  "thresholds": {
+    "isolation": {
+      "metric": "imports_from_archived_releases",
+      "threshold": 0,
+      "measured": 0,
+      "status": "PASSED"
+    },
+    "protocols": {
+      "metric": "3 interfaces defined, typed, documented",
+      "threshold": "Yes",
+      "measured": "ISelfBuilder (2 methods), ISelfHealer (2 methods), IMultiAgentSociety (2 methods)",
+      "status": "PASSED"
+    },
+    "models": {
+      "metric": "tenant_id + severity mandatory",
+      "threshold": "100%",
+      "measured": "SelfBuildProposal, AnomalyReport, RecoveryAction, SwarmAllocation all enforce tenant_id + severity/signature",
+      "status": "PASSED"
+    },
+    "manifest": {
+      "metric": "R5_BIG_EMO_ARCHITECTURE_MANIFEST.md complete, Canon-mapped",
+      "threshold": "Yes",
+      "measured": "Isolation matrix, Guard OS boundaries, 12 Canon laws mapped, propagation chain documented",
+      "status": "PASSED"
+    },
+    "tests": {
+      "metric": "15/15 PASS",
+      "threshold": "Yes",
+      "measured": "15/15 PASS (isolation: 5, protocol: 5, tenant/severity: 5)",
+      "status": "PASSED"
+    },
+    "zero_mutation": {
+      "metric": "git diff releases/runtime-os/ ... releases/cognitive-os/",
+      "threshold": 0,
+      "measured": 0,
+      "status": "PASSED"
+    }
+  },
+  "deliverables": {
+    "protocol_interface_files": [
+      "core/interfaces/self_governance/ISelfBuilder.py",
+      "core/interfaces/self_governance/ISelfHealer.py",
+      "core/interfaces/self_governance/IMultiAgentSociety.py"
+    ],
+    "models_file": [
+      "core/models/self_governance.py"
+    ],
+    "desktop_skeleton": "emo-big-emo-dashboard/ (4 route stubs)",
+    "manifest": "docs/R5_BIG_EMO_ARCHITECTURE_MANIFEST.md",
+    "test_files": [
+      "tests/test_r5_isolation_and_contracts.py"
+    ]
+  },
+  "stop_conditions_triggered": [],
+  "next_stage": "R5 Implementation Phase — Self-Governance Engine (SelfBuilder, SelfHealer, MultiAgentSociety)",
+  "canon_laws": ["LAW-1", "LAW-6", "LAW-8", "LAW-11", "LAW-20", "LAW-21", "LAW-22", "LAW-23", "LAW-24", "LAW-25", "LAW-26", "LAW-27"]
+}
