@@ -5,6 +5,55 @@ All notable changes to EMO AI Orchestrator will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [r3-skill-os-v1.0.0] — 2026-05-30
+
+### R3 Skill OS — Extraction, Library & Evolution (CLOSED & ARCHIVED)
+
+- **SkillExtractor** (`core/skills/extractor.py`): Trace→SkillDraft extraction with sandbox validation. `extract_from_trace`, `validate_draft`, `get_version`.
+- **SkillLibrary** (`core/skills/library.py`): Versioned skill store with save/query/history. `save_skill`, `get_skill`, `query_skills`, `get_history`.
+- **SkillEvolutionManager** (`core/skills/evolution.py`): Tier lifecycle management (promote/deprecate). `promote_skill`, `deprecate_skill`, `get_active_skills`, `get_history`.
+- **R2Bridge** (`core/skills/r2_bridge.py`): Read-only memory context bridge with `__setattr__` guard.
+- **Test Suite**: 70/70 PASS (extraction: 10, library: 10, evolution: 10, bridge: 5, integration: 20, isolation: 15).
+- **Zero R1/R2 imports** — fully isolated in `/releases/skill_os/`.
+- **Archive**: `emo-skill-os-r3-release.tar.gz` (23 KB, 21 files SHA-256 signed).
+- **Tags**: `r3-skill-os-foundation-v1.0.0`, `r3-skill-os-impl-v1.0.0`, `r3-skill-os-v1.0.0`.
+
+### Added
+- **SkillExtractor**: `core/skills/extractor.py` — ISkillExtractor implementation with intent parsing, tool spec generation, sandbox validation.
+- **SkillLibrary**: `core/skills/library.py` — Versioned storage with deduplication, search, history tracking.
+- **SkillEvolutionManager**: `core/skills/evolution.py` — Tier promotion/deprecation lifecycle with validator signature enforcement.
+- **R2Bridge**: `core/skills/r2_bridge.py` — Read-only memory bridge, mutation blocked via `__setattr__`.
+- **Tests**: 6 test files (70 tests) — accuracy, library integrity, evolution lifecycle, bridge isolation, integration, contracts.
+- **Documentation**: `docs/R3_CLOSURE_REPORT.md`, `docs/R3_IMPLEMENTATION_REPORT.md`, `docs/R3_SKILL_ARCHITECTURE_MANIFEST.md`.
+- **Certificates**: `certificates/R3_PREP_CERTIFICATE.json`, `certificates/R3_IMPLEMENTATION_CERTIFICATE.json`.
+- **Manifests**: `artifacts/RELEASE_MANIFEST_R3.json`, `artifacts/SIGNING_MANIFEST_R3.json`.
+
+## [r2-memory-os-v1.0.0] — 2026-05-30
+
+### R2 Enterprise Memory OS — Spaces, Governance & Explorer (CLOSED & ARCHIVED)
+
+- **ProjectMemorySpace / AgentMemorySpace / CrossSessionRecall** (`core/memory/enterprise_spaces.py`): Tenant-scoped memory spaces with store/recall/query/cross_session_recall.
+- **MemoryGovernanceEngine / AuditLog / RetentionPolicy** (`core/memory/governance.py`): SHA-256 audit chain, retention enforcement, integrity verification.
+- **Semantic Index / Knowledge Graph** (`core/memory/`): Embedding, semantic_index, graph_store, graph_queries, entity_extractor.
+- **Compression / Retrieval Pipeline** (`core/memory/`): compression_engine, context_selector, relevance_filter, retrieval_ranker, token_optimizer, storage_adapter.
+- **Desktop Explorer UI** (`desktop/emo-memory-explorer/`): 18 files — 5 screens (Dashboard, ProjectBrowser, AgentTrace, RetentionSettings, AuditLog), Zustand store, API layer, test file.
+- **Test Suite**: 181/181 PASS (memory isolation: 10, enterprise isolation: 10, governance/retention: 11, semantic: 2 files, graph: 2 files, optimization: 1 file, router: 1, models: 1, storage: 1, token: 1).
+- **Zero R1 imports** — fully isolated in `/releases/memory_os/`.
+- **Archive**: `emo-memory-os-r2-release.tar.gz` (64 KB, 71 files SHA-256 signed).
+- **Tags**: `r2-memory-os-v1.0.0`.
+
+### Added
+- **Enterprise Memory Spaces**: `core/memory/enterprise_spaces.py` — ProjectMemorySpace, AgentMemorySpace, CrossSessionRecall with tenant_id enforcement.
+- **Memory Governance**: `core/memory/governance.py` — MemoryGovernanceEngine (retention enforcement), AuditLog (SHA-256 chain with HMAC), RetentionPolicy (TTL/max_entries config).
+- **Semantic Layer**: `core/memory/embedding.py`, `core/memory/semantic_index.py` — vector embedding and semantic search.
+- **Knowledge Graph**: `core/memory/graph_store.py`, `core/memory/graph_queries.py`, `core/memory/entity_extractor.py` — entity extraction and relationship graph.
+- **Retrieval Pipeline**: `core/memory/compression_engine.py`, `core/memory/context_selector.py`, `core/memory/relevance_filter.py`, `core/memory/retrieval_ranker.py`, `core/memory/token_optimizer.py`, `core/memory/storage_adapter.py`.
+- **Desktop Explorer**: `desktop/emo-memory-explorer/` — 18 files (5 route screens, store, API, tests).
+- **Tests**: 16 test files (181 tests) — across all sub-phases R2A through R2E.
+- **Documentation**: `docs/R2_CLOSURE_REPORT.md`, `docs/R2_MEMORY_ARCHITECTURE_MANIFEST.md`, 4 sub-phase reports.
+- **Certificates**: 5 sub-phase certificates (R2A–R2E).
+- **Manifests**: `artifacts/RELEASE_MANIFEST_R2.json`, `artifacts/SIGNING_MANIFEST_R2.json`.
+
 ## [r5-big-emo-v1.0.0] — 2026-05-30
 
 ### R5 Big EMO AI OS — Self-Governance Core (SelfBuilder, SelfHealer, MultiAgentSociety)

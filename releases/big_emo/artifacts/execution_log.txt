@@ -40,3 +40,6 @@ Stage: R5 — Big EMO AI OS Foundation & Self-Governance Protocol Design
 [2026-05-30T00:04:18Z] BUILD    — artifacts/SIGNING_MANIFEST_R5.json (21 files signed)
 [2026-05-30T00:04:19Z] ARCHIVE  — emo-big-emo-r5-release.tar.gz (21K)
 [2026-05-30T00:04:20Z] COMPLETE — R5-IMPL finished: BIG EMO SELF-GOVERNANCE | 88/88 PASS
+[2026-05-30T00:04:21Z] BUILD    — docs/R5_CLOSURE_REPORT.md
+[2026-05-30T00:04:22Z] ARCHIVE  — emo-big-emo-r5-release.tar.gz moved into releases/big_emo/
+[2026-05-30T00:04:23Z] COMPLETE — R5 CLOSURE: BIG EMO AI OS | SIGNED & ARCHIVED
