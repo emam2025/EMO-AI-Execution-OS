@@ -1,0 +1,188 @@
+{
+    "task_id": "PHASE-F3-RESOURCE-SCHEDULER-DESIGN-014",
+    "stage": "Resource Scheduler & Quota Arbitration — Design & Protocol Definition",
+    "status": "DESIGN_COMPLETE",
+    "date": "2026-05-22",
+    "compliance_entries": [
+        {
+            "id": "F3-CANON-001",
+            "law_ref": "LAW 5",
+            "rule_ref": "RULE 1",
+            "description": "All scheduling decisions MUST be observable — resource matching returns SchedulingDecision with reason",
+            "design_element": "IResourceScheduler.match_resources() returns SchedulingDecision; all decisions carry status, reason, and timestamp",
+            "design_evidence_path": "artifacts/design/f3/protocols/01_resource_protocols.py",
+            "status": "COMPLIANT"
+        },
+        {
+            "id": "F3-CANON-002",
+            "law_ref": "LAW 5",
+            "rule_ref": "",
+            "description": "Quota usage observable via QuotaUsage dataclass",
+            "design_element": "IQuotaArbitrator methods return QuotaUsage with percentage, cpu_used, mem_used; measurable and reportable",
+            "design_evidence_path": "artifacts/design/f3/models/02_resource_and_quota_models.py",
+            "status": "COMPLIANT"
+        },
+        {
+            "id": "F3-CANON-003",
+            "law_ref": "LAW 5",
+            "rule_ref": "",
+            "description": "Starvation is observable via StarvationReport",
+            "design_element": "IFairnessEngine.detect_starvation() returns StarvationReport with wait_time, priority, boost_applied, action_taken",
+            "design_evidence_path": "artifacts/design/f3/protocols/01_resource_protocols.py",
+            "status": "COMPLIANT"
+        },
+        {
+            "id": "F3-CANON-004",
+            "law_ref": "LAW 8",
+            "rule_ref": "",
+            "description": "Resources MUST be distributed fairly — fair share computation",
+            "design_element": "IFairnessEngine.compute_fair_share() divides total resources by active executions; imbalance_ratio tracks deviation",
+            "design_evidence_path": "artifacts/design/f3/protocols/01_resource_protocols.py",
+            "status": "COMPLIANT"
+        },
+        {
+            "id": "F3-CANON-005",
+            "law_ref": "LAW 8",
+            "rule_ref": "",
+            "description": "Starvation prevention — priority boost and fallback recovery",
+            "design_element": "5-tier boost map (BATCH→LOW→NORMAL→HIGH); fallback worker on repeated starvation; thresholds per priority tier",
+            "design_evidence_path": "artifacts/design/f3/03_allocation_and_fairness_machine.md",
+            "status": "COMPLIANT"
+        },
+        {
+            "id": "F3-CANON-006",
+            "law_ref": "LAW 8",
+            "rule_ref": "",
+            "description": "Load balancing across workers via imbalance_ratio sorting",
+            "design_element": "IFairnessEngine.balance_load() sorts offers by imbalance_ratio ascending; least-loaded worker scheduled first",
+            "design_evidence_path": "artifacts/design/f3/protocols/01_resource_protocols.py",
+            "status": "COMPLIANT"
+        },
+        {
+            "id": "F3-CANON-007",
+            "law_ref": "LAW 10",
+            "rule_ref": "",
+            "description": "Resource limits MUST be enforced — soft and hard limits",
+            "design_element": "QuotaPolicy with soft_limit (warning) and hard_limit (rejection); IQuotaArbitrator.enforce_limit() rejects at hard_limit",
+            "design_evidence_path": "artifacts/design/f3/models/02_resource_and_quota_models.py",
+            "status": "COMPLIANT"
+        },
+        {
+            "id": "F3-CANON-008",
+            "law_ref": "LAW 10",
+            "rule_ref": "",
+            "description": "Three-tier quota enforcement: execution, worker, global",
+            "design_element": "QuotaType enum (EXECUTION/WORKER/GLOBAL); QuotaPool tracks per-scope reservation; cooldown on hard limit hit",
+            "design_evidence_path": "artifacts/design/f3/models/02_resource_and_quota_models.py",
+            "status": "COMPLIANT"
+        },
+        {
+            "id": "F3-CANON-009",
+            "law_ref": "LAW 11",
+            "rule_ref": "",
+            "description": "No global mutable state — all F3 components are per-instance",
+            "design_element": "IResourceScheduler, IQuotaArbitrator, IFairnessEngine, ITopologyMapper are instance Protocols; state via QuotaPool (per-instance)",
+            "design_evidence_path": "artifacts/design/f3/protocols/01_resource_protocols.py",
+            "status": "COMPLIANT"
+        },
+        {
+            "id": "F3-CANON-010",
+            "law_ref": "LAW 11",
+            "rule_ref": "RULE 3",
+            "description": "Quota pool state is recoverable - refund_on_failure reverses consumption",
+            "design_element": "IQuotaArbitrator.refund_on_failure() restores quota after execution failure; prevents resource leak",
+            "design_evidence_path": "artifacts/design/f3/protocols/01_resource_protocols.py",
+            "status": "COMPLIANT"
+        },
+        {
+            "id": "F3-CANON-011",
+            "law_ref": "RULE 1",
+            "rule_ref": "",
+            "description": "Determinism — same request + offers → same scheduling decision",
+            "design_element": "Resource matching algorithm is pure (score computation, filtering, tie-breaking); no randomness",
+            "design_evidence_path": "artifacts/design/f3/03_allocation_and_fairness_machine.md",
+            "status": "COMPLIANT"
+        },
+        {
+            "id": "F3-CANON-012",
+            "law_ref": "RULE 2",
+            "rule_ref": "",
+            "description": "Reversibility — resource consumption is reversible via refund",
+            "design_element": "refund_on_failure() reverses consume_usage(); soft reservation TTL auto-releases; preemption re-queues with boost",
+            "design_evidence_path": "artifacts/design/f3/protocols/01_resource_protocols.py",
+            "status": "COMPLIANT"
+        },
+        {
+            "id": "F3-CANON-013",
+            "law_ref": "RULE 3",
+            "rule_ref": "",
+            "description": "Recoverability — preemption requires checkpoint; failed executions refund quota",
+            "design_element": "Preemption Guard 3 requires checkpoint_available; refund_on_failure for failed executions; starvation boost for queued",
+            "design_evidence_path": "artifacts/design/f3/03_allocation_and_fairness_machine.md",
+            "status": "COMPLIANT"
+        },
+        {
+            "id": "F3-CANON-014",
+            "law_ref": "RULE 4",
+            "rule_ref": "",
+            "description": "Terminal states — REJECT is terminal; no transition out",
+            "design_element": "REJECT state in allocation machine has no outgoing transitions; once rejected, execution must resubmit",
+            "design_evidence_path": "artifacts/design/f3/03_allocation_and_fairness_machine.md",
+            "status": "COMPLIANT"
+        },
+        {
+            "id": "F3-CANON-015",
+            "law_ref": "RULE 5",
+            "rule_ref": "",
+            "description": "Idempotency — all scheduling operations are idempotent",
+            "design_element": "assign_worker: already assigned → return existing; preempt_if_needed: already preempted → return existing; consume_usage: dedup by execution_id",
+            "design_evidence_path": "artifacts/design/f3/04_integration_blueprint.md",
+            "status": "COMPLIANT"
+        },
+        {
+            "id": "F3-CANON-016",
+            "law_ref": "§15.9 (LAW 8)",
+            "rule_ref": "",
+            "description": "Preemption guards prevent unfair preemption",
+            "design_element": "4 preemption guards: priority gate (diff >= 2 tiers), age threshold (60s), checkpoint available, worker cooldown",
+            "design_evidence_path": "artifacts/design/f3/03_allocation_and_fairness_machine.md",
+            "status": "COMPLIANT"
+        },
+        {
+            "id": "F3-CANON-017",
+            "law_ref": "Phase F2",
+            "rule_ref": "",
+            "description": "Integration with F2 Control Plane for worker offers and scaling",
+            "design_element": "F2 ControlPlane.publish_state() feeds worker offers to F3; F2 Autoscaler triggers quota pool adjustments; F2 drain notifies F3 resource release",
+            "design_evidence_path": "artifacts/design/f3/04_integration_blueprint.md",
+            "status": "COMPLIANT"
+        },
+        {
+            "id": "F3-CANON-018",
+            "law_ref": "Phase F1",
+            "rule_ref": "",
+            "description": "Integration with F1 UnifiedRuntime for submission and observation",
+            "design_element": "F1.submit() triggers ResourceRequest creation; F1.observe() reports resource metrics; ExecutionOptions.priority maps to PriorityTier",
+            "design_evidence_path": "artifacts/design/f3/04_integration_blueprint.md",
+            "status": "COMPLIANT"
+        },
+        {
+            "id": "F3-CANON-019",
+            "law_ref": "LAW 10",
+            "rule_ref": "",
+            "description": "Topology constraints validated before assignment",
+            "design_element": "ITopologyMapper.validate_constraints() returns violation list; empty = all satisfied; fallback relaxes constraints",
+            "design_evidence_path": "artifacts/design/f3/protocols/01_resource_protocols.py",
+            "status": "COMPLIANT"
+        },
+        {
+            "id": "F3-CANON-020",
+            "law_ref": "LAW 8",
+            "rule_ref": "",
+            "description": "Priority boost on starvation follows defined rules; no infinite boost",
+            "design_element": "Priority boost has 5-tier ceiling (CRITICAL max); HIGH and CRITICAL not boosted; boost applied once per starvation event",
+            "design_evidence_path": "artifacts/design/f3/03_allocation_and_fairness_machine.md",
+            "status": "COMPLIANT"
+        }
+    ]
+}

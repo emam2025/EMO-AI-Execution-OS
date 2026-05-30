@@ -68,6 +68,6 @@ emo-ai-v4.15.0-release-archive.tar.gz
 ## Signature
 
 - **Archive**: `emo-ai-v4.15.0-release-archive.tar.gz`
-- **SHA-256**: Verified in `SIGNING_MANIFEST.md`
+- **SHA-256**: `31908e97554ed6b1e025b65e451b353826390bcad486421975323b4890e53407`
 - **Tag**: `v4.15.0-delivery-ready`
 - **Status**: 🟢 **100% CLOSED — DELIVERY READY**

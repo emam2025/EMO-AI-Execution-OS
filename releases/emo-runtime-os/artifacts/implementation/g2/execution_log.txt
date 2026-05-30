@@ -1,0 +1,39 @@
+# Execution Log — EXEC-DIRECTIVE-008
+Date: 2026-05-22
+Status: COMPLETE — 1824 passed, 0 regressions
+
+## Summary
+Implemented the complete G2 Critic Agent subsystem based on PHASE-G2-CRITIC-AGENT-DESIGN-017.
+
+## Deliverables
+
+| # | Deliverable | Status | Description |
+|---|-------------|--------|-------------|
+| 1 | `core/runtime/critic/critic_agent.py` | ✅ | ICriticAgent — 6 methods, guarded propose_correction |
+| 2 | `core/runtime/critic/failure_diagnoser.py` | ✅ | IFailureDiagnoser — 5 methods, signature registry |
+| 3 | `core/runtime/critic/plan_correction_engine.py` | ✅ | IPlanCorrectionEngine — 5 methods, guarded |
+| 4 | `core/runtime/critic/runtime_reviewer.py` | ✅ | IRuntimeReviewer — 5 methods, deterministic |
+| 5 | `core/runtime/critic/diagnosis_state_machine.py` | ✅ | 7-state SM + Correction Guards + Deterministic Review Guard |
+| 6 | `core/runtime/critic/trace_correlator.py` | ✅ | critic_trace_id propagation across 4 layers |
+| 7 | `core/runtime/models/critic_models.py` | ✅ | 7 dataclasses, 4 enums |
+| 8 | `core/composition/root.py` | ✅ | G2 wiring + strict_critic_mode |
+| 9 | `tests/test_g2_critic_agent_integration.py` | ✅ | 44 tests across 9 test classes |
+| 10 | `tests/test_diagnosis_state_machine_correction_guards.py` | ✅ | 17 tests for SM + Correction Guards |
+| 11 | `tests/test_critic_trace_id_propagation_across_layers.py` | ✅ | 13 tests for LAW 12 traceability |
+| 12 | `artifacts/implementation/g2/` | ✅ | 3 artifact files |
+
+## Test Results
+- G2-specific tests: 74 passed, 0 failed
+- Full suite: 1824 passed, 6 pre-existing failures, 10 skipped
+- Net new: +74 tests (1750 → 1824)
+
+## Regressions
+Zero regressions across all phases.
+
+## Commands Executed
+```bash
+python3 -m pytest tests/test_g2_critic_agent_integration.py -v --tb=short
+python3 -m pytest tests/test_diagnosis_state_machine_correction_guards.py -v --tb=short
+python3 -m pytest tests/test_critic_trace_id_propagation_across_layers.py -v --tb=short
+python3 -m pytest tests/ -v --tb=short -q
+```

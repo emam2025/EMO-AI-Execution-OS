@@ -5,6 +5,29 @@ All notable changes to EMO AI Orchestrator will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [r4-cognitive-os-v1.0.0] — 2026-05-30
+
+### R4 Cognitive OS — Planning, Reflection & Self-Evaluation
+
+- **StrategicPlanner** (`core/cognitive/planner.py`): Goal decomposition → DAG blueprints, feasibility evaluation, active plan listing. `decompose_goal`, `evaluate_feasibility`, `list_active_plans`, `get_plan`.
+- **ReflectionEngine** (`core/cognitive/reflection.py`): Failure analysis from traces, corrective strategy generation, severity-filtered log. `analyze_failure`, `generate_correction`, `list_reflections`, `get_reflection`.
+- **SelfEvaluator** (`core/cognitive/evaluator.py`): Plan integrity validation (DAG structure, cycles, orphan edges), risk scoring (complexity/dependency/fan-in, cap at 0.95), mitigation suggestions.
+- **R2/R3 Read-Only Bridges** (`core/cognitive/bridges.py`): `R2MemoryBridge` + `R3SkillBridge` — zero mutation enforced via `__setattr__` guard.
+- **Test Suite**: 91/91 PASS (planning: 10, reflection: 10, evaluation: 10, bridge: 5, integration: 40, isolation/contracts: 16).
+- **Canon LAW Compliance**: LAW-6 (tenant_id mandatory), LAW-8 (no cross-tenant leakage), LAW-11 (scoped queries), LAW-14 (protocol boundaries).
+- **Zero R1/R2/R3 imports** — fully isolated in `/releases/cognitive-os/`.
+- **Certificates**: `R4_PREP_CERTIFICATE.json`, `R4_IMPLEMENTATION_CERTIFICATE.json`, `RELEASE_MANIFEST_R4.json`, `SIGNING_MANIFEST_R4.json`.
+- **Tags**: `r4-cognitive-os-v1.0.0` — frozen, signed, isolated.
+
+### Added
+- **StrategicPlanner**: `core/cognitive/planner.py` — IStrategicPlanner implementation with DAG decomposition, feasibility evaluation, tenant-scoped plan listing.
+- **ReflectionEngine**: `core/cognitive/reflection.py` — IReflectionEngine implementation with severity detection (timeout→HIGH, crash→CRITICAL, not_found→MEDIUM, syntax→LOW), corrective strategy generation, reflection log.
+- **SelfEvaluator**: `core/cognitive/evaluator.py` — ISelfEvaluator implementation with DAG integrity validation, risk assessment (complexity/dependency/fan-in), score cap at 0.95.
+- **Read-Only Bridges**: `core/cognitive/bridges.py` — R2MemoryBridge (fetch_memory_context, list_project_traces), R3SkillBridge (fetch_skill_patterns). Mutation blocked via __setattr__.
+- **Tests**: 5 new test files (75 new tests) — planning accuracy (10), reflection lifecycle (10), self-evaluation risk (10), bridge isolation (5), integration (40).
+- **Documentation**: `docs/R4_IMPLEMENTATION_REPORT.md`, `docs/R4_COGNITIVE_ARCHITECTURE_MANIFEST.md`, `R4_CLOSURE_REPORT.md`.
+- **Certificates**: `certificates/R4_IMPLEMENTATION_CERTIFICATE.json`, `certificates/RELEASE_MANIFEST_R4.json`, `certificates/SIGNING_MANIFEST_R4.json`.
+
 ## [r1-runtime-os-v1.0.0] — 2026-05-30
 
 ### R1 Gap Closure — Governance Layer & Desktop UI Completion

@@ -1,0 +1,54 @@
+EXECUTION LOG — EXEC-DIRECTIVE-002: Phase D8 Implementation
+============================================================
+Date: 2026-05-22
+Status: COMPLETE
+
+TIMELINE
+--------
+[00:00] Received EXEC-DIRECTIVE-002
+[00:01] Read D8 design protocols and models
+[00:10] Created core/runtime/services/ with 7 files:
+         scheduler.py, state_store.py, tool_dispatcher.py,
+         retry_handler.py, lease_manager.py, failure_propagation.py,
+         __init__.py
+[00:20] Updated core/composition/root.py with D8 service wiring:
+         6 constructor params, 7 properties, strict_service_isolation
+[00:30] Wrote tests/test_d8_service_isolation.py (41 tests)
+[00:35] Fixed circuit breaker bug (0 threshold = disabled)
+[00:36] Fixed dispatcher register_tool extra method allowance
+[00:37] All 41 tests pass
+[01:00] Full pytest: 1453 passed, 10 skipped, 6 pre-existing failures
+         — 0 regressions
+[01:05] Created implementation artifacts
+
+RESULTS
+-------
+Files created/modified:
+  + core/runtime/services/__init__.py
+  + core/runtime/services/scheduler.py
+  + core/runtime/services/state_store.py
+  + core/runtime/services/tool_dispatcher.py
+  + core/runtime/services/retry_handler.py
+  + core/runtime/services/lease_manager.py
+  + core/runtime/services/failure_propagation.py
+  M core/composition/root.py
+  + tests/test_d8_service_isolation.py (41 tests)
+  + artifacts/implementation/d8/01_implementation_report.md
+  + artifacts/implementation/d8/canon_compliance_log.json
+  + artifacts/implementation/d8/execution_log.txt
+
+CANON COMPLIANCE
+----------------
+LAW 20-22 (Failure Propagation):  ✅ — F01-F08 matrix, EventBus emission
+LAW 23 (Execution Ordering):      ✅ — ExecutionScheduler + ExecutionLeaseManager
+LAW 24 (Execution Routing):       ✅ — ExecutionToolDispatcher
+LAW 25 (Retry Semantics):         ✅ — ExecutionRetryHandler
+LAW 26 (Persistence + Traces):    ✅ — ExecutionStateStore
+LAW 27 (No Shared State):         ✅ — G1 tests (5/5), G2 tests (4/4)
+D8.3 Rule 10 (No Hidden Imports): ✅ — G2 AST scans pass
+
+TEST RESULTS
+------------
+41 new tests: 41/41 PASS
+Full suite: 1453 passed, 10 skipped, 6 failed (all pre-existing)
+Regressions: 0

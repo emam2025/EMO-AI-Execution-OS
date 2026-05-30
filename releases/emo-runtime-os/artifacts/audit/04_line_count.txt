@@ -1,0 +1,14 @@
+  144367 total
+
+=== By Language ===
+Python only:
+   59224 total
+
+=== core/ only ===
+   34373 total
+
+=== tests/ only ===
+   17119 total
+
+=== routers/ only ===
+    1704 total

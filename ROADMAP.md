@@ -7,11 +7,21 @@ v1-runtime-stable       ← R1 Closure (Source Snapshot)
 v0.1.0-product-alpha    ← Phase P1 (IPC Contract + Tauri Skeleton)
 v0.1.1-product-alpha    ← Phase P2 (OS Keychain + Credential Vault)
 v0.1.2-product-alpha    ← Phase P3 (Gateway Routing + Telemetry) ← current
+r4-cognitive-os-v1.0.0  ← R4 Closure (Cognitive OS — Planning, Reflection, Self-Evaluation)
 ```
 
 ---
 
 ## ✅ المراحل المنجزة
+
+### R4 — Cognitive OS ✅ CLOSED & ARCHIVED
+- StrategicPlanner (DAG decomposition, feasibility evaluation)
+- ReflectionEngine (failure analysis, corrective strategy generation)
+- SelfEvaluator (plan integrity validation, risk scoring, cap at 0.95)
+- R2/R3 Read-Only Bridges (zero mutation, zero imports from R2/R3)
+- 91/91 tests · 22 files SHA-256 signed
+- `emo-cognitive-os-r4-release.tar.gz` archived
+- Fully isolated under `/releases/cognitive-os/`
 
 ### Phase L — Cognitive Memory ✅
 - MemoryHierarchy, ContextCompiler, SkillGraphManager
@@ -111,10 +121,11 @@ P10 — Production Hardening     (تصلب الإنتاج + مراقبة مست�
 
 ## 📊 إحصائيات المشروع
 
-- **Tags**: 5 (v4.15.0-delivery-ready, v1-runtime-stable, v0.1.0, v0.1.1, v0.1.2)
+- **Tags**: 6 (r4-cognitive-os-v1.0.0, v4.15.0-delivery-ready, v1-runtime-stable, v0.1.0, v0.1.1, v0.1.2)
 - **اختبارات Desktop**: 90/90 PASS (14 files)
 - **اختبارات Runtime**: 3047 PASS (358 full suite, 100 quarantined)
-- **Shipped**: 8 مراحل كاملة (L, G, Final Prep, Final Release, R1, P1, P2, P3, 3.4)
+- **Cognitive OS Tests**: 91/91 PASS (6 files)
+- **Shipped**: 10 مراحل كاملة (L, G, Final Prep, Final Release, R1, R4 Cognitive OS, P1, P2, P3, 3.4)
 
 ---
 

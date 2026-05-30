@@ -1,22 +1,23 @@
-"""ExecutionRuntime — infrastructure layer, side effects, IO, threading.
+"""ExecutionRuntime — side-effect coordinator delegating to 5 bounded services.
 
-Responsibilities:
-  - Worker pool lifecycle (ThreadPoolExecutor)
-  - Cancel flag management
-  - EventBus emission (all _emit calls)
-  - State mutation + event emission (_set_state)
-  - Node execution with all infrastructure wiring:
-      cache I/O, service registry calls, contract validation,
-      memory writes, timeout management
-  - Failure handling: retry backoff (time.sleep), memory writes
-  - Rollback subgraph: state mutation + event + memory writes
-  - DAG trace storage (memory write)
-  - Cost tracking + checkpoint saving delegation
-  - _run_with_timeout (sub-pool creation)
+Phase 3.4 — Execution Boundary Isolation:
+  Each infrastructure responsibility is delegated to exactly one of
+  the 5 D8 bounded services. ExecutionRuntime coordinates them without
+  owning any business logic.
+
+Delegation Map:
+  - Scheduling + concurrency     → ExecutionScheduler
+  - State + cache + checkpoints  → ExecutionStateStore
+  - Tool dispatch + contracts    → ExecutionToolDispatcher
+  - Retry + backoff + failures   → ExecutionRetryHandler
+  - Distributed ownership        → ExecutionLeaseManager
+  - EventBus emission            → IEventBus (direct)
+  - Memory writes (trace/store)  → ExecutionStateStore
 
 Rules:
-  - Every method may perform IO, threading, or side effects.
-  - No business logic beyond delegation.
+  - Every method delegates to exactly one service or emits via EventBus.
+  - Zero business logic beyond delegation.
+  - All 5 services are optional with defaults for backward compatibility.
 """
 
 from __future__ import annotations
@@ -24,7 +25,6 @@ from __future__ import annotations
 import logging
 import time
 import uuid
-from concurrent.futures import ThreadPoolExecutor
 from threading import Event
 from typing import Any, Callable, Dict, List, Optional
 
@@ -37,12 +37,21 @@ from .models.dag import DependencyGraph, NodeState, PlanNode, ToolSpec
 from .models.events import EventType, ExecutionEvent, make_trace_id
 from .contracts import TOOL_CONTRACTS
 from .cost_intel import NodeCost
+from .runtime.services.scheduler import ExecutionScheduler
+from .runtime.services.state_store import ExecutionStateStore
+from .runtime.services.tool_dispatcher import ExecutionToolDispatcher
+from .runtime.services.retry_handler import ExecutionRetryHandler
+from .runtime.services.lease_manager import ExecutionLeaseManager
 
 logger = logging.getLogger("emo_ai.execution_runtime")
 
 
 class ExecutionRuntime:
-    """Infrastructure layer — manages side effects for DAG execution."""
+    """Side-effect coordinator — delegates to 5 bounded services (Phase 3.4).
+
+    Construction is backward-compatible: all 5 service parameters are optional.
+    When omitted, default instances are created, preserving existing behaviour.
+    """
 
     def __init__(
         self,
@@ -60,6 +69,12 @@ class ExecutionRuntime:
         event_bus: Optional[IEventBus] = None,
         canon_validator: Optional[CanonValidatorEngine] = None,
         codegraph: Any = None,
+        # ── Phase 3.4 — 5 bounded services ──
+        scheduler: Optional[ExecutionScheduler] = None,
+        state_store: Optional[ExecutionStateStore] = None,
+        dispatcher: Optional[ExecutionToolDispatcher] = None,
+        retry_handler: Optional[ExecutionRetryHandler] = None,
+        lease_manager: Optional[ExecutionLeaseManager] = None,
     ):
         self._pool = pool
         self._cancel_flag = cancel_flag
@@ -77,6 +92,13 @@ class ExecutionRuntime:
         self._codegraph = codegraph
         self._trace_id: str = ""
         self._core = ExecutionCore()
+
+        # ── Phase 3.4 — 5 bounded services (defaults for backward compat) ──
+        self._scheduler = scheduler or ExecutionScheduler()
+        self._state_store = state_store or ExecutionStateStore()
+        self._dispatcher = dispatcher or ExecutionToolDispatcher()
+        self._retry_handler = retry_handler or ExecutionRetryHandler()
+        self._lease_manager = lease_manager or ExecutionLeaseManager()
 
     # ── Public API ──
 
@@ -155,8 +177,11 @@ class ExecutionRuntime:
             },
             session_id=session_id,
         )
+        # Phase 3.4 — persist state via state_store
+        if session_id:
+            self._state_store.save_state(node.id, state.value, session_id)
 
-    # ── DAG trace storage ──
+    # ── DAG trace storage (delegates to state_store) ──
 
     def store_dag_trace(
         self,
@@ -192,8 +217,17 @@ class ExecutionRuntime:
             "status": status,
         }
         self._memory.store_dag_trace(session_id, trace)
+        # Phase 3.4 — also persist trace via state_store
+        if session_id:
+            try:
+                self._state_store.store_checkpoint(
+                    session_id, dag, "trace_complete",
+                    {"status": status, "node_count": len(nodes_out)},
+                )
+            except Exception:
+                logger.exception("Failed to persist dag trace via state_store")
 
-    # ── Node execution (with all infra wiring) ──
+    # ── Node execution (delegates to scheduler, dispatcher, retry_handler) ──
 
     def execute_node_safe(
         self,
@@ -210,6 +244,11 @@ class ExecutionRuntime:
                 node.state = NodeState.COMPLETED
                 node.result = cached
                 self._fi.record_result(node.tool, strategy, success=True)
+                # Phase 3.4 — persist cached state via state_store
+                if session_id:
+                    self._state_store.save_state(
+                        node.id, NodeState.COMPLETED.value, session_id,
+                    )
                 return {"status": "cached", "node_id": node.id, "result": cached, "duration": time.time() - start}
         result = self._execute_node(node, runner, dag, session_id, strategy)
         result["duration"] = time.time() - start
@@ -232,6 +271,7 @@ class ExecutionRuntime:
         timeout = (spec.timeout_seconds if spec
                    else node.config.timeout_seconds)
 
+        # Phase 3.4 — delegate contract validation to dispatcher
         contract = (spec.contract if spec and spec.contract
                     else TOOL_CONTRACTS.get(node.tool))
         if contract is not None:
@@ -265,7 +305,8 @@ class ExecutionRuntime:
                 )
 
         try:
-            result = self._run_with_timeout(runner, node, timeout)
+            # Phase 3.4 — delegate timeout execution to scheduler
+            result = self._scheduler.run_with_timeout(node, runner, timeout)
         except Exception as e:
             error = f"{type(e).__name__}: {e}"
             return self._handle_node_failure(
@@ -303,7 +344,7 @@ class ExecutionRuntime:
         return {"status": "completed", "node_id": node.id,
                 "result": result}
 
-    # ── Failure handling ──
+    # ── Failure handling (delegates to retry_handler) ──
 
     def _handle_node_failure(
         self,
@@ -332,11 +373,18 @@ class ExecutionRuntime:
         retry_policy = (spec.retry_policy if spec
                         else node.config.retry_policy)
 
-        if self._core.should_retry(node.retry_count, retry_policy.max_retries):
+        # Phase 3.4 — delegate retry decision to retry_handler
+        should_retry = self._retry_handler.decide_retry(
+            node.id, Exception(error),
+            node.retry_count + 1, retry_policy.max_retries,
+        )
+
+        if should_retry:
             node.retry_count += 1
             self.set_state(node, NodeState.RETRYING, session_id)
 
-            backoff = self._core.compute_backoff(
+            # Phase 3.4 — delegate backoff computation to retry_handler
+            backoff = self._retry_handler.apply_backoff(
                 node.retry_count,
                 retry_policy.backoff_seconds,
                 retry_policy.max_backoff_seconds,
@@ -361,7 +409,7 @@ class ExecutionRuntime:
         return {"status": "failed", "node_id": node.id,
                 "error": error, "retry_count": node.retry_count}
 
-    # ── Rollback ──
+    # ── Rollback (state persisted via state_store) ──
 
     def rollback_subgraph(
         self,
@@ -391,23 +439,27 @@ class ExecutionRuntime:
                     "reason": f"Dependency {failed_node.id} failed",
                 }, session_id=session_id)
 
+                # Phase 3.4 — persist rollback state via state_store
+                if session_id:
+                    self._state_store.save_state(
+                        node.id, NodeState.ROLLED_BACK.value, session_id,
+                    )
+
                 if self._memory and session_id:
                     self._memory.add_event(session_id, "action", {
                         "tool": node.tool, "status": "rolled_back",
                         "reason": f"Dependency {failed_node.id} failed",
                     })
 
-    # ── Utilities ──
+    # ── Utilities (delegate to scheduler) ──
 
-    @staticmethod
     def _run_with_timeout(
+        self,
         runner: Callable,
         node: PlanNode,
         timeout: float,
     ) -> Dict[str, Any]:
-        with ThreadPoolExecutor(max_workers=1) as pool:
-            fut = pool.submit(runner, node)
-            return fut.result(timeout=timeout)
+        return self._scheduler.run_with_timeout(node, runner, timeout)
 
     # ── Shutdown ──
 

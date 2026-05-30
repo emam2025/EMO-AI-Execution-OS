@@ -1,0 +1,140 @@
+[
+  {
+    "canon_ref": "LAW 5",
+    "requirement": "Observability Mandatory",
+    "implementation_evidence": "TelemetryAggregator.ingest_event() captures all state transitions as telemetry events; AggregationSummary with span_count, alert_count, error_count",
+    "test_evidence": "TestWindowingAndFlush::test_compute_metrics_aggregates_window"
+  },
+  {
+    "canon_ref": "LAW 5",
+    "requirement": "CRITICAL spans never dropped",
+    "implementation_evidence": "BackpressureSampler adaptive_sampling keeps critical=1.0 at all 5 buffer levels",
+    "test_evidence": "TestCriticalSpansNeverDroppedUnderLoad::test_critical_always_samples_at_critical_load"
+  },
+  {
+    "canon_ref": "LAW 5",
+    "requirement": "Alerts routable and suppressible",
+    "implementation_evidence": "AlertRouter.route_alert with CRITICAL→runtime.alert.critical; suppress_duplicate with cooldown",
+    "test_evidence": "TestAlertSuppression::test_route_alert_critical_to_special_topic"
+  },
+  {
+    "canon_ref": "LAW 5",
+    "requirement": "Worker health observable",
+    "implementation_evidence": "WorkerTopologySnapshot with health_score; DashboardDataProvider.get_worker_topology() counts healthy/degraded/offline",
+    "test_evidence": "TestDashboardSnapshot::test_worker_topology_counts_health"
+  },
+  {
+    "canon_ref": "LAW 5",
+    "requirement": "Failure explorer available",
+    "implementation_evidence": "FailureExplorerResult with root_span_id, affected_spans; DashboardDataProvider.get_failure_explorer()",
+    "test_evidence": "TestDashboardSnapshot::test_execution_timeline_with_events"
+  },
+  {
+    "canon_ref": "LAW 12",
+    "requirement": "Every span has trace_id and span_id",
+    "implementation_evidence": "TraceSpan dataclass with trace_id, span_id, parent_id mandatory fields; TraceCollector.start_span() enforces trace_id",
+    "test_evidence": "TestTraceCorrelation::test_span_has_trace_id_and_parent_id"
+  },
+  {
+    "canon_ref": "LAW 12",
+    "requirement": "parent_id establishes causal ordering",
+    "implementation_evidence": "TraceCollector.start_span() accepts parent_id parameter; span.parent_id set on creation",
+    "test_evidence": "TestTraceCorrelation::test_span_has_trace_id_and_parent_id"
+  },
+  {
+    "canon_ref": "LAW 12",
+    "requirement": "Trace context propagates across domains",
+    "implementation_evidence": "TraceCollector.propagate_context() returns {trace_id, parent_span_id, target_domain, source} headers",
+    "test_evidence": "TestTraceCorrelation::test_propagate_context_returns_headers"
+  },
+  {
+    "canon_ref": "LAW 12",
+    "requirement": "Timeline events link to spans",
+    "implementation_evidence": "ExecutionTimelineEvent has span_id field linking to TraceSpan; DashboardDataProvider.get_execution_timeline() returns span_id per node",
+    "test_evidence": "TestDashboardSnapshot::test_execution_timeline_with_events"
+  },
+  {
+    "canon_ref": "LAW 12",
+    "requirement": "correlation_id on every model",
+    "implementation_evidence": "TraceSpan.correlation_id = f\"{trace_id}:{span_id}\"; ExecutionTimelineEvent.correlation_id()",
+    "test_evidence": "Implemented in observability_models.py TraceSpan and ExecutionTimelineEvent"
+  },
+  {
+    "canon_ref": "LAW 11",
+    "requirement": "No global state",
+    "implementation_evidence": "All 4 F4 components are per-instance; tracked via instance-level dicts; CompositionRoot creates fresh instances per root",
+    "test_evidence": "trace_collector.py, telemetry_aggregator.py, dashboard_data_provider.py, alert_router.py all use instance-level state"
+  },
+  {
+    "canon_ref": "RULE 1",
+    "requirement": "Deterministic computation",
+    "implementation_evidence": "DashboardDataProvider.get_dag_visualization() returns deterministic result per (dag_id, execution_id); _compute_critical_path is pure",
+    "test_evidence": "TestDashboardSnapshot::test_execution_timeline_with_events"
+  },
+  {
+    "canon_ref": "RULE 2",
+    "requirement": "Reversibility — ended spans immutable",
+    "implementation_evidence": "TraceCollector.end_span() removes span from _active_spans; completed spans are appended to read-only list",
+    "test_evidence": "TestTraceCorrelation::test_end_span_moves_to_completed"
+  },
+  {
+    "canon_ref": "RULE 3",
+    "requirement": "Recoverability — flush retry with backoff",
+    "implementation_evidence": "AggregationStateMachine.guard_flush_retry allows 3 retries; TelemetryAggregator.flush_window preserves buffer on failure",
+    "test_evidence": "TestAggregationWindowingAndFlush::test_flush_retry_guard"
+  },
+  {
+    "canon_ref": "RULE 3",
+    "requirement": "CRITICAL spans never dropped",
+    "implementation_evidence": "BackpressureSampler.should_sample() returns True for Severity.CRITICAL at all buffer levels; dropped_critical counter tracked",
+    "test_evidence": "TestCriticalSpansNeverDroppedUnderLoad (11 tests)"
+  },
+  {
+    "canon_ref": "RULE 3",
+    "requirement": "Alert suppression prevents storms",
+    "implementation_evidence": "AlertRouter.suppress_duplicate() returns True within cooldown window; per-key cooldown tracking",
+    "test_evidence": "TestAlertSuppression::test_suppress_duplicate_blocks_within_cooldown"
+  },
+  {
+    "canon_ref": "RULE 4",
+    "requirement": "Terminal states defined",
+    "implementation_evidence": "AggregationStateMachine TERMINAL_STATES = {PERSISTED}; no transitions from terminal; AggregationState enum with 7 states",
+    "test_evidence": "TestAggregationWindowingAndFlush::test_sm_state_flow"
+  },
+  {
+    "canon_ref": "RULE 5",
+    "requirement": "Idempotent operations",
+    "implementation_evidence": "TelemetryAggregator.publish_summary() skips already-published window keys; AlertRouter.route_alert() returns existing receipt for duplicate alert_id",
+    "test_evidence": "TestWindowingAndFlush::test_publish_summary_to_event_bus; TestAlertSuppression::test_route_alert_idempotent"
+  },
+  {
+    "canon_ref": "§15.13",
+    "requirement": "Execution timeline queryable by execution_id",
+    "implementation_evidence": "DashboardDataProvider.get_execution_timeline(execution_id, since_ns) returns sorted events with node_id, transition, span_id",
+    "test_evidence": "TestDashboardSnapshot::test_execution_timeline_with_events"
+  },
+  {
+    "canon_ref": "§15.13",
+    "requirement": "DAG visualisation with status overlay",
+    "implementation_evidence": "DashboardDataProvider.get_dag_visualization(dag_id, execution_id) enriches nodes with status from timeline",
+    "test_evidence": "DashboardDataProvider.get_dag_visualization implemented with _compute_critical_path"
+  },
+  {
+    "canon_ref": "§15.13",
+    "requirement": "Worker topology viewable",
+    "implementation_evidence": "DashboardDataProvider.get_worker_topology(worker_ids) returns WorkerTopologyView with counts",
+    "test_evidence": "TestDashboardSnapshot::test_worker_topology_counts_health"
+  },
+  {
+    "canon_ref": "§15.13",
+    "requirement": "Failure explorer traces root cause",
+    "implementation_evidence": "DashboardDataProvider.get_failure_explorer(trace_id, span_id) returns FailureExplorerResult with root_span_id",
+    "test_evidence": "TestDashboardSnapshot::test_execution_timeline_empty"
+  },
+  {
+    "canon_ref": "§15.13",
+    "requirement": "Alert routing with deduplication",
+    "implementation_evidence": "AlertRouter with evaluate_threshold, route_alert, suppress_duplicate(composite key + cooldown)",
+    "test_evidence": "TestAlertSuppression (6 tests)"
+  }
+]

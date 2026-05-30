@@ -194,9 +194,6 @@ class CompositionRoot:
         cognitive_trace_correlator: Any = None,
         strict_memory_mode: bool = False,
         # Phase G — Cognitive Orchestration Layer
-        planner_agent: Any = None,
-        critic_agent: Any = None,
-        optimizer_agent: Any = None,
         orchestration_state_machine: Any = None,
         orchestration_trace_correlator: Any = None,
         strict_orchestration_mode: bool = False,
@@ -360,9 +357,6 @@ class CompositionRoot:
         self._strict_memory_mode = strict_memory_mode
 
         # Phase G — Cognitive Orchestration Layer
-        self._planner_agent = planner_agent
-        self._critic_agent = critic_agent
-        self._optimizer_agent = optimizer_agent
         self._orchestration_state_machine = orchestration_state_machine
         self._orchestration_trace_correlator = orchestration_trace_correlator
         self._strict_orchestration_mode = strict_orchestration_mode
@@ -2104,6 +2098,12 @@ class CompositionRoot:
             event_bus=self._event_bus,
             canon_validator=self._canon_validator,
             codegraph=self._codegraph,
+            # ── Phase 3.4 — 5 bounded services ──
+            scheduler=self._scheduler,
+            state_store=self._state_store,
+            dispatcher=self._dispatcher,
+            retry_handler=self._retry_handler,
+            lease_manager=self._lease_manager,
         )
 
         # Phase 3.7 — expose internal layers

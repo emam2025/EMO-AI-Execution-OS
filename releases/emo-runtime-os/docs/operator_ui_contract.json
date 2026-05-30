@@ -1,0 +1,246 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Emo-AI Operator UI Contract",
+    "version": "1.0.0-k5",
+    "description": "Read-only runtime visibility contract for Operator Dashboard. All endpoints are side-effect-free (LAW-K5-1). Every request must carry an X-Operator-Trace-Id header (LAW-K5-3)."
+  },
+  "servers": [
+    { "url": "http://localhost:8000/api/v1", "description": "K5 Operator API" }
+  ],
+  "security": [
+    { "operator_session": [] }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Cluster health summary",
+        "operationId": "getClusterHealth",
+        "parameters": [
+          { "name": "X-Operator-Trace-Id", "in": "header", "schema": { "type": "string" }, "required": true }
+        ],
+        "responses": {
+          "200": {
+            "description": "Health status",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ClusterHealth" } } }
+          }
+        }
+      }
+    },
+    "/dags": {
+      "get": {
+        "summary": "List active DAGs",
+        "operationId": "listActiveDags",
+        "parameters": [
+          { "name": "X-Operator-Trace-Id", "in": "header", "schema": { "type": "string" }, "required": true }
+        ],
+        "responses": {
+          "200": {
+            "description": "Active DAG list",
+            "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/DAGSummary" } } } }
+          }
+        }
+      }
+    },
+    "/dags/{dagId}": {
+      "get": {
+        "summary": "DAG detail + GraphML export",
+        "operationId": "getDagDetail",
+        "parameters": [
+          { "name": "dagId", "in": "path", "required": true, "schema": { "type": "string" } },
+          { "name": "X-Operator-Trace-Id", "in": "header", "schema": { "type": "string" }, "required": true },
+          { "name": "format", "in": "query", "schema": { "type": "string", "enum": ["json", "graphml"] }, "default": "json" }
+        ],
+        "responses": {
+          "200": {
+            "description": "DAG detail (JSON or GraphML)",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/DAGDetail" } } }
+          }
+        }
+      }
+    },
+    "/traces/{traceId}": {
+      "get": {
+        "summary": "Inspect execution trace",
+        "operationId": "getExecutionTrace",
+        "parameters": [
+          { "name": "traceId", "in": "path", "required": true, "schema": { "type": "string" } },
+          { "name": "X-Operator-Trace-Id", "in": "header", "schema": { "type": "string" }, "required": true }
+        ],
+        "responses": {
+          "200": {
+            "description": "Trace detail",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/TraceReport" } } }
+          }
+        }
+      }
+    },
+    "/topology/workers": {
+      "get": {
+        "summary": "Worker topology snapshot",
+        "operationId": "getWorkerTopology",
+        "parameters": [
+          { "name": "X-Operator-Trace-Id", "in": "header", "schema": { "type": "string" }, "required": true }
+        ],
+        "responses": {
+          "200": {
+            "description": "Worker topology",
+            "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/WorkerEntry" } } } }
+          }
+        }
+      }
+    },
+    "/actions/pause": {
+      "post": {
+        "summary": "Pause an execution",
+        "operationId": "operatorPause",
+        "parameters": [
+          { "name": "X-Operator-Trace-Id", "in": "header", "schema": { "type": "string" }, "required": true }
+        ],
+        "requestBody": {
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ActionRequest" } } }
+        },
+        "responses": {
+          "200": { "description": "Pause accepted", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ActionResponse" } } } }
+        }
+      }
+    },
+    "/actions/resume": {
+      "post": {
+        "summary": "Resume a paused execution",
+        "operationId": "operatorResume",
+        "parameters": [
+          { "name": "X-Operator-Trace-Id", "in": "header", "schema": { "type": "string" }, "required": true }
+        ],
+        "requestBody": {
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ActionRequest" } } }
+        },
+        "responses": {
+          "200": { "description": "Resume accepted", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ActionResponse" } } } }
+        }
+      }
+    },
+    "/actions/force-retry": {
+      "post": {
+        "summary": "Force retry of a failed execution",
+        "operationId": "operatorForceRetry",
+        "parameters": [
+          { "name": "X-Operator-Trace-Id", "in": "header", "schema": { "type": "string" }, "required": true }
+        ],
+        "requestBody": {
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ActionRequest" } } }
+        },
+        "responses": {
+          "200": { "description": "Force retry accepted", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ActionResponse" } } } }
+        }
+      }
+    },
+    "/actions/replay": {
+      "post": {
+        "summary": "Replay an execution",
+        "operationId": "operatorReplay",
+        "parameters": [
+          { "name": "X-Operator-Trace-Id", "in": "header", "schema": { "type": "string" }, "required": true }
+        ],
+        "requestBody": {
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ReplayRequest" } } }
+        },
+        "responses": {
+          "200": { "description": "Replay initiated", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ActionResponse" } } } }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "operator_session": { "type": "apiKey", "in": "header", "name": "X-Session-Token" }
+    },
+    "schemas": {
+      "ClusterHealth": {
+        "type": "object",
+        "properties": {
+          "overall_status": { "type": "string", "enum": ["healthy", "degraded", "critical"] },
+          "active_dags": { "type": "integer" },
+          "worker_count": { "type": "integer" },
+          "queue_pressure": { "type": "number", "format": "float" },
+          "p95_latency_ms": { "type": "number" },
+          "p99_latency_ms": { "type": "number" },
+          "replay_drift": { "type": "number" },
+          "healthy_workers": { "type": "integer" },
+          "degraded_workers": { "type": "integer" },
+          "offline_workers": { "type": "integer" }
+        }
+      },
+      "DAGSummary": {
+        "type": "object",
+        "properties": {
+          "dag_id": { "type": "string" },
+          "status": { "type": "string" },
+          "node_count": { "type": "integer" },
+          "submitted_at": { "type": "string" },
+          "completed_at": { "type": "string" },
+          "error_count": { "type": "integer" },
+          "total_duration_ms": { "type": "number" }
+        }
+      },
+      "DAGDetail": {
+        "type": "object",
+        "properties": {
+          "dag_id": { "type": "string" },
+          "nodes": { "type": "array", "items": { "type": "object" } },
+          "edges": { "type": "array", "items": { "type": "object" } },
+          "graphml": { "type": "string" }
+        }
+      },
+      "TraceReport": {
+        "type": "object",
+        "properties": {
+          "trace_id": { "type": "string" },
+          "timeline": { "type": "object" },
+          "spans": { "type": "object" },
+          "topology": { "type": "object" },
+          "failures": { "type": "object" },
+          "operator_trace_id": { "type": "string" }
+        }
+      },
+      "WorkerEntry": {
+        "type": "object",
+        "properties": {
+          "worker_id": { "type": "string" },
+          "status": { "type": "string", "enum": ["healthy", "degraded", "offline", "draining"] },
+          "assigned_dags": { "type": "array", "items": { "type": "string" } },
+          "uptime_seconds": { "type": "number" },
+          "cpu_load": { "type": "number" },
+          "memory_mb": { "type": "number" }
+        }
+      },
+      "ActionRequest": {
+        "type": "object",
+        "properties": {
+          "target_id": { "type": "string" },
+          "params": { "type": "object" }
+        },
+        "required": ["target_id"]
+      },
+      "ReplayRequest": {
+        "type": "object",
+        "properties": {
+          "target_id": { "type": "string" },
+          "checkpoint_id": { "type": "string" },
+          "deterministic": { "type": "boolean", "default": true }
+        },
+        "required": ["target_id"]
+      },
+      "ActionResponse": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "string", "enum": ["accepted", "rejected", "failed", "pending"] },
+          "operator_trace_id": { "type": "string" },
+          "replay_id": { "type": "string" },
+          "checkpoint_id": { "type": "string" },
+          "detail": { "type": "string" }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "certificate_type": "ENTERPRISE_PILOT_CERTIFICATE",
+  "directive": "EXEC-DIRECTIVE-ENT-PILOT-001",
+  "timestamp": "2026-05-29T01:09:21.873733+00:00",
+  "overall_status": "PASS",
+  "pillars": {
+    "Enterprise Launch": {
+      "name": "Enterprise Launch",
+      "status": "PASS",
+      "metrics": {
+        "strict_enterprise_mode": true,
+        "tenant_count": 10
+      },
+      "thresholds": {
+        "strict_enterprise_mode": {
+          "eq": true
+        },
+        "tenant_count": {
+          "min": 5
+        }
+      },
+      "errors": []
+    },
+    "Operational Metrics": {
+      "name": "Operational Metrics",
+      "status": "PASS",
+      "metrics": {
+        "quota_fairness_variance": 0.0,
+        "invoice_determinism_pct": 100.0,
+        "suspend_on_default_safety": true,
+        "audit_generation_time_ms": 0.01,
+        "compliance_validation_rate": 100.0,
+        "archive_hash_matched": true
+      },
+      "thresholds": {
+        "quota_fairness_variance": {
+          "max": 0.1
+        },
+        "invoice_determinism_pct": {
+          "min": 100.0
+        },
+        "suspend_on_default_safety": {
+          "eq": true
+        },
+        "audit_generation_time_ms": {
+          "max": 2000.0
+        },
+        "compliance_validation_rate": {
+          "min": 100.0
+        },
+        "archive_hash_matched": {
+          "eq": true
+        }
+      },
+      "errors": []
+    },
+    "Trace Propagation": {
+      "name": "Trace Propagation",
+      "status": "PASS",
+      "metrics": {
+        "trace_id_loss_rate": 0.0,
+        "cross_tenant_leakage_attempts": 0,
+        "propagation_completeness_pct": 100.0
+      },
+      "thresholds": {
+        "trace_id_loss_rate": {
+          "max": 0.0
+        },
+        "cross_tenant_leakage_attempts": {
+          "max": 0
+        },
+        "propagation_completeness_pct": {
+          "min": 99.9
+        }
+      },
+      "errors": []
+    },
+    "Regression Guard": {
+      "name": "Regression Guard",
+      "status": "PASS",
+      "metrics": {
+        "regressions": 0
+      },
+      "thresholds": {
+        "regressions": {
+          "eq": 0
+        }
+      },
+      "errors": []
+    }
+  },
+  "execution_log": "[2026-05-29T01:09:21.873733+00:00] ENT-PILOT-001 started\n[2026-05-29T01:09:21.873733+00:00] Enterprise Launch: PASS (metrics: {'strict_enterprise_mode': True, 'tenant_count': 10})\n[2026-05-29T01:09:21.873733+00:00] Operational Metrics: PASS (metrics: {'quota_fairness_variance': 0.0, 'invoice_determinism_pct': 100.0, 'suspend_on_default_safety': True, 'audit_generation_time_ms': 0.01, 'compliance_validation_rate': 100.0, 'archive_hash_matched': True})\n[2026-05-29T01:09:21.873733+00:00] Trace Propagation: PASS (metrics: {'trace_id_loss_rate': 0.0, 'cross_tenant_leakage_attempts': 0, 'propagation_completeness_pct': 100.0})\n[2026-05-29T01:09:21.873733+00:00] Regression Guard: PASS (metrics: {'regressions': 0})\n[2026-05-29T01:09:21.873733+00:00] Overall: PASS",
+  "signed_with": "v4.12.0-enterprise-pilot"
+}

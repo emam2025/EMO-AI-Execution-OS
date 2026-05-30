@@ -1,0 +1,40 @@
+{
+  "task_id": "AUDIT-CLOSURE-D4-006",
+  "status": "PASS",
+  "metrics": {
+    "long_dag_nodes_completed": 20,
+    "parallel_dags_executed": 5,
+    "parallel_total_nodes": 20,
+    "worker_churn_reassigned_nodes": 4,
+    "replay_order_match": true,
+    "replay_output_match": true,
+    "checkpoint_resume_nodes_skipped": 2,
+    "checkpoint_resume_nodes_completed_post": 4,
+    "state_corruption_detected": false,
+    "duplicate_executions": 0
+  },
+  "acceptance": {
+    "long_dag = 20": true,
+    "parallel 5 dags": true,
+    "parallel 20 nodes": true,
+    "churn >= 4 reassigned": true,
+    "replay order match": true,
+    "replay output match": true,
+    "checkpoint skip = 2": true,
+    "checkpoint post >= 4": true,
+    "state corruption = false": true,
+    "duplicates = 0": true
+  },
+  "gaps": [
+    "CheckpointManager.restore() returns None on both 'not found' and 'data corrupt' \u2014 no distinction for caller",
+    "engine.execute() does not skip NodeState.COMPLETED nodes \u2014 DAG subset execution used for clean resume"
+  ],
+  "evidence": [
+    "long_dag_execution_trace.txt",
+    "parallel_storm_matrix.txt",
+    "worker_churn_reassignment_log.txt",
+    "crash_replay_diff.txt",
+    "checkpoint_resume_trace.txt"
+  ],
+  "execution_timestamp": "2026-05-21T07:17:41.230531Z"
+}

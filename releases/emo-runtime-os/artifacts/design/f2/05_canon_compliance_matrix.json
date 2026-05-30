@@ -1,0 +1,170 @@
+{
+    "task_id": "PHASE-F2-CONTROL-PLANE-DESIGN-013",
+    "stage": "Control Plane & Autoscaler — Design & Protocol Definition",
+    "status": "DESIGN_COMPLETE",
+    "date": "2026-05-22",
+    "compliance_entries": [
+        {
+            "id": "F2-CANON-001",
+            "law_ref": "LAW 5",
+            "rule_ref": "RULE 1",
+            "description": "Every execution MUST be observable — scaling decisions are observable",
+            "design_element": "IAutoscaler.evaluate_load() returns ScalingSignal; IHealthSupervisor.publish_health_event() emits EventBus events",
+            "design_evidence_path": "artifacts/design/f2/protocols/01_control_plane_protocols.py",
+            "status": "COMPLIANT"
+        },
+        {
+            "id": "F2-CANON-002",
+            "law_ref": "LAW 5",
+            "rule_ref": "RULE 5",
+            "description": "All health events carry trace_id via EventBus payload",
+            "design_element": "HealthEvent dataclass includes timestamp, worker_id, event_type; EventBus topics under runtime.health.*",
+            "design_evidence_path": "artifacts/design/f2/models/02_scaling_and_health_models.py",
+            "status": "COMPLIANT"
+        },
+        {
+            "id": "F2-CANON-003",
+            "law_ref": "LAW 8",
+            "rule_ref": "RULE 4",
+            "description": "All state transitions MUST be guarded — scaling state machine has guards",
+            "design_element": "Scaling Decision State Machine with 8 states, all transitions guarded (cooldown, hysteresis, consecutive cycles)",
+            "design_evidence_path": "artifacts/design/f2/03_scaling_decision_machine.md",
+            "status": "COMPLIANT"
+        },
+        {
+            "id": "F2-CANON-004",
+            "law_ref": "LAW 8",
+            "rule_ref": "RULE 4",
+            "description": "Terminal states block further transitions — TERMINATE is terminal",
+            "design_element": "TERMINATE state is terminal; TERMINATE → COOLDOWN is the only exit; no transition from TERMINATE back to active",
+            "design_evidence_path": "artifacts/design/f2/03_scaling_decision_machine.md",
+            "status": "COMPLIANT"
+        },
+        {
+            "id": "F2-CANON-005",
+            "law_ref": "LAW 8",
+            "rule_ref": "RULE 2",
+            "description": "Worker draining lifecycle has guarded phase transitions",
+            "design_element": "5-phase draining lifecycle with guards at each phase: MARK_DRAINING → STOP_NEW_LEASES → AWAIT_COMPLETION → RELEASE_LEASES → TERMINATE",
+            "design_evidence_path": "artifacts/design/f2/03_scaling_decision_machine.md",
+            "status": "COMPLIANT"
+        },
+        {
+            "id": "F2-CANON-006",
+            "law_ref": "LAW 11",
+            "rule_ref": "RULE 1",
+            "description": "No global state — all F2 components are per-instance",
+            "design_element": "IControlPlane, IAutoscaler, IHealthSupervisor, IReconciliationLoop are all instance Protocols; shared state is via EventBus only",
+            "design_evidence_path": "artifacts/design/f2/protocols/01_control_plane_protocols.py",
+            "status": "COMPLIANT"
+        },
+        {
+            "id": "F2-CANON-007",
+            "law_ref": "LAW 11",
+            "rule_ref": "RULE 4",
+            "description": "Scaling policy is per-instance configuration, not global",
+            "design_element": "ScalingPolicy dataclass is instantiated per-ControlPlane; min_workers, max_workers, cooldown_sec are instance fields",
+            "design_evidence_path": "artifacts/design/f2/models/02_scaling_and_health_models.py",
+            "status": "COMPLIANT"
+        },
+        {
+            "id": "F2-CANON-008",
+            "law_ref": "RULE 1",
+            "rule_ref": "",
+            "description": "Determinism — same load + same policy → same scaling signal",
+            "design_element": "IAutoscaler.evaluate_load() is pure: no random, no side effects; IReconciliationLoop.compare_desired() computes deterministic delta",
+            "design_evidence_path": "artifacts/design/f2/protocols/01_control_plane_protocols.py",
+            "status": "COMPLIANT"
+        },
+        {
+            "id": "F2-CANON-009",
+            "law_ref": "RULE 2",
+            "rule_ref": "",
+            "description": "Reversibility — scaling actions are reversible via scale_down/drain",
+            "design_element": "SCALE_UP reversed by SCALE_DOWN; worker provisioning reversed by drain+terminate; RULE 2 exception: individual drain is irreversible but system-level reversibility via new worker provisioning",
+            "design_evidence_path": "artifacts/design/f2/03_scaling_decision_machine.md",
+            "status": "COMPLIANT"
+        },
+        {
+            "id": "F2-CANON-010",
+            "law_ref": "RULE 3",
+            "rule_ref": "",
+            "description": "Recoverability — degraded workers can recover",
+            "design_element": "IHealthSupervisor.assess_degradation() allows transition from MINOR/MAJOR back to NONE; recovery events published as worker.health.recovered",
+            "design_evidence_path": "artifacts/design/f2/protocols/01_control_plane_protocols.py",
+            "status": "COMPLIANT"
+        },
+        {
+            "id": "F2-CANON-011",
+            "law_ref": "RULE 5",
+            "rule_ref": "",
+            "description": "Idempotency — all F2 operations are idempotent",
+            "design_element": "drain_worker: already DRAINING → return existing receipt; trigger_eviction: already TERMINATED → return receipt; apply_scaling: same target+current → no-op; register_worker: duplicate manifest → return existing",
+            "design_evidence_path": "artifacts/design/f2/04_integration_blueprint.md",
+            "status": "COMPLIANT"
+        },
+        {
+            "id": "F2-CANON-012",
+            "law_ref": "LAW 3",
+            "rule_ref": "",
+            "description": "Lease integrity — terminate requires RELEASE_LEASES first",
+            "design_element": "Draining lifecycle section: RELEASE_LEASES phase before TERMINATE; timeout safeguard force-releases leases if AWAIT_COMPLETION exceeds max_drain_wait_sec",
+            "design_evidence_path": "artifacts/design/f2/03_scaling_decision_machine.md",
+            "status": "COMPLIANT"
+        },
+        {
+            "id": "F2-CANON-013",
+            "law_ref": "§15.9.2",
+            "rule_ref": "",
+            "description": "Reconciliation interval strategy — observe 5s, evaluate 15s, act 30s",
+            "design_element": "Tiered timer approach with OBSERVE/EVALUATE/ACT phases; timer diagram in integration blueprint",
+            "design_evidence_path": "artifacts/design/f2/04_integration_blueprint.md",
+            "status": "COMPLIANT"
+        },
+        {
+            "id": "F2-CANON-014",
+            "law_ref": "§15.9.3",
+            "rule_ref": "RULE 2",
+            "description": "Worker Draining Lifecycle — 5-phase immutable sequence",
+            "design_element": "MARK_DRAINING → STOP_NEW_LEASES → AWAIT_COMPLETION → RELEASE_LEASES → TERMINATE; each phase has guard and expected duration",
+            "design_evidence_path": "artifacts/design/f2/03_scaling_decision_machine.md",
+            "status": "COMPLIANT"
+        },
+        {
+            "id": "F2-CANON-015",
+            "law_ref": "§15.9.4",
+            "rule_ref": "",
+            "description": "Oscillation prevention — cooldown and hysteresis mandatory",
+            "design_element": "4 hysteresis guards: consecutive cycle requirement (2x UP/DOWN), hysteresis dead-band, cooldown window, scale step limiting",
+            "design_evidence_path": "artifacts/design/f2/03_scaling_decision_machine.md",
+            "status": "COMPLIANT"
+        },
+        {
+            "id": "F2-CANON-016",
+            "law_ref": "§15.9.1",
+            "rule_ref": "",
+            "description": "Control Plane protocol — reconcile, enforce_policy, publish_state, drain_worker",
+            "design_element": "IControlPlane with 4 methods matching §15.9.1: reconcile(), enforce_policy(), publish_state(), drain_worker()",
+            "design_evidence_path": "artifacts/design/f2/protocols/01_control_plane_protocols.py",
+            "status": "COMPLIANT"
+        },
+        {
+            "id": "F2-CANON-017",
+            "law_ref": "Phase F1",
+            "rule_ref": "",
+            "description": "Integration with F1 UnifiedRuntime — register_worker, scale, observe",
+            "design_element": "Integration blueprint maps F1 API methods to F2 consumers with 3 connection points; EventBus topics under runtime.scaling.* and runtime.worker.*",
+            "design_evidence_path": "artifacts/design/f2/04_integration_blueprint.md",
+            "status": "COMPLIANT"
+        },
+        {
+            "id": "F2-CANON-018",
+            "law_ref": "Phase D8",
+            "rule_ref": "",
+            "description": "Integration with D8 Service Mesh — EventBus, FailureMatrix, Scheduler, LeaseManager",
+            "design_element": "5 D8 connection points: EventBus for all F2 communication, FailureMatrix for failure classification, ExecutionScheduler for drain, ExecutionLeaseManager for lease release, ExecutionStateStore for state queries",
+            "design_evidence_path": "artifacts/design/f2/04_integration_blueprint.md",
+            "status": "COMPLIANT"
+        }
+    ]
+}

@@ -1,0 +1,394 @@
+{
+  "phase": "H1",
+  "stage": "implementation",
+  "date": "2026-05-22",
+  "total_elements": 48,
+  "compliant": 48,
+  "non_compliant": 0,
+  "elements": [
+    {
+      "id": "H1-IMPL-01",
+      "name": "BrowserRuntime.launch_session",
+      "file": "core/runtime/computer_use/browser_runtime.py",
+      "law_ref": ["LAW-10", "RULE-4"],
+      "status": "COMPLIANT",
+      "evidence": "Isolation context required, sandbox_token generated, state machine transition to READY"
+    },
+    {
+      "id": "H1-IMPL-02",
+      "name": "BrowserRuntime.navigate_to",
+      "file": "core/runtime/computer_use/browser_runtime.py",
+      "law_ref": ["LAW-10", "RULE-2"],
+      "status": "COMPLIANT",
+      "evidence": "Guard I1+I3 enforced pre-action, sandbox_token validated, session tracked"
+    },
+    {
+      "id": "H1-IMPL-03",
+      "name": "BrowserRuntime.execute_script",
+      "file": "core/runtime/computer_use/browser_runtime.py",
+      "law_ref": ["LAW-10", "RULE-2"],
+      "status": "COMPLIANT",
+      "evidence": "Guard I3 blocks script_exec missing capability, requires sandbox_token"
+    },
+    {
+      "id": "H1-IMPL-04",
+      "name": "BrowserRuntime.capture_dom_state",
+      "file": "core/runtime/computer_use/browser_runtime.py",
+      "law_ref": ["LAW-14", "RULE-1"],
+      "status": "COMPLIANT",
+      "evidence": "DOM DAG structure with deterministic dom_hash"
+    },
+    {
+      "id": "H1-IMPL-05",
+      "name": "DesktopWorker.click",
+      "file": "core/runtime/computer_use/desktop_worker.py",
+      "law_ref": ["LAW-10", "RULE-2"],
+      "status": "COMPLIANT",
+      "evidence": "Guard I1+I2+I3 enforced: selector, spatial bbox, capability, sandbox token"
+    },
+    {
+      "id": "H1-IMPL-06",
+      "name": "DesktopWorker.type_text",
+      "file": "core/runtime/computer_use/desktop_worker.py",
+      "law_ref": ["LAW-10", "RULE-2"],
+      "status": "COMPLIANT",
+      "evidence": "Guard I3 enforced (keyboard_input capability), optional target handled"
+    },
+    {
+      "id": "H1-IMPL-07",
+      "name": "DesktopWorker.screenshot_region",
+      "file": "core/runtime/computer_use/desktop_worker.py",
+      "law_ref": ["LAW-10", "RULE-1"],
+      "status": "COMPLIANT",
+      "evidence": "Deterministic image_hash (RULE 1), region isolation"
+    },
+    {
+      "id": "H1-IMPL-08",
+      "name": "DesktopWorker.get_foreground_window",
+      "file": "core/runtime/computer_use/desktop_worker.py",
+      "law_ref": ["LAW-10"],
+      "status": "COMPLIANT",
+      "evidence": "Returns sandboxed window info"
+    },
+    {
+      "id": "H1-IMPL-09",
+      "name": "VisionGrounding.detect_ui_element",
+      "file": "core/runtime/computer_use/vision_grounding.py",
+      "law_ref": ["RULE-1", "RULE-3"],
+      "status": "COMPLIANT",
+      "evidence": "Guard I5 enforced, confidence threshold 0.7, deterministic bbox"
+    },
+    {
+      "id": "H1-IMPL-10",
+      "name": "VisionGrounding.extract_text_ocr",
+      "file": "core/runtime/computer_use/vision_grounding.py",
+      "law_ref": ["LAW-10", "RULE-1"],
+      "status": "COMPLIANT",
+      "evidence": "Deterministic text_hash, confidence scoring"
+    },
+    {
+      "id": "H1-IMPL-11",
+      "name": "VisionGrounding.compute_spatial_bbox",
+      "file": "core/runtime/computer_use/vision_grounding.py",
+      "law_ref": ["RULE-1"],
+      "status": "COMPLIANT",
+      "evidence": "Deterministic absolute bbox, visibility check, covered_pct"
+    },
+    {
+      "id": "H1-IMPL-12",
+      "name": "VisionGrounding.match_template",
+      "file": "core/runtime/computer_use/vision_grounding.py",
+      "law_ref": ["RULE-1", "RULE-3"],
+      "status": "COMPLIANT",
+      "evidence": "Threshold enforcement (RULE 3), deterministic match_hash"
+    },
+    {
+      "id": "H1-IMPL-13",
+      "name": "SessionJournal.record_action",
+      "file": "core/runtime/computer_use/session_journal.py",
+      "law_ref": ["LAW-24", "RULE-1"],
+      "status": "COMPLIANT",
+      "evidence": "Deterministic state_hash chain, previous_entry_hash integrity"
+    },
+    {
+      "id": "H1-IMPL-14",
+      "name": "SessionJournal.save_checkpoint",
+      "file": "core/runtime/computer_use/session_journal.py",
+      "law_ref": ["LAW-10", "RULE-3"],
+      "status": "COMPLIANT",
+      "evidence": "Checkpoint hash, action_count snapshot, guard I7 enforced"
+    },
+    {
+      "id": "H1-IMPL-15",
+      "name": "SessionJournal.replay_to_state",
+      "file": "core/runtime/computer_use/session_journal.py",
+      "law_ref": ["RULE-1", "RULE-3"],
+      "status": "COMPLIANT",
+      "evidence": "Deviation detection, state_hash verification, I8 enforced"
+    },
+    {
+      "id": "H1-IMPL-16",
+      "name": "SessionJournal.rollback_transaction",
+      "file": "core/runtime/computer_use/session_journal.py",
+      "law_ref": ["RULE-3"],
+      "status": "COMPLIANT",
+      "evidence": "Checkpoint verification, journal truncation, state restoration"
+    },
+    {
+      "id": "H1-IMPL-17",
+      "name": "ComputerUseSessionStateMachine.guard_selector_valid (I1)",
+      "file": "core/runtime/computer_use/session_state_machine.py",
+      "law_ref": ["RULE-2"],
+      "status": "COMPLIANT",
+      "evidence": "Empty selector → BLOCKED_SELECTOR"
+    },
+    {
+      "id": "H1-IMPL-18",
+      "name": "ComputerUseSessionStateMachine.guard_spatial_bbox_verified (I2)",
+      "file": "core/runtime/computer_use/session_state_machine.py",
+      "law_ref": ["RULE-2"],
+      "status": "COMPLIANT",
+      "evidence": "Out-of-viewport coords → BLOCKED_SPATIAL, invalid bbox → BLOCKED_SPATIAL"
+    },
+    {
+      "id": "H1-IMPL-19",
+      "name": "ComputerUseSessionStateMachine.guard_capability_match (I3)",
+      "file": "core/runtime/computer_use/session_state_machine.py",
+      "law_ref": ["LAW-10", "RULE-2"],
+      "status": "COMPLIANT",
+      "evidence": "Missing capability → BLOCKED_CAPABILITY, token mismatch → BLOCKED_CAPABILITY"
+    },
+    {
+      "id": "H1-IMPL-20",
+      "name": "ComputerUseSessionStateMachine.guard_session_isolation (I4)",
+      "file": "core/runtime/computer_use/session_state_machine.py",
+      "law_ref": ["LAW-10", "RULE-4"],
+      "status": "COMPLIANT",
+      "evidence": "Wrong session state → BLOCKED_SANDBOX"
+    },
+    {
+      "id": "H1-IMPL-21",
+      "name": "ComputerUseSessionStateMachine.guard_vision_consistency (I5)",
+      "file": "core/runtime/computer_use/session_state_machine.py",
+      "law_ref": ["RULE-1", "RULE-3"],
+      "status": "COMPLIANT",
+      "evidence": "Stale visual hash → blocked, low confidence → blocked"
+    },
+    {
+      "id": "H1-IMPL-22",
+      "name": "ComputerUseSessionStateMachine.guard_journal_integrity (I6)",
+      "file": "core/runtime/computer_use/session_state_machine.py",
+      "law_ref": ["RULE-1", "LAW-24"],
+      "status": "COMPLIANT",
+      "evidence": "Chain hash mismatch → blocked"
+    },
+    {
+      "id": "H1-IMPL-23",
+      "name": "ComputerUseSessionStateMachine.guard_resource_quota (I7)",
+      "file": "core/runtime/computer_use/session_state_machine.py",
+      "law_ref": ["LAW-10"],
+      "status": "COMPLIANT",
+      "evidence": "Action/cpu/session limits enforced"
+    },
+    {
+      "id": "H1-IMPL-24",
+      "name": "ComputerUseSessionStateMachine.guard_replay_determinism (I8)",
+      "file": "core/runtime/computer_use/session_state_machine.py",
+      "law_ref": ["RULE-1"],
+      "status": "COMPLIANT",
+      "evidence": "State hash mismatch during replay → blocked"
+    },
+    {
+      "id": "H1-IMPL-25",
+      "name": "ComputerUseSessionStateMachine.check_pre_action",
+      "file": "core/runtime/computer_use/session_state_machine.py",
+      "law_ref": ["RULE-2", "RULE-3"],
+      "status": "COMPLIANT",
+      "evidence": "Composite guard: I1+I2+I3+I5 before every action"
+    },
+    {
+      "id": "H1-IMPL-26",
+      "name": "ComputerUseSessionStateMachine.transition (12 transitions)",
+      "file": "core/runtime/computer_use/session_state_machine.py",
+      "law_ref": ["LAW-24"],
+      "status": "COMPLIANT",
+      "evidence": "G1–G12 all enforced, terminal state blocks, invalid transition rejected"
+    },
+    {
+      "id": "H1-IMPL-27",
+      "name": "ComputerUseSessionStateMachine.compute_state_hash",
+      "file": "core/runtime/computer_use/session_state_machine.py",
+      "law_ref": ["RULE-1"],
+      "status": "COMPLIANT",
+      "evidence": "SHA-256 chain: prev_hash:seq:action:selector:input:visual:guard:error"
+    },
+    {
+      "id": "H1-IMPL-28",
+      "name": "ComputerUseTraceCorrelator.generate_session_trace_id",
+      "file": "core/runtime/computer_use/trace_correlator.py",
+      "law_ref": ["LAW-12"],
+      "status": "COMPLIANT",
+      "evidence": "h1_<28 hex chars>, derived from mission_trace_id + index + timestamp"
+    },
+    {
+      "id": "H1-IMPL-29",
+      "name": "ComputerUseTraceCorrelator.propagate_to_* (3 methods)",
+      "file": "core/runtime/computer_use/trace_correlator.py",
+      "law_ref": ["LAW-12"],
+      "status": "COMPLIANT",
+      "evidence": "propagate_to_g5, propagate_to_phase4, propagate_to_f4 all record correlation"
+    },
+    {
+      "id": "H1-IMPL-30",
+      "name": "ComputerUseTraceCorrelator.trace_chain",
+      "file": "core/runtime/computer_use/trace_correlator.py",
+      "law_ref": ["LAW-12"],
+      "status": "COMPLIANT",
+      "evidence": "Full back-traceability: session_id → layers → mission_trace_id"
+    },
+    {
+      "id": "H1-IMPL-31",
+      "name": "CompositionRoot.computer_use_runtime wiring",
+      "file": "core/composition/root.py",
+      "law_ref": ["LAW-10", "LAW-24"],
+      "status": "COMPLIANT",
+      "evidence": "All 6 H1 components wired, isolation_runtime injected, strict_session_mode"
+    },
+    {
+      "id": "H1-IMPL-32",
+      "name": "TestInteractionGuardEnforcement (5 tests)",
+      "file": "tests/test_h1_computer_use_integration.py",
+      "law_ref": ["RULE-2"],
+      "status": "COMPLIANT",
+      "evidence": "No action without selector + bbox + capability + sandbox"
+    },
+    {
+      "id": "H1-IMPL-33",
+      "name": "TestSandboxIsolationCompliance (4 tests)",
+      "file": "tests/test_h1_computer_use_integration.py",
+      "law_ref": ["LAW-10"],
+      "status": "COMPLIANT",
+      "evidence": "Sandbox token required, invalid token rejected"
+    },
+    {
+      "id": "H1-IMPL-34",
+      "name": "TestTraceCorrelation (4 tests)",
+      "file": "tests/test_h1_computer_use_integration.py",
+      "law_ref": ["LAW-12"],
+      "status": "COMPLIANT",
+      "evidence": "session_trace_id propagates across all layers"
+    },
+    {
+      "id": "H1-IMPL-35",
+      "name": "TestJournalRollbackSafety (4 tests)",
+      "file": "tests/test_h1_computer_use_integration.py",
+      "law_ref": ["RULE-1", "RULE-3"],
+      "status": "COMPLIANT",
+      "evidence": "Deterministic hashing, checkpoint rollback, replay verification"
+    },
+    {
+      "id": "H1-IMPL-36",
+      "name": "TestBrowserDesktopVisionHappyPath (3 tests)",
+      "file": "tests/test_h1_computer_use_integration.py",
+      "law_ref": ["LAW-10", "LAW-14", "RULE-1"],
+      "status": "COMPLIANT",
+      "evidence": "Full lifecycle: launch → navigate → click → type → screenshot → detect → bbox"
+    },
+    {
+      "id": "H1-IMPL-37",
+      "name": "TestGuardI1SelectorValidity (2 tests)",
+      "file": "tests/test_session_state_machine_interaction_guards.py",
+      "law_ref": ["RULE-2"],
+      "status": "COMPLIANT",
+      "evidence": "Guard I1 blocks empty selector, passes valid selector"
+    },
+    {
+      "id": "H1-IMPL-38",
+      "name": "TestGuardI2SpatialBBox (2 tests)",
+      "file": "tests/test_session_state_machine_interaction_guards.py",
+      "law_ref": ["RULE-2"],
+      "status": "COMPLIANT",
+      "evidence": "Guard I2 blocks invalid bbox, passes valid coords"
+    },
+    {
+      "id": "H1-IMPL-39",
+      "name": "TestGuardI3CapabilityMatch (4 tests)",
+      "file": "tests/test_session_state_machine_interaction_guards.py",
+      "law_ref": ["LAW-10", "RULE-2"],
+      "status": "COMPLIANT",
+      "evidence": "Guard I3 blocks missing capability, token mismatch, empty action"
+    },
+    {
+      "id": "H1-IMPL-40",
+      "name": "TestGuardI4SessionIsolation (2 tests)",
+      "file": "tests/test_session_state_machine_interaction_guards.py",
+      "law_ref": ["LAW-10", "RULE-4"],
+      "status": "COMPLIANT",
+      "evidence": "Guard I4 blocks disallowed session state"
+    },
+    {
+      "id": "H1-IMPL-41",
+      "name": "TestGuardI5VisionConsistency (3 tests)",
+      "file": "tests/test_session_state_machine_interaction_guards.py",
+      "law_ref": ["RULE-1", "RULE-3"],
+      "status": "COMPLIANT",
+      "evidence": "Guard I5: matching hash passes, stale hash blocked, low confidence blocked"
+    },
+    {
+      "id": "H1-IMPL-42",
+      "name": "TestGuardI6JournalIntegrity (2 tests)",
+      "file": "tests/test_session_state_machine_interaction_guards.py",
+      "law_ref": ["RULE-1"],
+      "status": "COMPLIANT",
+      "evidence": "Guard I6: matching hashes pass, mismatch blocked"
+    },
+    {
+      "id": "H1-IMPL-43",
+      "name": "TestGuardI7ResourceQuota (4 tests)",
+      "file": "tests/test_session_state_machine_interaction_guards.py",
+      "law_ref": ["LAW-10"],
+      "status": "COMPLIANT",
+      "evidence": "Guard I7: action/cpu/session limits all enforced"
+    },
+    {
+      "id": "H1-IMPL-44",
+      "name": "TestGuardI8ReplayDeterminism (2 tests)",
+      "file": "tests/test_session_state_machine_interaction_guards.py",
+      "law_ref": ["RULE-1"],
+      "status": "COMPLIANT",
+      "evidence": "Guard I8: matching hashes pass, mismatch blocked"
+    },
+    {
+      "id": "H1-IMPL-45",
+      "name": "TestPreActionCompositeGuard (3 tests)",
+      "file": "tests/test_session_state_machine_interaction_guards.py",
+      "law_ref": ["RULE-2", "RULE-3"],
+      "status": "COMPLIANT",
+      "evidence": "All checks pass → PASSED; missing selector → BLOCKED_SELECTOR; missing cap → BLOCKED_CAPABILITY"
+    },
+    {
+      "id": "H1-IMPL-46",
+      "name": "TestStateMachineTransitions (10 tests)",
+      "file": "tests/test_session_state_machine_interaction_guards.py",
+      "law_ref": ["LAW-24"],
+      "status": "COMPLIANT",
+      "evidence": "All 6 states reachable, terminal blocks, invalid transition rejected, history tracks"
+    },
+    {
+      "id": "H1-IMPL-47",
+      "name": "TestDeterministicHash (2 tests)",
+      "file": "tests/test_session_state_machine_interaction_guards.py",
+      "law_ref": ["RULE-1"],
+      "status": "COMPLIANT",
+      "evidence": "Same inputs → same hash; different action → different hash"
+    },
+    {
+      "id": "H1-IMPL-48",
+      "name": "TestSessionTraceIdPropagation (22 tests)",
+      "file": "tests/test_session_trace_id_propagation_across_layers.py",
+      "law_ref": ["LAW-12"],
+      "status": "COMPLIANT",
+      "evidence": "Generate, propagate to all layers, trace chain, resolve session, reset"
+    }
+  ]
+}

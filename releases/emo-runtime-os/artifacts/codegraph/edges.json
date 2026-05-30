@@ -1,0 +1,9884 @@
+[
+  {
+    "from": "00e1853d5a022845",
+    "to": "_stats",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "00e1853d5a022845",
+    "to": "c45a0e8dd1544534",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "00e1853d5a022845",
+    "to": "c45a0e8dd1544534",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "00e1853d5a022845",
+    "to": "e2ac2541aec2ebbd",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "00e1853d5a022845",
+    "to": "e2ac2541aec2ebbd",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "00e1853d5a022845",
+    "to": "execution_count",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "00e1853d5a022845",
+    "to": "nodes",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "00e1853d5a022845",
+    "to": "path",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "00e1853d5a022845",
+    "to": "scores",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "00e1853d5a022845",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "00e1853d5a022845",
+    "to": "static_info",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "00e1853d5a022845",
+    "to": "tool",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "04ffab8e0199abf7",
+    "to": "1e80cf7acda181cf",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "04ffab8e0199abf7",
+    "to": "1e80cf7acda181cf",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "0578a63118183210",
+    "to": "Event",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "0578a63118183210",
+    "to": "Lock",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "0578a63118183210",
+    "to": "Thread",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "0578a63118183210",
+    "to": "_active_tasks",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0578a63118183210",
+    "to": "_heartbeat_thread",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0578a63118183210",
+    "to": "_stop_event",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0578a63118183210",
+    "to": "argparse",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0578a63118183210",
+    "to": "data",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0578a63118183210",
+    "to": "engine_url",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0578a63118183210",
+    "to": "info",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0578a63118183210",
+    "to": "json",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0578a63118183210",
+    "to": "k",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0578a63118183210",
+    "to": "logger",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0578a63118183210",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0578a63118183210",
+    "to": "name",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0578a63118183210",
+    "to": "os",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0578a63118183210",
+    "to": "pair",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0578a63118183210",
+    "to": "parser",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0578a63118183210",
+    "to": "path",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0578a63118183210",
+    "to": "resp",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0578a63118183210",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0578a63118183210",
+    "to": "signal",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0578a63118183210",
+    "to": "sys",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0578a63118183210",
+    "to": "tags",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0578a63118183210",
+    "to": "threading",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0578a63118183210",
+    "to": "time",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0578a63118183210",
+    "to": "tools",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0578a63118183210",
+    "to": "v",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0578a63118183210",
+    "to": "worker",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "07368fe85b602242",
+    "to": "Path",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "07368fe85b602242",
+    "to": "a2bd905c0ae31a1d",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "07368fe85b602242",
+    "to": "a2bd905c0ae31a1d",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "07368fe85b602242",
+    "to": "ai_logger",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "07368fe85b602242",
+    "to": "config",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "07368fe85b602242",
+    "to": "config_path",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "07368fe85b602242",
+    "to": "default",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "07368fe85b602242",
+    "to": "directory",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "07368fe85b602242",
+    "to": "json",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "07368fe85b602242",
+    "to": "override",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0811d16081eb0e1a",
+    "to": "4357162dd92af3f9",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "0811d16081eb0e1a",
+    "to": "4357162dd92af3f9",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "0811d16081eb0e1a",
+    "to": "NetworkPolicy",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "0811d16081eb0e1a",
+    "to": "_policies",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0811d16081eb0e1a",
+    "to": "addr",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0811d16081eb0e1a",
+    "to": "hostname",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0811d16081eb0e1a",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0811d16081eb0e1a",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0811d16081eb0e1a",
+    "to": "socket",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "08a78a5b3171cbca",
+    "to": "22dfd717674a80e8",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "08a78a5b3171cbca",
+    "to": "22dfd717674a80e8",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "08a78a5b3171cbca",
+    "to": "c",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "08a78a5b3171cbca",
+    "to": "callee",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "08a78a5b3171cbca",
+    "to": "caller",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "08a78a5b3171cbca",
+    "to": "e",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "08a78a5b3171cbca",
+    "to": "edges",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "08a78a5b3171cbca",
+    "to": "expansion",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "08a78a5b3171cbca",
+    "to": "file_ctx",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "08a78a5b3171cbca",
+    "to": "gq",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "08a78a5b3171cbca",
+    "to": "hotspots",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "08a78a5b3171cbca",
+    "to": "key_deps",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "08a78a5b3171cbca",
+    "to": "lines",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "08a78a5b3171cbca",
+    "to": "m",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "08a78a5b3171cbca",
+    "to": "meta",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "08a78a5b3171cbca",
+    "to": "n",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "08a78a5b3171cbca",
+    "to": "nodes",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "08a78a5b3171cbca",
+    "to": "queue",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "08a78a5b3171cbca",
+    "to": "r",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "08a78a5b3171cbca",
+    "to": "risk_analysis",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "08a78a5b3171cbca",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "08a78a5b3171cbca",
+    "to": "stats",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "08a78a5b3171cbca",
+    "to": "sym",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "08a78a5b3171cbca",
+    "to": "sym_ctx",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "08a78a5b3171cbca",
+    "to": "visited",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0dc4dddca0cf48c0",
+    "to": "1c797a76a65515bb",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "0dc4dddca0cf48c0",
+    "to": "1c797a76a65515bb",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "0dc4dddca0cf48c0",
+    "to": "2295de1831d39a1a",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "0dc4dddca0cf48c0",
+    "to": "2295de1831d39a1a",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "0dc4dddca0cf48c0",
+    "to": "6c38454a91bd3f05",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "0dc4dddca0cf48c0",
+    "to": "6c38454a91bd3f05",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "0dc4dddca0cf48c0",
+    "to": "analysis",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0dc4dddca0cf48c0",
+    "to": "c45a0e8dd1544534",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "0dc4dddca0cf48c0",
+    "to": "c45a0e8dd1544534",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "0dc4dddca0cf48c0",
+    "to": "e",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0dc4dddca0cf48c0",
+    "to": "edge_map",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0dc4dddca0cf48c0",
+    "to": "files",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0dc4dddca0cf48c0",
+    "to": "graph",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0dc4dddca0cf48c0",
+    "to": "incoming",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0dc4dddca0cf48c0",
+    "to": "nodes",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0dc4dddca0cf48c0",
+    "to": "outgoing",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0dc4dddca0cf48c0",
+    "to": "p",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0dc4dddca0cf48c0",
+    "to": "parsed_files",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0dc4dddca0cf48c0",
+    "to": "path",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0dc4dddca0cf48c0",
+    "to": "path_to_fid",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0dc4dddca0cf48c0",
+    "to": "rel_parts",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0dc4dddca0cf48c0",
+    "to": "seen",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0dc4dddca0cf48c0",
+    "to": "time",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0e98fe27b518d435",
+    "to": "93da793613138986",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "0e98fe27b518d435",
+    "to": "93da793613138986",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "0e98fe27b518d435",
+    "to": "Lock",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "0e98fe27b518d435",
+    "to": "asyncio",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0e98fe27b518d435",
+    "to": "datetime",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0e98fe27b518d435",
+    "to": "db",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0e98fe27b518d435",
+    "to": "loop",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0e98fe27b518d435",
+    "to": "tasks",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0ef4787d20f115ab",
+    "to": "1c37e50f98d527d0",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "0ef4787d20f115ab",
+    "to": "1c37e50f98d527d0",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "0ef4787d20f115ab",
+    "to": "a48d9a81e41fa92b",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "0ef4787d20f115ab",
+    "to": "a48d9a81e41fa92b",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "0ef4787d20f115ab",
+    "to": "dag",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0ef4787d20f115ab",
+    "to": "distributed",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0ef4787d20f115ab",
+    "to": "edata",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0ef4787d20f115ab",
+    "to": "json",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0ef4787d20f115ab",
+    "to": "le",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0ef4787d20f115ab",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0ef4787d20f115ab",
+    "to": "memory",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0ef4787d20f115ab",
+    "to": "ndata",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0ef4787d20f115ab",
+    "to": "node_comparisons",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0ef4787d20f115ab",
+    "to": "raw_nodes",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0ef4787d20f115ab",
+    "to": "result",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0ef4787d20f115ab",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0ef4787d20f115ab",
+    "to": "steps",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0ef4787d20f115ab",
+    "to": "steps_a",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0ef4787d20f115ab",
+    "to": "steps_b",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0ef4787d20f115ab",
+    "to": "tc",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0ef4787d20f115ab",
+    "to": "time",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0ef4787d20f115ab",
+    "to": "timing_diff",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0ef4787d20f115ab",
+    "to": "timing_distribution",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0ef4787d20f115ab",
+    "to": "trace",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0ef4787d20f115ab",
+    "to": "workers",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0fa4caa62bd03830",
+    "to": "2567302b68dfaa00",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "0fa4caa62bd03830",
+    "to": "2567302b68dfaa00",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "0fa4caa62bd03830",
+    "to": "594a75a2d198fd45",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "0fa4caa62bd03830",
+    "to": "594a75a2d198fd45",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "0fa4caa62bd03830",
+    "to": "SEVERITY_ORDER",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0fa4caa62bd03830",
+    "to": "ced2d458b9228c8b",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "0fa4caa62bd03830",
+    "to": "ced2d458b9228c8b",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "0fa4caa62bd03830",
+    "to": "rule",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0fa4caa62bd03830",
+    "to": "violations",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "0fbf6d587ae5fd6e",
+    "to": "5332214048237617",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "0fbf6d587ae5fd6e",
+    "to": "5332214048237617",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "1261f2ada748d877",
+    "to": "1c37e50f98d527d0",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "1261f2ada748d877",
+    "to": "1c37e50f98d527d0",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "1261f2ada748d877",
+    "to": "a48d9a81e41fa92b",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "1261f2ada748d877",
+    "to": "a48d9a81e41fa92b",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "1261f2ada748d877",
+    "to": "dag",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1261f2ada748d877",
+    "to": "depth",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1261f2ada748d877",
+    "to": "e",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1261f2ada748d877",
+    "to": "edata",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1261f2ada748d877",
+    "to": "graph",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1261f2ada748d877",
+    "to": "icons",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1261f2ada748d877",
+    "to": "json",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1261f2ada748d877",
+    "to": "levels",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1261f2ada748d877",
+    "to": "line_parts",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1261f2ada748d877",
+    "to": "lines",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1261f2ada748d877",
+    "to": "memory",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1261f2ada748d877",
+    "to": "narrative",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1261f2ada748d877",
+    "to": "ndata",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1261f2ada748d877",
+    "to": "node_compares",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1261f2ada748d877",
+    "to": "nodes",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1261f2ada748d877",
+    "to": "raw_nodes",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1261f2ada748d877",
+    "to": "raw_trace",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1261f2ada748d877",
+    "to": "result",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1261f2ada748d877",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1261f2ada748d877",
+    "to": "steps",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1261f2ada748d877",
+    "to": "tool_name",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1261f2ada748d877",
+    "to": "trace",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "14c4c2f30af0dfc4",
+    "to": "46b89f556efa98b2",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "14c4c2f30af0dfc4",
+    "to": "46b89f556efa98b2",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "14c4c2f30af0dfc4",
+    "to": "8d5cfcf8ae6d1e23",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "14c4c2f30af0dfc4",
+    "to": "8d5cfcf8ae6d1e23",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "14c4c2f30af0dfc4",
+    "to": "_callbacks",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "14c4c2f30af0dfc4",
+    "to": "_evolver",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "14c4c2f30af0dfc4",
+    "to": "_reports",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "14c4c2f30af0dfc4",
+    "to": "logger",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "14c4c2f30af0dfc4",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "14c4c2f30af0dfc4",
+    "to": "time",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "159ce0bb9da6e9fd",
+    "to": "desc",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "159ce0bb9da6e9fd",
+    "to": "re",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "159ce0bb9da6e9fd",
+    "to": "rules",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1636f40058d55377",
+    "to": "_endpoints",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1636f40058d55377",
+    "to": "a48d9a81e41fa92b",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "1636f40058d55377",
+    "to": "a48d9a81e41fa92b",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "1636f40058d55377",
+    "to": "desc",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1636f40058d55377",
+    "to": "e",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1636f40058d55377",
+    "to": "endpoint",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1636f40058d55377",
+    "to": "json",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1636f40058d55377",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1636f40058d55377",
+    "to": "request",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1636f40058d55377",
+    "to": "resp",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1636f40058d55377",
+    "to": "rstrip",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "1636f40058d55377",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1636f40058d55377",
+    "to": "url",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "16c1225af3003325",
+    "to": "PROPAGATION_MATRIX",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "16c1225af3003325",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1b1b2ccf9c004777",
+    "to": "current_edges",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1b1b2ccf9c004777",
+    "to": "current_path",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1b1b2ccf9c004777",
+    "to": "event",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1b1b2ccf9c004777",
+    "to": "mapping",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1b1b2ccf9c004777",
+    "to": "p",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1b1b2ccf9c004777",
+    "to": "paths",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1b1b2ccf9c004777",
+    "to": "payload",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1b1b2ccf9c004777",
+    "to": "prev",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1b1b2ccf9c004777",
+    "to": "result",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1b1b2ccf9c004777",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1b29ecae9932ce95",
+    "to": "_registry",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1b29ecae9932ce95",
+    "to": "c351c71a205f7ce2",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "1b29ecae9932ce95",
+    "to": "c351c71a205f7ce2",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "1b29ecae9932ce95",
+    "to": "efa68a204bebdf5f",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "1b29ecae9932ce95",
+    "to": "efa68a204bebdf5f",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "1b29ecae9932ce95",
+    "to": "inputs",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1b29ecae9932ce95",
+    "to": "logger",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1b29ecae9932ce95",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1c37e50f98d527d0",
+    "to": "Lock",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "1c37e50f98d527d0",
+    "to": "conn",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1c37e50f98d527d0",
+    "to": "json",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1c37e50f98d527d0",
+    "to": "logger",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1c37e50f98d527d0",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1c37e50f98d527d0",
+    "to": "os",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1c37e50f98d527d0",
+    "to": "params",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1c37e50f98d527d0",
+    "to": "parts",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1c37e50f98d527d0",
+    "to": "path",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1c37e50f98d527d0",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1c37e50f98d527d0",
+    "to": "sqlite3",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1c37e50f98d527d0",
+    "to": "threading",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1c37e50f98d527d0",
+    "to": "time",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1c37e50f98d527d0",
+    "to": "uuid",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1c797a76a65515bb",
+    "to": "6c38454a91bd3f05",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "1c797a76a65515bb",
+    "to": "6c38454a91bd3f05",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "1c797a76a65515bb",
+    "to": "_IMPORT_RE",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1c797a76a65515bb",
+    "to": "ast",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1c797a76a65515bb",
+    "to": "classes",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1c797a76a65515bb",
+    "to": "dirnames",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1c797a76a65515bb",
+    "to": "f",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1c797a76a65515bb",
+    "to": "filenames",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1c797a76a65515bb",
+    "to": "found",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1c797a76a65515bb",
+    "to": "functions",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1c797a76a65515bb",
+    "to": "imports",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1c797a76a65515bb",
+    "to": "interfaces",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1c797a76a65515bb",
+    "to": "m",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1c797a76a65515bb",
+    "to": "models",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1c797a76a65515bb",
+    "to": "os",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1c797a76a65515bb",
+    "to": "path",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1c797a76a65515bb",
+    "to": "re",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "1e80cf7acda181cf",
+    "to": "uuid",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "2295de1831d39a1a",
+    "to": "1c797a76a65515bb",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "2295de1831d39a1a",
+    "to": "1c797a76a65515bb",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "2295de1831d39a1a",
+    "to": "ast",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "2295de1831d39a1a",
+    "to": "attr",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "2295de1831d39a1a",
+    "to": "c45a0e8dd1544534",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "2295de1831d39a1a",
+    "to": "c45a0e8dd1544534",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "2295de1831d39a1a",
+    "to": "call_edges",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "2295de1831d39a1a",
+    "to": "di_edges",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "2295de1831d39a1a",
+    "to": "imp",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "2295de1831d39a1a",
+    "to": "import_edges",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "2295de1831d39a1a",
+    "to": "re",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "22dfd717674a80e8",
+    "to": "conn",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "22dfd717674a80e8",
+    "to": "edges",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "22dfd717674a80e8",
+    "to": "file_ids_seen",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "22dfd717674a80e8",
+    "to": "impacted_files",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "22dfd717674a80e8",
+    "to": "impacted_symbols",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "22dfd717674a80e8",
+    "to": "json",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "22dfd717674a80e8",
+    "to": "nodes",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "22dfd717674a80e8",
+    "to": "props",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "22dfd717674a80e8",
+    "to": "queue",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "22dfd717674a80e8",
+    "to": "results",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "22dfd717674a80e8",
+    "to": "root_symbols",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "22dfd717674a80e8",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "22dfd717674a80e8",
+    "to": "sqlite3",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "22dfd717674a80e8",
+    "to": "visited",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "22dfd717674a80e8",
+    "to": "visited_nodes",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "2452d53784cebaba",
+    "to": "0811d16081eb0e1a",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "2452d53784cebaba",
+    "to": "0811d16081eb0e1a",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "2452d53784cebaba",
+    "to": "1b29ecae9932ce95",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "2452d53784cebaba",
+    "to": "1b29ecae9932ce95",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "2452d53784cebaba",
+    "to": "4357162dd92af3f9",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "2452d53784cebaba",
+    "to": "4357162dd92af3f9",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "2452d53784cebaba",
+    "to": "4ab8d44cb8d3fa64",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "2452d53784cebaba",
+    "to": "4ab8d44cb8d3fa64",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "2452d53784cebaba",
+    "to": "61d72d4c01d582a4",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "2452d53784cebaba",
+    "to": "61d72d4c01d582a4",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "2452d53784cebaba",
+    "to": "68102d7b9d112034",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "2452d53784cebaba",
+    "to": "68102d7b9d112034",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "2452d53784cebaba",
+    "to": "79d82ebab2d93443",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "2452d53784cebaba",
+    "to": "79d82ebab2d93443",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "2452d53784cebaba",
+    "to": "8ebc68269c83d56c",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "2452d53784cebaba",
+    "to": "8ebc68269c83d56c",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "2452d53784cebaba",
+    "to": "_capability_guard",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "2452d53784cebaba",
+    "to": "_filesystem",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "2452d53784cebaba",
+    "to": "_io_policy",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "2452d53784cebaba",
+    "to": "_network",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "2452d53784cebaba",
+    "to": "_resource_enforcer",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "2452d53784cebaba",
+    "to": "_sandbox_manager",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "2452d53784cebaba",
+    "to": "b969c3072af8c53b",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "2452d53784cebaba",
+    "to": "b969c3072af8c53b",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "2452d53784cebaba",
+    "to": "c351c71a205f7ce2",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "2452d53784cebaba",
+    "to": "c351c71a205f7ce2",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "2452d53784cebaba",
+    "to": "dc7c367b23f87a0d",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "2452d53784cebaba",
+    "to": "dc7c367b23f87a0d",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "2452d53784cebaba",
+    "to": "efa68a204bebdf5f",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "2452d53784cebaba",
+    "to": "efa68a204bebdf5f",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "2452d53784cebaba",
+    "to": "executor",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "2452d53784cebaba",
+    "to": "f8a4ad172926322d",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "2452d53784cebaba",
+    "to": "f8a4ad172926322d",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "2452d53784cebaba",
+    "to": "logger",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "2452d53784cebaba",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "2452d53784cebaba",
+    "to": "result",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "2452d53784cebaba",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "2452d53784cebaba",
+    "to": "uuid",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "2f473a393cf9346c",
+    "to": "_alerts",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "2f473a393cf9346c",
+    "to": "_heartbeats",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "2f473a393cf9346c",
+    "to": "_status",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "2f473a393cf9346c",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "2f473a393cf9346c",
+    "to": "time",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "2f473a393cf9346c",
+    "to": "unhealthy",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "347ea3efc9bef168",
+    "to": "a48d9a81e41fa92b",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "347ea3efc9bef168",
+    "to": "a48d9a81e41fa92b",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "347ea3efc9bef168",
+    "to": "time",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3792562d86acb5a0",
+    "to": "Event",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "3792562d86acb5a0",
+    "to": "Lock",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "3792562d86acb5a0",
+    "to": "Thread",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "3792562d86acb5a0",
+    "to": "_entries",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3792562d86acb5a0",
+    "to": "_ownership",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3792562d86acb5a0",
+    "to": "_stop_event",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3792562d86acb5a0",
+    "to": "_thread",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3792562d86acb5a0",
+    "to": "f1b7431381b33db8",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "3792562d86acb5a0",
+    "to": "f1b7431381b33db8",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "3792562d86acb5a0",
+    "to": "logger",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3792562d86acb5a0",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3792562d86acb5a0",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3792562d86acb5a0",
+    "to": "threading",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3792562d86acb5a0",
+    "to": "time",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3bacc1640db358c8",
+    "to": "08a78a5b3171cbca",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "3bacc1640db358c8",
+    "to": "08a78a5b3171cbca",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "3bacc1640db358c8",
+    "to": "22dfd717674a80e8",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "3bacc1640db358c8",
+    "to": "22dfd717674a80e8",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "3bacc1640db358c8",
+    "to": "behaviour",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3bacc1640db358c8",
+    "to": "c",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3bacc1640db358c8",
+    "to": "callee_batch",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3bacc1640db358c8",
+    "to": "caller_names",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3bacc1640db358c8",
+    "to": "cls",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3bacc1640db358c8",
+    "to": "cm",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3bacc1640db358c8",
+    "to": "complexity",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3bacc1640db358c8",
+    "to": "d",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3bacc1640db358c8",
+    "to": "direct",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3bacc1640db358c8",
+    "to": "e",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3bacc1640db358c8",
+    "to": "enriched",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3bacc1640db358c8",
+    "to": "filter",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3bacc1640db358c8",
+    "to": "filtered",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3bacc1640db358c8",
+    "to": "gq",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3bacc1640db358c8",
+    "to": "i",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3bacc1640db358c8",
+    "to": "item",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3bacc1640db358c8",
+    "to": "kwargs",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3bacc1640db358c8",
+    "to": "meta",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3bacc1640db358c8",
+    "to": "meta_batch",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3bacc1640db358c8",
+    "to": "out",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3bacc1640db358c8",
+    "to": "queue",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3bacc1640db358c8",
+    "to": "ranker",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3bacc1640db358c8",
+    "to": "sa",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3bacc1640db358c8",
+    "to": "sa_c",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3bacc1640db358c8",
+    "to": "seen",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3bacc1640db358c8",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3bacc1640db358c8",
+    "to": "t",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3bacc1640db358c8",
+    "to": "t1",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3bacc1640db358c8",
+    "to": "transitive",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3bacc1640db358c8",
+    "to": "visited",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3e193f50c78cddc6",
+    "to": "_graphs",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3e193f50c78cddc6",
+    "to": "edges",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3e193f50c78cddc6",
+    "to": "event",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3e193f50c78cddc6",
+    "to": "nodes",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3e193f50c78cddc6",
+    "to": "payload",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3e193f50c78cddc6",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3ff1b7eec5d68e07",
+    "to": "__name__",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3ff1b7eec5d68e07",
+    "to": "a2bd905c0ae31a1d",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "3ff1b7eec5d68e07",
+    "to": "a2bd905c0ae31a1d",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "3ff1b7eec5d68e07",
+    "to": "annotations",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3ff1b7eec5d68e07",
+    "to": "args",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3ff1b7eec5d68e07",
+    "to": "ast",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3ff1b7eec5d68e07",
+    "to": "bases",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3ff1b7eec5d68e07",
+    "to": "content",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3ff1b7eec5d68e07",
+    "to": "decos",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3ff1b7eec5d68e07",
+    "to": "dependencies",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3ff1b7eec5d68e07",
+    "to": "e123976d82ba9c41",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "3ff1b7eec5d68e07",
+    "to": "e123976d82ba9c41",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "3ff1b7eec5d68e07",
+    "to": "extension",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3ff1b7eec5d68e07",
+    "to": "line",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3ff1b7eec5d68e07",
+    "to": "m",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3ff1b7eec5d68e07",
+    "to": "module",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3ff1b7eec5d68e07",
+    "to": "parser_logger",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3ff1b7eec5d68e07",
+    "to": "re",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3ff1b7eec5d68e07",
+    "to": "relationships",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3ff1b7eec5d68e07",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3ff1b7eec5d68e07",
+    "to": "static_analyzer",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "3ff1b7eec5d68e07",
+    "to": "symbols",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "40573486950967b7",
+    "to": "Lock",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "40573486950967b7",
+    "to": "Path",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "40573486950967b7",
+    "to": "_faiss_path",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "40573486950967b7",
+    "to": "_index",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "40573486950967b7",
+    "to": "_index_dir",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "40573486950967b7",
+    "to": "_load_or_create",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "40573486950967b7",
+    "to": "_meta_path",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "40573486950967b7",
+    "to": "_metadata",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "40573486950967b7",
+    "to": "faiss",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "40573486950967b7",
+    "to": "ids",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "40573486950967b7",
+    "to": "json",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "40573486950967b7",
+    "to": "load",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "40573486950967b7",
+    "to": "logger",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "40573486950967b7",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "40573486950967b7",
+    "to": "metadata_map",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "40573486950967b7",
+    "to": "np",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "40573486950967b7",
+    "to": "results",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "40573486950967b7",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "40573486950967b7",
+    "to": "threading",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "40573486950967b7",
+    "to": "vecs",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "40573486950967b7",
+    "to": "vectors",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "40df9542b35cc4f7",
+    "to": "1e80cf7acda181cf",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "40df9542b35cc4f7",
+    "to": "1e80cf7acda181cf",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "40df9542b35cc4f7",
+    "to": "Lock",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "40df9542b35cc4f7",
+    "to": "datetime",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "40df9542b35cc4f7",
+    "to": "events",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "40df9542b35cc4f7",
+    "to": "f",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "40df9542b35cc4f7",
+    "to": "json",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "40df9542b35cc4f7",
+    "to": "line",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "40df9542b35cc4f7",
+    "to": "os",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "40df9542b35cc4f7",
+    "to": "path",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "40df9542b35cc4f7",
+    "to": "record",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "40df9542b35cc4f7",
+    "to": "threading",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4357162dd92af3f9",
+    "to": "IOPolicy",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "4357162dd92af3f9",
+    "to": "_tool_policies",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4357162dd92af3f9",
+    "to": "logger",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4357162dd92af3f9",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4357162dd92af3f9",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4357162dd92af3f9",
+    "to": "target",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "449c7ecf533a0803",
+    "to": "DriftClassifier",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "449c7ecf533a0803",
+    "to": "_classifier",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "449c7ecf533a0803",
+    "to": "boundary_violations",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "449c7ecf533a0803",
+    "to": "c45a0e8dd1544534",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "449c7ecf533a0803",
+    "to": "c45a0e8dd1544534",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "449c7ecf533a0803",
+    "to": "coupling_explosions",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "449c7ecf533a0803",
+    "to": "dependency",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "449c7ecf533a0803",
+    "to": "f8f5d4e049225e5f",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "449c7ecf533a0803",
+    "to": "f8f5d4e049225e5f",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "449c7ecf533a0803",
+    "to": "fe248eb34e8ac9d5",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "449c7ecf533a0803",
+    "to": "fe248eb34e8ac9d5",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "449c7ecf533a0803",
+    "to": "hidden_dependencies",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "449c7ecf533a0803",
+    "to": "name",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "449c7ecf533a0803",
+    "to": "nodes",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "449c7ecf533a0803",
+    "to": "path",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "449c7ecf533a0803",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "449c7ecf533a0803",
+    "to": "static_tools",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "449c7ecf533a0803",
+    "to": "tool",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "449c7ecf533a0803",
+    "to": "tools",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "46b89f556efa98b2",
+    "to": "_suggestions",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "46b89f556efa98b2",
+    "to": "data",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "46b89f556efa98b2",
+    "to": "logger",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "46b89f556efa98b2",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "46b89f556efa98b2",
+    "to": "most_frequent",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "46b89f556efa98b2",
+    "to": "suggestions",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4820eb550036fa5c",
+    "to": "a2bd905c0ae31a1d",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "4820eb550036fa5c",
+    "to": "a2bd905c0ae31a1d",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "4820eb550036fa5c",
+    "to": "batch",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4820eb550036fa5c",
+    "to": "conn",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4820eb550036fa5c",
+    "to": "cursor",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4820eb550036fa5c",
+    "to": "data",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4820eb550036fa5c",
+    "to": "db_writer_logger",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4820eb550036fa5c",
+    "to": "queue",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4820eb550036fa5c",
+    "to": "remaining",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4820eb550036fa5c",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4820eb550036fa5c",
+    "to": "sqlite3",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4820eb550036fa5c",
+    "to": "threading",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4820eb550036fa5c",
+    "to": "time",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4820eb550036fa5c",
+    "to": "worker_thread",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "48a2bbcfb0cf03c9",
+    "to": "04ffab8e0199abf7",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "48a2bbcfb0cf03c9",
+    "to": "04ffab8e0199abf7",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "48a2bbcfb0cf03c9",
+    "to": "0fbf6d587ae5fd6e",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "48a2bbcfb0cf03c9",
+    "to": "0fbf6d587ae5fd6e",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "48a2bbcfb0cf03c9",
+    "to": "40df9542b35cc4f7",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "48a2bbcfb0cf03c9",
+    "to": "40df9542b35cc4f7",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "48a2bbcfb0cf03c9",
+    "to": "5332214048237617",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "48a2bbcfb0cf03c9",
+    "to": "5332214048237617",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "48a2bbcfb0cf03c9",
+    "to": "913892ab3e409c74",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "48a2bbcfb0cf03c9",
+    "to": "913892ab3e409c74",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "48a2bbcfb0cf03c9",
+    "to": "9708ba088fa99199",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "48a2bbcfb0cf03c9",
+    "to": "9708ba088fa99199",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "48a2bbcfb0cf03c9",
+    "to": "9d0e8259f3d3f7d4",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "48a2bbcfb0cf03c9",
+    "to": "9d0e8259f3d3f7d4",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "48a2bbcfb0cf03c9",
+    "to": "CanonValidator",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "48a2bbcfb0cf03c9",
+    "to": "CodeGraphDriftDetector",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "48a2bbcfb0cf03c9",
+    "to": "CodeGraphEventSubscriber",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "48a2bbcfb0cf03c9",
+    "to": "DriftDetector",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "48a2bbcfb0cf03c9",
+    "to": "DriftStore",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "48a2bbcfb0cf03c9",
+    "to": "ExecutionCore",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "48a2bbcfb0cf03c9",
+    "to": "ExecutionEngine",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "48a2bbcfb0cf03c9",
+    "to": "RuntimeIntelligence",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "48a2bbcfb0cf03c9",
+    "to": "_engine",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "48a2bbcfb0cf03c9",
+    "to": "a48d9a81e41fa92b",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "48a2bbcfb0cf03c9",
+    "to": "a48d9a81e41fa92b",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "48a2bbcfb0cf03c9",
+    "to": "b53e5e97b1691df6",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "48a2bbcfb0cf03c9",
+    "to": "b53e5e97b1691df6",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "48a2bbcfb0cf03c9",
+    "to": "cafedbbf26fbef64",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "48a2bbcfb0cf03c9",
+    "to": "cafedbbf26fbef64",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "48a2bbcfb0cf03c9",
+    "to": "d3316d4ff3919146",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "48a2bbcfb0cf03c9",
+    "to": "d3316d4ff3919146",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "48a2bbcfb0cf03c9",
+    "to": "e2ac2541aec2ebbd",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "48a2bbcfb0cf03c9",
+    "to": "e2ac2541aec2ebbd",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "48a2bbcfb0cf03c9",
+    "to": "f3a64a4bf3346348",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "48a2bbcfb0cf03c9",
+    "to": "f3a64a4bf3346348",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "48a2bbcfb0cf03c9",
+    "to": "getattr",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "4985995cf8b3af23",
+    "to": "8f8d5124cd42a5e9",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "4985995cf8b3af23",
+    "to": "8f8d5124cd42a5e9",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "4985995cf8b3af23",
+    "to": "c45a0e8dd1544534",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "4985995cf8b3af23",
+    "to": "c45a0e8dd1544534",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "4985995cf8b3af23",
+    "to": "data",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4985995cf8b3af23",
+    "to": "edata",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4985995cf8b3af23",
+    "to": "f",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4985995cf8b3af23",
+    "to": "graph",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4985995cf8b3af23",
+    "to": "graph_path",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4985995cf8b3af23",
+    "to": "json",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4985995cf8b3af23",
+    "to": "ndata",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4985995cf8b3af23",
+    "to": "out",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4989d3511cc25cb0",
+    "to": "347ea3efc9bef168",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "4989d3511cc25cb0",
+    "to": "347ea3efc9bef168",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "4989d3511cc25cb0",
+    "to": "Lock",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "4989d3511cc25cb0",
+    "to": "_workers",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4989d3511cc25cb0",
+    "to": "logger",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4989d3511cc25cb0",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4989d3511cc25cb0",
+    "to": "pruned",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4989d3511cc25cb0",
+    "to": "tags",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4989d3511cc25cb0",
+    "to": "threading",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4989d3511cc25cb0",
+    "to": "time",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4989d3511cc25cb0",
+    "to": "w",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4ab8d44cb8d3fa64",
+    "to": "Lock",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "4ab8d44cb8d3fa64",
+    "to": "Quota",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "4ab8d44cb8d3fa64",
+    "to": "_execution_quotas",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4ab8d44cb8d3fa64",
+    "to": "_global_quota",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4ab8d44cb8d3fa64",
+    "to": "_usage",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4ab8d44cb8d3fa64",
+    "to": "exceeded",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4ab8d44cb8d3fa64",
+    "to": "execution_quota",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4ab8d44cb8d3fa64",
+    "to": "g_usage",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4ab8d44cb8d3fa64",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4ab8d44cb8d3fa64",
+    "to": "scope",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4ab8d44cb8d3fa64",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4ab8d44cb8d3fa64",
+    "to": "threading",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4ab8d44cb8d3fa64",
+    "to": "usage",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4ab8d44cb8d3fa64",
+    "to": "w_usage",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4ab8d44cb8d3fa64",
+    "to": "wq",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4b3a5774c50463b7",
+    "to": "MeshProtocol",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "4b3a5774c50463b7",
+    "to": "_callbacks",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4b3a5774c50463b7",
+    "to": "_failure_history",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4b3a5774c50463b7",
+    "to": "_registry",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4b3a5774c50463b7",
+    "to": "c651ee1c4cb778d9",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "4b3a5774c50463b7",
+    "to": "c651ee1c4cb778d9",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "4b3a5774c50463b7",
+    "to": "f52d5c65bceeb59a",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "4b3a5774c50463b7",
+    "to": "f52d5c65bceeb59a",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "4b3a5774c50463b7",
+    "to": "logger",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4b3a5774c50463b7",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4b3a5774c50463b7",
+    "to": "notified",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4b3a5774c50463b7",
+    "to": "time",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "4fc80fe0fb1c2866",
+    "to": "a48d9a81e41fa92b",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "4fc80fe0fb1c2866",
+    "to": "a48d9a81e41fa92b",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "51141ed0cbd2d575",
+    "to": "ContractValidator",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "51141ed0cbd2d575",
+    "to": "errors",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "51141ed0cbd2d575",
+    "to": "inputs",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "51141ed0cbd2d575",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "51141ed0cbd2d575",
+    "to": "mapping",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "51141ed0cbd2d575",
+    "to": "outputs",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "51141ed0cbd2d575",
+    "to": "spec_map",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "5332214048237617",
+    "to": "04ffab8e0199abf7",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "5332214048237617",
+    "to": "04ffab8e0199abf7",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "5332214048237617",
+    "to": "0fbf6d587ae5fd6e",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "5332214048237617",
+    "to": "0fbf6d587ae5fd6e",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "5332214048237617",
+    "to": "1e80cf7acda181cf",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "5332214048237617",
+    "to": "1e80cf7acda181cf",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "5332214048237617",
+    "to": "2567302b68dfaa00",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "5332214048237617",
+    "to": "2567302b68dfaa00",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "5332214048237617",
+    "to": "9708ba088fa99199",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "5332214048237617",
+    "to": "9708ba088fa99199",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "5332214048237617",
+    "to": "Event",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "5332214048237617",
+    "to": "ExecutionCore",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "5332214048237617",
+    "to": "ExecutionCore",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "5332214048237617",
+    "to": "ExecutionRuntime",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "5332214048237617",
+    "to": "ThreadPoolExecutor",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "5332214048237617",
+    "to": "_cancel_flag",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "5332214048237617",
+    "to": "_canon_validator",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "5332214048237617",
+    "to": "_checkpoint_manager",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "5332214048237617",
+    "to": "_core",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "5332214048237617",
+    "to": "_cost_scheduler",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "5332214048237617",
+    "to": "_cost_tracker",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "5332214048237617",
+    "to": "_optimizer",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "5332214048237617",
+    "to": "_pool",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "5332214048237617",
+    "to": "_runtime",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "5332214048237617",
+    "to": "_size_limiter",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "5332214048237617",
+    "to": "a48d9a81e41fa92b",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "5332214048237617",
+    "to": "a48d9a81e41fa92b",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "5332214048237617",
+    "to": "b53e5e97b1691df6",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "5332214048237617",
+    "to": "b53e5e97b1691df6",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "5332214048237617",
+    "to": "cafedbbf26fbef64",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "5332214048237617",
+    "to": "cafedbbf26fbef64",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "5332214048237617",
+    "to": "dag",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "5332214048237617",
+    "to": "e04b05bd52d9d82b",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "5332214048237617",
+    "to": "e04b05bd52d9d82b",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "5332214048237617",
+    "to": "executor",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "5332214048237617",
+    "to": "f3a64a4bf3346348",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "5332214048237617",
+    "to": "f3a64a4bf3346348",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "5332214048237617",
+    "to": "f4f8e837f12bc132",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "5332214048237617",
+    "to": "f4f8e837f12bc132",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "5332214048237617",
+    "to": "f6df4e4215f5fc57",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "5332214048237617",
+    "to": "f6df4e4215f5fc57",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "5332214048237617",
+    "to": "f9448d6931864aa7",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "5332214048237617",
+    "to": "f9448d6931864aa7",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "5332214048237617",
+    "to": "future",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "5332214048237617",
+    "to": "level_results",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "5332214048237617",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "5332214048237617",
+    "to": "make_trace_id",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "5332214048237617",
+    "to": "nodes",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "5332214048237617",
+    "to": "result",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "5332214048237617",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "54c04a7156c3456a",
+    "to": "context_parts",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "54c04a7156c3456a",
+    "to": "msg",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "54c04a7156c3456a",
+    "to": "re",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "54c04a7156c3456a",
+    "to": "text",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "08a78a5b3171cbca",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "08a78a5b3171cbca",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "22dfd717674a80e8",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "22dfd717674a80e8",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "3bacc1640db358c8",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "3bacc1640db358c8",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "51141ed0cbd2d575",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "51141ed0cbd2d575",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "7878f920e1f5cff4",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "7878f920e1f5cff4",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "8b8b37be6b2b36ee",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "8b8b37be6b2b36ee",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "91fc36ad9db1192c",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "91fc36ad9db1192c",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "9afd02e8e58d4ecd",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "9afd02e8e58d4ecd",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "TOOL_CONTRACTS",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "a48d9a81e41fa92b",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "a48d9a81e41fa92b",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "agent",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "b48cbdc6aabaad2d",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "b48cbdc6aabaad2d",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "b53e5e97b1691df6",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "b53e5e97b1691df6",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "b805f9c8b4e0bc41",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "b805f9c8b4e0bc41",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "baa33810fd923b25",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "baa33810fd923b25",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "cc",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "e04b05bd52d9d82b",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "e04b05bd52d9d82b",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "engine",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "exec_result",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "f9448d6931864aa7",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "f9448d6931864aa7",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "feedback",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "feedback_intel",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "formatter",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "gre",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "hybrid",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "memory",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "nodes",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "nr",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "plan_summary",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "planner",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "registry_map",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "step_results",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "54ee51ae9a96a436",
+    "to": "tools_used",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "59fc8f824ae06067",
+    "to": "Lock",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "59fc8f824ae06067",
+    "to": "conn",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "59fc8f824ae06067",
+    "to": "curr_top",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "59fc8f824ae06067",
+    "to": "json",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "59fc8f824ae06067",
+    "to": "logger",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "59fc8f824ae06067",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "59fc8f824ae06067",
+    "to": "os",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "59fc8f824ae06067",
+    "to": "path",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "59fc8f824ae06067",
+    "to": "prev_top",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "59fc8f824ae06067",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "59fc8f824ae06067",
+    "to": "sqlite3",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "59fc8f824ae06067",
+    "to": "threading",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "59fc8f824ae06067",
+    "to": "time",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "59fc8f824ae06067",
+    "to": "uuid",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "5bd9cc8912787127",
+    "to": "Path",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "5bd9cc8912787127",
+    "to": "SentenceTransformer",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "5bd9cc8912787127",
+    "to": "_model",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "5bd9cc8912787127",
+    "to": "fd",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "5bd9cc8912787127",
+    "to": "ids",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "5bd9cc8912787127",
+    "to": "item",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "5bd9cc8912787127",
+    "to": "lang",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "5bd9cc8912787127",
+    "to": "logger",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "5bd9cc8912787127",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "5bd9cc8912787127",
+    "to": "m",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "5bd9cc8912787127",
+    "to": "parts",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "5bd9cc8912787127",
+    "to": "props",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "5bd9cc8912787127",
+    "to": "s",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "5bd9cc8912787127",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "5bd9cc8912787127",
+    "to": "sym",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "5bd9cc8912787127",
+    "to": "text",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "5bd9cc8912787127",
+    "to": "texts",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "5bd9cc8912787127",
+    "to": "vec",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "5d1b5ee7c0424d82",
+    "to": "347ea3efc9bef168",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "5d1b5ee7c0424d82",
+    "to": "347ea3efc9bef168",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "5d1b5ee7c0424d82",
+    "to": "4989d3511cc25cb0",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "5d1b5ee7c0424d82",
+    "to": "4989d3511cc25cb0",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "5d1b5ee7c0424d82",
+    "to": "_registry",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "5d1b5ee7c0424d82",
+    "to": "_tag_affinity",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "5d1b5ee7c0424d82",
+    "to": "a48d9a81e41fa92b",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "5d1b5ee7c0424d82",
+    "to": "a48d9a81e41fa92b",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "5d1b5ee7c0424d82",
+    "to": "assignments",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "5d1b5ee7c0424d82",
+    "to": "by_tool",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "5d1b5ee7c0424d82",
+    "to": "candidates",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "5d1b5ee7c0424d82",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "5d1b5ee7c0424d82",
+    "to": "remaining",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "5d1b5ee7c0424d82",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "5d1b5ee7c0424d82",
+    "to": "unassigned",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "5d1b5ee7c0424d82",
+    "to": "w",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "5d1b5ee7c0424d82",
+    "to": "worker",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "61d72d4c01d582a4",
+    "to": "68102d7b9d112034",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "61d72d4c01d582a4",
+    "to": "68102d7b9d112034",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "61d72d4c01d582a4",
+    "to": "done",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "61d72d4c01d582a4",
+    "to": "f",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "61d72d4c01d582a4",
+    "to": "f8a4ad172926322d",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "61d72d4c01d582a4",
+    "to": "f8a4ad172926322d",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "61d72d4c01d582a4",
+    "to": "json",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "61d72d4c01d582a4",
+    "to": "logger",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "61d72d4c01d582a4",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "61d72d4c01d582a4",
+    "to": "os",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "61d72d4c01d582a4",
+    "to": "path",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "61d72d4c01d582a4",
+    "to": "proc",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "61d72d4c01d582a4",
+    "to": "raw",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "61d72d4c01d582a4",
+    "to": "resource",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "61d72d4c01d582a4",
+    "to": "result",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "61d72d4c01d582a4",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "61d72d4c01d582a4",
+    "to": "stderr",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "61d72d4c01d582a4",
+    "to": "stdout",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "61d72d4c01d582a4",
+    "to": "subprocess",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "61d72d4c01d582a4",
+    "to": "t",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "61d72d4c01d582a4",
+    "to": "tempfile",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "61d72d4c01d582a4",
+    "to": "threading",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "61d72d4c01d582a4",
+    "to": "time",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "61d72d4c01d582a4",
+    "to": "timed_out",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "61d72d4c01d582a4",
+    "to": "uuid",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "61d72d4c01d582a4",
+    "to": "watcher",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "625a6e7428584bae",
+    "to": "COLORS",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "625a6e7428584bae",
+    "to": "LOG_DIR",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "625a6e7428584bae",
+    "to": "audit_handler",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "625a6e7428584bae",
+    "to": "audit_logger",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "625a6e7428584bae",
+    "to": "console_handler",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "625a6e7428584bae",
+    "to": "error_handler",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "625a6e7428584bae",
+    "to": "file_handler",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "625a6e7428584bae",
+    "to": "handlers",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "625a6e7428584bae",
+    "to": "level",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "625a6e7428584bae",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "625a6e7428584bae",
+    "to": "name",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "625a6e7428584bae",
+    "to": "os",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "625a6e7428584bae",
+    "to": "parts",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "625a6e7428584bae",
+    "to": "root_logger",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "6c38454a91bd3f05",
+    "to": "content",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "6c38454a91bd3f05",
+    "to": "hashlib",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "6c38454a91bd3f05",
+    "to": "raw",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "6f706abe2ebb5e21",
+    "to": "Lock",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "6f706abe2ebb5e21",
+    "to": "_workers",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "6f706abe2ebb5e21",
+    "to": "created",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "6f706abe2ebb5e21",
+    "to": "logger",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "6f706abe2ebb5e21",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "6f706abe2ebb5e21",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "6f706abe2ebb5e21",
+    "to": "threading",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "6f706abe2ebb5e21",
+    "to": "time",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "6f706abe2ebb5e21",
+    "to": "time",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "7277a943a4edd09e",
+    "to": "_graph",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "7277a943a4edd09e",
+    "to": "c45a0e8dd1544534",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "7277a943a4edd09e",
+    "to": "c45a0e8dd1544534",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "7277a943a4edd09e",
+    "to": "injections",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "7277a943a4edd09e",
+    "to": "nodes",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "7277a943a4edd09e",
+    "to": "result",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "7277a943a4edd09e",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "7277a943a4edd09e",
+    "to": "visited",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "7878f920e1f5cff4",
+    "to": "a48d9a81e41fa92b",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "7878f920e1f5cff4",
+    "to": "a48d9a81e41fa92b",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "7878f920e1f5cff4",
+    "to": "groups",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "7878f920e1f5cff4",
+    "to": "inputs",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "7878f920e1f5cff4",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "7878f920e1f5cff4",
+    "to": "merged_inputs",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "7878f920e1f5cff4",
+    "to": "new_dag",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "7878f920e1f5cff4",
+    "to": "nodes",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "7878f920e1f5cff4",
+    "to": "passes_applied",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "7878f920e1f5cff4",
+    "to": "queue",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "7878f920e1f5cff4",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "7878f920e1f5cff4",
+    "to": "visited",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "79d82ebab2d93443",
+    "to": "Lock",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "79d82ebab2d93443",
+    "to": "_current",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "79d82ebab2d93443",
+    "to": "_usages",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "79d82ebab2d93443",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "79d82ebab2d93443",
+    "to": "threading",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "79d82ebab2d93443",
+    "to": "time",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "817d928af890bafd",
+    "to": "0e98fe27b518d435",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "817d928af890bafd",
+    "to": "0e98fe27b518d435",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "817d928af890bafd",
+    "to": "985d76f54a6019cc",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "817d928af890bafd",
+    "to": "985d76f54a6019cc",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "817d928af890bafd",
+    "to": "json",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "817d928af890bafd",
+    "to": "settings",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "817d928af890bafd",
+    "to": "settings_file",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8389521ddef0064b",
+    "to": "2f473a393cf9346c",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "8389521ddef0064b",
+    "to": "2f473a393cf9346c",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "8389521ddef0064b",
+    "to": "6f706abe2ebb5e21",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "8389521ddef0064b",
+    "to": "6f706abe2ebb5e21",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "8389521ddef0064b",
+    "to": "Lock",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "8389521ddef0064b",
+    "to": "Thread",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "8389521ddef0064b",
+    "to": "_decision_history",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8389521ddef0064b",
+    "to": "_health",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8389521ddef0064b",
+    "to": "_loop_thread",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8389521ddef0064b",
+    "to": "_orchestrator",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8389521ddef0064b",
+    "to": "_reconciler",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8389521ddef0064b",
+    "to": "_state",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8389521ddef0064b",
+    "to": "b8671d5f2a5c6ce2",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "8389521ddef0064b",
+    "to": "b8671d5f2a5c6ce2",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "8389521ddef0064b",
+    "to": "d5233bdc731509c2",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "8389521ddef0064b",
+    "to": "d5233bdc731509c2",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "8389521ddef0064b",
+    "to": "logger",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8389521ddef0064b",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8389521ddef0064b",
+    "to": "payload",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8389521ddef0064b",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8389521ddef0064b",
+    "to": "threading",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8389521ddef0064b",
+    "to": "time",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8708cfddb4364f95",
+    "to": "BASE_WEIGHTS",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8708cfddb4364f95",
+    "to": "SafeWeightBoundaries",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8708cfddb4364f95",
+    "to": "_history",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8708cfddb4364f95",
+    "to": "b721aad2bc3b162d",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "8708cfddb4364f95",
+    "to": "b721aad2bc3b162d",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "8708cfddb4364f95",
+    "to": "candidate_result",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8708cfddb4364f95",
+    "to": "decay",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8708cfddb4364f95",
+    "to": "drift",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8708cfddb4364f95",
+    "to": "e76e951716088acc",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "8708cfddb4364f95",
+    "to": "e76e951716088acc",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "8708cfddb4364f95",
+    "to": "eec1ceb166ddefb5",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "8708cfddb4364f95",
+    "to": "eec1ceb166ddefb5",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "8708cfddb4364f95",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8708cfddb4364f95",
+    "to": "loop",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8708cfddb4364f95",
+    "to": "metric",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8708cfddb4364f95",
+    "to": "prod_result",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8708cfddb4364f95",
+    "to": "regression",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8708cfddb4364f95",
+    "to": "rollback",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8708cfddb4364f95",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8708cfddb4364f95",
+    "to": "shadow",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8708cfddb4364f95",
+    "to": "store",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "89fbcad4493961a6",
+    "to": "_local_handlers",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "89fbcad4493961a6",
+    "to": "_protocol",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "89fbcad4493961a6",
+    "to": "_registry",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "89fbcad4493961a6",
+    "to": "c651ee1c4cb778d9",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "89fbcad4493961a6",
+    "to": "c651ee1c4cb778d9",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "89fbcad4493961a6",
+    "to": "f52d5c65bceeb59a",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "89fbcad4493961a6",
+    "to": "f52d5c65bceeb59a",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "89fbcad4493961a6",
+    "to": "logger",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "89fbcad4493961a6",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "89fbcad4493961a6",
+    "to": "results",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "89fbcad4493961a6",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "89fbcad4493961a6",
+    "to": "svc_handlers",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "89fbcad4493961a6",
+    "to": "uuid",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8b8b37be6b2b36ee",
+    "to": "22dfd717674a80e8",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "8b8b37be6b2b36ee",
+    "to": "22dfd717674a80e8",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "8b8b37be6b2b36ee",
+    "to": "5332214048237617",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "8b8b37be6b2b36ee",
+    "to": "5332214048237617",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "8b8b37be6b2b36ee",
+    "to": "QueryPlanner",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8b8b37be6b2b36ee",
+    "to": "_TARGET_PATTERN",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8b8b37be6b2b36ee",
+    "to": "a48d9a81e41fa92b",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "8b8b37be6b2b36ee",
+    "to": "a48d9a81e41fa92b",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "8b8b37be6b2b36ee",
+    "to": "a5563e5ffdf19637",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "8b8b37be6b2b36ee",
+    "to": "a5563e5ffdf19637",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "8b8b37be6b2b36ee",
+    "to": "base_map",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8b8b37be6b2b36ee",
+    "to": "builder",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8b8b37be6b2b36ee",
+    "to": "f6df4e4215f5fc57",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "8b8b37be6b2b36ee",
+    "to": "f6df4e4215f5fc57",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "8b8b37be6b2b36ee",
+    "to": "gq",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8b8b37be6b2b36ee",
+    "to": "query",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8b8b37be6b2b36ee",
+    "to": "re",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8b8b37be6b2b36ee",
+    "to": "reverse_map",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8b8b37be6b2b36ee",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8b8b37be6b2b36ee",
+    "to": "target",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8b8b37be6b2b36ee",
+    "to": "w",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8b8b37be6b2b36ee",
+    "to": "weights",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8d5cfcf8ae6d1e23",
+    "to": "46b89f556efa98b2",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "8d5cfcf8ae6d1e23",
+    "to": "46b89f556efa98b2",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "8d5cfcf8ae6d1e23",
+    "to": "_audit_trail",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8d5cfcf8ae6d1e23",
+    "to": "_refiner",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8d5cfcf8ae6d1e23",
+    "to": "logger",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8d5cfcf8ae6d1e23",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8d5cfcf8ae6d1e23",
+    "to": "runtime_data",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8d5cfcf8ae6d1e23",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8d5cfcf8ae6d1e23",
+    "to": "time",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8d5cfcf8ae6d1e23",
+    "to": "uuid",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8e2aab3ccb066c74",
+    "to": "a48d9a81e41fa92b",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "8e2aab3ccb066c74",
+    "to": "a48d9a81e41fa92b",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "8e2aab3ccb066c74",
+    "to": "dag",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8e2aab3ccb066c74",
+    "to": "errors",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8e2aab3ccb066c74",
+    "to": "groups",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8e2aab3ccb066c74",
+    "to": "in_degree",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8e2aab3ccb066c74",
+    "to": "queue",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8e2aab3ccb066c74",
+    "to": "result",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8ebc68269c83d56c",
+    "to": "4357162dd92af3f9",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "8ebc68269c83d56c",
+    "to": "4357162dd92af3f9",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "8ebc68269c83d56c",
+    "to": "FilesystemPolicy",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "8ebc68269c83d56c",
+    "to": "_policies",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8ebc68269c83d56c",
+    "to": "_virtual_mappings",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8ebc68269c83d56c",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8ebc68269c83d56c",
+    "to": "path",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8ebc68269c83d56c",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8f8d5124cd42a5e9",
+    "to": "c45a0e8dd1544534",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "8f8d5124cd42a5e9",
+    "to": "c45a0e8dd1544534",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "8f8d5124cd42a5e9",
+    "to": "graph",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8f8d5124cd42a5e9",
+    "to": "json",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8f8d5124cd42a5e9",
+    "to": "lines",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8f8d5124cd42a5e9",
+    "to": "mapping",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8f8d5124cd42a5e9",
+    "to": "nodes",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8f8d5124cd42a5e9",
+    "to": "path",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8f8d5124cd42a5e9",
+    "to": "result",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8fd63727e80211a6",
+    "to": "347ea3efc9bef168",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "8fd63727e80211a6",
+    "to": "347ea3efc9bef168",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "8fd63727e80211a6",
+    "to": "3792562d86acb5a0",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "8fd63727e80211a6",
+    "to": "3792562d86acb5a0",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "8fd63727e80211a6",
+    "to": "4989d3511cc25cb0",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "8fd63727e80211a6",
+    "to": "4989d3511cc25cb0",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "8fd63727e80211a6",
+    "to": "DistributedRecoveryManager",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "8fd63727e80211a6",
+    "to": "Lock",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "8fd63727e80211a6",
+    "to": "_dcp",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8fd63727e80211a6",
+    "to": "_engine",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8fd63727e80211a6",
+    "to": "_local_cp",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8fd63727e80211a6",
+    "to": "_ownership",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8fd63727e80211a6",
+    "to": "_recovering",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8fd63727e80211a6",
+    "to": "_recovery_mgr",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8fd63727e80211a6",
+    "to": "_registry",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8fd63727e80211a6",
+    "to": "a48d9a81e41fa92b",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "8fd63727e80211a6",
+    "to": "a48d9a81e41fa92b",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "8fd63727e80211a6",
+    "to": "aba8a6af17105b1d",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "8fd63727e80211a6",
+    "to": "aba8a6af17105b1d",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "8fd63727e80211a6",
+    "to": "b53e5e97b1691df6",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "8fd63727e80211a6",
+    "to": "b53e5e97b1691df6",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "8fd63727e80211a6",
+    "to": "cls",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8fd63727e80211a6",
+    "to": "dag",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8fd63727e80211a6",
+    "to": "f1b7431381b33db8",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "8fd63727e80211a6",
+    "to": "f1b7431381b33db8",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "8fd63727e80211a6",
+    "to": "f9448d6931864aa7",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "8fd63727e80211a6",
+    "to": "f9448d6931864aa7",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "8fd63727e80211a6",
+    "to": "failed",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8fd63727e80211a6",
+    "to": "json",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8fd63727e80211a6",
+    "to": "logger",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8fd63727e80211a6",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8fd63727e80211a6",
+    "to": "node_results",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8fd63727e80211a6",
+    "to": "nodes",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8fd63727e80211a6",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8fd63727e80211a6",
+    "to": "threading",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "8fd63727e80211a6",
+    "to": "tokens",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9067085964808685",
+    "to": "_records",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "913892ab3e409c74",
+    "to": "04ffab8e0199abf7",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "913892ab3e409c74",
+    "to": "04ffab8e0199abf7",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "913892ab3e409c74",
+    "to": "1e80cf7acda181cf",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "913892ab3e409c74",
+    "to": "1e80cf7acda181cf",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "913892ab3e409c74",
+    "to": "_global_history",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "913892ab3e409c74",
+    "to": "_handlers",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "913892ab3e409c74",
+    "to": "_history",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "91fc36ad9db1192c",
+    "to": "08a78a5b3171cbca",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "91fc36ad9db1192c",
+    "to": "08a78a5b3171cbca",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "91fc36ad9db1192c",
+    "to": "_ctx",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "93da793613138986",
+    "to": "aiosqlite",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "93da793613138986",
+    "to": "cursor",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "93da793613138986",
+    "to": "datetime",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "93da793613138986",
+    "to": "db",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "93da793613138986",
+    "to": "kwargs",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "93da793613138986",
+    "to": "os",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "93da793613138986",
+    "to": "params",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "93da793613138986",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9708ba088fa99199",
+    "to": "04ffab8e0199abf7",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "9708ba088fa99199",
+    "to": "04ffab8e0199abf7",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "9708ba088fa99199",
+    "to": "0fa4caa62bd03830",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "9708ba088fa99199",
+    "to": "0fa4caa62bd03830",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "9708ba088fa99199",
+    "to": "0fbf6d587ae5fd6e",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "9708ba088fa99199",
+    "to": "0fbf6d587ae5fd6e",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "9708ba088fa99199",
+    "to": "1e80cf7acda181cf",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "9708ba088fa99199",
+    "to": "1e80cf7acda181cf",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "9708ba088fa99199",
+    "to": "51141ed0cbd2d575",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "9708ba088fa99199",
+    "to": "51141ed0cbd2d575",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "9708ba088fa99199",
+    "to": "ExecutionCore",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "9708ba088fa99199",
+    "to": "TOOL_CONTRACTS",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9708ba088fa99199",
+    "to": "_cache",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9708ba088fa99199",
+    "to": "_cancel_flag",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9708ba088fa99199",
+    "to": "_contract_validator",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9708ba088fa99199",
+    "to": "_core",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9708ba088fa99199",
+    "to": "_event_bus",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9708ba088fa99199",
+    "to": "_fi",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9708ba088fa99199",
+    "to": "_memory",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9708ba088fa99199",
+    "to": "_pool",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9708ba088fa99199",
+    "to": "_registry",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9708ba088fa99199",
+    "to": "_service_registry",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9708ba088fa99199",
+    "to": "a48d9a81e41fa92b",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "9708ba088fa99199",
+    "to": "a48d9a81e41fa92b",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "9708ba088fa99199",
+    "to": "cafedbbf26fbef64",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "9708ba088fa99199",
+    "to": "cafedbbf26fbef64",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "9708ba088fa99199",
+    "to": "e04b05bd52d9d82b",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "9708ba088fa99199",
+    "to": "e04b05bd52d9d82b",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "9708ba088fa99199",
+    "to": "f3a64a4bf3346348",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "9708ba088fa99199",
+    "to": "f3a64a4bf3346348",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "9708ba088fa99199",
+    "to": "fut",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9708ba088fa99199",
+    "to": "logger",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9708ba088fa99199",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9708ba088fa99199",
+    "to": "node_results",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9708ba088fa99199",
+    "to": "nodes",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9708ba088fa99199",
+    "to": "nr",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9708ba088fa99199",
+    "to": "pool",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9708ba088fa99199",
+    "to": "result",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9708ba088fa99199",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9708ba088fa99199",
+    "to": "time",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9708ba088fa99199",
+    "to": "uuid",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "985d76f54a6019cc",
+    "to": "_tools",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "985d76f54a6019cc",
+    "to": "description",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "985d76f54a6019cc",
+    "to": "importlib",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "985d76f54a6019cc",
+    "to": "inspect",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "985d76f54a6019cc",
+    "to": "logger",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "985d76f54a6019cc",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "985d76f54a6019cc",
+    "to": "name",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "985d76f54a6019cc",
+    "to": "query",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "985d76f54a6019cc",
+    "to": "registry",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "985d76f54a6019cc",
+    "to": "results",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "985d76f54a6019cc",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "985d76f54a6019cc",
+    "to": "tool",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9afd02e8e58d4ecd",
+    "to": "Lock",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "9afd02e8e58d4ecd",
+    "to": "_outcomes",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9afd02e8e58d4ecd",
+    "to": "conn",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9afd02e8e58d4ecd",
+    "to": "environ",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9afd02e8e58d4ecd",
+    "to": "error_types",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9afd02e8e58d4ecd",
+    "to": "logger",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9afd02e8e58d4ecd",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9afd02e8e58d4ecd",
+    "to": "parent",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9afd02e8e58d4ecd",
+    "to": "result",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9afd02e8e58d4ecd",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9afd02e8e58d4ecd",
+    "to": "sqlite3",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9afd02e8e58d4ecd",
+    "to": "sr",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9afd02e8e58d4ecd",
+    "to": "threading",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9afd02e8e58d4ecd",
+    "to": "time",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9afd02e8e58d4ecd",
+    "to": "tool_stats",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9afd02e8e58d4ecd",
+    "to": "tweaks",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9d8127b7f74ee2b8",
+    "to": "3ff1b7eec5d68e07",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "9d8127b7f74ee2b8",
+    "to": "3ff1b7eec5d68e07",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "9d8127b7f74ee2b8",
+    "to": "Path",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9d8127b7f74ee2b8",
+    "to": "a2bd905c0ae31a1d",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "9d8127b7f74ee2b8",
+    "to": "a2bd905c0ae31a1d",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "9d8127b7f74ee2b8",
+    "to": "ann",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9d8127b7f74ee2b8",
+    "to": "annotation_type",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9d8127b7f74ee2b8",
+    "to": "conn",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9d8127b7f74ee2b8",
+    "to": "cursor",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9d8127b7f74ee2b8",
+    "to": "datetime",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9d8127b7f74ee2b8",
+    "to": "dep",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9d8127b7f74ee2b8",
+    "to": "embedding_engine",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9d8127b7f74ee2b8",
+    "to": "f",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9d8127b7f74ee2b8",
+    "to": "file_info",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9d8127b7f74ee2b8",
+    "to": "file_name",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9d8127b7f74ee2b8",
+    "to": "file_path",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9d8127b7f74ee2b8",
+    "to": "found_files",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9d8127b7f74ee2b8",
+    "to": "hash_sha256",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9d8127b7f74ee2b8",
+    "to": "hashlib",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9d8127b7f74ee2b8",
+    "to": "indexer_logger",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9d8127b7f74ee2b8",
+    "to": "json",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9d8127b7f74ee2b8",
+    "to": "local_conn",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9d8127b7f74ee2b8",
+    "to": "md",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9d8127b7f74ee2b8",
+    "to": "os",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9d8127b7f74ee2b8",
+    "to": "parent",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9d8127b7f74ee2b8",
+    "to": "parser",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9d8127b7f74ee2b8",
+    "to": "pattern",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9d8127b7f74ee2b8",
+    "to": "props",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9d8127b7f74ee2b8",
+    "to": "rel",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9d8127b7f74ee2b8",
+    "to": "result",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9d8127b7f74ee2b8",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9d8127b7f74ee2b8",
+    "to": "semantic_store",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9d8127b7f74ee2b8",
+    "to": "sqlite3",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9d8127b7f74ee2b8",
+    "to": "suffix",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9d8127b7f74ee2b8",
+    "to": "sym",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9d8127b7f74ee2b8",
+    "to": "symbol_id_map",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9d8127b7f74ee2b8",
+    "to": "time",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9d8127b7f74ee2b8",
+    "to": "uuid",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9ec2bd3690bd5379",
+    "to": "a48d9a81e41fa92b",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "9ec2bd3690bd5379",
+    "to": "a48d9a81e41fa92b",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "9fa64b4773ca57c1",
+    "to": "16c1225af3003325",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "9fa64b4773ca57c1",
+    "to": "16c1225af3003325",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "9fa64b4773ca57c1",
+    "to": "2567302b68dfaa00",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "9fa64b4773ca57c1",
+    "to": "2567302b68dfaa00",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "9fa64b4773ca57c1",
+    "to": "all_services",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9fa64b4773ca57c1",
+    "to": "k",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9fa64b4773ca57c1",
+    "to": "nodes",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9fa64b4773ca57c1",
+    "to": "policy",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "9fa64b4773ca57c1",
+    "to": "required_actions",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "a012e6852af3b6d0",
+    "to": "48a2bbcfb0cf03c9",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "a012e6852af3b6d0",
+    "to": "48a2bbcfb0cf03c9",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "a012e6852af3b6d0",
+    "to": "CompositionRoot",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "a012e6852af3b6d0",
+    "to": "RuntimeOS",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "a012e6852af3b6d0",
+    "to": "_os",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "a012e6852af3b6d0",
+    "to": "_root",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "a012e6852af3b6d0",
+    "to": "a48d9a81e41fa92b",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "a012e6852af3b6d0",
+    "to": "a48d9a81e41fa92b",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "a012e6852af3b6d0",
+    "to": "b53e5e97b1691df6",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "a012e6852af3b6d0",
+    "to": "b53e5e97b1691df6",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "a012e6852af3b6d0",
+    "to": "cfg",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "a012e6852af3b6d0",
+    "to": "d3316d4ff3919146",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "a012e6852af3b6d0",
+    "to": "d3316d4ff3919146",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "a012e6852af3b6d0",
+    "to": "engine",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "a012e6852af3b6d0",
+    "to": "logger",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "a012e6852af3b6d0",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "a012e6852af3b6d0",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "a2bd905c0ae31a1d",
+    "to": "625a6e7428584bae",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "a2bd905c0ae31a1d",
+    "to": "625a6e7428584bae",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "a2bd905c0ae31a1d",
+    "to": "AI_LOG_DIR",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "a2bd905c0ae31a1d",
+    "to": "ai_debug_handler",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "a2bd905c0ae31a1d",
+    "to": "ai_error_handler",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "a2bd905c0ae31a1d",
+    "to": "ai_file_handler",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "a2bd905c0ae31a1d",
+    "to": "ai_logger",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "a2bd905c0ae31a1d",
+    "to": "console_handler",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "a2bd905c0ae31a1d",
+    "to": "handlers",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "a2bd905c0ae31a1d",
+    "to": "level",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "a2bd905c0ae31a1d",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "a2bd905c0ae31a1d",
+    "to": "name",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "a2bd905c0ae31a1d",
+    "to": "os",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "a2bd905c0ae31a1d",
+    "to": "parts",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "a48d9a81e41fa92b",
+    "to": "8e2aab3ccb066c74",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "a48d9a81e41fa92b",
+    "to": "8e2aab3ccb066c74",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "a48d9a81e41fa92b",
+    "to": "edges",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "a48d9a81e41fa92b",
+    "to": "nodes",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "a48d9a81e41fa92b",
+    "to": "transitions",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "a5563e5ffdf19637",
+    "to": "a48d9a81e41fa92b",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "a5563e5ffdf19637",
+    "to": "a48d9a81e41fa92b",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "a5563e5ffdf19637",
+    "to": "dag",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "a827dc22c004dd3c",
+    "to": "a48d9a81e41fa92b",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "a827dc22c004dd3c",
+    "to": "a48d9a81e41fa92b",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "a829b4053af8feaa",
+    "to": "SEVERITY_THRESHOLDS",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "a829b4053af8feaa",
+    "to": "_detector",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "a829b4053af8feaa",
+    "to": "_store",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "a829b4053af8feaa",
+    "to": "ad676b9488d027a1",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "a829b4053af8feaa",
+    "to": "ad676b9488d027a1",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "a829b4053af8feaa",
+    "to": "eb63b2459a4fec13",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "a829b4053af8feaa",
+    "to": "eb63b2459a4fec13",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "a829b4053af8feaa",
+    "to": "fcb1a9a399f91803",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "a829b4053af8feaa",
+    "to": "fcb1a9a399f91803",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "a829b4053af8feaa",
+    "to": "new_snap",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "a829b4053af8feaa",
+    "to": "old_snap",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "a829b4053af8feaa",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "a829b4053af8feaa",
+    "to": "violations",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "aba8a6af17105b1d",
+    "to": "347ea3efc9bef168",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "aba8a6af17105b1d",
+    "to": "347ea3efc9bef168",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "aba8a6af17105b1d",
+    "to": "4989d3511cc25cb0",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "aba8a6af17105b1d",
+    "to": "4989d3511cc25cb0",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "aba8a6af17105b1d",
+    "to": "Lock",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "aba8a6af17105b1d",
+    "to": "_dcp",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "aba8a6af17105b1d",
+    "to": "_local_cp",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "aba8a6af17105b1d",
+    "to": "_ownership",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "aba8a6af17105b1d",
+    "to": "_registry",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "aba8a6af17105b1d",
+    "to": "_results",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "aba8a6af17105b1d",
+    "to": "f1b7431381b33db8",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "aba8a6af17105b1d",
+    "to": "f1b7431381b33db8",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "aba8a6af17105b1d",
+    "to": "f9448d6931864aa7",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "aba8a6af17105b1d",
+    "to": "f9448d6931864aa7",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "aba8a6af17105b1d",
+    "to": "logger",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "aba8a6af17105b1d",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "aba8a6af17105b1d",
+    "to": "threading",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "ad676b9488d027a1",
+    "to": "c45a0e8dd1544534",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "ad676b9488d027a1",
+    "to": "c45a0e8dd1544534",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "ad676b9488d027a1",
+    "to": "eb63b2459a4fec13",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "ad676b9488d027a1",
+    "to": "eb63b2459a4fec13",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "ad676b9488d027a1",
+    "to": "metadata",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b48cbdc6aabaad2d",
+    "to": "AnswerFormatter",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b48cbdc6aabaad2d",
+    "to": "a5563e5ffdf19637",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "b48cbdc6aabaad2d",
+    "to": "a5563e5ffdf19637",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "b48cbdc6aabaad2d",
+    "to": "context_result",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b48cbdc6aabaad2d",
+    "to": "explain_result",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b48cbdc6aabaad2d",
+    "to": "graph_summary",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b48cbdc6aabaad2d",
+    "to": "h",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b48cbdc6aabaad2d",
+    "to": "heuristic",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b48cbdc6aabaad2d",
+    "to": "hotspots",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b48cbdc6aabaad2d",
+    "to": "hybrid_result",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b48cbdc6aabaad2d",
+    "to": "lines",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b48cbdc6aabaad2d",
+    "to": "parts",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b48cbdc6aabaad2d",
+    "to": "r",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b48cbdc6aabaad2d",
+    "to": "result",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b48cbdc6aabaad2d",
+    "to": "sc",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b48cbdc6aabaad2d",
+    "to": "state",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b48cbdc6aabaad2d",
+    "to": "stats",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b48cbdc6aabaad2d",
+    "to": "sym_ctx",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b53e5e97b1691df6",
+    "to": "a48d9a81e41fa92b",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "b53e5e97b1691df6",
+    "to": "a48d9a81e41fa92b",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "b721aad2bc3b162d",
+    "to": "_baseline",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b721aad2bc3b162d",
+    "to": "_candidate_scores",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b721aad2bc3b162d",
+    "to": "_events",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b721aad2bc3b162d",
+    "to": "_history",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b721aad2bc3b162d",
+    "to": "_prod_scores",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b721aad2bc3b162d",
+    "to": "alerts",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b721aad2bc3b162d",
+    "to": "candidate_result",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b721aad2bc3b162d",
+    "to": "current_weights",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b721aad2bc3b162d",
+    "to": "entry",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b721aad2bc3b162d",
+    "to": "log",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b721aad2bc3b162d",
+    "to": "logger",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b721aad2bc3b162d",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b721aad2bc3b162d",
+    "to": "loop",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b721aad2bc3b162d",
+    "to": "prod_result",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b721aad2bc3b162d",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b721aad2bc3b162d",
+    "to": "strategy_counts",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b721aad2bc3b162d",
+    "to": "time",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b805f9c8b4e0bc41",
+    "to": "3bacc1640db358c8",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "b805f9c8b4e0bc41",
+    "to": "3bacc1640db358c8",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "b805f9c8b4e0bc41",
+    "to": "40573486950967b7",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "b805f9c8b4e0bc41",
+    "to": "40573486950967b7",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "b805f9c8b4e0bc41",
+    "to": "59fc8f824ae06067",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "b805f9c8b4e0bc41",
+    "to": "59fc8f824ae06067",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "b805f9c8b4e0bc41",
+    "to": "5bd9cc8912787127",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "b805f9c8b4e0bc41",
+    "to": "5bd9cc8912787127",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "b805f9c8b4e0bc41",
+    "to": "8708cfddb4364f95",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "b805f9c8b4e0bc41",
+    "to": "8708cfddb4364f95",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "b805f9c8b4e0bc41",
+    "to": "_EMBED_CACHE",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b805f9c8b4e0bc41",
+    "to": "adaptive",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b805f9c8b4e0bc41",
+    "to": "ee",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b805f9c8b4e0bc41",
+    "to": "eec1ceb166ddefb5",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "b805f9c8b4e0bc41",
+    "to": "eec1ceb166ddefb5",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "b805f9c8b4e0bc41",
+    "to": "enriched",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b805f9c8b4e0bc41",
+    "to": "entry",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b805f9c8b4e0bc41",
+    "to": "fp",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b805f9c8b4e0bc41",
+    "to": "g",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b805f9c8b4e0bc41",
+    "to": "graph",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b805f9c8b4e0bc41",
+    "to": "h",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b805f9c8b4e0bc41",
+    "to": "logger",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b805f9c8b4e0bc41",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b805f9c8b4e0bc41",
+    "to": "merged",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b805f9c8b4e0bc41",
+    "to": "meta",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b805f9c8b4e0bc41",
+    "to": "metrics",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b805f9c8b4e0bc41",
+    "to": "parts",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b805f9c8b4e0bc41",
+    "to": "path",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b805f9c8b4e0bc41",
+    "to": "r",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b805f9c8b4e0bc41",
+    "to": "replay",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b805f9c8b4e0bc41",
+    "to": "s",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b805f9c8b4e0bc41",
+    "to": "seen",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b805f9c8b4e0bc41",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b805f9c8b4e0bc41",
+    "to": "store",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b805f9c8b4e0bc41",
+    "to": "weights",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b805f9c8b4e0bc41",
+    "to": "weights_used",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b805f9c8b4e0bc41",
+    "to": "x",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b8671d5f2a5c6ce2",
+    "to": "time",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b8671d5f2a5c6ce2",
+    "to": "time",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "b969c3072af8c53b",
+    "to": "4ab8d44cb8d3fa64",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "b969c3072af8c53b",
+    "to": "4ab8d44cb8d3fa64",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "b969c3072af8c53b",
+    "to": "79d82ebab2d93443",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "b969c3072af8c53b",
+    "to": "79d82ebab2d93443",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "b969c3072af8c53b",
+    "to": "_quota_manager",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b969c3072af8c53b",
+    "to": "_tracker",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b969c3072af8c53b",
+    "to": "logger",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "b969c3072af8c53b",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "baa33810fd923b25",
+    "to": "08a78a5b3171cbca",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "baa33810fd923b25",
+    "to": "08a78a5b3171cbca",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "baa33810fd923b25",
+    "to": "22dfd717674a80e8",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "baa33810fd923b25",
+    "to": "22dfd717674a80e8",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "baa33810fd923b25",
+    "to": "3bacc1640db358c8",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "baa33810fd923b25",
+    "to": "3bacc1640db358c8",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "baa33810fd923b25",
+    "to": "behaviour",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "baa33810fd923b25",
+    "to": "c",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "baa33810fd923b25",
+    "to": "central_factors",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "baa33810fd923b25",
+    "to": "chain",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "baa33810fd923b25",
+    "to": "complexity",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "baa33810fd923b25",
+    "to": "fmeta",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "baa33810fd923b25",
+    "to": "gq",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "baa33810fd923b25",
+    "to": "h",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "baa33810fd923b25",
+    "to": "heuristic",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "baa33810fd923b25",
+    "to": "impact_data",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "baa33810fd923b25",
+    "to": "meta",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "baa33810fd923b25",
+    "to": "n",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "baa33810fd923b25",
+    "to": "r",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "baa33810fd923b25",
+    "to": "ranker",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "baa33810fd923b25",
+    "to": "retrieval",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "baa33810fd923b25",
+    "to": "root_risks",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "baa33810fd923b25",
+    "to": "s",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "baa33810fd923b25",
+    "to": "sa",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "baa33810fd923b25",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "baa33810fd923b25",
+    "to": "suggestions",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "baa33810fd923b25",
+    "to": "t2",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "beda3604a89edf3d",
+    "to": "_stats",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "beda3604a89edf3d",
+    "to": "c45a0e8dd1544534",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "beda3604a89edf3d",
+    "to": "c45a0e8dd1544534",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "beda3604a89edf3d",
+    "to": "e2ac2541aec2ebbd",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "beda3604a89edf3d",
+    "to": "e2ac2541aec2ebbd",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "beda3604a89edf3d",
+    "to": "execution_count",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "beda3604a89edf3d",
+    "to": "failure_count",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "beda3604a89edf3d",
+    "to": "hotspots",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "beda3604a89edf3d",
+    "to": "nodes",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "beda3604a89edf3d",
+    "to": "path",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "beda3604a89edf3d",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "beda3604a89edf3d",
+    "to": "tool",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "beda3604a89edf3d",
+    "to": "total_duration",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "c2214fa4195e499e",
+    "to": "_store",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "c2214fa4195e499e",
+    "to": "da",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "c2214fa4195e499e",
+    "to": "datetime",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "c2214fa4195e499e",
+    "to": "day_counts",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "c2214fa4195e499e",
+    "to": "details",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "c2214fa4195e499e",
+    "to": "eec1ceb166ddefb5",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "c2214fa4195e499e",
+    "to": "eec1ceb166ddefb5",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "c2214fa4195e499e",
+    "to": "entries",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "c2214fa4195e499e",
+    "to": "json",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "c2214fa4195e499e",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "c2214fa4195e499e",
+    "to": "meta",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "c2214fa4195e499e",
+    "to": "qe",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "c2214fa4195e499e",
+    "to": "rb",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "c2214fa4195e499e",
+    "to": "re",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "c2214fa4195e499e",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "c2214fa4195e499e",
+    "to": "sh",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "c2214fa4195e499e",
+    "to": "strats",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "c2214fa4195e499e",
+    "to": "time",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "c2214fa4195e499e",
+    "to": "wc",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "c351c71a205f7ce2",
+    "to": "Capability",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "c351c71a205f7ce2",
+    "to": "_capabilities",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "c351c71a205f7ce2",
+    "to": "a48d9a81e41fa92b",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "c351c71a205f7ce2",
+    "to": "a48d9a81e41fa92b",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "c351c71a205f7ce2",
+    "to": "cap_config",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "c351c71a205f7ce2",
+    "to": "efa68a204bebdf5f",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "c351c71a205f7ce2",
+    "to": "efa68a204bebdf5f",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "c351c71a205f7ce2",
+    "to": "logger",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "c351c71a205f7ce2",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "c351c71a205f7ce2",
+    "to": "meta",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "c351c71a205f7ce2",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "c351c71a205f7ce2",
+    "to": "specs",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "c45a0e8dd1544534",
+    "to": "e",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "c45a0e8dd1544534",
+    "to": "edges",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "c45a0e8dd1544534",
+    "to": "nodes",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "c45a0e8dd1544534",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "c651ee1c4cb778d9",
+    "to": "Lock",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "c651ee1c4cb778d9",
+    "to": "_services",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "c651ee1c4cb778d9",
+    "to": "expired_services",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "c651ee1c4cb778d9",
+    "to": "instances",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "c651ee1c4cb778d9",
+    "to": "logger",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "c651ee1c4cb778d9",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "c651ee1c4cb778d9",
+    "to": "results",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "c651ee1c4cb778d9",
+    "to": "svc_map",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "c651ee1c4cb778d9",
+    "to": "threading",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "c651ee1c4cb778d9",
+    "to": "time",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "cafedbbf26fbef64",
+    "to": "51141ed0cbd2d575",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "cafedbbf26fbef64",
+    "to": "51141ed0cbd2d575",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "cafedbbf26fbef64",
+    "to": "8e2aab3ccb066c74",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "cafedbbf26fbef64",
+    "to": "8e2aab3ccb066c74",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "cafedbbf26fbef64",
+    "to": "Lock",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "cafedbbf26fbef64",
+    "to": "STATE_EVENT_MAP",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "cafedbbf26fbef64",
+    "to": "_edges",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "cafedbbf26fbef64",
+    "to": "_stats",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "cafedbbf26fbef64",
+    "to": "a48d9a81e41fa92b",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "cafedbbf26fbef64",
+    "to": "a48d9a81e41fa92b",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "cafedbbf26fbef64",
+    "to": "dag",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "cafedbbf26fbef64",
+    "to": "dag_utils",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "cafedbbf26fbef64",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "cafedbbf26fbef64",
+    "to": "patterns",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "cafedbbf26fbef64",
+    "to": "queue",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "cafedbbf26fbef64",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "cafedbbf26fbef64",
+    "to": "state",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "cafedbbf26fbef64",
+    "to": "threading",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "cafedbbf26fbef64",
+    "to": "visited",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "ced2d458b9228c8b",
+    "to": "594a75a2d198fd45",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "ced2d458b9228c8b",
+    "to": "594a75a2d198fd45",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "ced2d458b9228c8b",
+    "to": "9fa64b4773ca57c1",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "ced2d458b9228c8b",
+    "to": "9fa64b4773ca57c1",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "d3316d4ff3919146",
+    "to": "40df9542b35cc4f7",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "d3316d4ff3919146",
+    "to": "40df9542b35cc4f7",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "d3316d4ff3919146",
+    "to": "9067085964808685",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "d3316d4ff3919146",
+    "to": "9067085964808685",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "d3316d4ff3919146",
+    "to": "ExecutionFrequencyTracker",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "d3316d4ff3919146",
+    "to": "ExecutionTopology",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "d3316d4ff3919146",
+    "to": "FailureTopology",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "d3316d4ff3919146",
+    "to": "_event_store",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "d3316d4ff3919146",
+    "to": "_execution_topology",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "d3316d4ff3919146",
+    "to": "_failure_topology",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "d3316d4ff3919146",
+    "to": "_frequency_tracker",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "d3316d4ff3919146",
+    "to": "analyzer",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "d3316d4ff3919146",
+    "to": "c45a0e8dd1544534",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "d3316d4ff3919146",
+    "to": "c45a0e8dd1544534",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "d3316d4ff3919146",
+    "to": "e2ac2541aec2ebbd",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "d3316d4ff3919146",
+    "to": "e2ac2541aec2ebbd",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "d3316d4ff3919146",
+    "to": "engine",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "d3316d4ff3919146",
+    "to": "event",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "d3316d4ff3919146",
+    "to": "exec_graph",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "d3316d4ff3919146",
+    "to": "fp",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "d3316d4ff3919146",
+    "to": "payload",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "d3316d4ff3919146",
+    "to": "primary",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "d3316d4ff3919146",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "d5233bdc731509c2",
+    "to": "actual",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "d5233bdc731509c2",
+    "to": "b8671d5f2a5c6ce2",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "d5233bdc731509c2",
+    "to": "b8671d5f2a5c6ce2",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "d5233bdc731509c2",
+    "to": "diffs",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "d5233bdc731509c2",
+    "to": "logger",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "d5233bdc731509c2",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "da8dfacbae2313b5",
+    "to": "auto_fix_map",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "da8dfacbae2313b5",
+    "to": "cls",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "da8dfacbae2313b5",
+    "to": "error",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "da8dfacbae2313b5",
+    "to": "inputs",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "da8dfacbae2313b5",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "da8dfacbae2313b5",
+    "to": "priority_map",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "db4b513c382d93a6",
+    "to": "a48d9a81e41fa92b",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "db4b513c382d93a6",
+    "to": "a48d9a81e41fa92b",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "dc7c367b23f87a0d",
+    "to": "61d72d4c01d582a4",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "dc7c367b23f87a0d",
+    "to": "61d72d4c01d582a4",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "dc7c367b23f87a0d",
+    "to": "68102d7b9d112034",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "dc7c367b23f87a0d",
+    "to": "68102d7b9d112034",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "dc7c367b23f87a0d",
+    "to": "Lock",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "dc7c367b23f87a0d",
+    "to": "_active",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "dc7c367b23f87a0d",
+    "to": "_contexts",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "dc7c367b23f87a0d",
+    "to": "f8a4ad172926322d",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "dc7c367b23f87a0d",
+    "to": "f8a4ad172926322d",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "dc7c367b23f87a0d",
+    "to": "logger",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "dc7c367b23f87a0d",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "dc7c367b23f87a0d",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "dc7c367b23f87a0d",
+    "to": "threading",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "dc7c367b23f87a0d",
+    "to": "uuid",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "ddc003b5c60caa05",
+    "to": "93da793613138986",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "ddc003b5c60caa05",
+    "to": "93da793613138986",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "ddc003b5c60caa05",
+    "to": "asyncio",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "ddc003b5c60caa05",
+    "to": "db",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "e04b05bd52d9d82b",
+    "to": "Lock",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "e04b05bd52d9d82b",
+    "to": "_durations",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "e04b05bd52d9d82b",
+    "to": "_tracker",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "e04b05bd52d9d82b",
+    "to": "a48d9a81e41fa92b",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "e04b05bd52d9d82b",
+    "to": "a48d9a81e41fa92b",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "e04b05bd52d9d82b",
+    "to": "conn",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "e04b05bd52d9d82b",
+    "to": "environ",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "e04b05bd52d9d82b",
+    "to": "load_stats",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "e04b05bd52d9d82b",
+    "to": "logger",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "e04b05bd52d9d82b",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "e04b05bd52d9d82b",
+    "to": "parent",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "e04b05bd52d9d82b",
+    "to": "result",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "e04b05bd52d9d82b",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "e04b05bd52d9d82b",
+    "to": "sqlite3",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "e04b05bd52d9d82b",
+    "to": "statistics",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "e04b05bd52d9d82b",
+    "to": "threading",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "e04b05bd52d9d82b",
+    "to": "time",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "e123976d82ba9c41",
+    "to": "_DB_KEYWORD_PATTERN",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "e123976d82ba9c41",
+    "to": "ast",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "e123976d82ba9c41",
+    "to": "async_call_ids",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "e123976d82ba9c41",
+    "to": "awaits",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "e123976d82ba9c41",
+    "to": "calls",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "e123976d82ba9c41",
+    "to": "names",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "e123976d82ba9c41",
+    "to": "re",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "e123976d82ba9c41",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "e123976d82ba9c41",
+    "to": "yields",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "e2ac2541aec2ebbd",
+    "to": "04ffab8e0199abf7",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "e2ac2541aec2ebbd",
+    "to": "04ffab8e0199abf7",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "e2ac2541aec2ebbd",
+    "to": "1e80cf7acda181cf",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "e2ac2541aec2ebbd",
+    "to": "1e80cf7acda181cf",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "e2ac2541aec2ebbd",
+    "to": "7277a943a4edd09e",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "e2ac2541aec2ebbd",
+    "to": "7277a943a4edd09e",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "e2ac2541aec2ebbd",
+    "to": "RuntimeStats",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "e2ac2541aec2ebbd",
+    "to": "_event_bus",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "e2ac2541aec2ebbd",
+    "to": "_session_count",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "e2ac2541aec2ebbd",
+    "to": "_stats",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "e2ac2541aec2ebbd",
+    "to": "c45a0e8dd1544534",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "e2ac2541aec2ebbd",
+    "to": "c45a0e8dd1544534",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "e2ac2541aec2ebbd",
+    "to": "execution_count",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "e2ac2541aec2ebbd",
+    "to": "failure_count",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "e2ac2541aec2ebbd",
+    "to": "hotspots",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "e2ac2541aec2ebbd",
+    "to": "last_executed_at",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "e2ac2541aec2ebbd",
+    "to": "last_status",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "e2ac2541aec2ebbd",
+    "to": "metadata",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "e2ac2541aec2ebbd",
+    "to": "name",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "e2ac2541aec2ebbd",
+    "to": "nodes",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "e2ac2541aec2ebbd",
+    "to": "path",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "e2ac2541aec2ebbd",
+    "to": "payload",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "e2ac2541aec2ebbd",
+    "to": "result",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "e2ac2541aec2ebbd",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "e2ac2541aec2ebbd",
+    "to": "time",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "e2ac2541aec2ebbd",
+    "to": "tool",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "e2ac2541aec2ebbd",
+    "to": "total_duration",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "e76e951716088acc",
+    "to": "_recent_feedback",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "e76e951716088acc",
+    "to": "_strategies",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "e76e951716088acc",
+    "to": "log",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "e76e951716088acc",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "e76e951716088acc",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "eb63b2459a4fec13",
+    "to": "math",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "eec1ceb166ddefb5",
+    "to": "Lock",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "eec1ceb166ddefb5",
+    "to": "conn",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "eec1ceb166ddefb5",
+    "to": "json",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "eec1ceb166ddefb5",
+    "to": "kw",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "eec1ceb166ddefb5",
+    "to": "logger",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "eec1ceb166ddefb5",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "eec1ceb166ddefb5",
+    "to": "os",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "eec1ceb166ddefb5",
+    "to": "params",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "eec1ceb166ddefb5",
+    "to": "parts",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "eec1ceb166ddefb5",
+    "to": "path",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "eec1ceb166ddefb5",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "eec1ceb166ddefb5",
+    "to": "sqlite3",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "eec1ceb166ddefb5",
+    "to": "threading",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "eec1ceb166ddefb5",
+    "to": "time",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f1b7431381b33db8",
+    "to": "347ea3efc9bef168",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "f1b7431381b33db8",
+    "to": "347ea3efc9bef168",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "f1b7431381b33db8",
+    "to": "Lock",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "f1b7431381b33db8",
+    "to": "_store",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f1b7431381b33db8",
+    "to": "conn",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f1b7431381b33db8",
+    "to": "logger",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f1b7431381b33db8",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f1b7431381b33db8",
+    "to": "parent",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f1b7431381b33db8",
+    "to": "row",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f1b7431381b33db8",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f1b7431381b33db8",
+    "to": "sqlite3",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f1b7431381b33db8",
+    "to": "threading",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f1b7431381b33db8",
+    "to": "time",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f1b7431381b33db8",
+    "to": "uuid",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f351111dce56996d",
+    "to": "Lock",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "f351111dce56996d",
+    "to": "conn",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f351111dce56996d",
+    "to": "hashlib",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f351111dce56996d",
+    "to": "json",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f351111dce56996d",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f351111dce56996d",
+    "to": "parent",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f351111dce56996d",
+    "to": "raw",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f351111dce56996d",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f351111dce56996d",
+    "to": "sqlite3",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f351111dce56996d",
+    "to": "threading",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f351111dce56996d",
+    "to": "time",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f3a64a4bf3346348",
+    "to": "5332214048237617",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "f3a64a4bf3346348",
+    "to": "5332214048237617",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "f4f8e837f12bc132",
+    "to": "51141ed0cbd2d575",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "f4f8e837f12bc132",
+    "to": "51141ed0cbd2d575",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "f4f8e837f12bc132",
+    "to": "9d0e8259f3d3f7d4",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "f4f8e837f12bc132",
+    "to": "9d0e8259f3d3f7d4",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "f4f8e837f12bc132",
+    "to": "ContractValidator",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f4f8e837f12bc132",
+    "to": "f6df4e4215f5fc57",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "f4f8e837f12bc132",
+    "to": "f6df4e4215f5fc57",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "f6df4e4215f5fc57",
+    "to": "inspect",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f6df4e4215f5fc57",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f6df4e4215f5fc57",
+    "to": "name",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f8a4ad172926322d",
+    "to": "domain",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f8a4ad172926322d",
+    "to": "path",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f8a4ad172926322d",
+    "to": "resolved",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f8f5d4e049225e5f",
+    "to": "RuntimeExecutionGraph",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "f8f5d4e049225e5f",
+    "to": "current_node",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f8f5d4e049225e5f",
+    "to": "edges",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f8f5d4e049225e5f",
+    "to": "event",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f8f5d4e049225e5f",
+    "to": "nodes",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f8f5d4e049225e5f",
+    "to": "payload",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f8f5d4e049225e5f",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f8f5d4e049225e5f",
+    "to": "session_trace",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f9448d6931864aa7",
+    "to": "Event",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "f9448d6931864aa7",
+    "to": "Lock",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "f9448d6931864aa7",
+    "to": "_cancelled",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f9448d6931864aa7",
+    "to": "a48d9a81e41fa92b",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "f9448d6931864aa7",
+    "to": "a48d9a81e41fa92b",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "f9448d6931864aa7",
+    "to": "conn",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f9448d6931864aa7",
+    "to": "dag",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f9448d6931864aa7",
+    "to": "depth",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f9448d6931864aa7",
+    "to": "edata",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f9448d6931864aa7",
+    "to": "environ",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f9448d6931864aa7",
+    "to": "errors",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f9448d6931864aa7",
+    "to": "json",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f9448d6931864aa7",
+    "to": "level_results",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f9448d6931864aa7",
+    "to": "logger",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f9448d6931864aa7",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f9448d6931864aa7",
+    "to": "ndata",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f9448d6931864aa7",
+    "to": "parent",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f9448d6931864aa7",
+    "to": "result",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f9448d6931864aa7",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f9448d6931864aa7",
+    "to": "sqlite3",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f9448d6931864aa7",
+    "to": "threading",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f9448d6931864aa7",
+    "to": "time",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f9da53f12eb04a5e",
+    "to": "1e80cf7acda181cf",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "f9da53f12eb04a5e",
+    "to": "1e80cf7acda181cf",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "f9da53f12eb04a5e",
+    "to": "2452d53784cebaba",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "f9da53f12eb04a5e",
+    "to": "2452d53784cebaba",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "f9da53f12eb04a5e",
+    "to": "6f706abe2ebb5e21",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "f9da53f12eb04a5e",
+    "to": "6f706abe2ebb5e21",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "f9da53f12eb04a5e",
+    "to": "8389521ddef0064b",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "f9da53f12eb04a5e",
+    "to": "8389521ddef0064b",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "f9da53f12eb04a5e",
+    "to": "89fbcad4493961a6",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "f9da53f12eb04a5e",
+    "to": "89fbcad4493961a6",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "f9da53f12eb04a5e",
+    "to": "_control",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f9da53f12eb04a5e",
+    "to": "_engine",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f9da53f12eb04a5e",
+    "to": "_executions",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f9da53f12eb04a5e",
+    "to": "_isolation",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f9da53f12eb04a5e",
+    "to": "_orchestrator",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f9da53f12eb04a5e",
+    "to": "a48d9a81e41fa92b",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "f9da53f12eb04a5e",
+    "to": "a48d9a81e41fa92b",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "f9da53f12eb04a5e",
+    "to": "b53e5e97b1691df6",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "f9da53f12eb04a5e",
+    "to": "b53e5e97b1691df6",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "f9da53f12eb04a5e",
+    "to": "c651ee1c4cb778d9",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "f9da53f12eb04a5e",
+    "to": "c651ee1c4cb778d9",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "f9da53f12eb04a5e",
+    "to": "copy",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f9da53f12eb04a5e",
+    "to": "logger",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f9da53f12eb04a5e",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f9da53f12eb04a5e",
+    "to": "result",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f9da53f12eb04a5e",
+    "to": "results",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f9da53f12eb04a5e",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f9da53f12eb04a5e",
+    "to": "time",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "f9da53f12eb04a5e",
+    "to": "uuid",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "fa981b020c2b9d19",
+    "to": "59fc8f824ae06067",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "fa981b020c2b9d19",
+    "to": "59fc8f824ae06067",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "fa981b020c2b9d19",
+    "to": "_replay",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "fa981b020c2b9d19",
+    "to": "_store",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "fa981b020c2b9d19",
+    "to": "churns",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "fa981b020c2b9d19",
+    "to": "eec1ceb166ddefb5",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "fa981b020c2b9d19",
+    "to": "eec1ceb166ddefb5",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "fa981b020c2b9d19",
+    "to": "groups",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "fa981b020c2b9d19",
+    "to": "length_feedback",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "fa981b020c2b9d19",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "fa981b020c2b9d19",
+    "to": "noisy",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "fa981b020c2b9d19",
+    "to": "positions",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "fa981b020c2b9d19",
+    "to": "r",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "fa981b020c2b9d19",
+    "to": "records",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "fa981b020c2b9d19",
+    "to": "res",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "fa981b020c2b9d19",
+    "to": "retrieved",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "fa981b020c2b9d19",
+    "to": "scores",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "fa981b020c2b9d19",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "fa981b020c2b9d19",
+    "to": "strategy_feedback",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "fa981b020c2b9d19",
+    "to": "symbol_feedback",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "fa981b020c2b9d19",
+    "to": "symbol_sets",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "fa981b020c2b9d19",
+    "to": "text",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "fa981b020c2b9d19",
+    "to": "top",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "fa981b020c2b9d19",
+    "to": "usage",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "fcb1a9a399f91803",
+    "to": "abspath",
+    "type": "INJECTS",
+    "weight": 0.9
+  },
+  {
+    "from": "fcb1a9a399f91803",
+    "to": "f",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "fcb1a9a399f91803",
+    "to": "json",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "fcb1a9a399f91803",
+    "to": "os",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "fcb1a9a399f91803",
+    "to": "path",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "fcb1a9a399f91803",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "fcb1a9a399f91803",
+    "to": "snapshot",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "fcc999042b9bed7f",
+    "to": "347ea3efc9bef168",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "fcc999042b9bed7f",
+    "to": "347ea3efc9bef168",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "fcc999042b9bed7f",
+    "to": "51141ed0cbd2d575",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "fcc999042b9bed7f",
+    "to": "51141ed0cbd2d575",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "fcc999042b9bed7f",
+    "to": "a48d9a81e41fa92b",
+    "type": "DEPENDS_ON",
+    "weight": 0.8
+  },
+  {
+    "from": "fcc999042b9bed7f",
+    "to": "a48d9a81e41fa92b",
+    "type": "IMPORTS",
+    "weight": 1.0
+  },
+  {
+    "from": "fcc999042b9bed7f",
+    "to": "contract",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "fcc999042b9bed7f",
+    "to": "logger",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "fcc999042b9bed7f",
+    "to": "logging",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "fcc999042b9bed7f",
+    "to": "reasons",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "fcc999042b9bed7f",
+    "to": "registry",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "fcc999042b9bed7f",
+    "to": "report",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "fcc999042b9bed7f",
+    "to": "self",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "fcc999042b9bed7f",
+    "to": "t",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "fcc999042b9bed7f",
+    "to": "tool_specs",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "fcc999042b9bed7f",
+    "to": "warnings",
+    "type": "CALLS",
+    "weight": 0.7
+  },
+  {
+    "from": "fe248eb34e8ac9d5",
+    "to": "order",
+    "type": "CALLS",
+    "weight": 0.7
+  }
+]

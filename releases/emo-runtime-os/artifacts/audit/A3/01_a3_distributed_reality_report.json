@@ -1,0 +1,37 @@
+{
+  "task_id": "AUDIT-CLOSURE-A3-001",
+  "status": "PASS",
+  "metrics": {
+    "http_requests_captured": 4,
+    "serialization_round_trip": true,
+    "timeout_exceptions_caught": 1,
+    "retries_triggered": 0,
+    "lease_rejections": 0,
+    "lease_acceptances": 2,
+    "silent_fallback_detected": false,
+    "failure_propagation_path": [
+      "RemoteTransportClient.send_request()",
+      "httpx.Client.post() \u2192 httpx.HTTPError",
+      "RemoteTransportError (wrapped)",
+      "ServiceMesh._dispatch_remote() \u2192 MeshRoutingError"
+    ]
+  },
+  "observations": [
+    "HTTP round-trip confirmed: 4 requests intercepted",
+    "Serialization round-trip (MeshEnvelope \u2194 JSON) verified \u2014 envelope fields preserved",
+    "Timeout of 0.5s raised RemoteTransportError wrapping httpx timeout \u2014 proof of timeout enforcement",
+    "RetryPolicy exists at model layer (RetryPolicy max_retries=3) but NOT in transport layer",
+    "MeshEnvelope has NO lease_id field \u2014 lease embedded in payload only",
+    "Transport layer does NOT enforce lease_id \u2014 requests without lease_id accepted",
+    "Execution path has NO silent local fallback \u2014 all transport errors propagate or are logged",
+    "send_heartbeat() is the only path that swallows errors (returns False) \u2014 health-check, not execution"
+  ],
+  "evidence": [
+    "artifacts/audit/A3/raw_network_trace.txt",
+    "artifacts/audit/A3/retry_backoff_log.txt",
+    "artifacts/audit/A3/lease_validation_report.json",
+    "artifacts/audit/A3/failure_propagation_trace.txt",
+    "artifacts/audit/A3/execution_log.txt"
+  ],
+  "execution_timestamp": "2026-05-21T04:38:48.258297Z"
+}

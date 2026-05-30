@@ -65,7 +65,7 @@ class ExecutionRetryHandler:
             RetryDecisionError: If retry decision cannot be computed.
         """
         try:
-            if attempt >= max_attempts:
+            if attempt > max_attempts:
                 logger.info(
                     "Max attempts reached for %s (%d/%d)",
                     node_id, attempt, max_attempts,

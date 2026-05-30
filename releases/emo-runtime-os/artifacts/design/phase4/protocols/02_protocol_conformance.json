@@ -1,0 +1,7 @@
+{
+  "IsolationRuntime : IIsolationRuntime": true,
+  "SandboxExecutor : ISandboxExecutor": true,
+  "CapabilityGuard : ICapabilityGuard": true,
+  "ResourceEnforcer : IResourceEnforcer": true,
+  "IOPolicyEngine : IIOPolicyEngine": true
+}

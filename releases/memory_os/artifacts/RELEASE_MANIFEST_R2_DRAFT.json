@@ -1,0 +1,51 @@
+{
+  "manifest_id": "RELEASE_MANIFEST_R2_DRAFT-001",
+  "release": "R2 — Memory OS",
+  "status": "DRAFT — Interface & Isolation Layer",
+  "date": "2026-05-30",
+  "isolation_policy": {
+    "zero_r1_imports": true,
+    "zero_shared_state": true,
+    "tenant_id_mandatory": true,
+    "cognitive_trace_id_mandatory": true,
+    "memory_layer_storage_only": true,
+    "forgetting_policy_controlled": true
+  },
+  "protocols": {
+    "IMemoryHierarchy": "releases/memory-os/core/interfaces/memory/hierarchy.py",
+    "IContextCompiler": "releases/memory-os/core/interfaces/memory/compiler.py",
+    "ISkillGraphManager": "releases/memory-os/core/interfaces/memory/skill_graph.py"
+  },
+  "models": {
+    "MemoryEntry": "releases/memory-os/core/models/memory.py",
+    "ContextWindow": "releases/memory-os/core/models/memory.py",
+    "ForgettingPolicy": "releases/memory-os/core/models/memory.py",
+    "SkillNode": "releases/memory-os/core/models/memory.py"
+  },
+  "canon_laws_applied": [
+    "LAW-6: tenant_id isolation on every memory operation",
+    "LAW-8: context boundary validation before runtime injection",
+    "LAW-11: cognitive_trace_id propagation through all memory operations",
+    "LAW-14: safety bounds and token budget on compiled context"
+  ],
+  "trace_propagation_chain": [
+    "EventBus.publish",
+    "MemoryRouter.route",
+    "IContextCompiler.compress_trace",
+    "IContextCompiler.inject_intelligence",
+    "IMemoryHierarchy.store",
+    "IMemoryHierarchy.retrieve",
+    "ISkillGraphManager.record",
+    "IMemoryHierarchy.prune"
+  ],
+  "directory_structure": {
+    "core/interfaces/memory": "3 protocol interfaces (interface-only, no implementation)",
+    "core/models": "Data models with tenant isolation enforcement",
+    "core/memory": "Reserved for R2 implementation phase",
+    "desktop": "emo-memory-explorer Tauri/React skeleton",
+    "tests": "15 isolation and contract tests",
+    "deployment": "Reserved for R2 deployment configs",
+    "certificates": "Reserved for R2 closure signing",
+    "artifacts": "Design docs and execution logs"
+  }
+}

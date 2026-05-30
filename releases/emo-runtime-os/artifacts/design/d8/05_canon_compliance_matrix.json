@@ -1,0 +1,306 @@
+{
+  "meta": {
+    "task_id": "PHASE-D8-CONTRACTS-DESIGN-010",
+    "generated": "2026-05-21",
+    "purpose": "Traceability matrix linking every D8 design element to Canon Laws 20-27 and DEVELOPER.md §15.15a.",
+    "coverage": "100% of design elements mapped — no orphan components."
+  },
+  "service_protocols": {
+    "file": "protocols/01_service_mesh_protocols.py",
+    "elements": [
+      {
+        "element": "IExecutionScheduler",
+        "methods": ["schedule", "run_with_timeout", "collect_futures"],
+        "law_ref": ["LAW 23"],
+        "rule_ref": ["Canon §16.6 RULE 2 (Interface Authority)"],
+        "section_ref": ["§15.15a D8.1"],
+        "evidence": "Scheduler owns execution ordering. Forbidden: retry, dispatch, lease, state.",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "IExecutionDispatcher",
+        "methods": ["dispatch_tool_call", "validate_contract", "route_service"],
+        "law_ref": ["LAW 24"],
+        "rule_ref": ["Canon §16.6 RULE 2"],
+        "section_ref": ["§15.15a D8.1"],
+        "evidence": "Dispatcher owns execution routing. Forbidden: state, lease, retry, scheduling.",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "IExecutionRetryHandler",
+        "methods": ["decide_retry", "apply_backoff", "record_failure"],
+        "law_ref": ["LAW 25"],
+        "rule_ref": ["Canon §16.6 RULE 2"],
+        "section_ref": ["§15.15a D8.1"],
+        "evidence": "RetryHandler owns retry semantics. Forbidden: scheduling, dispatch, state, lease.",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "IExecutionStateStore",
+        "methods": ["save_state", "load_state", "store_checkpoint", "read_trace"],
+        "law_ref": ["LAW 26"],
+        "rule_ref": ["Canon §16.6 RULE 2"],
+        "section_ref": ["§15.15a D8.1"],
+        "evidence": "StateStore owns persistence + traces. Forbidden: dispatch, retry, lease, scheduling.",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "IExecutionLeaseManager",
+        "methods": ["acquire_lease", "renew_lease", "release_lease", "monitor_heartbeat"],
+        "law_ref": ["LAW 23"],
+        "rule_ref": ["Canon §16.6 RULE 2"],
+        "section_ref": ["§15.15a D8.1"],
+        "evidence": "LeaseManager owns distributed ownership. Forbidden: retry, dispatch, state, scheduling.",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "Interaction Contract Matrix",
+        "methods": ["Scheduler→Dispatcher", "Scheduler→StateStore", "Dispatcher→RetryHandler", "RetryHandler→LeaseManager", "LeaseManager→Scheduler", "StateStore→Core"],
+        "law_ref": ["LAW 23-27"],
+        "rule_ref": ["Canon §16.6 RULE 2 (Interface Authority)"],
+        "section_ref": ["§15.15a D8.1"],
+        "evidence": "6 interaction contracts defined with consistency and failure mode per pair.",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "Protocol Conformance Verification",
+        "law_ref": ["LAW 23-27"],
+        "rule_ref": ["Canon §16.6 RULE 2"],
+        "section_ref": ["§15.15a D8.1"],
+        "evidence": "verify_protocol_conformance() checks 5 runtime classes against Protocols.",
+        "status": "COMPLIANT"
+      }
+    ]
+  },
+  "failure_propagation_matrix": {
+    "file": "02_failure_propagation_matrix.json",
+    "elements": [
+      {
+        "element": "FailureMode Enum",
+        "values": ["RETRY", "FALLBACK", "CIRCUIT_BREAK", "FAIL_FAST", "DEGRADE", "BUFFER", "CONTINUE", "DEFER", "CANCEL", "ROLLBACK", "REASSIGN", "RECORD", "CLASSIFY", "RELEASE", "NOTIFY"],
+        "law_ref": ["LAW 20-22"],
+        "rule_ref": ["Canon §16.6 RULE 4"],
+        "section_ref": ["§15.15a D8.2"],
+        "evidence": "15 failure modes defined for the propagation matrix.",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "ConsistencyLevel Enum",
+        "values": ["STRONG", "EVENTUAL", "NONE"],
+        "law_ref": ["LAW 20-22"],
+        "section_ref": ["§15.15a D8.2"],
+        "evidence": "3 consistency levels defined for service interactions.",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "F01 — Dispatcher fails",
+        "source": "Dispatcher",
+        "effect_on": ["Scheduler", "RetryHandler", "LeaseManager", "Core"],
+        "actions": ["RETRY", "CLASSIFY", "RELEASE", "NOTIFY"],
+        "law_ref": ["LAW 20-22", "LAW 23-27"],
+        "section_ref": ["§15.15a D8.2 line 1795"],
+        "evidence": "Exact match: 'Dispatcher fails → Scheduler → RetryHandler → LeaseManager → Core | RETRY + CLASSIFY + RELEASE + NOTIFY'",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "F02 — Lease expires",
+        "source": "LeaseManager",
+        "effect_on": ["Engine", "Scheduler", "StateStore"],
+        "actions": ["CANCEL", "ROLLBACK", "REASSIGN", "RECORD"],
+        "law_ref": ["LAW 20-22", "LAW 23"],
+        "section_ref": ["§15.15a D8.2 line 1796"],
+        "evidence": "Exact match: 'Lease expires → Engine → Scheduler → StateStore | CANCEL + ROLLBACK + REASSIGN + RECORD'",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "F03 — StateStore fails",
+        "source": "StateStore",
+        "effect_on": ["Core", "Scheduler", "RetryHandler"],
+        "actions": ["DEGRADE", "BUFFER", "CONTINUE", "DEFER"],
+        "law_ref": ["LAW 20-22", "LAW 26"],
+        "section_ref": ["§15.15a D8.2 line 1797"],
+        "evidence": "Exact match: 'StateStore fails → Core → Scheduler → RetryHandler | DEGRADE + BUFFER + CONTINUE + DEFER'",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "F04-F08 — Additional scenarios",
+        "sources": ["Scheduler", "RetryHandler", "Engine", "LeaseManager", "Core"],
+        "law_ref": ["LAW 20-22", "LAW 10", "LAW 23", "LAW 25", "LAW 26"],
+        "section_ref": ["§15.15a D8.2"],
+        "evidence": "5 additional scenarios covering all 8 source domains (Scheduler, Dispatcher, RetryHandler, StateStore, LeaseManager, Engine, Core).",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "Recovery Policies",
+        "domains": ["Scheduler", "Dispatcher", "RetryHandler", "StateStore", "LeaseManager"],
+        "law_ref": ["LAW 20-22"],
+        "section_ref": ["§15.15a D8.2"],
+        "evidence": "5 recovery policies with circuit breaker, backoff, and fallback defined per domain.",
+        "status": "COMPLIANT"
+      }
+    ]
+  },
+  "ownership_isolation_rules": {
+    "file": "03_ownership_isolation_rules.md",
+    "elements": [
+      {
+        "element": "LAW 23 — Scheduler Ownership",
+        "owns": "execution ordering, concurrency levels, timeout enforcement, future collection",
+        "forbidden": "retry decisions, dispatch routing, state persistence, lease management",
+        "law_ref": ["LAW 23"],
+        "section_ref": ["§15.15a D8.4"],
+        "evidence": "Ownership table §1.1, Private state §2.1",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "LAW 24 — Dispatcher Ownership",
+        "owns": "execution routing, contract validation, inter-service routing",
+        "forbidden": "state reads/writes, lease acquire/release, retry logic, scheduling",
+        "law_ref": ["LAW 24"],
+        "section_ref": ["§15.15a D8.4"],
+        "evidence": "Ownership table §1.1, Private state §2.1",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "LAW 25 — RetryHandler Ownership",
+        "owns": "retry decisions, backoff computation, failure recording",
+        "forbidden": "scheduling, dispatch, state access, lease operations",
+        "law_ref": ["LAW 25"],
+        "section_ref": ["§15.15a D8.4"],
+        "evidence": "Ownership table §1.1, Private state §2.1",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "LAW 26 — StateStore Ownership",
+        "owns": "state persistence, checkpoints, trace read/write",
+        "forbidden": "dispatch, retry, lease, scheduling",
+        "law_ref": ["LAW 26"],
+        "section_ref": ["§15.15a D8.4"],
+        "evidence": "Ownership table §1.1, Private state §2.1",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "LAW 27 — No Overlap",
+        "owns": "ALL: exactly one domain per service",
+        "forbidden": "any shared domain method",
+        "law_ref": ["LAW 27"],
+        "section_ref": ["§15.15a D8.4"],
+        "evidence": "Ownership table §1.1, Violation Detection §1.3",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "No Shared Mutable State",
+        "law_ref": ["LAW 23-27", "LAW 11"],
+        "rule_ref": ["RULE 2 (No hidden state)"],
+        "section_ref": ["§15.15a D8.4"],
+        "evidence": "5 private state declarations §2.1, pass-by-value communication §2.2, frozen events §2.3",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "Independent Testing Boundaries",
+        "law_ref": ["LAW 23-27"],
+        "section_ref": ["§15.15a D8.3"],
+        "evidence": "Mock boundaries table §3.1, no-cascade proof §3.3",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "Interface-Only Boundaries",
+        "law_ref": ["LAW 23-27"],
+        "rule_ref": ["RULE 2 (Interface Authority)"],
+        "section_ref": ["§15.15a D8.3"],
+        "evidence": "Allowed flow diagram §4.1, Forbidden flow diagram §4.2, EventBus table §4.3",
+        "status": "COMPLIANT"
+      }
+    ]
+  },
+  "isolation_test_blueprint": {
+    "file": "04_isolation_test_blueprint.md",
+    "elements": [
+      {
+        "element": "TestNoSharedMutableState",
+        "tests": 5,
+        "target": "Direct mutation of another service's domain",
+        "law_ref": ["LAW 27"],
+        "section_ref": ["§15.15a D8.3"],
+        "evidence": "5 test cases (G1-T1 through G1-T5) with mock injection on private state.",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "TestNoHiddenCrossServiceAccess",
+        "tests": 4,
+        "target": "Chained calls through service internals",
+        "law_ref": ["LAW 23-27"],
+        "rule_ref": ["D8.3 Rule 10"],
+        "section_ref": ["§15.15a D8.3"],
+        "evidence": "4 test cases (G2-T1 through G2-T4) with AST scan pattern.",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "TestServiceInterfaceCompliance",
+        "tests": 4,
+        "target": "Interface method ownership boundaries",
+        "law_ref": ["LAW 23-27"],
+        "section_ref": ["§15.15a D8.1"],
+        "evidence": "4 test cases (G3-T1 through G3-T4) verifying protocol method match.",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "TestFailurePropagationCompliance",
+        "tests": 4,
+        "target": "Propagation matrix completeness",
+        "law_ref": ["LAW 20-22"],
+        "section_ref": ["§15.15a D8.2"],
+        "evidence": "4 test cases (G4-T1 through G4-T4) with failure injection on each domain.",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "TestCanonServiceOwnership",
+        "tests": 4,
+        "target": "LAW 23-27 runtime enforcement",
+        "law_ref": ["LAW 23-27"],
+        "section_ref": ["§15.15a D8.4"],
+        "evidence": "4 test cases (G5-T1 through G5-T4) with AST scan of method ownership overlap.",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "Mocking Strategy",
+        "law_ref": ["LAW 23-27"],
+        "section_ref": ["§15.15a D8.3"],
+        "evidence": "Per-group mock table, MockTemplate with create_autospec.",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "Failure Injection Points",
+        "law_ref": ["LAW 20-22"],
+        "section_ref": ["§15.15a D8.2"],
+        "evidence": "5 injection points mapped to 5 propagation scenarios.",
+        "status": "COMPLIANT"
+      },
+      {
+        "element": "Acceptance Criteria (21/21)",
+        "law_ref": ["LAW 20-27"],
+        "section_ref": ["§15.15a D8.3"],
+        "evidence": "Zero-failure threshold per group. Total: 21 tests, 21 required pass.",
+        "status": "COMPLIANT"
+      }
+    ]
+  },
+  "coverage_summary": {
+    "total_design_elements": 18,
+    "elements_mapped": 18,
+    "coverage_percent": 100,
+    "canon_refs_used": {
+      "LAW 20-22": "Failure propagation matrix, FailureMode enum, ConsistencyLevel, recovery policies, test G4",
+      "LAW 23": "IExecutionScheduler, IExecutionLeaseManager, ownership rules, forbidden matrix",
+      "LAW 24": "IExecutionDispatcher, ownership rules, forbidden matrix",
+      "LAW 25": "IExecutionRetryHandler, ownership rules, forbidden matrix",
+      "LAW 26": "IExecutionStateStore, ownership rules, forbidden matrix",
+      "LAW 27": "No overlap rule, TestNoSharedMutableState, ownership table",
+      "LAW 11": "No shared global state (referenced in no-mutable-state section)",
+      "§15.15a D8.1": "5 service protocols, interaction contracts, protocol conformance",
+      "§15.15a D8.2": "Failure propagation matrix, F01-F08 scenarios, recovery policies",
+      "§15.15a D8.3": "21 tests, 5 test groups, mocking strategy, acceptance criteria",
+      "§15.15a D8.4": "LAW 23-27 ownership table, forbidden methods, violation detection"
+    }
+  }
+}

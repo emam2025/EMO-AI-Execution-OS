@@ -1,0 +1,266 @@
+{
+  "archive_version": "1.0.0",
+  "baseline_tag": "4.3.0-dev-audit-closed",
+  "created_at": "2026-05-21T05:20:48.403036Z",
+  "tasks": {
+    "AUDIT-CLOSURE-A3-001": {
+      "files": {
+        "01_a3_distributed_reality_report.json": {
+          "hash": "c8c0bdbe0a6b50be83160c3198e43842ba77c6cec406a8b8a3984d138191a193",
+          "size": 1652
+        },
+        "execution_log.txt": {
+          "hash": "b5cf664fd4fc1f4aab17d0e1c4830f452e3d53a890be2ff4266f5bbe6a4371c4",
+          "size": 871
+        },
+        "failure_propagation_trace.txt": {
+          "hash": "7413bbb685a34dc40be5ff329173bb7754b8ef9aa0bdc52b9aba90e4255e9f8d",
+          "size": 2804
+        },
+        "lease_validation_report.json": {
+          "hash": "65aa5d652737d097aa34c90c76cffe132e995ad371e556b1890f5273e5dbf244",
+          "size": 550
+        },
+        "raw_network_trace.txt": {
+          "hash": "60df797b5729610dd88c80e38bd5048d48d8b6cffa5c91ee334eec03b9366aba",
+          "size": 1270
+        },
+        "retry_backoff_log.txt": {
+          "hash": "84e95745f45701ae1525419782ebb92812e7e5d2affa7676d504c346cd81dabe",
+          "size": 229
+        }
+      },
+      "canon_refs": [
+        "\u00a715.4",
+        "\u00a715.11",
+        "\u00a73.6"
+      ],
+      "status": "ARCHIVED"
+    },
+    "AUDIT-CLOSURE-B3-001": {
+      "files": {
+        "01_b3_quantitative_report.json": {
+          "hash": "19995ebfd22f3fcc08398664747f9cb2db77e6f7c05ccf8cb3cbbbe722a7c0d6",
+          "size": 1632
+        },
+        "raw_execution_output.txt": {
+          "hash": "61406f9f8006ee6fe7b15bd345e2dcb9ab97dd64a7439df0fcaa3feaed20a6a2",
+          "size": 6318
+        }
+      },
+      "canon_refs": [
+        "\u00a73.1",
+        "\u00a75.3",
+        "\u00a715.8"
+      ],
+      "status": "ARCHIVED"
+    },
+    "AUDIT-CLOSURE-F2-001": {
+      "files": {
+        "01_f2_baseline_report.json": {
+          "hash": "9c1252d0aa3be686e42975b9dadace19e73e409d1f493bc29e7c33a7e0d7ecb5",
+          "size": 2164
+        },
+        "02_f2_dry_run_delta.json": {
+          "hash": "239fcd3354e543684f5752db48db3ea88e819bbb2b9354d7732d10737afab6a9",
+          "size": 1045
+        },
+        "03_f2_import_safety_audit.txt": {
+          "hash": "6e739b3615f2ad69685007d6bc0f84a2b94d059b24fc778de26df629acd54ba2",
+          "size": 17942
+        },
+        "execution_log.txt": {
+          "hash": "5fe514fe9e438ec441c089583d28e9647c4fa60210c2bae5fe4e345a22d2f09d",
+          "size": 523
+        }
+      },
+      "canon_refs": [
+        "\u00a715.10",
+        "\u00a716",
+        "LAW 14",
+        "LAW 15",
+        "LAW 16"
+      ],
+      "status": "ARCHIVED"
+    },
+    "AUDIT-CLOSURE-H3-001": {
+      "files": {
+        "04_h3_isolation_proof.json": {
+          "hash": "0f8acc2ff89bd78deda97ee800d1f3a835dcc8807fec9f00f53a8895b3826014",
+          "size": 742
+        },
+        "05_h3_security_report.json": {
+          "hash": "e1cb0cc84744c40ea18ce5f923efd94f60ed24e8bb9ba565e832ae4b57ecb7d7",
+          "size": 1538
+        },
+        "execution_log.txt": {
+          "hash": "04be7236ecca5228054a05c0983e12fce58b5dcbb0fe5ff281bdea3f9924b826",
+          "size": 599
+        },
+        "raw_validation_traces.txt": {
+          "hash": "509e324ae771499394a426030edbd9520fc6d67edc79bfeb08b18fd2e7818843",
+          "size": 2304
+        }
+      },
+      "canon_refs": [
+        "\u00a715.15a",
+        "\u00a716",
+        "LAW 4",
+        "LAW 9",
+        "LAW 12"
+      ],
+      "status": "ARCHIVED"
+    },
+    "AUDIT-VAL-001": {
+      "files": {
+        "01_size_by_dir.txt": {
+          "hash": "d9972ca2caf194b953329202ad4815afc78a2a9288d3a3a5de3f6fd4742988a6",
+          "size": 1366
+        },
+        "01_test_manifest.txt": {
+          "hash": "53cbabb5f4281d6d0ab15c3f33bb2b29c7f1af41e54e2717c9bd1d672df478c2",
+          "size": 2634
+        },
+        "01_test_manifest_v2.txt": {
+          "hash": "5285f9fa527ffd9031835196d5df3b8a444f8e7b874cfb1bd17e1f81f55da089",
+          "size": 97255
+        },
+        "02_ai_index_sizes.txt": {
+          "hash": "7cdeffdc3cbd2b654afec28bedd6afee32244a1bd17420dca883b717111791d7",
+          "size": 1613
+        },
+        "02_assertion_proof.md": {
+          "hash": "e0254cadebd869e091238141316ab5c882d61d0b4687d31b16c079ba7ce3df7a",
+          "size": 3946
+        },
+        "03_db_writer_audit.txt": {
+          "hash": "b813ca1706b2c92af7ed0be80bb9f4d8c8981cb4bd5404be62c6ee6ce46acaac",
+          "size": 822
+        },
+        "03_embedding_cache_check.txt": {
+          "hash": "efc2bb03214840bfc020cc9eb09ea9b24c489512b9d35f8694fab26bfd50c8b6",
+          "size": 1154
+        },
+        "04_line_count.txt": {
+          "hash": "7525a943a3032817032b40262845aef94390053feb6072253b4703a6c26e69c6",
+          "size": 173
+        },
+        "04_replay_determinism_diff.txt": {
+          "hash": "1bbfc51b9b2cf88fa34aed772f85f2ea70ca4beb1434289003faf98858cb7782",
+          "size": 1829
+        },
+        "05_dead_indirection_list.txt": {
+          "hash": "51be833560f809da09e8fd36241930f9f096d8e4ec840137f0f11c4816306d88",
+          "size": 3514
+        },
+        "05_file_types.txt": {
+          "hash": "9ba1fe6a32f5d1c423dcbf5783fd50cf0ed47f758952907a186b9b62bde4320f",
+          "size": 332
+        },
+        "06_canon_compliance_report.md": {
+          "hash": "4682c08411bbad9d7a69269c249c30e9685931407b18e25f4341fad23115e3e0",
+          "size": 3343
+        },
+        "06_size_gap_report.json": {
+          "hash": "643bcf0b9a2d4621e5a8ed73143207f416d2b565ddab4c3ee13efa75ab4abdb9",
+          "size": 5547
+        }
+      },
+      "canon_refs": [
+        "\u00a715.8",
+        "\u00a715.9",
+        "\u00a716"
+      ],
+      "status": "ARCHIVED"
+    },
+    "SIZE-AUDIT-001": {
+      "files": {
+        "01_size_by_dir.txt": {
+          "hash": "d9972ca2caf194b953329202ad4815afc78a2a9288d3a3a5de3f6fd4742988a6",
+          "size": 1366
+        },
+        "01_test_manifest.txt": {
+          "hash": "53cbabb5f4281d6d0ab15c3f33bb2b29c7f1af41e54e2717c9bd1d672df478c2",
+          "size": 2634
+        },
+        "01_test_manifest_v2.txt": {
+          "hash": "5285f9fa527ffd9031835196d5df3b8a444f8e7b874cfb1bd17e1f81f55da089",
+          "size": 97255
+        },
+        "02_ai_index_sizes.txt": {
+          "hash": "7cdeffdc3cbd2b654afec28bedd6afee32244a1bd17420dca883b717111791d7",
+          "size": 1613
+        },
+        "02_assertion_proof.md": {
+          "hash": "e0254cadebd869e091238141316ab5c882d61d0b4687d31b16c079ba7ce3df7a",
+          "size": 3946
+        },
+        "03_db_writer_audit.txt": {
+          "hash": "b813ca1706b2c92af7ed0be80bb9f4d8c8981cb4bd5404be62c6ee6ce46acaac",
+          "size": 822
+        },
+        "03_embedding_cache_check.txt": {
+          "hash": "efc2bb03214840bfc020cc9eb09ea9b24c489512b9d35f8694fab26bfd50c8b6",
+          "size": 1154
+        },
+        "04_line_count.txt": {
+          "hash": "7525a943a3032817032b40262845aef94390053feb6072253b4703a6c26e69c6",
+          "size": 173
+        },
+        "04_replay_determinism_diff.txt": {
+          "hash": "1bbfc51b9b2cf88fa34aed772f85f2ea70ca4beb1434289003faf98858cb7782",
+          "size": 1829
+        },
+        "05_dead_indirection_list.txt": {
+          "hash": "51be833560f809da09e8fd36241930f9f096d8e4ec840137f0f11c4816306d88",
+          "size": 3514
+        },
+        "05_file_types.txt": {
+          "hash": "9ba1fe6a32f5d1c423dcbf5783fd50cf0ed47f758952907a186b9b62bde4320f",
+          "size": 332
+        },
+        "06_canon_compliance_report.md": {
+          "hash": "4682c08411bbad9d7a69269c249c30e9685931407b18e25f4341fad23115e3e0",
+          "size": 3343
+        },
+        "06_size_gap_report.json": {
+          "hash": "643bcf0b9a2d4621e5a8ed73143207f416d2b565ddab4c3ee13efa75ab4abdb9",
+          "size": 5547
+        }
+      },
+      "canon_refs": [
+        "\u00a710.1",
+        "\u00a716"
+      ],
+      "status": "ARCHIVED"
+    }
+  },
+  "audit_logs": {
+    "AUDIT-CLOSURE-A3-001_execution_log.txt": {
+      "hash": "b5cf664fd4fc1f4aab17d0e1c4830f452e3d53a890be2ff4266f5bbe6a4371c4",
+      "size": 871
+    },
+    "AUDIT-CLOSURE-B3-001_execution_log.txt": {
+      "hash": "61406f9f8006ee6fe7b15bd345e2dcb9ab97dd64a7439df0fcaa3feaed20a6a2",
+      "size": 6318
+    },
+    "AUDIT-CLOSURE-F2-001_execution_log.txt": {
+      "hash": "5fe514fe9e438ec441c089583d28e9647c4fa60210c2bae5fe4e345a22d2f09d",
+      "size": 523
+    },
+    "AUDIT-CLOSURE-H3-001_execution_log.txt": {
+      "hash": "04be7236ecca5228054a05c0983e12fce58b5dcbb0fe5ff281bdea3f9924b826",
+      "size": 599
+    },
+    "SIZE-AUDIT-001_execution_log.txt": {
+      "hash": "07b284c3085204296663032dc54730561fde200fe2c70a2fc55144052a4b4814",
+      "size": 3377
+    }
+  },
+  "debt_registry": {
+    "known-violations.json": {
+      "hash": "031b958eb181c9210dec824b3c8728f213a8906c6097d60d33cf11d3999d4900",
+      "size": 5686
+    }
+  }
+}

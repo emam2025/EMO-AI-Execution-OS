@@ -1,0 +1,87 @@
+{
+  "constraint_count": 10,
+  "signature": "c7a58c7a6a1710284690cf44d6cb5fea87023075686f269d027e56dee583a2a3",
+  "output_path": "docs/KNOWN_PRODUCTION_CONSTRAINTS.md",
+  "constraints": [
+    {
+      "id": "PC-001",
+      "area": "Persistence",
+      "description": "SQLite-based EventStore \u2014 writes are single-node. At > 10k events/sec the WAL becomes a bottleneck.",
+      "canon_law": "LAW 5, LAW 20",
+      "mitigation": "Replace with PostgreSQL or distributed log (Phase I2 ready, not activated). Monitor WAL lag. Triggers at 8k events/sec.",
+      "severity": "medium"
+    },
+    {
+      "id": "PC-002",
+      "area": "Replay",
+      "description": "Replay determinism is \u2265 99.3% but not 100% \u2014 time-dependent operations (wall_clock, random seeds) drift across runs.",
+      "canon_law": "LAW 3, LAW 18",
+      "mitigation": "Accept \u2264 0.7% drift for time-dependent DAGs. Isolate time via TimeProvider interface in future.",
+      "severity": "low"
+    },
+    {
+      "id": "PC-003",
+      "area": "Scale",
+      "description": "Worker pool is fixed at construction time (default 4, max 256). No dynamic auto-scaling in production.",
+      "canon_law": "LAW 13, F2",
+      "mitigation": "Auto-scaler implemented but not activated. Manual scaling via operator action. Set target count via `build_final_release(worker_pool_size=N)`.",
+      "severity": "medium"
+    },
+    {
+      "id": "PC-004",
+      "area": "Observability",
+      "description": "TopologyViewer returns static/mocked data \u2014 no live agent inventory. Operator CLI shows placeholder worker topology.",
+      "canon_law": "LAW 5",
+      "mitigation": "Post-freeze agent discovery integration. Current worker count hardcoded to 3. Acceptable for pilot.",
+      "severity": "low"
+    },
+    {
+      "id": "PC-005",
+      "area": "Replay Drift",
+      "description": "ReplayDrift metric reports 0.0 (placeholder) \u2014 no actual cross-run drift measurement implemented.",
+      "canon_law": "LAW 3, LAW 12",
+      "mitigation": "Accurate drift requires replay baseline comparison. Accept 0.0 placeholder for pilot. Tracked as AD-007.",
+      "severity": "low"
+    },
+    {
+      "id": "PC-006",
+      "area": "Operator UI",
+      "description": "Operator UI is single-process (no auth, no TLS, no multi-session). Suitable for local pilot only.",
+      "canon_law": "LAW 10",
+      "mitigation": "Wrap behind reverse proxy with basic auth for >3 users. TLS and session management not implemented.",
+      "severity": "medium"
+    },
+    {
+      "id": "PC-007",
+      "area": "Agent Layer",
+      "description": "Multi-agent layer (G5) has zero test coverage \u2014 conceptual only. Not activated in production.",
+      "canon_law": "LAW 5, RULE 2",
+      "mitigation": "Deferred to K6 phase. No runtime impact \u2014 layer is not wired in CompositionRoot.",
+      "severity": "low"
+    },
+    {
+      "id": "PC-008",
+      "area": "Auth \u2014 Rate Limiting",
+      "description": "`/api/auth/refresh` has no rate limiting \u2014 brute-force refresh token rotation possible.",
+      "canon_law": "LAW 3, RULE 2",
+      "mitigation": "Add in-memory rate limiter (10 req/min per user) before wider deployment. Acceptable for pilot \u22645 tenants.",
+      "severity": "medium"
+    },
+    {
+      "id": "PC-009",
+      "area": "Auth \u2014 Token Replay Persistence",
+      "description": "Refresh token replay detection uses in-memory store \u2014 server restart loses token state.",
+      "canon_law": "LAW 3, RULE 2",
+      "mitigation": "Migrate to persistent store (Redis/DB) post-freeze. Acceptable for single-node pilot.",
+      "severity": "low"
+    },
+    {
+      "id": "PC-010",
+      "area": "Auth \u2014 Migration",
+      "description": "JWT lifecycle hardening (2h expiry, refresh rotation, one-time-use) deployed in-place \u2014 no active session migration path.",
+      "canon_law": "LAW 3",
+      "mitigation": "Existing sessions expire within 2h requiring re-login. Acceptable for pilot.",
+      "severity": "low"
+    }
+  ]
+}

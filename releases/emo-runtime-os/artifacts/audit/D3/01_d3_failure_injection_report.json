@@ -1,0 +1,40 @@
+{
+  "task_id": "AUDIT-CLOSURE-D3-005",
+  "status": "PASS",
+  "metrics": {
+    "network_partition_caught": true,
+    "timeout_propagation_verified": true,
+    "worker_crash_reassigned": true,
+    "lease_conflict_prevented": true,
+    "contract_violations_rejected": 3,
+    "schema_mismatches_rejected": 1,
+    "recovery_corruption_handled": true,
+    "silent_failures_detected": false
+  },
+  "acceptance": {
+    "network_partition_caught": true,
+    "timeout_propagation_verified": true,
+    "worker_crash_reassigned": true,
+    "lease_conflict_prevented": true,
+    "contract_violations_rejected >= 2": true,
+    "schema_mismatches_rejected >= 1": true,
+    "recovery_corruption_handled": true,
+    "silent_failures_detected = false": true
+  },
+  "gaps": [
+    "send_heartbeat() silently swallows httpx.HTTPError \u2014 returns False, caller cannot distinguish timeout/connection-refused/DNS-failure",
+    "CheckpointManager.restore() returns None on both 'session not found' and 'data corruption' \u2014 no CheckpointCorruptError, no distinction for caller",
+    "CheckpointManager.save() silently catches and discards ALL exceptions (JSON encode, SQLite)",
+    "ContractViolation exception class exists but is NEVER raised \u2014 violations returned as string lists instead",
+    "OwnershipManager.claim() returns None on conflict \u2014 no structured conflict exception",
+    "_handle_node_failure() uses blocking sleep(time) during retry backoff \u2014 thread cannot be cleanly cancelled",
+    "No watchdog/circuit-breaker in RemoteTransportClient \u2014 single attempt, immediate failure"
+  ],
+  "evidence": [
+    "artifacts/audit/D3/network_partition_trace.txt",
+    "artifacts/audit/D3/worker_crash_reassignment_log.txt",
+    "artifacts/audit/D3/contract_schema_violation_trace.txt",
+    "artifacts/audit/D3/recovery_corruption_trace.txt"
+  ],
+  "execution_timestamp": "2026-05-21T07:04:10.697534Z"
+}

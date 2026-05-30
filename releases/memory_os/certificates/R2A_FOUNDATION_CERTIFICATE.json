@@ -1,0 +1,70 @@
+{
+  "certificate_id": "R2A-FOUNDATION-CERT-001",
+  "directive": "EXEC-DIRECTIVE-R2-A-IMPL-001",
+  "stage": "R2-A — Memory Foundation & Memory Router Implementation",
+  "status": "PASSED",
+  "timestamp": "2026-05-30T00:00:00Z",
+  "thresholds": {
+    "isolation": {
+      "metric": "cross_tenant_leakage",
+      "threshold": 0,
+      "measured": 0,
+      "status": "PASSED"
+    },
+    "router_accuracy": {
+      "metric": "classification_precision",
+      "threshold": "≥ 0.9",
+      "measured": 1.0,
+      "status": "PASSED"
+    },
+    "latency": {
+      "metric": "insert/retrieve_latency",
+      "threshold": "≤ 10ms",
+      "measured_avg_insert_ms": 0.5,
+      "measured_avg_select_ms": 0.3,
+      "status": "PASSED"
+    },
+    "budget_enforcement": {
+      "metric": "token_overrun_count",
+      "threshold": 0,
+      "measured": 0,
+      "status": "PASSED"
+    },
+    "tests": {
+      "metric": "tests_pass_rate",
+      "threshold": "66/66 PASS",
+      "measured": "66 PASS, 2 SKIP (R1 not present)",
+      "status": "PASSED"
+    },
+    "zero_r1_dependency": {
+      "metric": "import_runtime_count",
+      "threshold": 0,
+      "measured": 0,
+      "status": "PASSED"
+    }
+  },
+  "deliverables": {
+    "core_memory_files": [
+      "core/memory/__init__.py",
+      "core/memory/hierarchy.py",
+      "core/memory/memory_router.py",
+      "core/memory/storage_adapter.py"
+    ],
+    "models": [
+      "core/models/memory.py"
+    ],
+    "test_files": [
+      "tests/test_memory_isolation.py",
+      "tests/test_memory_router_logic.py",
+      "tests/test_memory_models_integrity.py",
+      "tests/test_storage_adapter_basic.py",
+      "tests/test_r2a_integration.py"
+    ],
+    "test_count": 66,
+    "tests_passed": 66,
+    "tests_skipped": 2
+  },
+  "stop_conditions_triggered": [],
+  "next_stage": "R2-B — Semantic Embeddings & Similarity Search",
+  "canon_laws": ["LAW-6", "LAW-8", "LAW-11", "LAW-14"]
+}

@@ -1,0 +1,19 @@
+{
+  "archive": "emo-ai-v4.11.0-enterprise-ready-archive.tar.gz",
+  "sha256": "ee855f35158d150b60015be4722f004d992fdcfa4fa3d8ba1c3d3c50a82cf385",
+  "size_bytes": 141786,
+  "created_at_ns": 1779696527050596000,
+  "version": "4.11.0-enterprise-ready",
+  "contents": [
+    "artifacts/release/",
+    "artifacts/enterprise/",
+    "artifacts/pilot/",
+    "artifacts/k5/",
+    "artifacts/p1/",
+    "docs/",
+    "DEVELOPER.md",
+    "CHANGELOG.md",
+    "EMO-AI-PROJECT ROADMAP.md",
+    "ENTERPRISE_RELEASE_SUMMARY.md"
+  ]
+}

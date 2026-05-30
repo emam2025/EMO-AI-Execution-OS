@@ -1,0 +1,17 @@
+[
+  {
+    "attempt": 1,
+    "delay_seconds": 2.0,
+    "cumulative": 2.0
+  },
+  {
+    "attempt": 2,
+    "delay_seconds": 4.0,
+    "cumulative": 6.0
+  },
+  {
+    "attempt": 3,
+    "delay_seconds": 8.0,
+    "cumulative": 14.0
+  }
+]

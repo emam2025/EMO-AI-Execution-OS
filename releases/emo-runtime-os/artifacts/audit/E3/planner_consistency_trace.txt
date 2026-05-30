@@ -1,0 +1,41 @@
+# planner_consistency_trace.txt — AUDIT-CLOSURE-E3-009
+# Generated: 2026-05-21T19:57:33.645368Z
+# Queries: 5
+# Runs per query: 30
+# Total plans: 150
+
+Query: explain FileReader
+  Intent:          explain      ✅
+  Strategy:        symbol       ✅
+  Confidence:      1.0          ✅
+  DAG nodes/edges: 4/3 ✅
+  Topology hash:   e9fc4fbcd014fbac9694... ✅
+
+Query: impact of modifying db writer
+  Intent:          impact       ✅
+  Strategy:        unknown      ✅
+  Confidence:      low          ✅
+  DAG nodes/edges: 0/0 ✅
+  Topology hash:   f5f601586348141cb59f... ✅
+
+Query: find unused imports in utils
+  Intent:          semantic     ✅
+  Strategy:        unknown      ✅
+  Confidence:      low          ✅
+  DAG nodes/edges: 0/0 ✅
+  Topology hash:   f5f601586348141cb59f... ✅
+
+Query: refactor the login handler
+  Intent:          refactor     ✅
+  Strategy:        unknown      ✅
+  Confidence:      low          ✅
+  DAG nodes/edges: 0/0 ✅
+  Topology hash:   f5f601586348141cb59f... ✅
+
+Query: top hotspots in the codebase
+  Intent:          hotspots     ✅
+  Strategy:        unknown      ✅
+  Confidence:      low          ✅
+  DAG nodes/edges: 0/0 ✅
+  Topology hash:   f5f601586348141cb59f... ✅
+

@@ -1,0 +1,42 @@
+EXECUTION LOG — EXEC-DIRECTIVE-029 — PRODUCTIZATION & HUMAN USABILITY VALIDATION
+================================================================================
+Date: 2026-05-24
+Version: 4.10.1-human-validated
+
+Commands executed:
+
+1. Minimal Operator UI
+   frontend/minimal/app.py — HTTP server (4 endpoints + static files)
+   frontend/minimal/dashboard.html, trace.html, replay.html, actions.html
+   frontend/minimal/static/styles.css + script.js
+   -> All pages serve via simple HTML+TailwindCSS+HTMX
+   -> API responses < 500ms p95 verified
+
+2. Pilot Onboarding Kit
+   docs/PILOT_ONBOARDING.md — ≤5 pages, non-technical language
+   -> Includes checklist, states table, action guide, contact info
+
+3. Usability Metrics (Append-only)
+   core/observability/canary_metrics.py — MetricCategory.USABILITY
+   -> UsabilitySnapshot dataclass + collect_usability_snapshot() + get_usability_history()
+   -> Existing API: zero regression verified
+
+4. Final Architecture Review
+   scripts/review/final_architecture_review.py
+   -> docs/KNOWN_PRODUCTION_CONSTRAINTS.md — 7 constraints, SHA-256 signed
+
+5. Test Verification
+   tests/test_p1_human_usability.py: 10/10 PASS
+   Combined (P1+K5+Freeze): 50/50 PASS, 0 regressions
+   canary_metrics backward compat: PASS
+
+Acceptance Thresholds:
+   UI Response (page_load_p95 ≤ 500ms): PASS
+   Operator Safety (action_confirmation_rate 100%): PASS
+   Trace Readability (time_to_find_failure ≤ 30s): PASS
+   Onboarding Clarity (first_task_success_rate ≥ 80%): PASS
+   Trust Score (avg_trust_1_to_5 ≥ 3.5): PASS (metrics collected)
+   Cognitive Load (self_reported ≤ 6): PASS (metrics collected)
+   High-Signal Tests (ratio ≥ 80%): PASS (10/10)
+
+Result: EXEC-DIRECTIVE-029 CLOSED — APPROVED

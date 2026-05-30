@@ -124,8 +124,18 @@ def build_execution_engine(
     codegraph: Any = None,
     isolation_runtime: Any = None,
     strict_isolation: bool = False,
+    # ── Phase 3.4 — 5 bounded services ──
+    scheduler: Any = None,
+    state_store: Any = None,
+    dispatcher: Any = None,
+    retry_handler: Any = None,
+    lease_manager: Any = None,
 ) -> Any:
-    """Construct an ExecutionEngine — the ONLY construction point (LAW 13)."""
+    """Construct an ExecutionEngine — the ONLY construction point (LAW 13).
+
+    Phase 3.4: Accepts 5 bounded services for Execution Boundary Isolation.
+    All 5 are optional — defaults created by ExecutionRuntime if omitted.
+    """
     from core.execution_engine import ExecutionEngine
 
     if strict_isolation and isolation_runtime is None:
@@ -150,6 +160,12 @@ def build_execution_engine(
         event_bus=event_bus,
         canon_validator=canon_validator,
         codegraph=codegraph,
+        # ── Phase 3.4 — forward 5 services to ExecutionRuntime ──
+        scheduler=scheduler,
+        state_store=state_store,
+        dispatcher=dispatcher,
+        retry_handler=retry_handler,
+        lease_manager=lease_manager,
     )
 
 

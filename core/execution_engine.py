@@ -1,11 +1,18 @@
-"""ExecutionEngine — thin coordinator.
+"""ExecutionEngine — thin coordinator over 5 bounded services.
 
-Architecture (Phase 3.7):
+Architecture (Phase 3.4 — Execution Boundary Isolation):
     ExecutionEngine (orchestration only)
         ├── ExecutionCore (pure logic, no IO)
-        └── ExecutionRuntime (infrastructure, side effects)
+        └── ExecutionRuntime (side-effect coordinator)
+                ├── ExecutionScheduler      (LAW 23 — ordering)
+                ├── ExecutionStateStore     (LAW 26 — persistence)
+                ├── ExecutionToolDispatcher (LAW 24 — dispatch)
+                ├── ExecutionRetryHandler   (LAW 25 — retry)
+                └── ExecutionLeaseManager   (LAW 23 — ownership)
 
-Phase 3.4+ additions:
+Phase 3.4 additions:
+    - 5 D8 bounded services injected via constructor
+    - All infrastructure delegated to services
     - Canon enforcement (pre-execution guard)
     - EventBus emission for all lifecycle transitions
     - CodeGraph aware execution context
@@ -38,6 +45,11 @@ from .models.dag import (
 )
 from .adapters.governance_adapter import DefaultContractValidator, DefaultComplianceValidator
 from .cost_intel import NodeCost
+from .runtime.services.scheduler import ExecutionScheduler
+from .runtime.services.state_store import ExecutionStateStore
+from .runtime.services.tool_dispatcher import ExecutionToolDispatcher
+from .runtime.services.retry_handler import ExecutionRetryHandler
+from .runtime.services.lease_manager import ExecutionLeaseManager
 
 # ── Backward-compatible re-exports for tests ──
 from .models.dag import (
@@ -77,6 +89,12 @@ class ExecutionEngine(IExecutionEngine):
         event_bus: Optional[IEventBus] = None,
         canon_validator=None,
         codegraph: Any = None,
+        # ── Phase 3.4 — 5 bounded services ──
+        scheduler: Optional[ExecutionScheduler] = None,
+        state_store: Optional[ExecutionStateStore] = None,
+        dispatcher: Optional[ExecutionToolDispatcher] = None,
+        retry_handler: Optional[ExecutionRetryHandler] = None,
+        lease_manager: Optional[ExecutionLeaseManager] = None,
     ):
         # ── Core (pure logic) ──
         self._core = ExecutionCore()
@@ -105,7 +123,7 @@ class ExecutionEngine(IExecutionEngine):
         # ── Canon ──
         self._canon_validator = canon_validator
 
-        # ── Runtime (infra layer) ──
+        # ── Runtime (infra layer with 5 bounded services) ──
         fi = failure_intel or FailureIntelligence()
         cv = contract_validator or DefaultContractValidator()
         self._runtime = ExecutionRuntime(
@@ -123,6 +141,12 @@ class ExecutionEngine(IExecutionEngine):
             event_bus=event_bus,
             canon_validator=canon_validator,
             codegraph=codegraph,
+            # ── Phase 3.4 — 5 bounded services ──
+            scheduler=scheduler,
+            state_store=state_store,
+            dispatcher=dispatcher,
+            retry_handler=retry_handler,
+            lease_manager=lease_manager,
         )
 
     @staticmethod

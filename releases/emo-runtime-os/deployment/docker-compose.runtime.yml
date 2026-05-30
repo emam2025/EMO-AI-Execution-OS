@@ -1,0 +1,25 @@
+version: "3.9"
+services:
+  runtime:
+    image: emo-runtime-os:v1-runtime-stable
+    build:
+      context: ../source
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      EMO_JWT_SECRET: "${EMO_JWT_SECRET:?EMO_JWT_SECRET is required}"
+      EMO_AUTH_ENABLED: "${EMO_AUTH_ENABLED:-true}"
+      EMO_AUTH_PASSWORD: "${EMO_AUTH_PASSWORD:?EMO_AUTH_PASSWORD is required when auth enabled}"
+      EMO_LOG_LEVEL: "${EMO_LOG_LEVEL:-INFO}"
+    volumes:
+      - runtime_data:/app/.ai/index
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/api/tray/ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  runtime_data:

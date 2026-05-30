@@ -1,0 +1,4 @@
+[2026-05-21T07:04:10.693024Z] SAVE checkpoint A → ok
+[2026-05-21T07:04:10.693247Z] RESTORE valid → ok
+[2026-05-21T07:04:10.693554Z] CORRUPT DB: size 20480 → 900
+[2026-05-21T07:04:10.694597Z] RESTORE after corruption → None (graceful degraded behavior)

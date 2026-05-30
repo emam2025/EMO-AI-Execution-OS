@@ -1,0 +1,31 @@
+{
+  "release": "r4-cognitive-os-v1.0.0",
+  "timestamp": "2026-05-30T00:00:00Z",
+  "manifest": [
+    {"file": "artifacts/execution_log.txt", "sha256": "d92f1ad5d621d890cb68fdbd0fb31ba58e4ab239f818edac1fe020875d58c1a8"},
+    {"file": "certificates/R4_IMPLEMENTATION_CERTIFICATE.json", "sha256": "0083e25bab269bb290f55d73bee17873f09beed4a8780a01a9c1d9cf2e2cd7e7"},
+    {"file": "certificates/R4_PREP_CERTIFICATE.json", "sha256": "498e95aa3373c8b1a8dba0daa9d858cb451cbbdf119dc5f76f0270c162230152"},
+    {"file": "certificates/RELEASE_MANIFEST_R4.json", "sha256": "ee7fd5c0dccd059192f40ab63b430e6c3e7e136012b38499b63945a58b6c0234"},
+    {"file": "certificates/SIGNING_MANIFEST_R4.json", "sha256": "b9655b476278dad9f6add795f21655424166b1127fbdf7dad4d754ba87beae60"},
+    {"file": "core/cognitive/__init__.py", "sha256": "d2fa28dd0a635df761ee74b69273f03e0c9754c1ea4f806a0832d6660209a244"},
+    {"file": "core/cognitive/bridges.py", "sha256": "0a474d0a3a9a66f251d1da953a0974c1ccfa520e1e9b68ce2496b4698dec7809"},
+    {"file": "core/cognitive/evaluator.py", "sha256": "f43be071fdc951e0ed303c1372967d1e8cf4e26442159e7424c58e3015c8d5db"},
+    {"file": "core/cognitive/planner.py", "sha256": "d7e91498d507a700cf2496a5d777cf1d629471d7e0158eec7d9360bc4723ed70"},
+    {"file": "core/cognitive/reflection.py", "sha256": "1c10babf94e38e64b9662480fba166d959e1ef5649dc3dcfabd4ec3f7d96119a"},
+    {"file": "core/interfaces/cognitive/IReflectionEngine.py", "sha256": "8fe171d7c0199ae5a0b00b61f776893a50425264c546e3e6c4e787f532c73008"},
+    {"file": "core/interfaces/cognitive/ISelfEvaluator.py", "sha256": "3850c8da0b3fa5db58a5d2e66241157a7573e00ecd2be057cd2b257f10f87daf"},
+    {"file": "core/interfaces/cognitive/IStrategicPlanner.py", "sha256": "5b3e6d3747a4d0ef081574ce25c67a7f3ece301174d0083a0ada12acf1ecf162"},
+    {"file": "core/models/cognitive.py", "sha256": "50fd7075ea6eb20ed3062b9b1d86a01b28008087ba544c5c8fec783f1df416c2"},
+    {"file": "desktop/emo-cognitive-dashboard/src/App.tsx", "sha256": "0dc9334c8017d61e4a7329b279c2dc2a6433ad196a19cfca45da45df8a7bf756"},
+    {"file": "docs/R4_COGNITIVE_ARCHITECTURE_MANIFEST.md", "sha256": "729f072bcbdf7bcd8000acb21a78ec90c6f6994a2fd6168eb0b04c24a30c0456"},
+    {"file": "docs/R4_IMPLEMENTATION_REPORT.md", "sha256": "ba27984e3b96c713e7a8cc026a426d3d57a83f882ebd89705f322c1bca9ebc9f"},
+    {"file": "tests/test_r2_r3_bridge_isolation.py", "sha256": "900c97ae30bbada387cf30969d9c69e2d74edcd0da7629a49dc58c948f879448"},
+    {"file": "tests/test_r4_implementation_integration.py", "sha256": "3a2c606d662cd72e669b08694909a8e03423774989ac5141baf319a51e74b204"},
+    {"file": "tests/test_r4_isolation_and_contracts.py", "sha256": "fd2cc9a6a4f2b049c897f213f5ec9b0de84c2f70543aa0b31552d20cf8de370c"},
+    {"file": "tests/test_reflection_engine_lifecycle.py", "sha256": "fd036aa4f1fa873c2db184918a4c87016d22f750772f552c8326b008ed89cd7e"},
+    {"file": "tests/test_self_evaluation_risk.py", "sha256": "5131cd569abea3e89e0d8ee3c60b8e3deabbf66aed54d8f540b29bcbe019e961"},
+    {"file": "tests/test_strategic_planning_accuracy.py", "sha256": "93ca22242a7d3cfaa9834b4f4921bbaf4ed9827d44d947ff8275877e7e5a14ae"}
+  ],
+  "total_files": 22,
+  "verification": "sha256sum --check SIGNING_MANIFEST_R4.json"
+}

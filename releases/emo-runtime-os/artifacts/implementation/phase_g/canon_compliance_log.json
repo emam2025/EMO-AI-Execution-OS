@@ -1,0 +1,121 @@
+{
+  "directive": "EXEC-DIRECTIVE-PHASE-G-001",
+  "timestamp": "2026-05-29T00:00:00Z",
+  "status": "PASSED",
+  "items": [
+    {
+      "id": "LAW-1",
+      "description": "Deterministic DAG generation (same inputs → same plan hash)",
+      "status": "PASSED",
+      "evidence": "PlannerAgent._hash() uses SHA-256 on canonical JSON; test_deterministic_planning_handoff validates same-intent same-proposal"
+    },
+    {
+      "id": "LAW-11",
+      "description": "Tenant isolation: all agents enforce tenant_id parameter",
+      "status": "PASSED",
+      "evidence": "Every public method carries tenant_id; IsolationViolation raised when missing; test_tenant_isolation covers all 3 agents"
+    },
+    {
+      "id": "LAW-14",
+      "description": "Deterministic trace correlation with SHA-256 hash chain",
+      "status": "PASSED",
+      "evidence": "OrchestrationTraceCorrelator generates og_<SHA256> IDs; record_event chains hashes; verify_full_propagation validates chain integrity"
+    },
+    {
+      "id": "LAW-15",
+      "description": "Cross-tenant scope verification in critic agent",
+      "status": "PASSED",
+      "evidence": "CriticAgent.evaluate_plan checks scope_verified flag for cross-tenant transitions; G-P3 guard enforces same rule in state machine"
+    },
+    {
+      "id": "RULE-1",
+      "description": "No bare except blocks",
+      "status": "PASSED",
+      "evidence": "All exceptions in orchestration modules are typed (ValueError, TypeError, etc.)"
+    },
+    {
+      "id": "RULE-2",
+      "description": "No global mutable state in agents",
+      "status": "PASSED",
+      "evidence": "All agent state is per-instance (self._plan_history, self._state, etc.); no module-level dicts/lists"
+    },
+    {
+      "id": "RULE-3",
+      "description": "Deterministic handoff: same input → same output path",
+      "status": "PASSED",
+      "evidence": "Planner → Critic → Optimizer pipeline is deterministic; test_handoff_produces_consistent_path validates full chain"
+    },
+    {
+      "id": "STOP-1",
+      "description": "Missing tenant_id triggers stop",
+      "status": "PASSED",
+      "evidence": "All 3 agents raise IsolationViolation when tenant_id is empty/None; tests verify immediate stop"
+    },
+    {
+      "id": "STOP-2",
+      "description": "Oscillation detection prevents infinite loops",
+      "status": "PASSED",
+      "evidence": "G-P4 guard blocks same-plan_hash transitions; PlannerAgent.adapt_on_failure returns STOP on identical plan; oscillation count increments"
+    },
+    {
+      "id": "STOP-3",
+      "description": "No direct core import in orchestration agents",
+      "status": "PASSED",
+      "evidence": "All agents import only from core.orchestration.*, typing, and stdlib; zero direct access to core.runtime, core.composition, core.memory"
+    },
+    {
+      "id": "STOP-4",
+      "description": "Critic rejects unsafe plans (empty intent, over-budget)",
+      "status": "PASSED",
+      "evidence": "CriticAgent.evaluate_plan returns is_valid=False for empty intent and over-budget; tests verify rejection"
+    },
+    {
+      "id": "G-P1",
+      "description": "Guard: Planning → Criticizing requires valid plan",
+      "status": "PASSED",
+      "evidence": "test_g_t1_planning_to_criticizing ensures transition succeeds"
+    },
+    {
+      "id": "G-P2",
+      "description": "Guard: Approve transition requires is_valid",
+      "status": "PASSED",
+      "evidence": "test_g_t2_approve_valid validates approval"
+    },
+    {
+      "id": "G-P3",
+      "description": "Guard: Cross-tenant transition blocked without scope",
+      "status": "PASSED",
+      "evidence": "test_g_t2_blocks_cross_tenant_without_scope; test_g_t2_passes_cross_tenant_with_scope"
+    },
+    {
+      "id": "G-P4",
+      "description": "Guard: Oscillation blocked (same plan hash → abort)",
+      "status": "PASSED",
+      "evidence": "test_g_t4_blocks_oscillation; test_sm_blocks_oscillation_gp4"
+    },
+    {
+      "id": "G-P5",
+      "description": "Guard: Max retry exceeded → abort transition",
+      "status": "PASSED",
+      "evidence": "test_g_t5_aborts_on_max_retries; test_sm_aborts_after_max_retries_gp5"
+    },
+    {
+      "id": "G-P6",
+      "description": "Guard: Abort allowed from any state",
+      "status": "PASSED",
+      "evidence": "test_g_t6_abort_from_planning"
+    },
+    {
+      "id": "G-P7",
+      "description": "Guard: Reject transition requires reason",
+      "status": "PASSED",
+      "evidence": "test_g_t3_reject_requires_reason"
+    },
+    {
+      "id": "G-P8",
+      "description": "Guard: Full lifecycle valid",
+      "status": "PASSED",
+      "evidence": "test_full_lifecycle validates entire state machine path"
+    }
+  ]
+}

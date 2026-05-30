@@ -1,0 +1,37 @@
+=== Task 2: AI Index & Database Sizes ===
+Date: 2026-05-21
+
+=== Database Files ===
+
+File                                    Size       Expected (§10.1)
+---------------------------------------- ---------- ---------------------
+./emo_ai.db                             140 KB     1-10 MB
+./.ai/index/repository.db               212 KB     1-100 MB
+./.ai/index/checkpoint.db               20 KB      1-10 MB (execution_memory)
+./.ai/index/ownership.db                20 KB      1-10 MB (execution_memory)
+./.ai/index/execution_cache.db          20 KB      1-10 MB (execution_memory)
+
+=== FAISS / Semantic Index ===
+No .faiss, .ann, or .index files found in project directory.
+.emo_ai.index: NOT FOUND
+
+=== Other Notable Files ===
+.emo_conversations.json                 4.7 MB     (chat history, not DB)
+emo_ai.log (logs/)                      169 KB     (runtime logs, not DB)
+.ai/config.json                         1.2 KB     (system config)
+
+=== CodeGraph Artifacts ===
+artifacts/codegraph/                    1.2 MB     (expected 10-30 MB §17.10)
+  - graph.json
+  - baseline reports
+  - drift snapshots
+
+=== External Cache (not in project dir) ===
+~/.cache/huggingface/hub/              87 MB      (all-MiniLM-L6-v2 embedding model)
+~/.cache/torch/                         NOT FOUND (no torch cache in project)
+
+=== Summary ===
+All databases are below expected minimum ranges.
+System is in a development/empty state — no real indexing or data population has occurred.
+The expected growth is legitimate with production use.
+No FAISS index has been built yet — the embedding model exists externally (87 MB).

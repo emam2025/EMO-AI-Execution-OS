@@ -1,0 +1,100 @@
+[
+  {
+    "canon_ref": "LAW 1: Determinism",
+    "requirement": "Same inputs → same outputs deterministically.",
+    "design_element": "PlanProposal.__post_init__ computes SHA-256 from deterministic fields. Transition G-P4 blocks plan oscillation by comparing plan_hash. Deterministic Handoff Table (03_orchestration_lifecycle.md §4) documents expected paths for 3 input patterns.",
+    "design_evidence_path": "protocols/01_cognitive_orchestration_protocols.py:IPlannerAgent.synthesize_dag; models/02_planning_models.py:PlanProposal.__post_init__; 03_orchestration_lifecycle.md §4",
+    "status": "COMPLIANT"
+  },
+  {
+    "canon_ref": "LAW 6: Shared Models Outside Runtime",
+    "requirement": "Data models must be defined outside execution engine modules.",
+    "design_element": "All 18+ dataclasses and 8 enums defined in artifacts/design/phase_g/models/02_planning_models.py. No ExecutionCore, Engine, or Governance types appear in any model.",
+    "design_evidence_path": "models/02_planning_models.py:PlanProposal, CritiqueReport, NegotiationCycle, OptimizedDAG, etc.",
+    "status": "COMPLIANT"
+  },
+  {
+    "canon_ref": "LAW 8: Recoverability via Trace ID",
+    "requirement": "Every operation must be recoverable via trace ID.",
+    "design_element": "Every dataclass carries orchestration_trace_id. Correlation ID chain (04_integration_blueprint.md §2) propagates orchestration_trace_id → cognitive_trace_id → enterprise_trace_id → F1 trace_id. All 9 EventBus hook events carry orchestration_trace_id.",
+    "design_evidence_path": "models/02_planning_models.py (all dataclasses have orchestration_trace_id); 04_integration_blueprint.md §2, §3",
+    "status": "COMPLIANT"
+  },
+  {
+    "canon_ref": "LAW 9: Governance Independence",
+    "requirement": "Agents must operate independently of governance policies.",
+    "design_element": "IPlannerAgent, ICriticAgent, IOptimizerAgent are independent protocols with no governance imports. CriticAgent evaluates constraints passed as data, not by invoking governance internals. Domain Ownership (models/02_planning_models.py:DomainOwnership) explicitly separates agent boundaries.",
+    "design_evidence_path": "protocols/01_cognitive_orchestration_protocols.py (no governance imports); models/02_planning_models.py:DomainOwnership; 03_orchestration_lifecycle.md §1 state machine",
+    "status": "COMPLIANT"
+  },
+  {
+    "canon_ref": "LAW 11: Enterprise Isolation (No Global State)",
+    "requirement": "No global mutable state. All state must be instance-scoped.",
+    "design_element": "All models carry tenant_id for explicit scoping. G-P2 guard (scope_verified) blocks cross-tenant plans. TenantScopeViolationReport emitted on violations. No module-level stores in design artifacts.",
+    "design_evidence_path": "models/02_planning_models.py (all tenant-aware types carry tenant_id); 03_orchestration_lifecycle.md §2 G-P2; protocols/01_cognitive_orchestration_protocols.py:ICriticAgent.reject_with_reason scope_verified param",
+    "status": "COMPLIANT"
+  },
+  {
+    "canon_ref": "LAW 14: Deterministic Retrieval (Applied to Plans)",
+    "requirement": "Same retrieval parameters → same results.",
+    "design_element": "IOptimizerAgent protocol: optimize_execution_graph must be deterministic (same dag + resource_profile → same OptimizedDAG). G-P7 enforces proposal_hash unchanged between APPROVED→OPTIMIZING. PlanProposal._hash is deterministic from intent + nodes + tenant.",
+    "design_evidence_path": "protocols/01_cognitive_orchestration_protocols.py:IOptimizerAgent.optimize_execution_graph docstring; models/02_planning_models.py:PlanProposal.__post_init__; 03_orchestration_lifecycle.md §2 G-P7",
+    "status": "COMPLIANT"
+  },
+  {
+    "canon_ref": "LAW 15: Tenant Context Isolation",
+    "requirement": "Cross-tenant context must require scope_verified.",
+    "design_element": "ICriticAgent.reject_with_reason() requires scope_verified param. G-P2 guard blocks cross-tenant plans without scope_verified=True. TenantScopeViolationReport carries expected vs detected tenant.",
+    "design_evidence_path": "protocols/01_cognitive_orchestration_protocols.py:ICriticAgent docstring (RULE 3); 03_orchestration_lifecycle.md §2 G-P2; models/02_planning_models.py:TenantScopeViolationReport",
+    "status": "COMPLIANT"
+  },
+  {
+    "canon_ref": "RULE 1: No Cross-Layer Imports",
+    "requirement": "Orchestration must not import from ExecutionCore or runtime.",
+    "design_element": "Zero imports from core/ in any Phase G design artifact. Agents interact with Memory and Facade exclusively via EventBus (04_integration_blueprint.md §4 — Zero-Direct-Access Rule). All protocol parameters are plain dicts or model types.",
+    "design_evidence_path": "protocols/01_cognitive_orchestration_protocols.py (no core.* imports); 04_integration_blueprint.md §4",
+    "status": "COMPLIANT"
+  },
+  {
+    "canon_ref": "RULE 2: All Systems Require Interfaces",
+    "requirement": "Every component must implement a protocol.",
+    "design_element": "Three @runtime_checkable protocols defined: IPlannerAgent, ICriticAgent, IOptimizerAgent. All methods have typed signatures with docstrings. Enums (OrchestrationEventType, RiskLevel, ResolutionStatus, OrchestrationState) define shared contracts.",
+    "design_evidence_path": "protocols/01_cognitive_orchestration_protocols.py (3 protocols, 6 enums)",
+    "status": "COMPLIANT"
+  },
+  {
+    "canon_ref": "RULE 3: Replay-Safe",
+    "requirement": "Same sequence → same orchestration state.",
+    "design_element": "Deterministic Handoff Table (03_orchestration_lifecycle.md §4) specifies 3 input patterns and their expected paths/ hashes. G-P4 blocks plan oscillation by hash comparison. State machine (T0–T9) is deterministic for same inputs.",
+    "design_evidence_path": "03_orchestration_lifecycle.md §4 (Deterministic Handoff Table), §2 G-P4; models/02_planning_models.py:NegotiationCycle docstring",
+    "status": "COMPLIANT"
+  },
+  {
+    "canon_ref": "STOP CONDITION: Model missing tenant_id or isolation_policy",
+    "requirement": "No planning model may omit tenant_id.",
+    "design_element": "Every model with tenant data (PlanProposal, RevisedPlan, CritiqueReport, ValidationFailure, NegotiationCycle, OptimizedDAG, ParallelHints, PlanConflictReport, CriticRejectionReport, OptimizationAppliedReport, TenantScopeViolationReport) carries tenant_id field.",
+    "design_evidence_path": "models/02_planning_models.py (11 tenant-aware types)",
+    "status": "PASSED"
+  },
+  {
+    "canon_ref": "STOP CONDITION: ICriticAgent accept_unsafe without scope_verified",
+    "requirement": "Critic must not accept cross-tenant plans without verification.",
+    "design_element": "ICriticAgent.reject_with_reason() docstring explicitly states: 'Must refuse to call this if scope_verified is False and the violation involves cross-tenant context (RULE 3).' G-P2 guard enforces at transition level.",
+    "design_evidence_path": "protocols/01_cognitive_orchestration_protocols.py:ICriticAgent.reject_with_reason docstring; 03_orchestration_lifecycle.md §2 G-P2",
+    "status": "PASSED"
+  },
+  {
+    "canon_ref": "STOP CONDITION: Integration must comply with LAW 9 and RULE 1",
+    "requirement": "Integration Blueprint must not violate Governance Independence or cross-layer rules.",
+    "design_element": "Blueprint §4 enforces Zero-Direct-Access Rule. Agents interact via EventBus only. No governance data flows into agent logic. No ExecutionCore references in any protocol.",
+    "design_evidence_path": "04_integration_blueprint.md §4 (Zero-Direct-Access Rule); protocols/01_cognitive_orchestration_protocols.py",
+    "status": "PASSED"
+  },
+  {
+    "canon_ref": "STOP CONDITION: No executable code in core/",
+    "requirement": "All design must be in artifacts/, never in core/.",
+    "design_element": "All 5 files are under artifacts/design/phase_g/. Zero files created or modified under core/ or tests/. No .py files with executable logic outside type definitions and dataclasses.",
+    "design_evidence_path": "File locations: artifacts/design/phase_g/protocols/, models/, *.md, *.json",
+    "status": "PASSED"
+  }
+]

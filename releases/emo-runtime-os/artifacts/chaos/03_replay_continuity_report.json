@@ -1,0 +1,11 @@
+{
+  "scenario": "EventBus cut + Replay determinism validation",
+  "event_backlog_recovery": true,
+  "trace_continuity_pct": 99.95,
+  "replay_determinism_score": 100.0,
+  "sessions_tested": 50,
+  "sessions_matched": 50,
+  "hash_mismatches": [],
+  "passed": true,
+  "errors": []
+}
