@@ -1,0 +1,54 @@
+{
+  "release": "R3",
+  "stage": "R3 — Skill OS Foundation & Extraction Protocol Design",
+  "status": "DRAFT — PROTOCOL & ISOLATION ONLY",
+  "version": "0.0.1",
+  "date": "2026-05-30",
+  "isolation": {
+    "imports_from_r1_r2": 0,
+    "zero_r1_r2_mutations": true,
+    "protocol_only": true,
+    "no_execution_logic": true
+  },
+  "structure": {
+    "core/interfaces/skills/": ["ISkillExtractor.py", "ISkillEvolutionManager.py"],
+    "core/models/": ["skills.py"],
+    "core/skills/": "empty — reserved for implementation",
+    "desktop/": "emo-skill-library/ skeleton (Tauri + React)",
+    "docs/": ["R3_SKILL_ARCHITECTURE_MANIFEST.md"],
+    "tests/": ["test_r3_isolation_and_contracts.py"]
+  },
+  "protocols": {
+    "ISkillExtractor": {
+      "methods": ["extract_from_trace", "validate_pattern", "list_extractable_traces"],
+      "law_6_enforced": true,
+      "law_11_enforced": true,
+      "implementation": false
+    },
+    "ISkillEvolutionManager": {
+      "methods": ["promote", "deprecate", "get_evolution_history", "current_tier"],
+      "law_6_enforced": true,
+      "law_11_enforced": true,
+      "implementation": false
+    }
+  },
+  "models": {
+    "SkillNode": {
+      "mandatory_fields": ["tenant_id", "skill_id", "skill_name", "pattern_hash", "confidence_score", "tier"],
+      "tier_enum": ["draft", "verified", "optimized", "deprecated"]
+    },
+    "ExecutionBlueprint": {
+      "mandatory_fields": ["tenant_id", "blueprint_id", "skill_id"]
+    },
+    "SkillEvolutionRecord": {
+      "mandatory_fields": ["tenant_id", "record_id", "skill_id", "from_tier", "to_tier"]
+    }
+  },
+  "test_results": {
+    "expected_pass": 15,
+    "actual_pass": null,
+    "status": "PENDING"
+  },
+  "canon_laws": ["LAW-6", "LAW-8", "LAW-11", "LAW-14"],
+  "next_stage": "R3 Implementation Phase — actual extraction, skill library, self-development"
+}
