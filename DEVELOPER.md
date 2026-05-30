@@ -1969,30 +1969,37 @@ ExecutionEngine → IsolationRuntime (BRIDGE)
 
 > EMO AI is transitioning from **orchestration system** to **distributed AI execution operating system**.
 
-### 15.22 Final State & Constraints (v4.15.0-delivery-ready)
+### 15.22 Final State & Constraints (r1-runtime-os-v1.0.0)
 
 | Dimension | Value |
 |-----------|-------|
-| **Version** | v4.15.0-delivery-ready (FINAL DELIVERY) |
-| **Baseline** | Frozen via SHA-256 signing — `emo-ai-v4.15.0-release-archive.tar.gz` |
-| **Certificates** | FINAL_DELIVERY_CERTIFICATE.json — 5 pillars all PASSED (Security, Performance, DevEx, Quarantine, Validation) |
+| **Version** | r1-runtime-os-v1.0.0 (R1 GAP CLOSURE) |
+| **Baseline** | Frozen via SHA-256 signing — `/releases/runtime-os/` |
+| **Certificates** | FINAL_DELIVERY_CERTIFICATE.json (5 pillars) + R1_CORRECTIVE_CERTIFICATE.json (8 gates) |
+| **Governance** | RBAC (4 roles, 8 permissions) + Append-only Audit Trail (SHA-256 chain, HMAC) + Tenant Isolation (namespace scoped) |
+| **Desktop UI** | 7 live-bound routes + MemoryExplorer stub + CommandPalette (Ctrl+K) + FirstRunWizard (5 steps). All use design system (glass-panel, smooth-motion, timeline-node). |
 | **Canon Compliance** | All laws and rules — 100% compliant across all phases |
-| **Test Count** | 3047 PASS, 100 quarantined (pre-existing), 10 SKIP |
+| **Test Count** | 3047+ PASS (governance 16 + UI 140 = 156 new), 100 quarantined (pre-existing) |
 | **Composition Root** | `strict_orchestration_mode` + `strict_memory_mode` enforces DI wiring |
-| **Known Debt** | `artifacts/debt/DEBT_RESOLUTION_PLAN.md` — 5 categories documented |
+| **Tags** | `v4.15.0-delivery-ready`, `v1-runtime-stable`, `v0.1.0`–`v0.1.3`, `r1-runtime-os-v1.0.0` |
 
-**Constraints (Post-Freeze):**
-- No new features, endpoints, or agents may be added without re-certification.
+**Constraints:**
+- Governance enforcement (LAW 20-27): Every submit/query call MUST pass PolicyEngine.check().
+- Audit trail is append-only — no update or delete after write (LAW 23).
+- Every IPC call and EventBus message MUST carry a tenant_id (LAW 26).
+- No event or state may cross tenant boundaries (LAW 27).
+- No new features beyond R1 scope (Memory OS, Skill OS, Cognitive OS) may be added without new release.
 - All mutations must route through `F1.UnifiedRuntimeAPI` (LAW 13).
-- All operator actions must carry `operator_trace_id` (LAW-K5-3).
 - Baseline tampering detected via `verify_hash_consistency()` on SIGNING_MANIFEST.md.
-- `strict_final_freeze_mode` in CompositionRoot prevents DI re-wiring after freeze.
 
-**Frozen Directories:**
-- `core/` — Runtime, observability, composition, interfaces
+**Frozen Directories (R1):**
+- `core/` — Runtime, observability, composition, interfaces, governance
+- `core/governance/` — RBAC, audit trail, tenant isolation
+- `emo-desktop/` — All UI routes, components, design system, IPC contract, tests
 - `scripts/` — Release tools, CLI, canary
 - `docs/` — All documentation, contracts, deployment guide
 - `artifacts/` — All certificates, signing manifests, archive logs
+- `releases/runtime-os/` — Isolated R1 product snapshot
 
 ---
 

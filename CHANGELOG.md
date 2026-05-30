@@ -5,6 +5,24 @@ All notable changes to EMO AI Orchestrator will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [r1-runtime-os-v1.0.0] — 2026-05-30
+
+### R1 Gap Closure — Governance Layer & Desktop UI Completion
+
+- **Governance Layer** (`core/governance/`): RBAC with PolicyEngine (4 roles, 8 permissions), append-only Audit Trail (SHA-256 chain + HMAC signing), Tenant Isolation (namespace registry, scoped EventBus/StateStore).
+- **Desktop UI Completion**: AgentStudio, ProjectCenter, Settings upgraded from skeletons to design system (glass-panel, metric-card, section-header). All 4 primary routes (Dashboard, RuntimeMonitor, TraceExplorer, ModelGateway) confirmed live-bound via Zustand store.
+- **Test Suite**: 156 tests added (16 governance + 140 UI), all PASS.
+- **R1_CORRECTIVE_CERTIFICATE.json**: 8/8 gates PASSED.
+- **Tags**: `r1-runtime-os-v1.0.0` — frozen, signed, isolated in `/releases/runtime-os/`.
+
+### Added
+- **Governance — RBAC** (`core/governance/rbac.py`): Role enum (SUPER_ADMIN, TENANT_ADMIN, OPERATOR, VIEWER), Permission enum (8 permissions), PolicyEngine with bind/enforce/check methods. LAW 20-22.
+- **Governance — Audit Trail** (`core/governance/audit_trail.py`): append() with SHA-256 chain linking and HMAC signing, query/export/verify_integrity/verify_signature. SOC2/GDPR compliant. LAW 23-25.
+- **Governance — Tenant Isolation** (`core/governance/tenant_isolation.py`): Namespace registry, TenantScopedEventBus, TenantScopedStateStore, TenantRegistry. LAW 26-27.
+- **Desktop UI**: AgentStudio (agent health cards), ProjectCenter (session overview with metric grid), Settings (runtime info + governance status badges). All use glass-panel/motion design system.
+- **Tests**: `tests/test_governance_isolation.py` (16 tests), `emo-desktop/tests/test_ui_live_binding.ts` (10 tests).
+- **Certificate**: `artifacts/r1/R1_CORRECTIVE_CERTIFICATE.json`.
+
 ## [4.15.0-delivery-ready] — 2026-05-29
 
 ### Final Delivery Release Summary

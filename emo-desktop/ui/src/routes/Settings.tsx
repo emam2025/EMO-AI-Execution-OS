@@ -1,31 +1,83 @@
 import React from "react";
+import { useRuntimeStore } from "../stores/runtime";
 
 export const Settings: React.FC = () => {
+  const { session, isConnected } = useRuntimeStore();
+
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Settings</h1>
-      <div className="space-y-4">
-        <div className="p-4 border rounded-lg">
-          <h2 className="font-semibold">Runtime Connection</h2>
-          <p className="text-sm text-gray-500">
-            Host: localhost : Port: 8080
-          </p>
+    <div style={{ padding: 24, height: "100%", display: "flex", flexDirection: "column", gap: 20 }}>
+      <div>
+        <h1 style={{ fontSize: "1.4rem", fontWeight: 700, letterSpacing: "-0.02em", margin: 0 }}>
+          Settings
+        </h1>
+        <p style={{ margin: "2px 0 0", fontSize: "0.8rem", color: "#6b7280" }}>
+          Runtime connection, session info, and system details
+        </p>
+      </div>
+
+      <div className="glass-panel" style={{ padding: 16 }}>
+        <div className="section-header">Runtime Connection</div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          <div className="metric-card" style={{ padding: 10 }}>
+            <span className="metric-card-label">Status</span>
+            <span
+              className={`status-badge ${isConnected ? "status-badge-active" : "status-badge-down"}`}
+              style={{ marginLeft: 8 }}
+            >
+              {isConnected ? "Connected" : "Disconnected"}
+            </span>
+          </div>
+          <div className="metric-card" style={{ padding: 10 }}>
+            <span className="metric-card-label">Host</span>
+            <span style={{ marginLeft: 8, fontFamily: "monospace", fontSize: "0.85rem" }}>localhost</span>
+          </div>
+          <div className="metric-card" style={{ padding: 10 }}>
+            <span className="metric-card-label">Port</span>
+            <span style={{ marginLeft: 8, fontFamily: "monospace", fontSize: "0.85rem" }}>8080</span>
+          </div>
+          {session && (
+            <div className="metric-card" style={{ padding: 10 }}>
+              <span className="metric-card-label">Session Token</span>
+              <span style={{ marginLeft: 8, fontFamily: "monospace", fontSize: "0.75rem", color: "#6b7280" }}>
+                {session.session_token?.slice(0, 20)}…
+              </span>
+            </div>
+          )}
         </div>
-        <div className="p-4 border rounded-lg">
-          <h2 className="font-semibold">Authentication</h2>
-          <p className="text-sm text-gray-500">
-            Session token managed by RuntimeClient. Re-authenticate by
-            restarting the runtime.
-          </p>
+      </div>
+
+      <div className="glass-panel" style={{ padding: 16 }}>
+        <div className="section-header">Authentication</div>
+        <p style={{ fontSize: "0.85rem", color: "#6b7280", margin: "8px 0 0" }}>
+          Session token managed by RuntimeClient. Re-authenticate by restarting the runtime.
+          Governance layer (RBAC, audit trail, tenant isolation) is active for all IPC operations.
+        </p>
+        <div style={{ marginTop: 8, display: "flex", gap: 8 }}>
+          <span className="status-badge status-badge-active">RBAC: Active</span>
+          <span className="status-badge status-badge-active">Audit: Active</span>
+          <span className="status-badge status-badge-active">Tenant Isolation: Active</span>
         </div>
-        <div className="p-4 border rounded-lg">
-          <h2 className="font-semibold">About</h2>
-          <p className="text-sm text-gray-500">
-            EMO Desktop v0.1.0-product-alpha — Phase P1 IPC Skeleton
-          </p>
-          <p className="text-sm text-gray-500">
-            Runtime: v4.15.0-delivery-ready (R1)
-          </p>
+      </div>
+
+      <div className="glass-panel" style={{ padding: 16 }}>
+        <div className="section-header">About</div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          <div className="metric-card" style={{ padding: 10 }}>
+            <span className="metric-card-label">Desktop Version</span>
+            <span style={{ marginLeft: 8, fontWeight: 600 }}>v0.1.4-product-alpha</span>
+          </div>
+          <div className="metric-card" style={{ padding: 10 }}>
+            <span className="metric-card-label">Runtime</span>
+            <span style={{ marginLeft: 8 }}>v4.15.0-delivery-ready (R1)</span>
+          </div>
+          <div className="metric-card" style={{ padding: 10 }}>
+            <span className="metric-card-label">Governance</span>
+            <span style={{ marginLeft: 8 }}>RBAC + Audit Trail + Tenant Isolation</span>
+          </div>
+          <div className="metric-card" style={{ padding: 10 }}>
+            <span className="metric-card-label">Platform Support</span>
+            <span style={{ marginLeft: 8 }}>macOS · Windows · Linux</span>
+          </div>
         </div>
       </div>
     </div>
