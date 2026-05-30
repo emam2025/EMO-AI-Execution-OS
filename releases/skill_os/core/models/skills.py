@@ -116,6 +116,30 @@ class SkillEvolutionRecord:
 
 
 @dataclass
+class SkillVersion:
+    """Immutable snapshot of a skill at a specific version."""
+
+    version_id: str
+    skill_id: str
+    tenant_id: str
+    version: int
+    tier: SkillTier
+    pattern_hash: str
+    confidence_score: float
+    tool_sequence: List[str] = field(default_factory=list)
+    checksum: str = ""
+    created_at: float = field(default_factory=time.time)
+
+    def __post_init__(self) -> None:
+        if not self.tenant_id:
+            raise ValueError("tenant_id is required (LAW-6)")
+        if not self.version_id:
+            raise ValueError("version_id is required")
+        if self.version < 1:
+            raise ValueError("version must be >= 1")
+
+
+@dataclass
 class SkillStoreEntry:
     """Persistence wrapper for a skill in the skill store."""
 
@@ -123,6 +147,7 @@ class SkillStoreEntry:
     skill: SkillNode
     blueprints: List[ExecutionBlueprint] = field(default_factory=list)
     evolution_history: List[SkillEvolutionRecord] = field(default_factory=list)
+    versions: List[SkillVersion] = field(default_factory=list)
     created_at: float = field(default_factory=time.time)
     checksum: str = ""
 
