@@ -1,0 +1,63 @@
+{
+  "certificate_id": "R4-PREP-CERT-001",
+  "directive": "EXEC-DIRECTIVE-R4-PREP-001",
+  "stage": "R4 — Cognitive OS Foundation & Strategic Protocol Design",
+  "status": "PASSED",
+  "timestamp": "2026-05-30T00:00:00Z",
+  "thresholds": {
+    "isolation": {
+      "metric": "imports_from_r1_r2_r3",
+      "threshold": 0,
+      "measured": 0,
+      "status": "PASSED"
+    },
+    "protocols": {
+      "metric": "3 interfaces defined, typed, documented",
+      "threshold": "Yes",
+      "measured": "IStrategicPlanner (3 methods), IReflectionEngine (3 methods), ISelfEvaluator (3 methods)",
+      "status": "PASSED"
+    },
+    "models": {
+      "metric": "tenant_id + risk_score mandatory",
+      "threshold": "100%",
+      "measured": "StrategicGoal, PlanHypothesis, ReflectionEntry, RiskAssessment all enforce tenant_id + score bounds",
+      "status": "PASSED"
+    },
+    "manifest": {
+      "metric": "R4_COGNITIVE_ARCHITECTURE_MANIFEST.md complete, Canon-mapped",
+      "threshold": "Yes",
+      "measured": "isolation matrix, Guard OS boundaries, Canon compliance table documented",
+      "status": "PASSED"
+    },
+    "tests": {
+      "metric": "15/15 PASS",
+      "threshold": "Yes",
+      "measured": "15/15 PASS (isolation: 5, protocol: 5, tenant/risk: 5)",
+      "status": "PASSED"
+    },
+    "zero_mutation": {
+      "metric": "git diff releases/runtime-os/ releases/memory-os/ releases/skill-os/",
+      "threshold": 0,
+      "measured": 0,
+      "status": "PASSED"
+    }
+  },
+  "deliverables": {
+    "protocol_interface_files": [
+      "core/interfaces/cognitive/IStrategicPlanner.py",
+      "core/interfaces/cognitive/IReflectionEngine.py",
+      "core/interfaces/cognitive/ISelfEvaluator.py"
+    ],
+    "models_file": [
+      "core/models/cognitive.py"
+    ],
+    "desktop_skeleton": "emo-cognitive-dashboard/ (4 route stubs)",
+    "manifest": "docs/R4_COGNITIVE_ARCHITECTURE_MANIFEST.md",
+    "test_files": [
+      "tests/test_r4_isolation_and_contracts.py"
+    ]
+  },
+  "stop_conditions_triggered": [],
+  "next_stage": "R4 Implementation Phase — actual planning, reflection, self-evaluation",
+  "canon_laws": ["LAW-6", "LAW-8", "LAW-11", "LAW-14"]
+}
