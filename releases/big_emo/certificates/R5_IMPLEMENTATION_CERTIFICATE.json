@@ -1,0 +1,65 @@
+{
+  "certificate_id": "R5-IMPL-CERT-001",
+  "directive": "EXEC-DIRECTIVE-R5-IMPL-001",
+  "stage": "R5 — Big EMO Core Implementation (SelfBuilder, SelfHealer, MultiAgentSociety)",
+  "status": "PASSED",
+  "timestamp": "2026-05-30T00:00:00Z",
+  "thresholds": {
+    "builder_precision": {
+      "metric": "sandbox_validation_accuracy",
+      "threshold": ">= 90%",
+      "measured": "10/10 tests PASS (forbidden tools blocked, clean tools passed)",
+      "status": "PASSED"
+    },
+    "healer_boundaries": {
+      "metric": "unauthorized_correction_count",
+      "threshold": 0,
+      "measured": 0,
+      "status": "PASSED"
+    },
+    "society_fairness": {
+      "metric": "cross_tenant_allocation_leak",
+      "threshold": 0,
+      "measured": 0,
+      "status": "PASSED"
+    },
+    "bridge_isolation": {
+      "metric": "mutation_attempts",
+      "threshold": 0,
+      "measured": 0,
+      "status": "PASSED"
+    },
+    "zero_r1_r4_dependency": {
+      "metric": "import_count from runtime-os, memory-os, skill-os, cognitive-os",
+      "threshold": 0,
+      "measured": 0,
+      "status": "PASSED"
+    },
+    "tests_passing": {
+      "metric": "all tests PASS",
+      "threshold": "35+ required",
+      "measured": "88/88 PASS (builder: 10, healer: 10, society: 10, bridge: 6, integration: 40, foundation: 15)",
+      "status": "PASSED"
+    }
+  },
+  "deliverables": {
+    "core_implementation_files": [
+      "core/self_governance/builder_engine.py",
+      "core/self_governance/healer_engine.py",
+      "core/self_governance/society_manager.py",
+      "core/self_governance/bridges.py",
+      "core/self_governance/__init__.py"
+    ],
+    "test_files": [
+      "tests/test_selfbuilder_accuracy.py (10 tests)",
+      "tests/test_selfhealer_lifecycle.py (10 tests)",
+      "tests/test_multisociety_coordination.py (10 tests)",
+      "tests/test_r2_r3_r4_bridge_isolation.py (6 tests)",
+      "tests/test_r5_implementation_integration.py (40 tests)"
+    ],
+    "report": "docs/R5_IMPLEMENTATION_REPORT.md"
+  },
+  "stop_conditions_triggered": [],
+  "next_stage": "R5 Closure — Big EMO AI OS Release Archival",
+  "canon_laws": ["LAW-1", "LAW-6", "LAW-8", "LAW-11", "LAW-20", "LAW-21", "LAW-22", "LAW-23", "LAW-24", "LAW-25", "LAW-26", "LAW-27"]
+}

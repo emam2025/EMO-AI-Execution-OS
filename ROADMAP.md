@@ -6,13 +6,23 @@ v4.15.0-delivery-ready  ← Final Release (Runtime Core)
 v1-runtime-stable       ← R1 Closure (Source Snapshot)
 v0.1.0-product-alpha    ← Phase P1 (IPC Contract + Tauri Skeleton)
 v0.1.1-product-alpha    ← Phase P2 (OS Keychain + Credential Vault)
-v0.1.2-product-alpha    ← Phase P3 (Gateway Routing + Telemetry) ← current
+v0.1.2-product-alpha    ← Phase P3 (Gateway Routing + Telemetry)
 r4-cognitive-os-v1.0.0  ← R4 Closure (Cognitive OS — Planning, Reflection, Self-Evaluation)
+r5-big-emo-v1.0.0       ← R5 Closure (Big EMO — SelfBuilder, SelfHealer, MultiAgentSociety)
 ```
 
 ---
 
 ## ✅ المراحل المنجزة
+
+### R5 — Big EMO AI OS ✅ CLOSED & ARCHIVED
+- SelfBuilderEngine (intent→tool proposal, sandbox validation, risk scoring)
+- SelfHealerEngine (anomaly detection, severity-gated correction, recovery audit)
+- MultiAgentSocietyManager (task negotiation, swarm coordination, tenant boundaries)
+- R2/R3/R4 Read-Only Bridges (zero mutation, zero imports from R1-R4)
+- 103/103 tests · 23 files SHA-256 signed
+- `emo-big-emo-r5-release.tar.gz` archived
+- Fully isolated under `/releases/big_emo/`
 
 ### R4 — Cognitive OS ✅ CLOSED & ARCHIVED
 - StrategicPlanner (DAG decomposition, feasibility evaluation)
@@ -121,12 +131,13 @@ P10 — Production Hardening     (تصلب الإنتاج + مراقبة مست�
 
 ## 📊 إحصائيات المشروع
 
-- **Tags**: 6 (r4-cognitive-os-v1.0.0, v4.15.0-delivery-ready, v1-runtime-stable, v0.1.0, v0.1.1, v0.1.2)
+- **Tags**: 7 (r5-big-emo-v1.0.0, r4-cognitive-os-v1.0.0, v4.15.0-delivery-ready, v1-runtime-stable, v0.1.0, v0.1.1, v0.1.2)
 - **اختبارات Desktop**: 90/90 PASS (14 files)
 - **اختبارات Runtime**: 3047 PASS (358 full suite, 100 quarantined)
 - **Cognitive OS Tests**: 91/91 PASS (6 files)
-- **Shipped**: 10 مراحل كاملة (L, G, Final Prep, Final Release, R1, R4 Cognitive OS, P1, P2, P3, 3.4)
+- **Big EMO Tests**: 103/103 PASS (6 files)
+- **Shipped**: 11 مراحل كاملة (L, G, Final Prep, Final Release, R1, R4 Cognitive OS, R5 Big EMO, P1, P2, P3, 3.4)
 
 ---
 
-*Last updated: 2026-05-30 — v0.1.2-product-alpha*
+*Last updated: 2026-05-30 — r5-big-emo-v1.0.0*

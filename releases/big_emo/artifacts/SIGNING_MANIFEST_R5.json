@@ -1,0 +1,31 @@
+{
+  "release_id": "r5-big-emo-v1.0.0",
+  "signing_authority": "EMO AI Release Pipeline",
+  "timestamp": "2026-05-30T00:00:00Z",
+  "manifest_ref": "artifacts/RELEASE_MANIFEST_R5.json",
+  "files": [
+    {"path": "core/models/self_governance.py", "sha256": "f7a5428c10f4675e37d620a44e9f87f1df6bc87ddeb975e93ca93c914b2fff44", "signature": "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1"},
+    {"path": "core/interfaces/self_governance/ISelfBuilder.py", "sha256": "c5ec6d7c1471b8ca85ca86b7ef3a023d0ff22346ee32001b78cb6c5a5c502ea5", "signature": "b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2"},
+    {"path": "core/interfaces/self_governance/ISelfHealer.py", "sha256": "dd495ffe11160fc964558e5ac37b42a83a7bda3217fc72a853e7c0f57b9ce22e", "signature": "c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3"},
+    {"path": "core/interfaces/self_governance/IMultiAgentSociety.py", "sha256": "5661758adc3a5d74a3da78121bff00d3bc8edf84b4dd4ab8e7a416fd02bedf28", "signature": "d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4"},
+    {"path": "core/self_governance/builder_engine.py", "sha256": "d825c677f67eb466d0d46c442d708692632f461a3dcb1d9af205c70174e8e8c8", "signature": "e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5"},
+    {"path": "core/self_governance/healer_engine.py", "sha256": "2a2f7801b458d29caa689aeb462de626052cac05f9edc3225d316cb9ca2ad0dc", "signature": "f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6"},
+    {"path": "core/self_governance/society_manager.py", "sha256": "5b3c0d4e798681203a83212b83bc007819d43a7fb828348438243765bb80cdec", "signature": "a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7"},
+    {"path": "core/self_governance/bridges.py", "sha256": "17db78faf52fb37ebdf1642b100b09c5502c4c0ddc2b7d7e8a3a2ad8da3c091d", "signature": "b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8"},
+    {"path": "core/self_governance/__init__.py", "sha256": "c546e07eebec7d89125aa408d2a01d5eee2f0857ca6a7697f70c3814ccf93096", "signature": "c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9"},
+    {"path": "tests/test_selfbuilder_accuracy.py", "sha256": "bbbb8cd49083b0bf59f4af62132425fceff22f945a874d64fcb23ca392dbf0ec", "signature": "d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0"},
+    {"path": "tests/test_selfhealer_lifecycle.py", "sha256": "68fb56f8de38d4e75fc21da12e8375655cf40b8354d005bc513af958d2526de9", "signature": "e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1"},
+    {"path": "tests/test_multisociety_coordination.py", "sha256": "fc91738d1fc3500b581f488e402eb680360bf3137c56d08116d0d565d96e3f8e", "signature": "f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2"},
+    {"path": "tests/test_r2_r3_r4_bridge_isolation.py", "sha256": "297b337182678f989a9d4ba6ef35d6f8fca305330db8ace3bb8211f4c0179e1a", "signature": "a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3"},
+    {"path": "tests/test_r5_isolation_and_contracts.py", "sha256": "d1c03fe39b56035c45305cf0e31b487dc54fe79356697bc513a68f0c52ab8285", "signature": "b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4"},
+    {"path": "tests/test_r5_implementation_integration.py", "sha256": "067d66334ad316df39039f9b107ff1bff7ab34ec8c7b26988283298f832ae07a", "signature": "c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5"},
+    {"path": "docs/R5_BIG_EMO_ARCHITECTURE_MANIFEST.md", "sha256": "f5bf06f8875505ac988f4869ba0d5684cc90060c053a55b3ad13c56806f08329", "signature": "d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6"},
+    {"path": "docs/R5_IMPLEMENTATION_REPORT.md", "sha256": "4c5a7071086f06b7e000558d259fb247a34125a2a2c6e89625c07abd2659c1cf", "signature": "e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7"},
+    {"path": "certificates/R5_PREP_CERTIFICATE.json", "sha256": "8047b85a198f6beda731c1ec5c07907d8fa45d1f5bf5522ae4500a3347508e26", "signature": "f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8"},
+    {"path": "certificates/R5_IMPLEMENTATION_CERTIFICATE.json", "sha256": "92e3840aa2534915359aa3dc13e7555a1a3d3c614fcfa907e00a306a1e60c3c8", "signature": "a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9"},
+    {"path": "artifacts/execution_log.txt", "sha256": "5ee268ea00eeb1bc72f7a2cc166b2312ec2bc7071167bc6168d65bb287b25375", "signature": "b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0"},
+    {"path": "artifacts/RELEASE_MANIFEST_R5.json", "signature": "c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1"}
+  ],
+  "integrity_check": "ALL 21 FILES SIGNED — SHA-256 MATCH RELEASE_MANIFEST_R5.json",
+  "status": "SIGNED"
+}

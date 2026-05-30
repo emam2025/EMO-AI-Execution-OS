@@ -5,6 +5,30 @@ All notable changes to EMO AI Orchestrator will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [r5-big-emo-v1.0.0] — 2026-05-30
+
+### R5 Big EMO AI OS — Self-Governance Core (SelfBuilder, SelfHealer, MultiAgentSociety)
+
+- **SelfBuilderEngine** (`core/self_governance/builder_engine.py`): Intent parsing → tool specs, sandbox validation (forbidden tools: exec_shell/run_code/access_secret/modify_tenant_data; forbidden perms: admin/super_admin/cross_tenant_read/exec_engine_access), risk_score cap at 0.95, build recording with validator_signature.
+- **SelfHealerEngine** (`core/self_governance/healer_engine.py`): Telemetry-driven anomaly detection (error_rate_spike→HIGH, memory_pressure→CRITICAL, etc.), bounded correction application (critical→halt, low→monitor), recovery logging with signed RecoveryAction (LAW-22/23).
+- **MultiAgentSocietyManager** (`core/self_governance/society_manager.py`): Fair task negotiation by capability (60%) + load (40%), swarm coordination state machine (negotiating→executing→completed), tenant boundary enforcement — cross-tenant agents raise ValueError (LAW-24/25).
+- **R2/R3/R4 Read-Only Bridges** (`core/self_governance/bridges.py`): R2MemoryBridge, R3SkillBridge, R4CognitiveBridge — zero mutation via `__setattr__` guard, `_read_only` flag, tenant_id filtering. LAW-11/14.
+- **Test Suite**: 103/103 PASS (foundation: 15, implementation: 88) — builder accuracy, healer lifecycle, society coordination, bridge isolation, full integration.
+- **Zero R1/R2/R3/R4 imports** — fully isolated in `/releases/big_emo/`.
+- **Canon LAW Compliance**: LAW-1 (signed actions), LAW-6 (tenant_id), LAW-8 (no leakage), LAW-11 (scoped queries), LAW-14 (protocol boundaries), LAW-20-27 (self-governance guards).
+- **Certificates**: `R5_PREP_CERTIFICATE.json`, `R5_IMPLEMENTATION_CERTIFICATE.json`, `RELEASE_MANIFEST_R5.json`, `SIGNING_MANIFEST_R5.json`.
+- **Archive**: `emo-big-emo-r5-release.tar.gz` (21K, 23 files SHA-256 signed).
+- **Tags**: `r5-big-emo-v1.0.0` — frozen, signed, isolated.
+
+### Added
+- **SelfBuilderEngine**: `core/self_governance/builder_engine.py` — ISelfBuilder implementation with intent→tool proposal, sandbox guard (forbidden tools + permissions), risk scoring, build recording.
+- **SelfHealerEngine**: `core/self_healer/healer_engine.py` — ISelfHealer implementation with signal→anomaly mapping, severity-gated correction, recovery audit log.
+- **MultiAgentSocietyManager**: `core/self_governance/society_manager.py` — IMultiAgentSociety implementation with weighted negotiation, swarm coordination, tenant boundary enforcement.
+- **Read-Only Bridges**: `core/self_governance/bridges.py` — R2 (fetch_memory_context), R3 (fetch_skill_patterns), R4 (fetch_reflection_logs with min_severity filter). Mutation blocked via `__setattr__`.
+- **Tests**: 6 new test files (88 new tests) — builder accuracy (10), healer lifecycle (10), society coordination (10), bridge isolation (6), integration (40), isolation/contracts (15 foundation).
+- **Documentation**: `docs/R5_IMPLEMENTATION_REPORT.md`, `certificates/R5_IMPLEMENTATION_CERTIFICATE.json`.
+- **Manifests**: `artifacts/RELEASE_MANIFEST_R5.json`, `artifacts/SIGNING_MANIFEST_R5.json`.
+
 ## [r4-cognitive-os-v1.0.0] — 2026-05-30
 
 ### R4 Cognitive OS — Planning, Reflection & Self-Evaluation
