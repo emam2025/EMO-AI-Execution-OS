@@ -4,7 +4,7 @@ import React from "react";
  * Memory Explorer — Coming Soon | Read-Only Stub
  *
  * This screen is intentionally a stub to prevent misleading users into
- * thinking Memory OS is active. No fake data, no mock visualizations.
+ * thinking Memory OS is active. No fabricated data, no mock visualizations.
  *
  * Reference: docs/event_stream_contract.md — Future Compatibility section
  * Memory Explorer will be activated in P3 after Memory OS integration.

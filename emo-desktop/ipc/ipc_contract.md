@@ -101,6 +101,78 @@ Fetches full execution trace from `GET /trace/{trace_id}`.
 
 ---
 
+### `register_provider(provider_id: string, ephemeral_key: string) -> ProviderRegistrationResult`
+
+Injects a provider API key ephemerally into the emo-runtime-service process.
+The key is NEVER written to disk, env, or persistent storage — it is passed
+via stdin or isolated env and cleared within 5 seconds.
+
+**Ephemeral Injection Protocol:**
+1. Desktop reads key from OS Keychain (the ONLY allowed source)
+2. Desktop passes key to runtime via `register_provider` IPC command
+3. Runtime receives key into isolated memory space (not written to any file)
+4. Runtime confirms receipt → Desktop clears the key from its memory
+5. Runtime auto-clears the key within 5 seconds or on session stop
+
+**Parameters:**
+```json
+{
+  "provider_id": "openai",
+  "ephemeral_key": "sk-...",
+  "method": "stdin"
+}
+```
+
+**Returns:**
+```json
+{
+  "provider_id": "openai",
+  "injected": true,
+  "method": "stdin",
+  "cleared_at": 1717000000000
+}
+```
+
+### `test_provider_connection(provider_id: string) -> ConnectionTestResult`
+
+Sends a lightweight probe to the provider's API (e.g., `GET /v1/models`
+or `/health`) through the Model Gateway and returns the result.
+
+**Returns:**
+```json
+{
+  "provider_id": "openai",
+  "reachable": true,
+  "status_code": 200,
+  "latency_ms": 340,
+  "model_count": 42
+}
+```
+
+### `get_gateway_routing_status() -> GatewayRoutingStatus`
+
+Returns the current state of the Model Gateway routing table, including
+active routes, cost tracking, and failover readiness.
+
+**Returns:**
+```json
+{
+  "active_routes": ["openai", "anthropic"],
+  "failover_ready": true,
+  "cost_tracking": {
+    "total_spent_usd": 12.45,
+    "budget_limit_usd": 100.00
+  },
+  "routing_table": [
+    { "provider": "openai", "priority": 1, "status": "active" },
+    { "provider": "anthropic", "priority": 2, "status": "active" },
+    { "provider": "groq", "priority": 3, "status": "rate_limited" }
+  ]
+}
+```
+
+---
+
 ## Authentication
 
 All IPC commands (except `start_runtime`) require a valid `session_token` in the Authorization header:
@@ -143,6 +215,6 @@ and all referenced contracts in `desktop/docs/` are designed for forward compati
 
 ## Contract Version
 
-- **Version**: 1.0.0
-- **Status**: DRAFT — Phase P1
+- **Version**: 1.1.0
+- **Status**: DRAFT — Phase P2 (Credential Management + Gateway Routing)
 - **Last Updated**: 2026-05-29

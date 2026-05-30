@@ -4,7 +4,7 @@
  * These commands are invoked by the Tauri backend (Rust) and forwarded to
  * the emo-runtime-service (Python process launcher/proxy).
  *
- * Skeleton only — no actual process management in Phase P1.
+ * Skeleton only — no actual runtime execution in Phase P2.
  * Production implementation will spawn `emo-runtime-service` binary.
  */
 import { invoke } from "@tauri-apps/api/core";
@@ -62,4 +62,62 @@ export async function getTrace(
   token: string
 ): Promise<ExecutionTrace> {
   return invoke<ExecutionTrace>("get_trace", { traceId, token });
+}
+
+// ── Phase P2: Credential Management ───────────────────
+
+export type ProviderRegistrationResult = {
+  provider_id: string;
+  injected: boolean;
+  method: "stdin" | "env_isolated";
+  cleared_at: number | null;
+};
+
+export type ConnectionTestResult = {
+  provider_id: string;
+  reachable: boolean;
+  status_code: number;
+  latency_ms: number;
+  model_count: number;
+};
+
+export type GatewayRoutingStatus = {
+  active_routes: string[];
+  failover_ready: boolean;
+  cost_tracking: { total_spent_usd: number; budget_limit_usd: number };
+  routing_table: Array<{
+    provider: string;
+    priority: number;
+    status: "active" | "rate_limited" | "down";
+  }>;
+};
+
+/**
+ * Inject a provider API key ephemerally into the runtime process.
+ * Key is passed via stdin or isolated env and cleared within 5 seconds.
+ */
+export async function registerProvider(
+  providerId: string,
+  ephemeralKey: string
+): Promise<ProviderRegistrationResult> {
+  return invoke<ProviderRegistrationResult>("register_provider", {
+    providerId,
+    ephemeralKey,
+  });
+}
+
+/**
+ * Test a provider connection through the Model Gateway.
+ */
+export async function testProviderConnection(
+  providerId: string
+): Promise<ConnectionTestResult> {
+  return invoke<ConnectionTestResult>("test_provider_connection", { providerId });
+}
+
+/**
+ * Get the Model Gateway routing status including failover readiness.
+ */
+export async function getGatewayRoutingStatus(): Promise<GatewayRoutingStatus> {
+  return invoke<GatewayRoutingStatus>("get_gateway_routing_status");
 }
