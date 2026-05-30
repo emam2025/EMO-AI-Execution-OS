@@ -3,6 +3,7 @@ import React from "react";
 interface LaunchStepProps {
   providers: string[];
   mode: string;
+  projectName: string;
   validationPassed: boolean;
   onLaunch: () => void;
   onBack: () => void;
@@ -11,6 +12,7 @@ interface LaunchStepProps {
 export const LaunchStep: React.FC<LaunchStepProps> = ({
   providers,
   mode,
+  projectName,
   validationPassed,
   onLaunch,
   onBack,
@@ -45,6 +47,12 @@ export const LaunchStep: React.FC<LaunchStepProps> = ({
           <span style={{ color: "#6b7280" }}>Runtime Mode</span>
           <span style={{ fontWeight: 600, textTransform: "capitalize" }}>{mode}</span>
         </div>
+        {projectName && (
+          <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.85rem" }}>
+            <span style={{ color: "#6b7280" }}>Project</span>
+            <span style={{ fontWeight: 600 }}>{projectName}</span>
+          </div>
+        )}
         <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.85rem" }}>
           <span style={{ color: "#6b7280" }}>Connected Providers</span>
           <span style={{ fontWeight: 600 }}>{providers.length > 0 ? providers.join(", ") : "None"}</span>
@@ -57,7 +65,7 @@ export const LaunchStep: React.FC<LaunchStepProps> = ({
         </div>
         <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.85rem" }}>
           <span style={{ color: "#6b7280" }}>UI Version</span>
-          <span style={{ fontWeight: 600 }}>v0.1.3-product-alpha</span>
+          <span style={{ fontWeight: 600 }}>v1.0.0</span>
         </div>
       </div>
 

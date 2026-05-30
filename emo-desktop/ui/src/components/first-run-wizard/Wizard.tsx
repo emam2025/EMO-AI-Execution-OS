@@ -1,24 +1,24 @@
 import React, { useState } from "react";
 import { WelcomeStep } from "./WelcomeStep";
 import { ConnectModelsStep } from "./ConnectModelsStep";
-import { SelectModeStep } from "./SelectModeStep";
-import { ValidateStep } from "./ValidateStep";
+import { ChooseModeStep } from "./ChooseModeStep";
+import { CreateProjectStep } from "./CreateProjectStep";
 import { LaunchStep } from "./LaunchStep";
 
-type Step = "welcome" | "connect-models" | "select-mode" | "validate" | "launch";
+type Step = "welcome" | "connect-models" | "choose-mode" | "create-project" | "launch";
 
 interface WizardProps {
   onComplete: () => void;
   onClose: () => void;
 }
 
-const STEP_ORDER: Step[] = ["welcome", "connect-models", "select-mode", "validate", "launch"];
+const STEP_ORDER: Step[] = ["welcome", "connect-models", "choose-mode", "create-project", "launch"];
 
 const STEP_LABELS: Record<Step, string> = {
   welcome: "Welcome",
   "connect-models": "Connect Models",
-  "select-mode": "Select Mode",
-  validate: "Validate",
+  "choose-mode": "Choose Mode",
+  "create-project": "Create Project",
   launch: "Launch",
 };
 
@@ -27,8 +27,8 @@ export const FirstRunWizard: React.FC<WizardProps> = ({ onComplete, onClose }) =
   const currentStep = STEP_ORDER[currentIndex];
   const [state, setState] = useState({
     providers: [] as string[],
-    mode: "local" as "local" | "sandbox" | "enterprise",
-    validationPassed: false,
+    mode: "local" as "local" | "hybrid" | "cloud",
+    projectName: "",
   });
 
   const goNext = () => {
@@ -44,7 +44,6 @@ export const FirstRunWizard: React.FC<WizardProps> = ({ onComplete, onClose }) =
   };
 
   const handleLaunch = () => {
-    // Persist completion
     localStorage.setItem("emo-first-run-completed", "true");
     localStorage.setItem("emo-first-run-state", JSON.stringify(state));
     onComplete();
@@ -66,22 +65,22 @@ export const FirstRunWizard: React.FC<WizardProps> = ({ onComplete, onClose }) =
             onBack={goBack}
           />
         );
-      case "select-mode":
+      case "choose-mode":
         return (
-          <SelectModeStep
+          <ChooseModeStep
             selected={state.mode}
             onSelect={(mode) => setState((s) => ({ ...s, mode }))}
             onNext={goNext}
             onBack={goBack}
           />
         );
-      case "validate":
+      case "create-project":
         return (
-          <ValidateStep
-            providers={state.providers}
-            mode={state.mode}
-            onValidationResult={(passed) => setState((s) => ({ ...s, validationPassed: passed }))}
-            onNext={goNext}
+          <CreateProjectStep
+            onNext={(projectName) => {
+              setState((s) => ({ ...s, projectName }));
+              goNext();
+            }}
             onBack={goBack}
           />
         );
@@ -90,7 +89,8 @@ export const FirstRunWizard: React.FC<WizardProps> = ({ onComplete, onClose }) =
           <LaunchStep
             providers={state.providers}
             mode={state.mode}
-            validationPassed={state.validationPassed}
+            projectName={state.projectName}
+            validationPassed={true}
             onLaunch={handleLaunch}
             onBack={goBack}
           />
@@ -122,7 +122,6 @@ export const FirstRunWizard: React.FC<WizardProps> = ({ onComplete, onClose }) =
           animation: "smooth-scale-in 0.2s ease-out",
         }}
       >
-        {/* Progress bar */}
         <div style={{ padding: "16px 24px 0", display: "flex", gap: 6 }}>
           {STEP_ORDER.map((step, i) => (
             <div
@@ -138,12 +137,10 @@ export const FirstRunWizard: React.FC<WizardProps> = ({ onComplete, onClose }) =
           ))}
         </div>
 
-        {/* Step label */}
         <div style={{ padding: "12px 24px 0", fontSize: "0.7rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.05em", color: "#9ca3af" }}>
           Step {currentIndex + 1} of {STEP_ORDER.length} — {STEP_LABELS[currentStep]}
         </div>
 
-        {/* Content */}
         <div style={{ flex: 1, overflow: "auto", padding: "16px 24px" }}>
           {renderStep()}
         </div>

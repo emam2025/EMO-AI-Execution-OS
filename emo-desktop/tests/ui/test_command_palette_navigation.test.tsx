@@ -64,22 +64,27 @@ describe("CommandPalette — Navigation", () => {
     expect(screen.queryByPlaceholderText("Search screens and commands…")).toBeNull();
   });
 
-  it("search matches keywords", () => {
+  it("search matches keywords across new routes", () => {
     const onNav = vi.fn();
     render(<CommandPalette onNavigate={onNav} />);
     fireEvent.keyDown(window, { key: "k", metaKey: true });
-    fireEvent.change(screen.getByPlaceholderText("Search screens and commands…"), { target: { value: "cpu" } });
-    expect(screen.getByText("Open Runtime Monitor")).toBeDefined();
+    fireEvent.change(screen.getByPlaceholderText("Search screens and commands…"), { target: { value: "planner" } });
+    expect(screen.getByText("Open Agents")).toBeDefined();
   });
 
-  it("shows all items when query is empty", () => {
+  it("shows all 9 items when query is empty", () => {
     const onNav = vi.fn();
     render(<CommandPalette onNavigate={onNav} />);
     fireEvent.keyDown(window, { key: "k", metaKey: true });
     expect(screen.getByText("Go to Dashboard")).toBeDefined();
+    expect(screen.getByText("Open Projects")).toBeDefined();
+    expect(screen.getByText("Open Agents")).toBeDefined();
+    expect(screen.getByText("Open Knowledge")).toBeDefined();
+    expect(screen.getByText("Open Skills")).toBeDefined();
+    expect(screen.getByText("Open Workflows")).toBeDefined();
     expect(screen.getByText("Open Runtime Monitor")).toBeDefined();
-    expect(screen.getByText("Open Trace Explorer")).toBeDefined();
-    expect(screen.getByText("Open Model Gateway")).toBeDefined();
+    expect(screen.getByText("Open AI Gateway")).toBeDefined();
+    expect(screen.getByText("Open Settings")).toBeDefined();
   });
 
   it("footer shows navigation hints", () => {

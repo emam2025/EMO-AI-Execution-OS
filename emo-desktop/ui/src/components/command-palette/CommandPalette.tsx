@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 
-type Route = "dashboard" | "runtime-monitor" | "trace-explorer" | "model-gateway" | "agent-studio" | "project-center" | "settings" | "memory-explorer";
+type Route = "dashboard" | "projects" | "agents" | "knowledge" | "skills" | "workflows" | "runtime-monitor" | "ai-gateway" | "settings";
 
 interface Command {
   id: string;
@@ -11,13 +11,14 @@ interface Command {
 
 const COMMANDS: Command[] = [
   { id: "dash", label: "Go to Dashboard", route: "dashboard", keywords: ["home", "main", "overview"] },
-  { id: "monitor", label: "Open Runtime Monitor", route: "runtime-monitor", keywords: ["metrics", "cpu", "memory", "performance"] },
-  { id: "trace", label: "Open Trace Explorer", route: "trace-explorer", keywords: ["execution", "debug", "events", "timeline"] },
-  { id: "gateway", label: "Open Model Gateway", route: "model-gateway", keywords: ["providers", "routing", "cost", "llm"] },
-  { id: "agent", label: "Open Agent Studio", route: "agent-studio", keywords: ["planner", "critic", "optimizer", "workflow"] },
-  { id: "project", label: "Open Project Center", route: "project-center", keywords: ["sessions", "intents", "history"] },
-  { id: "settings", label: "Open Settings", route: "settings", keywords: ["preferences", "config", "providers"] },
-  { id: "memory", label: "Open Memory Explorer", route: "memory-explorer", keywords: ["cognitive", "index", "context"] },
+  { id: "projects", label: "Open Projects", route: "projects", keywords: ["memory", "spaces", "sessions", "teams"] },
+  { id: "agents", label: "Open Agents", route: "agents", keywords: ["planner", "critic", "optimizer", "workflow"] },
+  { id: "knowledge", label: "Open Knowledge", route: "knowledge", keywords: ["memory", "tree", "graph", "traces", "cognitive"] },
+  { id: "skills", label: "Open Skills", route: "skills", keywords: ["extracted", "library", "evolution", "tier"] },
+  { id: "workflows", label: "Open Workflows", route: "workflows", keywords: ["execution", "dag", "timeline", "active"] },
+  { id: "monitor", label: "Open Runtime Monitor", route: "runtime-monitor", keywords: ["metrics", "cpu", "memory", "performance", "health"] },
+  { id: "gateway", label: "Open AI Gateway", route: "ai-gateway", keywords: ["providers", "routing", "cost", "llm", "model"] },
+  { id: "settings", label: "Open Settings", route: "settings", keywords: ["preferences", "config", "providers", "security"] },
 ];
 
 interface CommandPaletteProps {

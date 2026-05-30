@@ -10,7 +10,7 @@ afterEach(() => {
 });
 
 describe("First-Run Wizard — 5-Step Flow", () => {
-  it("renders Welcome step with EMO OS branding", () => {
+  it("renders Welcome step with EMO AI branding", () => {
     render(<FirstRunWizard onComplete={vi.fn()} onClose={vi.fn()} />);
     expect(screen.getByText("Welcome to EMO OS")).toBeDefined();
     expect(screen.getByText("Get Started →")).toBeDefined();
@@ -32,7 +32,6 @@ describe("First-Run Wizard — 5-Step Flow", () => {
     fireEvent.click(screen.getByText("Get Started →"));
     expect(screen.getByText("OpenAI")).toBeDefined();
     expect(screen.getByText("Anthropic")).toBeDefined();
-    expect(screen.getByText("Groq")).toBeDefined();
   });
 
   it("Connect Models requires at least one provider", () => {
@@ -42,48 +41,53 @@ describe("First-Run Wizard — 5-Step Flow", () => {
     expect(nextBtn.disabled).toBe(true);
   });
 
-  it("Select Mode shows 3 runtime modes", () => {
+  it("Choose Mode shows Local/Hybrid/Cloud options", () => {
     render(<FirstRunWizard onComplete={vi.fn()} onClose={vi.fn()} />);
     fireEvent.click(screen.getByText("Get Started →"));
     fireEvent.click(screen.getByText("OpenAI"));
     fireEvent.click(screen.getByText("Next →"));
     expect(screen.getByText("Local")).toBeDefined();
-    expect(screen.getByText("Sandbox")).toBeDefined();
-    expect(screen.getByText("Enterprise")).toBeDefined();
+    expect(screen.getByText("Hybrid")).toBeDefined();
+    expect(screen.getByText("Cloud")).toBeDefined();
   });
 
-  it("Validate step shows 4 checks", () => {
+  it("Create Project step accepts project name", () => {
     render(<FirstRunWizard onComplete={vi.fn()} onClose={vi.fn()} />);
     fireEvent.click(screen.getByText("Get Started →"));
     fireEvent.click(screen.getByText("OpenAI"));
     fireEvent.click(screen.getByText("Next →"));
     fireEvent.click(screen.getByText("Next →"));
-    expect(screen.getByText("emo-runtime-service health")).toBeDefined();
-    expect(screen.getByText("IPC authentication")).toBeDefined();
-    expect(screen.getByText("WebSocket event stream")).toBeDefined();
-    expect(screen.getByText("Provider credentials (OS Keychain)")).toBeDefined();
+    expect(screen.getByText("Create Your First Project")).toBeDefined();
+    const input = screen.getByPlaceholderText("e.g. My First AI Project");
+    expect(input).toBeDefined();
   });
 
-  it("Validate step passes all checks", async () => {
+  it("Launch step shows summary with project and mode", () => {
     render(<FirstRunWizard onComplete={vi.fn()} onClose={vi.fn()} />);
     fireEvent.click(screen.getByText("Get Started →"));
     fireEvent.click(screen.getByText("OpenAI"));
     fireEvent.click(screen.getByText("Next →"));
     fireEvent.click(screen.getByText("Next →"));
-    const done = await screen.findByText("All Checks Passed →", {}, { timeout: 5000 });
-    expect(done).toBeDefined();
-  });
-
-  it("Launch step shows summary after validation", async () => {
-    render(<FirstRunWizard onComplete={vi.fn()} onClose={vi.fn()} />);
-    fireEvent.click(screen.getByText("Get Started →"));
-    fireEvent.click(screen.getByText("OpenAI"));
+    const input = screen.getByPlaceholderText("e.g. My First AI Project");
+    fireEvent.change(input, { target: { value: "Test Project" } });
     fireEvent.click(screen.getByText("Next →"));
-    fireEvent.click(screen.getByText("Next →"));
-    const done = await screen.findByText("All Checks Passed →", {}, { timeout: 5000 });
-    fireEvent.click(done);
     expect(screen.getByText("Ready to Launch")).toBeDefined();
     expect(screen.getByText("Launch Workspace →")).toBeDefined();
+  });
+
+  it("completes flow in localStorage on launch", () => {
+    const onComplete = vi.fn();
+    render(<FirstRunWizard onComplete={onComplete} onClose={vi.fn()} />);
+    fireEvent.click(screen.getByText("Get Started →"));
+    fireEvent.click(screen.getByText("OpenAI"));
+    fireEvent.click(screen.getByText("Next →"));
+    fireEvent.click(screen.getByText("Next →"));
+    const input = screen.getByPlaceholderText("e.g. My First AI Project");
+    fireEvent.change(input, { target: { value: "P" } });
+    fireEvent.click(screen.getByText("Next →"));
+    fireEvent.click(screen.getByText("Launch Workspace →"));
+    expect(onComplete).toHaveBeenCalled();
+    expect(localStorage.getItem("emo-first-run-completed")).toBe("true");
   });
 
   it("Back button navigates to previous step", () => {

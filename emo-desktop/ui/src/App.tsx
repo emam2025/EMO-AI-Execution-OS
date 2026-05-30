@@ -5,7 +5,7 @@ import { CommandPalette } from "./components/command-palette/CommandPalette";
 import { FirstRunWizard } from "./components/first-run-wizard/Wizard";
 import "./styles/design-system/glass-panel.css";
 
-type Route = "dashboard" | "runtime-monitor" | "trace-explorer" | "model-gateway" | "agent-studio" | "project-center" | "settings" | "memory-explorer";
+type Route = "dashboard" | "projects" | "agents" | "knowledge" | "skills" | "workflows" | "runtime-monitor" | "settings" | "ai-gateway";
 
 interface AppProps {
   initialRoute?: Route;
@@ -13,13 +13,14 @@ interface AppProps {
 
 const NAV_ITEMS: { id: Route; label: string; icon: string }[] = [
   { id: "dashboard", label: "Dashboard", icon: "◉" },
-  { id: "runtime-monitor", label: "Runtime Monitor", icon: "⚡" },
-  { id: "trace-explorer", label: "Trace Explorer", icon: "◈" },
-  { id: "model-gateway", label: "Model Gateway", icon: "⊞" },
-  { id: "agent-studio", label: "Agent Studio", icon: "◇" },
-  { id: "project-center", label: "Project Center", icon: "▤" },
+  { id: "projects", label: "Projects", icon: "▤" },
+  { id: "agents", label: "Agents", icon: "◇" },
+  { id: "knowledge", label: "Knowledge", icon: "◎" },
+  { id: "skills", label: "Skills", icon: "⚡" },
+  { id: "workflows", label: "Workflows", icon: "◈" },
+  { id: "runtime-monitor", label: "Runtime", icon: "⊞" },
+  { id: "ai-gateway", label: "AI Gateway", icon: "⚙" },
   { id: "settings", label: "Settings", icon: "⚙" },
-  { id: "memory-explorer", label: "Memory Explorer", icon: "◎" },
 ];
 
 const App: React.FC<AppProps> = ({ initialRoute = "dashboard" }) => {
@@ -29,7 +30,6 @@ const App: React.FC<AppProps> = ({ initialRoute = "dashboard" }) => {
 
   useEffect(() => {
     injectMotionKeyframes();
-    // Check if first run
     const completed = localStorage.getItem("emo-first-run-completed");
     if (!completed) {
       setWizardOpen(true);
@@ -45,30 +45,31 @@ const App: React.FC<AppProps> = ({ initialRoute = "dashboard" }) => {
     switch (route) {
       case "dashboard":
         return <DashboardPage onNavigate={setRoute} />;
+      case "projects":
+        return <ProjectsPage />;
+      case "agents":
+        return <AgentsPage />;
+      case "knowledge":
+        return <KnowledgePage />;
+      case "skills":
+        return <SkillsPage />;
+      case "workflows":
+        return <WorkflowsPage />;
       case "runtime-monitor":
         return <RuntimeMonitorPage />;
-      case "trace-explorer":
-        return <TraceExplorerPage />;
-      case "model-gateway":
-        return <ModelGatewayPage />;
-      case "agent-studio":
-        return <AgentStudioPage />;
-      case "project-center":
-        return <ProjectCenterPage />;
+      case "ai-gateway":
+        return <AIGatewayPage />;
       case "settings":
         return <SettingsPage onNavigate={setRoute} />;
-      case "memory-explorer":
-        return <MemoryExplorerPage />;
     }
   };
 
   return (
     <div style={{ display: "flex", height: "100vh", background: "#f5f5f7", fontFamily: "Inter, -apple-system, sans-serif" }}>
-      {/* Sidebar */}
       <nav className="glass-panel" style={{ width: 220, padding: 16, display: "flex", flexDirection: "column", gap: 4, borderRadius: 0, borderRight: "1px solid rgba(0,0,0,0.06)" }}>
         <div style={{ padding: "8px 10px 16px", fontWeight: 700, fontSize: "1rem", letterSpacing: "-0.02em", display: "flex", alignItems: "center", gap: 8 }}>
           <span style={{ fontSize: "1.2rem" }}>⟁</span>
-          EMO OS
+          EMO AI
           {isConnected && <span className="live-dot" />}
         </div>
         {NAV_ITEMS.map((item) => (
@@ -96,32 +97,28 @@ const App: React.FC<AppProps> = ({ initialRoute = "dashboard" }) => {
         ))}
         <div style={{ flex: 1 }} />
         <div style={{ padding: "8px 10px", fontSize: "0.7rem", color: "#9ca3af", borderTop: "1px solid rgba(0,0,0,0.06)" }}>
-          v0.1.3-product-alpha · {isConnected ? "Live" : "Disconnected"}
+          v1.0.0 · {isConnected ? "Live" : "Disconnected"}
         </div>
       </nav>
 
-      {/* Main */}
       <main style={{ flex: 1, overflow: "auto", padding: 0 }}>
         {renderRoute()}
       </main>
 
-      {/* Global Command Palette */}
       <CommandPalette onNavigate={setRoute} />
-
-      {/* First-Run Wizard */}
       {wizardOpen && <FirstRunWizard onComplete={handleWizardComplete} onClose={() => setWizardOpen(false)} />}
     </div>
   );
 };
 
-// Lazy imports to keep App.tsx clean
 import { Dashboard as DashboardPage } from "./routes/Dashboard";
+import { Projects as ProjectsPage } from "./routes/Projects";
+import { Agents as AgentsPage } from "./routes/Agents";
+import { Knowledge as KnowledgePage } from "./routes/Knowledge";
+import { Skills as SkillsPage } from "./routes/Skills";
+import { Workflows as WorkflowsPage } from "./routes/Workflows";
 import { RuntimeMonitor as RuntimeMonitorPage } from "./routes/RuntimeMonitor";
-import { TraceExplorer as TraceExplorerPage } from "./routes/TraceExplorer";
-import { ModelGateway as ModelGatewayPage } from "./routes/ModelGateway";
-import { AgentStudio as AgentStudioPage } from "./routes/AgentStudio";
-import { ProjectCenter as ProjectCenterPage } from "./routes/ProjectCenter";
+import { AIGateway as AIGatewayPage } from "./routes/AIGateway";
 import { Settings as SettingsPage } from "./routes/Settings";
-import { MemoryExplorer as MemoryExplorerPage } from "./routes/MemoryExplorer";
 
 export default App;

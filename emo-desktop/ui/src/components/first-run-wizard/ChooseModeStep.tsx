@@ -1,33 +1,36 @@
 import React from "react";
 
-type RuntimeMode = "local" | "sandbox" | "enterprise";
+type RuntimeMode = "local" | "hybrid" | "cloud";
 
-interface SelectModeStepProps {
+interface ChooseModeStepProps {
   selected: RuntimeMode;
   onSelect: (mode: RuntimeMode) => void;
   onNext: () => void;
   onBack: () => void;
 }
 
-const MODES: { id: RuntimeMode; label: string; description: string }[] = [
+const MODES: { id: RuntimeMode; label: string; description: string; icon: string }[] = [
   {
     id: "local",
     label: "Local",
-    description: "Run EMO OS on your machine. Best for development and personal use.",
+    description: "Run everything on your machine. Best for privacy, offline work, and development.",
+    icon: "💻",
   },
   {
-    id: "sandbox",
-    label: "Sandbox",
-    description: "Isolated environment with network restrictions. Best for testing.",
+    id: "hybrid",
+    label: "Hybrid",
+    description: "Local runtime with cloud AI models. Balance of privacy and performance.",
+    icon: "☁️",
   },
   {
-    id: "enterprise",
-    label: "Enterprise",
-    description: "Multi-tenant mode with full orchestration. Requires EMO Cloud.",
+    id: "cloud",
+    label: "Cloud",
+    description: "Fully cloud-hosted. Zero local compute, best for teams and production.",
+    icon: "🌐",
   },
 ];
 
-export const SelectModeStep: React.FC<SelectModeStepProps> = ({
+export const ChooseModeStep: React.FC<ChooseModeStepProps> = ({
   selected,
   onSelect,
   onNext,
@@ -35,9 +38,9 @@ export const SelectModeStep: React.FC<SelectModeStepProps> = ({
 }) => {
   return (
     <div>
-      <h2 style={{ fontSize: "1.1rem", fontWeight: 600, marginBottom: 4 }}>Select Runtime Mode</h2>
+      <h2 style={{ fontSize: "1.1rem", fontWeight: 600, marginBottom: 4 }}>Choose Your Mode</h2>
       <p style={{ color: "#6b7280", fontSize: "0.85rem", marginBottom: 16 }}>
-        Choose how EMO OS will run.
+        How do you want EMO AI to run?
       </p>
       <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 24 }}>
         {MODES.map((mode) => {
@@ -60,8 +63,13 @@ export const SelectModeStep: React.FC<SelectModeStepProps> = ({
               }}
             >
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <span style={{ fontSize: "1.2rem" }}>{mode.icon}</span>
+                <div>
+                  <span style={{ fontWeight: 600, fontSize: "0.95rem" }}>{mode.label}</span>
+                </div>
                 <div
                   style={{
+                    marginLeft: "auto",
                     width: 16,
                     height: 16,
                     borderRadius: "50%",
@@ -69,9 +77,8 @@ export const SelectModeStep: React.FC<SelectModeStepProps> = ({
                     transition: "all 0.15s",
                   }}
                 />
-                <span style={{ fontWeight: 600, fontSize: "0.95rem" }}>{mode.label}</span>
               </div>
-              <p style={{ margin: "2px 0 0 24px", color: "#6b7280", fontSize: "0.8rem" }}>
+              <p style={{ margin: "2px 0 0 28px", color: "#6b7280", fontSize: "0.8rem" }}>
                 {mode.description}
               </p>
             </button>
