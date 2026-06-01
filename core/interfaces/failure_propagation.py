@@ -1,25 +1,14 @@
-"""D8.2 — Failure Propagation Policy: formal cross-service failure model.
+"""D8.2 — Failure Propagation Interfaces.
 
-Defines what happens when each service domain fails —
-how failures propagate to other domains and what recovery
-actions are taken.
+Backward-compatible layer that provides:
+  - Old Protocol enums (FailureDomain, PropagationAction, DegradeMode)
+  - Old data structures (PropagationRule, PROPAGATION_MATRIX)
+  - Re-exported implementation (FailureMatrix, FailureMode, FailureEvent)
 
-Failure Propagation Matrix::
+Source of Truth: core/runtime/services/failure_propagation.py::FailureMatrix
 
-    Source Domain     │ Effect On              │ Action
-    ──────────────────┼────────────────────────┼───────────
-    Dispatcher fails  │ Scheduler              → RETRY
-                      │ RetryHandler           → CLASSIFY + BACKOFF
-                      │ LeaseManager           → RELEASE
-                      │ ExecutionCore          → NOTIFY
-    ──────────────────┼────────────────────────┼───────────
-    Lease expires     │ ExecutionEngine        → CANCEL + ROLLBACK
-                      │ Scheduler              → REASSIGN
-                      │ StateStore             → RECORD
-    ──────────────────┼────────────────────────┼───────────
-    StateStore fails  │ ExecutionCore          → DEGRADE
-                      │ Scheduler              → BUFFER + CONTINUE
-                      │ RetryHandler           → DEFER
+Ref: DEVELOPER.md §15.15a D8.2
+Ref: Canon LAW 20-22
 """
 
 from __future__ import annotations
@@ -27,6 +16,15 @@ from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
 from typing import Dict, List, Optional
+
+from core.runtime.services.failure_propagation import (
+    FailureEvent as FailureEvent,
+    FailureMatrix as FailureMatrix,
+    FailureMode as FailureMode,
+)
+
+
+# ── Backward-compatible enums (kept for test_service_isolation.py) ──
 
 
 class FailureDomain(str, Enum):
@@ -77,7 +75,7 @@ class PropagationRule:
     description: str = ""
 
 
-# ── The authoritative propagation matrix ──
+# ── Legacy propagation matrix (kept for test_service_isolation.py) ──
 
 PROPAGATION_MATRIX: Dict[FailureDomain, List[PropagationRule]] = {
     FailureDomain.DISPATCHER: [
@@ -184,45 +182,23 @@ PROPAGATION_MATRIX: Dict[FailureDomain, List[PropagationRule]] = {
 }
 
 
-class FailurePropagationPolicy:
-    """Evaluates failure propagation decisions.
+class FailurePropagationPolicy(FailureMatrix):
+    """Backward-compatible alias for FailureMatrix.
 
-    Usage::
-
-        policy = FailurePropagationPolicy()
-        actions = policy.evaluate(
-            source=FailureDomain.DISPATCHER,
-            context={"retry_count": 2},
-        )
+    FailurePropagationPolicy was the original interface name before D8
+    contract alignment. It now extends FailureMatrix directly so that
+    all existing code continues to work without changes.
     """
 
-    def evaluate(
-        self,
-        source: FailureDomain,
-        context: Optional[Dict] = None,
-    ) -> List[PropagationRule]:
-        """Return all propagation rules for a given failure source."""
-        return PROPAGATION_MATRIX.get(source, [])
 
-    def should_retry(
-        self,
-        source: FailureDomain,
-        fail_count: int,
-    ) -> bool:
-        """Determine whether a retry should be attempted."""
-        rules = self.evaluate(source)
-        for r in rules:
-            if r.action == PropagationAction.RETRY:
-                return fail_count < r.escalate_after
-        return False
-
-    def degrade_mode(
-        self,
-        source: FailureDomain,
-    ) -> Optional[DegradeMode]:
-        """Return the degrade mode for a failure, if any."""
-        rules = self.evaluate(source)
-        for r in rules:
-            if r.action == PropagationAction.DEGRADE:
-                return r.degrade_mode
-        return None
+__all__ = [
+    "FailureDomain",
+    "FailureEvent",
+    "FailureMatrix",
+    "FailureMode",
+    "FailurePropagationPolicy",
+    "PropagationAction",
+    "DegradeMode",
+    "PropagationRule",
+    "PROPAGATION_MATRIX",
+]

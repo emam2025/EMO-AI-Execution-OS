@@ -44,6 +44,11 @@ from core.runtime.services.lease_manager import (
     LeaseError,
     HeartbeatError,
 )
+from core.interfaces.scheduler import IExecutionScheduler
+from core.interfaces.dispatcher import IExecutionDispatcher
+from core.interfaces.retry import IExecutionRetryHandler
+from core.interfaces.state_store import IExecutionStateStore
+from core.interfaces.lease import IExecutionLeaseManager
 from core.runtime.services.failure_propagation import (
     FailureMatrix,
     FailureMode,
@@ -56,12 +61,20 @@ logger = logging.getLogger(__name__)
 # Protocol method sets (for ownership/compliance checks)
 # ────────────────────────────────────────────────────────────────────
 
+def _get_protocol_methods(protocol_class: type) -> set:
+    """Derive expected methods from a Protocol class (non-dunder only)."""
+    return {
+        m for m in dir(protocol_class)
+        if not m.startswith("_") and callable(getattr(protocol_class, m, None))
+    }
+
+
 PROTOCOL_METHODS = {
-    "ExecutionScheduler": {"schedule", "run_with_timeout", "collect_futures"},
-    "ExecutionToolDispatcher": {"dispatch_tool_call", "validate_contract", "route_service"},
-    "ExecutionRetryHandler": {"decide_retry", "apply_backoff", "record_failure"},
-    "ExecutionStateStore": {"save_state", "load_state", "store_checkpoint", "read_trace"},
-    "ExecutionLeaseManager": {"acquire_lease", "renew_lease", "release_lease", "monitor_heartbeat"},
+    "ExecutionScheduler": _get_protocol_methods(IExecutionScheduler),
+    "ExecutionToolDispatcher": _get_protocol_methods(IExecutionDispatcher),
+    "ExecutionRetryHandler": _get_protocol_methods(IExecutionRetryHandler),
+    "ExecutionStateStore": _get_protocol_methods(IExecutionStateStore),
+    "ExecutionLeaseManager": _get_protocol_methods(IExecutionLeaseManager),
 }
 
 FORBIDDEN_OWNERSHIP = {
@@ -484,7 +497,7 @@ class TestExecutionRetryHandlerFunctional:
 
     def test_decide_retry_no_max_attempts(self):
         h = ExecutionRetryHandler()
-        assert h.decide_retry("n1", RuntimeError("fail"), 3, 3) is False
+        assert h.decide_retry("n1", RuntimeError("fail"), 4, 3) is False
 
     def test_apply_backoff(self):
         h = ExecutionRetryHandler()

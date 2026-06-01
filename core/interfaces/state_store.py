@@ -1,55 +1,70 @@
-"""D8.1 — IExecutionStateStore: persistence + state.
+"""D8.1 — IExecutionStateStore: persistence + traces.
 
-OWNERSHIP: persistence + traces
-  - execution state mutation
-  - checkpoint save / restore
-  - DAG traces
-  - event persistence
+LAW 26: StateStore owns persistence + traces.
+FORBIDDEN: dispatch, retry, lease, scheduling.
 
-FORBIDDEN:
-  - orchestration
-  - dispatch
-  - retries
-  - scheduling decisions
+Source of Truth: core/runtime/services/state_store.py::ExecutionStateStore
+
+Ref: DEVELOPER.md §15.15a D8.1
+Ref: Canon LAW 26
 """
 
-from typing import Any, Dict, Optional, Protocol
-
-from core.models.dag import DependencyGraph, NodeState, PlanNode
+from typing import Any, Dict, Optional, Protocol, runtime_checkable
 
 
+class PersistenceError(Exception):
+    """Raised when state cannot be persisted."""
+
+
+class LoadError(Exception):
+    """Raised when state cannot be read."""
+
+
+class CheckpointError(Exception):
+    """Raised when checkpoint cannot be written."""
+
+
+class TraceError(Exception):
+    """Raised when trace cannot be read."""
+
+
+@runtime_checkable
 class IExecutionStateStore(Protocol):
-    """Owns persistence and execution state — nothing else."""
+    """Owns persistence + traces — nothing else.
 
-    def get_state(self, node_id: str) -> Optional[NodeState]:
-        """Return current state of a node."""
+    Contract methods:
+      save_state(node_id, state, session_id?)  → None
+      load_state(node_id, session_id?)  → Optional[Any]
+      store_checkpoint(session_id, dag, last_node_id, result)  → None
+      read_trace(session_id)  → Optional[Dict]
+    """
 
-    def set_state(
+    def save_state(
         self,
-        node: PlanNode,
-        state: NodeState,
+        node_id: str,
+        state: Any,
+        session_id: str = "",
     ) -> None:
-        """Mutate node state. Must validate transitions."""
+        """Persist a node's state."""
 
-    def store_trace(
+    def load_state(
+        self,
+        node_id: str,
+        session_id: str = "",
+    ) -> Optional[Any]:
+        """Load a node's persisted state."""
+
+    def store_checkpoint(
         self,
         session_id: str,
-        dag: DependencyGraph,
-        node_results: Dict[str, Any],
-        status: str,
+        dag: Any,
+        last_node_id: str,
+        result: Dict[str, Any],
     ) -> None:
-        """Persist a DAG execution trace."""
+        """Store an execution checkpoint for resume."""
 
-    def save_checkpoint(
+    def read_trace(
         self,
-        execution_id: str,
-        dag: DependencyGraph,
-        results: Dict[str, Any],
-    ) -> None:
-        """Save a checkpoint for recovery."""
-
-    def restore_checkpoint(
-        self,
-        execution_id: str,
+        session_id: str,
     ) -> Optional[Dict[str, Any]]:
-        """Restore a previously saved checkpoint."""
+        """Read the full execution trace for a session."""

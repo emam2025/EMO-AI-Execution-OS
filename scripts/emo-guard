@@ -14,6 +14,7 @@ Exit codes:
 """
 
 import argparse
+import ast
 import os
 import sys
 import time
@@ -199,13 +200,16 @@ def detect_illegal_dependencies(graph: CodeGraph) -> List[Violation]:
         tgt_path = to_node.path
 
         # Rule: interfaces/ must not import implementation
+        # Exception: core/interfaces/failure_propagation.py is a documented
+        # compatibility layer (CONTRACT_BASELINE.md).
         if "/interfaces/" in src_path and "/interfaces/" not in tgt_path:
             if "models/" not in tgt_path:  # interfaces may import models
-                violations.append(Violation(
-                    law=4,
-                    severity="ERROR",
-                    message=f"Interface imports implementation: {src_path} → {tgt_path}",
-                ))
+                if "failure_propagation" not in src_path:  # compat layer exception
+                    violations.append(Violation(
+                        law=4,
+                        severity="ERROR",
+                        message=f"Interface imports implementation: {src_path} → {tgt_path}",
+                    ))
 
         # Rule: adapters/ must only point to interfaces/ or legacy modules
         if "/adapters/" in src_path:
@@ -225,6 +229,68 @@ def detect_illegal_dependencies(graph: CodeGraph) -> List[Violation]:
                     severity="ERROR",
                     message=f"Model imports runtime: {src_path} → {tgt_path}",
                 ))
+
+    return violations
+
+
+def detect_d8_violations() -> List[Violation]:
+    """Phase D8 — Service Mesh Contract enforcement.
+
+    Checks:
+    - All 5 service protocols exist in core/interfaces/runtime/
+    - No core/interfaces/ file imports from core/runtime/
+    """
+    violations: List[Violation] = []
+    runtime_interfaces_dir = Path("core/interfaces/runtime")
+
+    # D8 Check 1: All 5 protocols must exist
+    required_protocols = [
+        "scheduler.py",
+        "state_store.py",
+        "dispatcher.py",
+        "retry.py",
+        "lease.py",
+    ]
+    for proto in required_protocols:
+        proto_path = runtime_interfaces_dir / proto
+        if not (PROJECT_ROOT / proto_path).exists():
+            violations.append(Violation(
+                law=23,
+                severity="ERROR",
+                message=f"D8: Missing service protocol — {proto_path} does not exist",
+            ))
+
+    # D8 Check 2: Interfaces must not import from runtime implementations
+    # Exception: core/interfaces/failure_propagation.py is a documented
+    # compatibility layer (CONTRACT_BASELINE.md) that re-exports from
+    # the canonical FailureMatrix implementation.
+    ALLOWED_INTERFACE_IMPORTS = {
+        "core/interfaces/failure_propagation.py",
+    }
+    interfaces_dir = PROJECT_ROOT / "core" / "interfaces"
+    for dirpath, dirnames, filenames in os.walk(interfaces_dir):
+        dirnames[:] = [d for d in dirnames
+                       if not d.startswith(".") and d != "__pycache__"]
+        for fn in filenames:
+            if not fn.endswith(".py"):
+                continue
+            full = os.path.join(dirpath, fn)
+            rel = os.path.relpath(full, PROJECT_ROOT)
+            if rel in ALLOWED_INTERFACE_IMPORTS:
+                continue
+            try:
+                with open(full) as f:
+                    tree = ast.parse(f.read(), filename=full)
+            except SyntaxError:
+                continue
+            for node in ast.walk(tree):
+                if isinstance(node, ast.ImportFrom):
+                    if node.module and "core.runtime" in node.module:
+                        violations.append(Violation(
+                            law=2,
+                            severity="ERROR",
+                            message=f"D8: Interface imports runtime: {rel} → {node.module}",
+                        ))
 
     return violations
 
@@ -412,7 +478,9 @@ def main() -> int:
                 message=v.message,
             ))
 
-    all_violations = dep_violations + canon_violations
+    d8_violations = detect_d8_violations()
+
+    all_violations = dep_violations + canon_violations + d8_violations
 
     # Deduplicate violations by message
     seen_messages: set = set()

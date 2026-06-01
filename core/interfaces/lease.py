@@ -1,38 +1,60 @@
 """D8.1 — IExecutionLeaseManager: distributed ownership only.
 
-OWNERSHIP: distributed ownership
-  - lease acquire / release
-  - heartbeat ownership
-  - lease expiration detection
-  - worker assignment tracking
+LAW 23 (complement): LeaseManager manages distributed ownership.
+FORBIDDEN: retry, dispatch, state, scheduling.
 
-FORBIDDEN:
-  - execution logic
-  - retry decisions
-  - state storage
-  - scheduling
+Source of Truth: core/runtime/services/lease_manager.py::ExecutionLeaseManager
+
+Ref: DEVELOPER.md §15.15a D8.1
+Ref: Canon LAW 23 (distributed ownership domain)
 """
 
-from typing import Optional, Protocol
+from typing import Optional, Protocol, runtime_checkable
 
 
+class LeaseError(Exception):
+    """Raised when a lease operation encounters a system error."""
+
+
+class HeartbeatError(Exception):
+    """Raised when heartbeat monitoring fails."""
+
+
+@runtime_checkable
 class IExecutionLeaseManager(Protocol):
-    """Owns distributed ownership — nothing else."""
+    """Owns distributed ownership — nothing else.
 
-    def acquire(self, node_id: str, worker_id: str, ttl: float) -> bool:
-        """Try to acquire a lease for a node. Return True if acquired."""
+    Contract methods:
+      acquire_lease(resource_id, owner, ttl?)  → Optional[str]
+      renew_lease(lease_id, ttl?)  → bool
+      release_lease(lease_id)  → bool
+      monitor_heartbeat(lease_id, timeout?)  → bool
+    """
 
-    def release(self, node_id: str, worker_id: str) -> bool:
-        """Release a lease. Return True if released."""
+    def acquire_lease(
+        self,
+        resource_id: str,
+        owner: str,
+        ttl: float = 30.0,
+    ) -> Optional[str]:
+        """Acquire an execution lease for a distributed resource."""
 
-    def heartbeat(self, node_id: str, worker_id: str) -> bool:
-        """Renew a lease. Return True if still valid."""
+    def renew_lease(
+        self,
+        lease_id: str,
+        ttl: float = 30.0,
+    ) -> bool:
+        """Renew an existing lease to prevent expiry."""
 
-    def is_expired(self, node_id: str) -> bool:
-        """Check if a lease has expired."""
+    def release_lease(
+        self,
+        lease_id: str,
+    ) -> bool:
+        """Release a lease, making the resource available."""
 
-    def owner(self, node_id: str) -> Optional[str]:
-        """Return the current owner of a node's lease."""
-
-    def release_all(self, worker_id: str) -> int:
-        """Release all leases held by a worker. Return count released."""
+    def monitor_heartbeat(
+        self,
+        lease_id: str,
+        timeout: float = 5.0,
+    ) -> bool:
+        """Monitor heartbeat for a leased resource."""

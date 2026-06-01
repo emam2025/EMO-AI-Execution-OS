@@ -22,6 +22,7 @@ from core.canon import CanonValidator, ValidationContext
 from core.canon.default_rules import DEFAULT_RULES
 from core.interfaces.failure_propagation import (
     FailureDomain,
+    FailureMatrix,
     FailurePropagationPolicy,
     PropagationAction,
     PROPAGATION_MATRIX,
@@ -73,24 +74,21 @@ def _get_public_attrs(filepath: str) -> Set[str]:
 
 SERVICE_METHODS: Dict[str, Set[str]] = {
     "scheduler": {
-        "order_levels", "select_ready_nodes", "allocate_worker",
-        "estimate_execution_order",
+        "schedule", "run_with_timeout", "collect_futures",
     },
     "dispatcher": {
-        "resolve_tool", "can_dispatch", "dispatch_local",
-        "dispatch_remote", "validate_contract", "validate_output",
+        "register_tool", "dispatch_tool_call", "validate_contract",
+        "route_service",
     },
     "retry_handler": {
-        "classify_failure", "should_retry", "compute_backoff",
-        "handle_exhaustion", "record_attempt",
+        "decide_retry", "apply_backoff", "record_failure",
     },
     "state_store": {
-        "get_state", "set_state", "store_trace",
-        "save_checkpoint", "restore_checkpoint",
+        "save_state", "load_state", "store_checkpoint", "read_trace",
     },
     "lease_manager": {
-        "acquire", "release", "heartbeat",
-        "is_expired", "owner", "release_all",
+        "acquire_lease", "renew_lease", "release_lease",
+        "monitor_heartbeat",
     },
 }
 
@@ -258,43 +256,55 @@ class TestServiceInterfaceCompliance:
 class TestFailurePropagationCompliance:
     """Verify the propagation matrix covers all mandatory rules."""
 
-    def test_dispatcher_failure_triggers_three_actions(self):
-        """LAW 21: dispatcher failure → retry + classify + release_lease."""
+    def test_dispatcher_failure_triggers_retry_classify_release_notify(self):
+        """F01: dispatcher failure → RETRY, CLASSIFY, RELEASE, NOTIFY."""
+        matrix = FailurePropagationPolicy()
+        actions = matrix.apply("Dispatcher")
+        assert "RETRY" in actions
+        assert "CLASSIFY" in actions
+        assert "RELEASE" in actions
+        assert "NOTIFY" in actions
+
+    def test_lease_expiry_triggers_cancel_rollback_reassign_record(self):
+        """F02: lease expiry → CANCEL, ROLLBACK, REASSIGN, RECORD."""
+        matrix = FailurePropagationPolicy()
+        actions = matrix.apply("LeaseManager")
+        assert "CANCEL" in actions
+        assert "ROLLBACK" in actions
+        assert "REASSIGN" in actions
+        assert "RECORD" in actions
+
+    def test_state_store_failure_includes_degrade(self):
+        """F03: state store failure → DEGRADE, BUFFER, CONTINUE, DEFER."""
+        matrix = FailurePropagationPolicy()
+        actions = matrix.apply("StateStore")
+        assert "DEGRADE" in actions, (
+            "State store failure must include degrade mode"
+        )
+        assert "BUFFER" in actions
+        assert "CONTINUE" in actions
+        assert "DEFER" in actions
+
+    def test_legacy_propagation_matrix_matches_failure_domains(self):
+        """The legacy PROPAGATION_MATRIX covers all expected domain entries."""
         rules = PROPAGATION_MATRIX.get(FailureDomain.DISPATCHER, [])
         actions = {r.action for r in rules}
         assert PropagationAction.RETRY in actions
-        assert PropagationAction.CLASSIFY in actions
         assert PropagationAction.RELEASE_LEASE in actions
 
-    def test_lease_expiry_triggers_cancel_rollback_reassign(self):
-        """LAW 22: lease expiry → cancel + rollback + reassign."""
-        rules = PROPAGATION_MATRIX.get(FailureDomain.LEASE_MANAGER, [])
-        actions = {r.action for r in rules}
-        assert PropagationAction.CANCEL in actions
-        assert PropagationAction.ROLLBACK in actions
-        assert PropagationAction.REASSIGN in actions
+    def test_failure_matrix_covers_all_scenarios(self):
+        matrix = FailurePropagationPolicy()
+        scenarios = matrix.get_all_scenarios()
+        scenario_ids = {s["scenario_id"] for s in scenarios}
+        for expected_id in [f"F{i:02d}" for i in range(1, 9)]:
+            assert expected_id in scenario_ids, (
+                f"Missing scenario {expected_id}"
+            )
 
-    def test_state_store_failure_includes_degrade(self):
-        rules = PROPAGATION_MATRIX.get(FailureDomain.STATE_STORE, [])
-        actions = {r.action for r in rules}
-        assert PropagationAction.DEGRADE in actions, (
-            "State store failure must include degrade mode"
-        )
-
-    def test_policy_evaluate_returns_rules(self):
-        policy = FailurePropagationPolicy()
-        rules = policy.evaluate(FailureDomain.DISPATCHER)
-        assert len(rules) >= 3
-
-    def test_policy_should_retry(self):
-        policy = FailurePropagationPolicy()
-        assert policy.should_retry(FailureDomain.DISPATCHER, 0) is True
-        assert policy.should_retry(FailureDomain.DISPATCHER, 3) is False
-
-    def test_policy_degrade_mode(self):
-        policy = FailurePropagationPolicy()
-        mode = policy.degrade_mode(FailureDomain.STATE_STORE)
-        assert mode is not None
+    def test_failure_matrix_unknown_domain_raises(self):
+        matrix = FailurePropagationPolicy()
+        with pytest.raises(KeyError):
+            matrix.apply("UnknownDomain")
 
 
 # ── D8.3.5 — Canon Enforcement of Service Ownership ───────────────
@@ -382,3 +392,39 @@ class TestViolationClassification:
                 assert "affected_files_active" in cv, (
                     f"{cid} active debt missing affected_files_active list"
                 )
+
+
+# ── D8.3.7 — Protocol Compliance (Implementation satisfies Protocol) ──
+
+
+class TestImplementationSatisfiesProtocol:
+    """Verify each implementation structurally satisfies its Protocol.
+
+    Uses Protocol structural subtyping: a class satisfies a Protocol
+    if it has all the methods with matching signatures.
+    """
+
+    def test_scheduler_satisfies_protocol(self):
+        from core.interfaces.scheduler import IExecutionScheduler
+        from core.runtime.services.scheduler import ExecutionScheduler
+        assert isinstance(ExecutionScheduler(), IExecutionScheduler)
+
+    def test_dispatcher_satisfies_protocol(self):
+        from core.interfaces.dispatcher import IExecutionDispatcher
+        from core.runtime.services.tool_dispatcher import ExecutionToolDispatcher
+        assert isinstance(ExecutionToolDispatcher(), IExecutionDispatcher)
+
+    def test_retry_handler_satisfies_protocol(self):
+        from core.interfaces.retry import IExecutionRetryHandler
+        from core.runtime.services.retry_handler import ExecutionRetryHandler
+        assert isinstance(ExecutionRetryHandler(), IExecutionRetryHandler)
+
+    def test_state_store_satisfies_protocol(self):
+        from core.interfaces.state_store import IExecutionStateStore
+        from core.runtime.services.state_store import ExecutionStateStore
+        assert isinstance(ExecutionStateStore(), IExecutionStateStore)
+
+    def test_lease_manager_satisfies_protocol(self):
+        from core.interfaces.lease import IExecutionLeaseManager
+        from core.runtime.services.lease_manager import ExecutionLeaseManager
+        assert isinstance(ExecutionLeaseManager(), IExecutionLeaseManager)

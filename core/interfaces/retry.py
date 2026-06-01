@@ -1,54 +1,57 @@
 """D8.1 — IExecutionRetryHandler: retry semantics only.
 
-OWNERSHIP: retry semantics
-  - retry policy evaluation
-  - backoff computation
-  - failure classification
-  - retry exhaustion handling
+LAW 25: RetryHandler owns retry semantics.
+FORBIDDEN: scheduling, dispatch, state, lease.
 
-FORBIDDEN:
-  - scheduling
-  - state storage
-  - dispatch
-  - lease management
+Source of Truth: core/runtime/services/retry_handler.py::ExecutionRetryHandler
+
+Ref: DEVELOPER.md §15.15a D8.1
+Ref: Canon LAW 25
 """
 
-from typing import Any, Dict, Optional, Protocol
-
-from core.models.dag import PlanNode, RetryPolicy
+from typing import Any, Dict, Optional, Protocol, runtime_checkable
 
 
+class RetryDecisionError(Exception):
+    """Raised when retry decision cannot be computed."""
+
+
+class RecordingError(Exception):
+    """Raised when failure cannot be persisted."""
+
+
+@runtime_checkable
 class IExecutionRetryHandler(Protocol):
-    """Owns retry semantics — nothing else."""
+    """Owns retry semantics — nothing else.
 
-    def classify_failure(self, error: str) -> str:
-        """Classify failure type (transient, permanent, timeout, etc)."""
+    Contract methods:
+      decide_retry(node_id, error, attempt, max_attempts?)  → bool
+      apply_backoff(attempt, base_delay?, max_delay?)  → float
+      record_failure(node_id, error, attempt, context?) → None
+    """
 
-    def should_retry(
+    def decide_retry(
         self,
-        node: PlanNode,
-        policy: RetryPolicy,
+        node_id: str,
+        error: Exception,
+        attempt: int,
+        max_attempts: int = 3,
     ) -> bool:
-        """Determine if the node should be retried."""
+        """Decide whether a failed execution should be retried."""
 
-    def compute_backoff(
+    def apply_backoff(
         self,
-        retry_count: int,
-        policy: RetryPolicy,
+        attempt: int,
+        base_delay: float = 1.0,
+        max_delay: float = 60.0,
     ) -> float:
-        """Compute backoff duration for next retry."""
+        """Compute the backoff delay before the next retry."""
 
-    def handle_exhaustion(
+    def record_failure(
         self,
-        node: PlanNode,
-        error: str,
-    ) -> Dict[str, Any]:
-        """Handle retry exhaustion — final failure result."""
-
-    def record_attempt(
-        self,
-        node: PlanNode,
-        success: bool,
-        duration: float,
+        node_id: str,
+        error: Exception,
+        attempt: int,
+        context: Optional[Dict[str, Any]] = None,
     ) -> None:
-        """Record a retry attempt for analytics."""
+        """Record a failure for telemetry and pattern detection."""

@@ -1,57 +1,71 @@
 """D8.1 — IExecutionDispatcher: tool resolution + execution routing.
 
-OWNERSHIP: execution routing
-  - tool resolution (local/remote)
-  - execution dispatch
-  - remote service routing
-  - contract validation before dispatch
+LAW 24: Dispatcher owns execution routing.
+FORBIDDEN: state, lease, retry, scheduling.
 
-FORBIDDEN:
-  - state mutation
-  - retry decisions
-  - lease management
-  - scheduling
+Source of Truth: core/runtime/services/tool_dispatcher.py::ExecutionToolDispatcher
+
+Ref: DEVELOPER.md §15.15a D8.1
+Ref: Canon LAW 24
 """
 
-from typing import Any, Callable, Dict, Optional, Protocol
-
-from core.models.dag import PlanNode, ToolSpec
+from typing import Any, Dict, Optional, Protocol, runtime_checkable
 
 
+class DispatchError(Exception):
+    """Raised when tool dispatch routing fails."""
+
+
+class UnknownToolError(Exception):
+    """Raised when tool_name is not registered."""
+
+
+class ContractViolationError(Exception):
+    """Raised when tool call violates its contract."""
+
+
+class RoutingError(Exception):
+    """Raised when service domain or method is unknown."""
+
+
+@runtime_checkable
 class IExecutionDispatcher(Protocol):
-    """Owns execution routing — nothing else."""
+    """Owns execution routing — nothing else.
 
-    def resolve_tool(self, tool_name: str) -> Optional[ToolSpec]:
-        """Resolve a tool name to its specification."""
+    Contract methods:
+      register_tool(tool_name, executor, contract_schema?)
+      dispatch_tool_call(tool_name, inputs, context?)  → result
+      validate_contract(tool_name, inputs)  → bool
+      route_service(service_domain, method, payload)  → Any
+    """
 
-    def can_dispatch(self, tool_name: str) -> bool:
-        """Check if the tool can be dispatched (local or remote)."""
-
-    def dispatch_local(
+    def register_tool(
         self,
-        node: PlanNode,
-        runner: Callable,
-        timeout: float,
-    ) -> Dict[str, Any]:
-        """Execute a node locally with timeout."""
+        tool_name: str,
+        executor: Any,
+        contract_schema: Optional[Dict[str, Any]] = None,
+    ) -> None:
+        """Register a tool for dispatch."""
 
-    def dispatch_remote(
+    def dispatch_tool_call(
         self,
-        node: PlanNode,
-        service_registry: Any,
+        tool_name: str,
+        inputs: Dict[str, Any],
+        context: Optional[Any] = None,
     ) -> Dict[str, Any]:
-        """Route execution to a remote service."""
+        """Route a tool call to the appropriate execution path."""
 
     def validate_contract(
         self,
-        spec: ToolSpec,
+        tool_name: str,
         inputs: Dict[str, Any],
-    ) -> list[str]:
-        """Validate inputs against tool contract. Return violations."""
+    ) -> bool:
+        """Validate that a tool call conforms to its contract."""
 
-    def validate_output(
+    def route_service(
         self,
-        spec: ToolSpec,
-        result: Dict[str, Any],
-    ) -> list[str]:
-        """Validate outputs against tool contract. Return violations."""
+        service_domain: str,
+        method: str,
+        payload: Dict[str, Any],
+    ) -> Any:
+        """Route an inter-service call to the correct service."""
