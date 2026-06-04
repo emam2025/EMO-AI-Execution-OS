@@ -4,9 +4,9 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Emo AI Orchestrator</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;family=Cairo:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="/static/styles.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" onerror="this.remove()"/>
+<noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet"/></noscript>
 <script>
   tailwind.config = {
     darkMode: "class",
@@ -80,35 +80,7 @@
     }
   }
 </script>
-<style>
-  :root { --primary: #d0bcff; --bg: #0f0f24; --surface: rgba(18, 18, 32, 0.85); --border: rgba(255, 255, 255, 0.08); --text: #e3e0f4; --text-dim: #8899bb; }
-  html.light { --primary: #5516be; --bg: #f5f0ff; --surface: rgba(255, 255, 255, 0.85); --border: rgba(0, 0, 0, 0.1); --text: #1c1b1f; --text-dim: #49454f; }
-  body { font-family: 'Inter', 'Cairo', sans-serif; background-color: var(--bg); color: var(--text); height: 100vh; overflow: hidden; }
-  .glass { background: var(--surface); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--border); }
-  .mesh-gradient { background-color: var(--bg); background-image: radial-gradient(at 0% 0%, rgba(139, 92, 246, 0.15) 0px, transparent 50%), radial-gradient(at 100% 0%, rgba(236, 72, 153, 0.1) 0px, transparent 50%), radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.05) 0px, transparent 50%), radial-gradient(at 0% 100%, rgba(245, 158, 11, 0.05) 0px, transparent 50%); }
-  .gradient-text { background: linear-gradient(135deg, #d0bcff, #ffb0cd); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-  html.light .gradient-text { background: linear-gradient(135deg, #5516be, #aa0266); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-  .side-panel { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-  @media(max-width: 1023px) { .side-panel { position: fixed; top: 64px; bottom: 48px; z-index: 50; } .side-left { left: 0; transform: translateX(-100%); } .side-left-projects { left: 0; transform: translateX(-100%); } .side-left-sessions { left: 240px; transform: translateX(-100%); } .side-right { right: 0; transform: translateX(100%); } .side-workspace { right: 0; transform: translateX(100%); } .side-left.open, .side-left-projects.open, .side-left-sessions.open, .side-right.open, .side-workspace.open { transform: translateX(0); } }
-  .agent-card { position: relative; overflow: hidden; transition: all 0.3s ease; }
-  .agent-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.05), transparent); opacity: 0; transition: opacity 0.3s; }
-  .agent-card:hover::before { opacity: 1; }
-  .agent-card.running { border-color: rgba(245, 158, 11, 0.5); box-shadow: 0 0 20px rgba(245, 158, 11, 0.1); }
-  .chat-bubble-user { background: linear-gradient(135deg, #6d3bd7, #a078ff); box-shadow: 0 4px 15px rgba(109, 59, 215, 0.2); }
-  .chat-bubble-ai { background: rgba(30, 30, 44, 0.6); border: 1px solid rgba(255, 255, 255, 0.05); backdrop-filter: blur(4px); }
-  html.light .chat-bubble-ai { background: rgba(230, 224, 244, 0.6); border: 1px solid rgba(0, 0, 0, 0.08); }
-  ::-webkit-scrollbar { width: 4px; } ::-webkit-scrollbar-track { background: transparent; } ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; } ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.2); }
-  .modal-overlay { background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px); }
-  .step-enter { animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) both; }
-  @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-  .typing-dot { width: 4px; height: 4px; border-radius: 50%; background: #d0bcff; animation: pulse 1s infinite; }
-  @keyframes pulse { 0%, 100% { opacity: 0.3; transform: scale(1); } 50% { opacity: 1; transform: scale(1.2); } }
-  .item-hover { transition: all 0.2s; } .item-hover:hover { background: rgba(255,255,255,0.05); }
-  .item-actions { opacity: 0; transition: opacity 0.2s; } .item-hover:hover .item-actions { opacity: 1; }
-  .archive-item { opacity: 0.6; } .archive-item:hover { opacity: 1; }
-  .workspace-tab { transition: all 0.2s; } .workspace-tab.active { background: rgba(208, 188, 255, 0.15); color: var(--primary); border-bottom: 2px solid var(--primary); }
-  .op-running { border-left: 3px solid #f59e0b; } .op-complete { border-left: 3px solid #10b981; } .op-error { border-left: 3px solid #ef4444; } .op-pending { border-left: 3px solid #958ea0; }
-</style>
+
 </head>
 <body class="{{ theme }}">
 <div class="h-screen flex flex-col mesh-gradient">
