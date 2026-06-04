@@ -370,86 +370,152 @@ async def root(request: Request):
     )
 
 
+DEFAULT_MODELS = {
+    "openrouter": [
+        {"id": "openai/gpt-4o", "name": "GPT-4o", "free": False},
+        {"id": "openai/gpt-4o-mini", "name": "GPT-4o Mini", "free": False},
+        {"id": "google/gemini-2.0-flash-001", "name": "Gemini 2.0 Flash", "free": True},
+        {"id": "google/gemini-2.5-flash-preview", "name": "Gemini 2.5 Flash", "free": True},
+        {"id": "meta-llama/llama-3.3-70b-instruct", "name": "Llama 3.3 70B", "free": True},
+        {"id": "mistralai/mistral-small-3.1", "name": "Mistral Small 3.1", "free": False},
+        {"id": "deepseek/deepseek-chat", "name": "DeepSeek V3", "free": False},
+        {"id": "microsoft/phi-4", "name": "Phi-4", "free": True},
+    ],
+    "groq": [
+        {"id": "llama-3.3-70b-versatile", "name": "Llama 3.3 70B", "free": True},
+        {"id": "llama-3.1-8b-instant", "name": "Llama 3.1 8B", "free": True},
+        {"id": "mixtral-8x7b-32768", "name": "Mixtral 8x7B", "free": True},
+        {"id": "gemma2-9b-it", "name": "Gemma 2 9B", "free": True},
+        {"id": "deepseek-r1-distill-llama-70b", "name": "DeepSeek R1 70B", "free": True},
+    ],
+    "gemini": [
+        {"id": "gemini-2.0-flash", "name": "Gemini 2.0 Flash", "free": True},
+        {"id": "gemini-2.5-flash-preview", "name": "Gemini 2.5 Flash", "free": True},
+        {"id": "gemini-2.5-pro-preview", "name": "Gemini 2.5 Pro", "free": False},
+        {"id": "gemini-1.5-flash", "name": "Gemini 1.5 Flash", "free": True},
+        {"id": "gemini-1.5-pro", "name": "Gemini 1.5 Pro", "free": False},
+    ],
+    "ollama": [
+        {"id": "llama3.2", "name": "Llama 3.2", "free": True},
+        {"id": "llama3.1", "name": "Llama 3.1", "free": True},
+        {"id": "mistral", "name": "Mistral", "free": True},
+        {"id": "codellama", "name": "CodeLlama", "free": True},
+        {"id": "gemma2", "name": "Gemma 2", "free": True},
+        {"id": "deepseek-r1", "name": "DeepSeek R1", "free": True},
+        {"id": "phi4", "name": "Phi-4", "free": True},
+    ],
+}
+
+
+async def _fetch_openrouter_models(key: str) -> list | None:
+    try:
+        import httpx
+        async with httpx.AsyncClient(timeout=10) as client:
+            r = await client.get(
+                "https://openrouter.ai/api/v1/models",
+                headers={"Authorization": f"Bearer {key}"}
+            )
+            if r.status_code == 200:
+                data = r.json()
+                models = []
+                for m in data.get("data", []):
+                    pricing = m.get("pricing", {})
+                    prompt_cost = float(pricing.get("prompt", 1))
+                    compl_cost = float(pricing.get("completion", 1))
+                    is_free = prompt_cost < 0.00001 and compl_cost < 0.00001
+                    models.append({
+                        "id": m["id"],
+                        "name": m.get("name", m["id"]),
+                        "free": is_free,
+                    })
+                return models if models else None
+    except Exception:
+        return None
+
+
+async def _fetch_gemini_models(key: str) -> list | None:
+    try:
+        import httpx
+        async with httpx.AsyncClient(timeout=10) as client:
+            r = await client.get(
+                "https://generativelanguage.googleapis.com/v1beta/models",
+                params={"key": key}
+            )
+            if r.status_code == 200:
+                data = r.json()
+                models = []
+                supported_prefixes = ("models/gemini-", "models/gpt-")
+                for m in data.get("models", []):
+                    name = m.get("name", "")
+                    if not any(name.startswith(p) for p in ("models/gemini-",)):
+                        continue
+                    supported = m.get("supportedGenerationMethods", [])
+                    if "generateContent" not in supported:
+                        continue
+                    display_name = m.get("displayName", name.replace("models/", ""))
+                    is_free = "pro" not in name.lower()
+                    models.append({
+                        "id": name.replace("models/", ""),
+                        "name": display_name,
+                        "free": is_free,
+                    })
+                return models if models else None
+    except Exception:
+        return None
+
+
+async def _fetch_groq_models(key: str) -> list | None:
+    try:
+        import httpx
+        async with httpx.AsyncClient(timeout=10) as client:
+            r = await client.get(
+                "https://api.groq.com/openai/v1/models",
+                headers={"Authorization": f"Bearer {key}"}
+            )
+            if r.status_code == 200:
+                data = r.json()
+                models = []
+                for m in data.get("data", []):
+                    gid = m.get("id", "")
+                    models.append({
+                        "id": gid,
+                        "name": m.get("name", gid) if m.get("name") else gid,
+                        "free": "free" in m.get("owned_by", "").lower() or "groq" in gid.lower(),
+                    })
+                if models:
+                    models.sort(key=lambda x: (not x["free"], x["id"]))
+                return models if models else None
+    except Exception:
+        return None
+
+
 @app.get("/api/models/{provider}")
-async def list_models(provider: str):
-    """Fetch available models from a provider with pricing info."""
-    default_models = {
-        "openrouter": [
-            {"id": "openai/gpt-4o", "name": "GPT-4o", "free": False},
-            {"id": "openai/gpt-4o-mini", "name": "GPT-4o Mini", "free": False},
-            {"id": "openai/gpt-4.1", "name": "GPT-4.1", "free": False},
-            {"id": "openai/o3-mini", "name": "o3 Mini", "free": False},
-            {"id": "anthropic/claude-sonnet-4", "name": "Claude Sonnet 4", "free": False},
-            {"id": "anthropic/claude-haiku-4", "name": "Claude Haiku 4", "free": False},
-            {"id": "google/gemini-2.0-flash-001", "name": "Gemini 2.0 Flash", "free": True},
-            {"id": "google/gemini-2.5-flash-preview", "name": "Gemini 2.5 Flash", "free": True},
-            {"id": "mistralai/mistral-small-3.1", "name": "Mistral Small 3.1", "free": False},
-            {"id": "mistralai/mistral-large-2411", "name": "Mistral Large", "free": False},
-            {"id": "meta-llama/llama-3.3-70b-instruct", "name": "Llama 3.3 70B", "free": True},
-            {"id": "meta-llama/llama-3.1-8b-instruct", "name": "Llama 3.1 8B", "free": True},
-            {"id": "deepseek/deepseek-r1", "name": "DeepSeek R1", "free": False},
-            {"id": "deepseek/deepseek-chat", "name": "DeepSeek V3", "free": False},
-            {"id": "qwen/qwq-32b", "name": "QwQ 32B", "free": False},
-            {"id": "microsoft/phi-4", "name": "Phi-4", "free": True},
-        ],
-        "groq": [
-            {"id": "llama-3.3-70b-versatile", "name": "Llama 3.3 70B", "free": True},
-            {"id": "llama-3.1-8b-instant", "name": "Llama 3.1 8B", "free": True},
-            {"id": "mixtral-8x7b-32768", "name": "Mixtral 8x7B", "free": True},
-            {"id": "gemma2-9b-it", "name": "Gemma 2 9B", "free": True},
-            {"id": "deepseek-r1-distill-llama-70b", "name": "DeepSeek R1 70B", "free": True},
-        ],
-        "gemini": [
-            {"id": "gemini-2.0-flash", "name": "Gemini 2.0 Flash", "free": True},
-            {"id": "gemini-2.5-flash-preview", "name": "Gemini 2.5 Flash", "free": True},
-            {"id": "gemini-2.5-pro-preview", "name": "Gemini 2.5 Pro", "free": False},
-            {"id": "gemini-1.5-flash", "name": "Gemini 1.5 Flash", "free": True},
-            {"id": "gemini-1.5-pro", "name": "Gemini 1.5 Pro", "free": False},
-        ],
-        "ollama": [
-            {"id": "llama3.2", "name": "Llama 3.2", "free": True},
-            {"id": "llama3.1", "name": "Llama 3.1", "free": True},
-            {"id": "mistral", "name": "Mistral", "free": True},
-            {"id": "codellama", "name": "CodeLlama", "free": True},
-            {"id": "gemma2", "name": "Gemma 2", "free": True},
-            {"id": "deepseek-r1", "name": "DeepSeek R1", "free": True},
-            {"id": "phi4", "name": "Phi-4", "free": True},
-        ],
-    }
+async def list_models(provider: str, key: str = ""):
+    """Fetch available models from a provider with pricing info.
 
-    # Try fetching real models from OpenRouter API
-    if provider == "openrouter":
+    Accepts optional ?key= to use a freshly entered key.
+    Falls back to Keychain, then to static defaults.
+    """
+    # Resolve key: parameter > Keychain
+    api_key = key.strip() if key else None
+    if not api_key:
         kp = KeychainProvider()
-        key = kp.get("openrouter")
-        if key:
-            try:
-                import httpx
-                async with httpx.AsyncClient(timeout=10) as client:
-                    r = await client.get(
-                        "https://openrouter.ai/api/v1/models",
-                        headers={"Authorization": f"Bearer {key}"}
-                    )
-                    if r.status_code == 200:
-                        data = r.json()
-                        models = []
-                        for m in data.get("data", []):
-                            pricing = m.get("pricing", {})
-                            # Free if both prompt and completion cost < $0.00001
-                            prompt_cost = float(pricing.get("prompt", 1))
-                            compl_cost = float(pricing.get("completion", 1))
-                            is_free = prompt_cost < 0.00001 and compl_cost < 0.00001
-                            models.append({
-                                "id": m["id"],
-                                "name": m.get("name", m["id"]),
-                                "free": is_free,
-                            })
-                        if models:
-                            return {"models": models}
-            except Exception:
-                pass
+        api_key = kp.get(provider)
 
-    models = default_models.get(provider, [{"id": "unknown", "name": "Unknown", "free": False}])
-    return {"models": models}
+    live_models = None
+    if api_key:
+        if provider == "openrouter":
+            live_models = await _fetch_openrouter_models(api_key)
+        elif provider == "gemini":
+            live_models = await _fetch_gemini_models(api_key)
+        elif provider == "groq":
+            live_models = await _fetch_groq_models(api_key)
+
+    if live_models:
+        return {"models": live_models, "source": "live"}
+
+    fallback = DEFAULT_MODELS.get(provider, [])
+    return {"models": fallback, "source": "default"}
 
 
 @app.get("/api/test-connection")

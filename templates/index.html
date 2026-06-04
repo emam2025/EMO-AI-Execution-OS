@@ -1330,8 +1330,11 @@ async function activateProject(id) {
     const count = document.getElementById('modelsCount');
     select.innerHTML = '<option class="bg-surface-container-low" value="">Loading...</option>';
     count.textContent = '';
+    const key = document.getElementById('settingsApiKey').value.trim();
+    let url = '/api/models/' + selectedProvider;
+    if(key) url += '?key=' + encodeURIComponent(key);
     try {
-      const res = await fetch('/api/models/' + selectedProvider);
+      const res = await fetch(url);
       const data = await res.json();
       if(data.models && data.models.length) {
         select.innerHTML = '';
@@ -1344,7 +1347,8 @@ async function activateProject(id) {
           select.appendChild(opt);
         });
         const freeCount = data.models.filter(m => m.free).length;
-        count.textContent = data.models.length + ' models (' + freeCount + ' free)';
+        const sourceTag = data.source === 'live' ? '⚡' : '📋';
+        count.textContent = sourceTag + ' ' + data.models.length + ' models (' + freeCount + ' free)';
       } else {
         select.innerHTML = '<option class="bg-surface-container-low" value="">' + (data.error || 'No models') + '</option>';
       }
@@ -1392,6 +1396,8 @@ async function activateProject(id) {
       if(data.connected) {
         if(statusEl) statusEl.innerHTML = '<span class="text-agent-coder">✅ ' + t('connected') + ' (' + (data.latency || '--') + 'ms)</span>';
         providersData[selectedProvider].in_keychain = true;
+        // Auto-reload models after successful connection
+        fetchModels();
       } else {
         if(statusEl) statusEl.innerHTML = '<span class="text-status-error">❌ ' + t('connection_failed') + ': ' + escapeHtml(data.error || '') + '</span>';
       }
