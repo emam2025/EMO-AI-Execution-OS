@@ -11,255 +11,112 @@
 
 </head>
 <body class="{{ theme }}">
-<div class="h-screen flex flex-col mesh-gradient">
-  <!-- Header -->
-  <header class="h-16 glass flex items-center justify-between px-4 shrink-0 z-50">
-    <div class="flex items-center gap-3">
-      <button class="lg:hidden p-2 rounded-lg hover:bg-white/5" onclick="togglePanel('projects')"><i class="fas fa-folder-tree"></i></button>
-      <button class="lg:hidden p-2 rounded-lg hover:bg-white/5" onclick="togglePanel('sessions')"><i class="fas fa-layer-group"></i></button>
-      <div class="flex items-center gap-2">
-        <img src="/static/logo.png" alt="EMO AI" class="w-9 h-9 rounded-xl object-cover"/>
-        <div class="flex flex-col leading-tight">
-          <span class="font-bold text-base text-primary tracking-tight uppercase">Emo AI</span>
-          <span class="text-[8px] font-medium tracking-widest opacity-40 uppercase">Orchestrator v1.2</span>
-        </div>
+<div class="app-shell">
+  <!-- ═══ Top Navigation ═══ -->
+  <header class="app-header">
+    <div class="brand">
+      <img src="/static/logo.png" alt="EMO AI" class="w-7 h-7 rounded-lg object-cover"/>
+      <div class="flex flex-col leading-tight">
+        <h1>EMO AI</h1>
+        <span>AI Orchestrator</span>
       </div>
     </div>
-    <div class="flex items-center gap-2">
-      <div class="hidden md:flex items-center gap-2 px-2 py-1 rounded-full bg-surface-container-low border border-white/5 text-[10px] font-medium">
-        <span class="w-1.5 h-1.5 rounded-full bg-agent-coder animate-pulse" id="headerStatusDot"></span>
-        <span class="opacity-60" id="headerStatusText" data-i18n="status_online">متصل</span>
-      </div>
-      <div class="h-6 w-[1px] bg-white/10 mx-1"></div>
-      <button class="w-9 h-9 rounded-lg hover:bg-white/5 flex items-center justify-center transition-all" onclick="openArchiveModal()" title="Archive">
-        <i class="fas fa-archive text-outline hover:text-primary transition-colors"></i>
-      </button>
-      <button class="w-9 h-9 rounded-lg hover:bg-white/5 flex items-center justify-center transition-all" onclick="openSettings()" title="Settings">
-        <i class="fas fa-sliders text-outline group-hover:text-primary transition-colors"></i>
-      </button>
-      <select class="text-[10px] font-bold px-2 py-1 rounded-lg border-white/10 bg-surface-container-high focus:ring-1 focus:ring-primary/30 cursor-pointer" onchange="setLang(this.value)">
+    <div class="command-bar">
+      <i class="fas fa-search search-icon"></i>
+      <input type="search" placeholder="Search anything..." id="commandSearch"/>
+      <span class="kbd">⌘K</span>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-ghost btn-icon" data-tooltip="Notifications" aria-label="Notifications"><i class="fas fa-bell"></i></button>
+      <button class="btn btn-ghost btn-icon" data-tooltip="Help" aria-label="Help"><i class="fas fa-question-circle"></i></button>
+      <button class="btn btn-ghost btn-icon" data-tooltip="Settings" aria-label="Settings" onclick="openSettings()"><i class="fas fa-cog"></i></button>
+      <select class="text-[11px] font-semibold px-2 py-1.5 rounded-lg bg-white/5 border border-white/10 cursor-pointer" onchange="setLang(this.value)" style="background:rgba(255,255,255,0.04);color:var(--emo-text-secondary);">
         <option value="en" {{ selected_en }}>EN</option>
         <option value="ar" {{ selected_ar }}>AR</option>
       </select>
-      <button class="w-9 h-9 rounded-lg hover:bg-white/5 flex items-center justify-center transition-all" onclick="toggleTheme()">
-        <i class="fas fa-moon text-outline" id="themeIcon"></i>
-      </button>
-      <button class="lg:hidden w-9 h-9 rounded-lg hover:bg-white/5 flex items-center justify-center" onclick="togglePanel('workspace')"><i class="fas fa-diagram-project"></i></button>
     </div>
   </header>
 
-  <div class="flex flex-1 overflow-hidden">
-    <!-- Projects Sidebar -->
-    <aside class="side-panel side-left-projects w-sidebar-projects shrink-0 glass border-y-0 border-l-0 flex flex-col hidden lg:flex" id="projectsPanel">
-      <div class="p-4 border-b border-white/5">
-        <div class="flex items-center justify-between mb-3">
-          <span class="text-[9px] font-bold tracking-[0.2em] text-outline uppercase" data-i18n="projects">Projects</span>
-          <button class="w-6 h-6 rounded-lg bg-white/5 flex items-center justify-center hover:bg-primary/10 hover:text-primary transition-all" onclick="openNewProject()" title="New Project">
-            <i class="fas fa-plus text-[10px]"></i>
-          </button>
-        </div>
-        <div class="text-[8px] font-bold text-primary uppercase mb-2">Current Project</div>
-        <div class="p-3 rounded-xl bg-primary/10 border border-primary/20 cursor-pointer" id="currentProjectCard" onclick="openWorkspacePanel()">
-          <div class="flex items-center gap-3">
-            <div class="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center shrink-0"><i class="fas fa-folder-open text-primary"></i></div>
-            <div class="flex-1 min-w-0">
-              <div class="text-sm font-bold truncate text-primary" id="currentProjectName">{{ proj_name }}</div>
-              <div class="text-[9px] opacity-50 truncate" id="currentProjectPath">{{ proj_dir }}</div>
-            </div>
-          </div>
-        </div>
+  <!-- ═══ Sidebar ═══ -->
+  <aside class="app-sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Overview</div>
+      <div class="nav-item active" data-nav="home" onclick="switchNav('home')"><i class="fas fa-house"></i> Home</div>
+      <div class="nav-item" data-nav="projects" onclick="switchNav('projects'); openNewProject()"><i class="fas fa-folder"></i> Projects</div>
+      <div class="nav-item" data-nav="agents" onclick="switchNav('agents')"><i class="fas fa-robot"></i> Agents</div>
+      <div class="nav-item" data-nav="models" onclick="switchNav('models')"><i class="fas fa-brain"></i> Models</div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Workspace</div>
+      <div class="nav-item" data-nav="memory" onclick="switchNav('memory')"><i class="fas fa-database"></i> Memory</div>
+      <div class="nav-item" data-nav="workflows" onclick="switchNav('workflows')"><i class="fas fa-diagram-project"></i> Workflows</div>
+      <div class="nav-item" data-nav="monitoring" onclick="switchNav('monitoring')"><i class="fas fa-chart-bar"></i> Monitoring</div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">System</div>
+      <div class="nav-item" data-nav="security" onclick="switchNav('security')"><i class="fas fa-shield"></i> Security</div>
+      <div class="nav-item" data-nav="settings" onclick="switchNav('settings'); openSettings()"><i class="fas fa-cog"></i> Settings</div>
+    </div>
+    <div class="sidebar-section" style="margin-top:auto;">
+      <div class="nav-item" onclick="toggleProviderPopup(event)">
+        <i class="fas fa-circle" id="statusDot" style="color:var(--emo-blue-light);font-size:8px;"></i>
+        <span class="flex-1">{{ provider_sel }}</span>
+        <span class="badge" id="statusModelFooter">{{ cur_model }}</span>
       </div>
-      <div class="flex-1 overflow-y-auto px-3 py-3">
-        <div class="text-[8px] font-bold tracking-[0.15em] text-outline uppercase mb-2">Other Projects</div>
-        <div class="space-y-1" id="projectsList">
-          <div class="text-[10px] text-center py-4 opacity-30 italic">No projects yet</div>
-        </div>
+      <div class="provider-popup hidden" id="providerPopup" style="position:absolute;bottom:60px;left:12px;width:220px;">
+        <div class="text-[10px] font-bold tracking-wider px-2 py-1.5" style="color:var(--emo-text-muted);">Providers</div>
+        <div class="space-y-1 px-1" id="providerPopupList"></div>
       </div>
-    </aside>
+    </div>
+  </aside>
 
-    <!-- Sessions Sidebar -->
-    <aside class="side-panel side-left-sessions w-sidebar-sessions shrink-0 glass border-y-0 border-l-0 border-r-0 flex flex-col hidden lg:flex" id="sessionsPanel">
-      <div class="p-4 border-b border-white/5">
-        <div class="flex items-center justify-between mb-3">
-          <span class="text-[9px] font-bold tracking-[0.2em] text-outline uppercase" data-i18n="sessions">Sessions</span>
-          <button class="w-6 h-6 rounded-lg bg-white/5 flex items-center justify-center hover:bg-primary/10 hover:text-primary transition-all" onclick="createNewSession()" title="New Session">
-            <i class="fas fa-plus text-[10px]"></i>
-          </button>
+  <!-- ═══ Main Content ═══ -->
+  <main class="main-content">
+    <!-- Message Area -->
+    <div class="message-area" id="chatArea">
+      <div class="max-w-content">
+        <!-- Welcome Empty State -->
+        <div class="empty-state" id="welcome">
+          <img src="/static/logo.png" alt="EMO AI" class="logo"/>
+          <h2 class="gradient-text">Welcome to EMO AI</h2>
+          <p>Your intelligent workspace for building, automating and managing AI tasks.</p>
+          <div class="actions">
+            <button class="btn btn-primary" onclick="openNewProject()"><i class="fas fa-plus"></i> Create Project</button>
+            <button class="btn btn-secondary" onclick="openSettings()"><i class="fas fa-sliders"></i> Configure Models</button>
+          </div>
         </div>
+        <!-- Messages -->
+        <div id="messages" class="space-y-6"></div>
       </div>
-      <div class="flex-1 overflow-y-auto px-3 py-3">
-        <div class="text-[8px] font-bold tracking-[0.15em] text-outline uppercase mb-2">Current Session</div>
-        <div class="p-2 rounded-xl bg-primary/10 border border-primary/20 mb-3">
-          <div class="text-xs font-semibold truncate" id="currentSessionName">جلسة جديدة</div>
-          <div class="text-[8px] opacity-40" id="currentSessionInfo">0 conversations</div>
-        </div>
-        <div class="text-[8px] font-bold tracking-[0.15em] text-outline uppercase mb-2">Other Sessions</div>
-        <div class="space-y-1" id="sessionsList">
-          <div class="text-[10px] text-center py-4 opacity-30 italic">No sessions yet</div>
-        </div>
-      </div>
-    </aside>
+    </div>
 
-    <!-- Main Chat Content -->
-    <main class="flex-1 flex flex-col min-w-0 relative">
-      <div class="flex-1 overflow-y-auto px-4 py-8 lg:px-12 space-y-6 scroll-smooth" id="chatArea">
-        <div class="flex flex-col items-center justify-center h-full text-center max-w-md mx-auto" id="welcome">
-          <div class="relative mb-8">
-            <div class="absolute inset-0 blur-3xl bg-primary/20 rounded-full"></div>
-            <div class="w-32 h-32 flex items-center justify-center relative">
-              <img src="/static/logo.png" alt="EMO AI" class="w-full h-full object-contain"/>
-            </div>
-          </div>
-          <h2 class="text-3xl font-extrabold tracking-tight mb-3 gradient-text" data-i18n="welcome_title">{{ tr.app_name }}</h2>
-          <p class="text-sm font-medium opacity-40 leading-relaxed mb-8" data-i18n="welcome_subtitle">{{ tr.tagline }}</p>
-          <div class="grid grid-cols-2 gap-3 w-full">
-            <div class="p-4 rounded-2xl glass border-white/5 text-left group hover:border-primary/30 transition-all cursor-pointer">
-              <i class="fas fa-code text-agent-coder mb-2"></i>
-              <div class="text-xs font-bold mb-1 tracking-tight" data-i18n="system_build">System Build</div>
-              <div class="text-[10px] opacity-40 font-medium" data-i18n="system_build_desc">Generate professional code structures instantly.</div>
-            </div>
-            <div class="p-4 rounded-2xl glass border-white/5 text-left group hover:border-primary/30 transition-all cursor-pointer">
-              <i class="fas fa-search-nodes text-agent-researcher mb-2"></i>
-              <div class="text-xs font-bold mb-1 tracking-tight" data-i18n="market_analysis">Market Analysis</div>
-              <div class="text-[10px] opacity-40 font-medium" data-i18n="market_analysis_desc">Deep research with grounded search results.</div>
-            </div>
-          </div>
+    <!-- AI Composer -->
+    <div class="composer-wrapper">
+      <div class="hidden mb-3 p-3 rounded-xl glass flex items-center gap-3" id="filePreview">
+        <div class="w-9 h-9 rounded-lg flex items-center justify-center" style="background:var(--emo-blue-subtle);color:var(--emo-blue-light);"><i class="fas fa-file"></i></div>
+        <div class="flex-1 min-w-0">
+          <div class="text-xs font-semibold truncate" id="filePreviewName">file.png</div>
+          <div class="text-[10px]" style="color:var(--emo-text-muted);" id="filePreviewSize">0 KB</div>
         </div>
-        <div class="max-w-4xl mx-auto space-y-8 w-full" id="messages"></div>
+        <button class="btn btn-ghost btn-icon" onclick="clearFileUpload()" data-tooltip="Remove"><i class="fas fa-times"></i></button>
       </div>
-      <!-- Input Section -->
-      <div class="px-4 py-6 lg:px-12 shrink-0">
-        <div class="max-w-4xl mx-auto">
-          <div class="hidden mb-4 p-3 rounded-2xl glass flex items-center gap-3 border-primary/20" id="filePreview">
-            <div class="w-10 h-10 rounded-xl flex items-center justify-center bg-primary/10 text-primary" id="filePreviewIcon"><i class="fas fa-file"></i></div>
-            <div class="flex-1 min-w-0"><div class="text-xs font-bold truncate" id="filePreviewName">file.png</div><div class="text-[10px] opacity-40" id="filePreviewSize">0 KB</div></div>
-            <button class="p-2 hover:text-status-error transition-colors" onclick="clearFileUpload()"><i class="fas fa-times"></i></button>
+      <div class="ai-composer">
+        <textarea id="chatInput" placeholder="Ask EMO anything..." onkeydown="if(event.key==='Enter'&amp;&amp;!event.shiftKey){event.preventDefault();sendMessage()}" rows="1"></textarea>
+        <div class="composer-actions">
+          <div class="composer-tools">
+            <button class="btn btn-ghost btn-icon" data-tooltip="Attach file" aria-label="Attach file" onclick="document.getElementById('fileUploadInput').click()"><i class="fas fa-paperclip"></i></button>
+            <button class="btn btn-ghost btn-icon" data-tooltip="Tools" aria-label="Tools" onclick="toggleTools()"><i class="fas fa-wrench"></i></button>
           </div>
-          <div class="relative glass rounded-3xl p-2 flex flex-col shadow-2xl border-white/10 ring-1 ring-white/5">
-            <textarea class="w-full bg-transparent border-none focus:ring-0 text-sm py-4 px-6 resize-none min-h-[56px] max-h-48 leading-relaxed" id="chatInput" onkeydown="if(event.key==='Enter'&amp;&amp;!event.shiftKey){event.preventDefault();sendMessage()}" placeholder="{{ placeholder_send }}" rows="1"></textarea>
-            <div class="flex items-center justify-between px-3 py-2 border-t border-white/5">
-              <div class="flex items-center gap-1">
-                <button class="w-9 h-9 rounded-xl hover:bg-white/5 flex items-center justify-center transition-all text-outline hover:text-primary" onclick="document.getElementById('fileUploadInput').click()" title="Attach file"><i class="fas fa-paperclip text-sm"></i></button>
-                <button class="w-9 h-9 rounded-xl hover:bg-white/5 flex items-center justify-center transition-all text-outline hover:text-primary" onclick="toggleTools()" title="Tools"><i class="fas fa-terminal text-sm"></i></button>
-              </div>
-              <div class="flex items-center gap-3">
-                <div class="hidden sm:flex flex-col text-right pr-2">
-                  <span class="text-[8px] font-bold text-outline uppercase tracking-widest">Active Model</span>
-                  <span class="text-[10px] font-semibold text-primary truncate max-w-[120px]" id="statusModel">{{ cur_model }}</span>
-                </div>
-                <button class="h-10 px-6 rounded-2xl bg-gradient-to-r text-on-primary font-bold text-xs flex items-center gap-2 shadow-lg hover:scale-105 active:scale-95 transition-all disabled:opacity-50" id="sendBtn" onclick="sendMessage()">
-                  <span>Send</span><i class="fas fa-paper-plane text-[10px]"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </main>
-
-    <!-- Workspace Panel (Project Operations) -->
-    <aside class="side-panel side-workspace w-workspace-panel shrink-0 glass border-y-0 border-r-0 flex flex-col hidden lg:flex" id="workspacePanel">
-      <div class="p-4 border-b border-white/5 flex items-center justify-between">
-        <div class="flex items-center gap-2">
-          <i class="fas fa-diagram-project text-primary text-xs"></i>
-          <span class="text-[9px] font-bold tracking-[0.2em] text-outline uppercase">Workspace</span>
-        </div>
-        <button class="text-[10px] opacity-40 hover:opacity-100" onclick="closeWorkspacePanel()"><i class="fas fa-times"></i></button>
-      </div>
-      <!-- Tabs -->
-      <div class="flex border-b border-white/5">
-        <button class="workspace-tab active flex-1 py-2 text-[10px] font-bold uppercase tracking-wider" data-tab="files" onclick="switchWorkspaceTab('files')">
-          <i class="fas fa-folder-tree mr-1"></i> Files
-        </button>
-        <button class="workspace-tab flex-1 py-2 text-[10px] font-bold uppercase tracking-wider opacity-50" data-tab="plan" onclick="switchWorkspaceTab('plan')">
-          <i class="fas fa-map mr-1"></i> Plan
-        </button>
-        <button class="workspace-tab flex-1 py-2 text-[10px] font-bold uppercase tracking-wider opacity-50" data-tab="tasks" onclick="switchWorkspaceTab('tasks')">
-          <i class="fas fa-list-check mr-1"></i> Tasks
-        </button>
-        <button class="workspace-tab flex-1 py-2 text-[10px] font-bold uppercase tracking-wider opacity-50" data-tab="operations" onclick="switchWorkspaceTab('operations')">
-          <i class="fas fa-gears mr-1"></i> Ops
-        </button>
-      </div>
-      <!-- Tab Content -->
-      <div class="flex-1 overflow-y-auto">
-        <!-- Files Tab (VS Code style) -->
-        <div id="workspaceTabFiles" class="p-0">
-          <div class="p-2 border-b border-white/5 flex items-center justify-between">
-            <span class="text-[9px] font-bold text-outline uppercase">Project Files</span>
-            <button class="text-[10px] px-2 py-1 rounded-lg bg-primary/20 text-primary hover:bg-primary/30" onclick="sendSelectedFileToChat()">
-              <i class="fas fa-paper-plane mr-1"></i> Send to Chat
+          <div style="display:flex;align-items:center;gap:12px;">
+            <span style="font-size:11px;color:var(--emo-text-muted);" id="statusSpeed">-- ms</span>
+            <button class="btn-send" id="sendBtn" onclick="sendMessage()">
+              Send <i class="fas fa-arrow-up" style="font-size:10px;"></i>
             </button>
           </div>
-          <div id="fileExplorer" class="text-xs p-2 space-y-1">
-            <div class="text-[10px] opacity-30 italic text-center py-8">Select a project to view files</div>
-          </div>
         </div>
-        <!-- Plan Tab -->
-        <div id="workspaceTabPlan" class="p-4 space-y-3 hidden">
-          <div class="p-3 rounded-xl bg-surface-container-low border border-white/5">
-            <div class="text-[9px] font-bold text-outline uppercase mb-2">Work Plan</div>
-            <div id="workPlanList" class="space-y-2">
-              <div class="text-[10px] opacity-30 italic text-center py-4">No plan yet. Start a conversation to generate one.</div>
-            </div>
-          </div>
-          <div class="p-3 rounded-xl bg-surface-container-low border border-white/5">
-            <div class="text-[9px] font-bold text-outline uppercase mb-2">Active Agent</div>
-            <div id="activeAgentInfo" class="flex items-center gap-3">
-              <div class="w-8 h-8 rounded-lg bg-agent-planner/20 flex items-center justify-center"><i class="fas fa-brain text-agent-planner"></i></div>
-              <div>
-                <div class="text-xs font-semibold">Planner</div>
-                <div class="text-[8px] opacity-40">IDLE</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- Tasks Tab -->
-        <div id="workspaceTabTasks" class="p-4 space-y-2 hidden">
-          <div id="workspaceTaskList">
-            <div class="text-[10px] opacity-30 italic text-center py-8">No tasks</div>
-          </div>
-        </div>
-        <!-- Operations Tab -->
-        <div id="workspaceTabOperations" class="p-4 space-y-2 hidden">
-          <div class="flex items-center justify-between mb-2">
-            <span class="text-[9px] font-bold text-outline uppercase">Operations</span>
-            <button class="text-[10px] opacity-40 hover:opacity-100" onclick="clearOperations()"><i class="fas fa-trash-can mr-1"></i> Clear</button>
-          </div>
-          <div id="workspaceOpList">
-            <div class="text-[10px] opacity-30 italic text-center py-8">No operations yet</div>
-          </div>
-        </div>
-      </div>
-    </aside>
-  </div>
-
-  <!-- Footer -->
-  <footer class="h-12 glass border-x-0 border-b-0 flex items-center px-6 text-[10px] gap-6 shrink-0 z-50">
-    <div class="flex items-center gap-2 relative cursor-pointer" onclick="toggleProviderPopup(event)">
-      <span class="w-1.5 h-1.5 rounded-full bg-agent-coder" id="statusDot"></span>
-      <span class="font-bold opacity-60 uppercase tracking-tighter" id="statusProvider">{{ provider_sel }}</span>
-      <span class="font-bold px-1.5 py-0.5 rounded-full bg-agent-coder/20 text-agent-coder text-[8px]" data-i18n="online">Online</span>
-      <!-- Provider Status Popup -->
-      <div class="provider-popup hidden absolute bottom-full left-0 mb-2 w-64 rounded-2xl glass border border-white/10 shadow-2xl p-3 z-[200]" id="providerPopup">
-        <div class="text-[9px] font-bold tracking-wider text-outline uppercase mb-2">Providers</div>
-        <div class="space-y-1.5" id="providerPopupList"></div>
       </div>
     </div>
-    <div class="h-4 w-[1px] bg-white/10"></div>
-    <div class="flex items-center gap-2 font-mono"><i class="fas fa-microchip opacity-30"></i><span class="opacity-60" id="statusModelFooter">{{ cur_model }}</span></div>
-    <div class="flex items-center gap-2"><i class="fas fa-bolt-lightning text-amber-400 opacity-60"></i><span class="opacity-60 font-medium" id="statusSpeed">-- ms</span></div>
-    <button class="ml-auto flex items-center gap-2 px-3 py-1 rounded-lg bg-white/5 hover:bg-white/10 transition-all font-bold" onclick="togglePanel('workspace')">
-      <i class="fas fa-diagram-project text-[10px] text-primary"></i>
-      <span class="hidden sm:inline uppercase tracking-widest text-[9px]">Workspace</span>
-    </button>
-    <div class="hidden sm:flex items-center gap-4">
-      <div class="hidden items-center gap-3 w-32" id="progressContainer">
-        <div class="flex-1 h-1 bg-white/5 rounded-full overflow-hidden"><div class="h-full bg-primary transition-all duration-500" id="progressBar" style="width:0%;"></div></div>
-        <span class="font-mono text-[9px]" id="progressText">0%</span>
-      </div>
-    </div>
-  </footer>
+  </main>
 </div>
 
 <input class="hidden" id="fileUploadInput" type="file" onchange="onFileSelected(event)"/>
@@ -498,8 +355,8 @@
     try {
       // Basic functions
       applyTheme(settingsData.theme || 'dark');
-      loadProjectInfo().then(() => loadProjectFiles());
-      loadProjects();
+      if(typeof loadProjectInfo === 'function') loadProjectInfo().then(() => { if(typeof loadProjectFiles === 'function') loadProjectFiles(); });
+      if(typeof loadProjects === 'function') loadProjects();
       
       // All functions to global scope for onclick handlers
       window.togglePanel = togglePanel;
@@ -543,6 +400,7 @@
       window.startSpeedTest = startSpeedTest;
       window.refreshStatus = refreshStatus;
       window.toggleProviderPopup = toggleProviderPopup;
+      window.switchNav = switchNav;
       window.onFileSelected = onFileSelected;
       window.clearFileUpload = clearFileUpload;
       window.sendMessage = sendMessage;
@@ -567,11 +425,14 @@
   }
   function t(key) { return TRANSLATIONS[key] || key; }
 
-  // Panel toggles
+  // Navigation
+  function switchNav(section) {
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+    const target = document.querySelector(`.nav-item[data-nav="${section}"]`);
+    if(target) target.classList.add('active');
+  }
   function togglePanel(panel) {
-    const panels = { projects: 'projectsPanel', sessions: 'sessionsPanel', workspace: 'workspacePanel' };
-    const el = document.getElementById(panels[panel]);
-    if(el) { el.classList.toggle('hidden'); el.classList.toggle('open'); }
+    // Legacy no-op — old side panels removed in v1.0 UI
   }
   function openWorkspacePanel() {
     const el = document.getElementById('workspacePanel');
@@ -1079,12 +940,14 @@ async function activateProject(id) {
 
   function createMessageBubble(role, content, fileData) {
     const div = document.createElement('div');
-    div.className = `flex items-start gap-3 ${role==='user'?'flex-row-reverse':''}`;
-    const avatar = role==='user' ? '<div class="w-8 h-8 rounded-xl bg-gradient-to-br flex items-center justify-center"><i class="fas fa-user text-white text-xs"></i></div>' : '<div class="w-8 h-8 rounded-xl bg-gradient-to-br flex items-center justify-center"><i class="fas fa-robot text-white text-xs"></i></div>';
+    div.className = `message ${role==='user'?'user':'ai'}`;
+    const avatar = role==='user'
+      ? '<div class="message-avatar"><i class="fas fa-user" style="font-size:12px;color:white;"></i></div>'
+      : '<div class="message-avatar"><i class="fas fa-robot" style="font-size:12px;color:var(--emo-blue-light);"></i></div>';
     let contentHtml = '';
     if(fileData && fileData.base64 && fileData.type?.startsWith('image/')) contentHtml += `<img src="data:${fileData.type};base64,${fileData.base64}" class="max-w-[200px] rounded-lg mb-2">`;
     contentHtml += `<div class="whitespace-pre-wrap">${escapeHtml(content)}</div>`;
-    div.innerHTML = avatar + `<div class="px-4 py-3 rounded-2xl max-w-[80%] ${role==='user'?'chat-bubble-user text-white':'chat-bubble-ai'}">${contentHtml}</div>`;
+    div.innerHTML = avatar + `<div class="message-bubble">${contentHtml}</div>`;
     return div;
   }
 
@@ -1126,8 +989,8 @@ async function activateProject(id) {
     document.getElementById('chatArea').scrollTop = document.getElementById('chatArea').scrollHeight;
     const typing = document.createElement('div');
     typing.id = 'typing-indicator';
-    typing.className = 'flex items-start gap-3';
-    typing.innerHTML = '<div class="w-8 h-8 rounded-xl bg-gradient-to-br flex items-center justify-center"><i class="fas fa-robot text-white text-xs"></i></div><div class="px-4 py-3 rounded-2xl chat-bubble-ai"><div class="flex gap-1"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div></div>';
+    typing.className = 'message ai';
+    typing.innerHTML = '<div class="message-avatar"><i class="fas fa-robot" style="font-size:12px;color:var(--emo-blue-light);"></i></div><div class="message-bubble"><div class="flex gap-1" style="padding:4px 0;"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div></div>';
     container.appendChild(typing);
     document.getElementById('chatArea').scrollTop = document.getElementById('chatArea').scrollHeight;
     try {
@@ -1504,16 +1367,18 @@ async function activateProject(id) {
         const res = await fetch('/api/settings/status'); const data = await res.json();
         const latency = data.latency_ms || Math.round(performance.now()-start);
         document.getElementById('statusSpeed').textContent = data.connected ? `${latency}ms` : 'Offline';
-        document.getElementById('statusDot').style.backgroundColor = data.connected ? '#10b981' : '#ef4444';
-        document.getElementById('headerStatusDot').style.backgroundColor = data.connected ? '#10b981' : '#ef4444';
-        document.getElementById('headerStatusText').textContent = data.connected ? t('status_online') : t('offline');
-        if(data.provider) document.getElementById('statusProvider').textContent = data.provider;
-        if(data.model) { document.getElementById('statusModelFooter').textContent = data.model; document.getElementById('statusModel').textContent = data.model; }
+        document.getElementById('statusDot').style.color = data.connected ? '#22C55E' : '#ef4444';
+        if(data.provider) {
+          const sp = document.getElementById('statusProvider');
+          if(sp) sp.textContent = data.provider;
+        }
+        if(data.model) {
+          const mf = document.getElementById('statusModelFooter');
+          if(mf) mf.textContent = data.model;
+        }
       } catch(e) {
         document.getElementById('statusSpeed').textContent = 'Offline';
-        document.getElementById('statusDot').style.backgroundColor = '#ef4444';
-        document.getElementById('headerStatusDot').style.backgroundColor = '#ef4444';
-        document.getElementById('headerStatusText').textContent = t('offline');
+        document.getElementById('statusDot').style.color = '#ef4444';
       }
     };
     test(); speedInterval = setInterval(test,30000);
