@@ -1,29 +1,104 @@
+# === AI-SAFE WORKSPACE STRUCTURE ===
+# AI tools (OpenCode, Cursor, Copilot, Claude Code) read the filesystem directly,
+# NOT through git. These ignores protect against file tree crashes and watcher overload.
+
+# === BUILD ARTIFACTS (heaviest — 10K+ files each) ===
+target/
+emo-desktop/src-tauri/target/
+dist/
+build/
+*.tar.gz
+*.zip
+*.dmg
+*.AppImage
+
+# === DEPENDENCIES (heavy — 100MB+ each) ===
+node_modules/
+emo-desktop/node_modules/
+venv/
+.venv/
+env/
+
+# === CACHE FILES ===
 __pycache__/
 *.pyc
 *.pyo
-*.pyc.save
-.env
-.emo_settings.json
-.emo_chat_history.json
-.emo_conversations.json
-venv/
-.env.example
-*.egg-info/
-dist/
-build/
-.DS_Store
-**/.DS_Store
-*.tar.gz
-*.pdf
-# Database files — contain user/password hashes; never commit
-*.db
-*.db-shm
-*.db-wal
-# Logs
-logs/
-# Cache
 .pytest_cache/
 .ai/
 .memory/
-user_projects/
-static/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# === IDE/OS FILES ===
+.DS_Store
+**/.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# === DATABASE FILES (sensitive — user hashes) ===
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# === ENVIRONMENT / SECRETS ===
+.env
+.env.example
+.emo_settings.json
+.emo_chat_history.json
+.emo_conversations.json
+
+# === LOGS ===
+logs/
+*.log
+
+# === DOCS / GENERATED ===
+*.pdf
+*.html
+
+# === RELEASES ===
+releases/
+
+# === PYTHON ===
+*.egg-info/
+
+# Secrets
+.env
+*.key
+*.pem
+*.cert
+
+# Build artifacts
+dist/
+build/
+target/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.ruff_cache/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Dependencies
+node_modules/
+.venv/
+
+# Release backups
+emo-ai-BACKUP-*/
+
+# Temp snapshots
+.snapshot_commit_hash
