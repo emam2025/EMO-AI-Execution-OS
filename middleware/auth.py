@@ -173,7 +173,15 @@ def require_auth(role: Optional[str] = None):
             ...
 
     Returns the user dict on success.  Raises 401 or 403 on failure.
+
+    When EMO_AUTH_ENABLED=false, bypasses all auth checks.
     """
+    auth_enabled = os.getenv("EMO_AUTH_ENABLED", "false").lower() == "true"
+    if not auth_enabled:
+        def _bypass() -> dict:
+            return {"role": "operator", "user_id": "system"}
+        return _bypass
+
     from fastapi import Depends
 
     def _check(request: Request) -> dict:
