@@ -532,7 +532,7 @@ async def test_connection(provider: str = "openrouter", key: str = "", model: st
         import time
         start = time.time()
         b = Brain(provider=provider, api_key=api_key, model=model or None)
-        response = b.ask(user="Reply with the word OK", max_tokens=10)
+        response = b.ask(user="Write the word OK and nothing else", max_tokens=10)
         latency = int((time.time() - start) * 1000)
         is_ok = 'OK' in response.strip().upper()
         if is_ok:
