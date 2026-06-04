@@ -123,141 +123,153 @@
 
 <!-- Settings Modal -->
 <div class="modal-overlay fixed inset-0 z-[100] hidden items-center justify-center p-4" id="settingsModal">
-  <div class="w-full max-w-4xl max-h-[90vh] overflow-hidden glass rounded-[2.5rem] shadow-2xl flex flex-col">
+  <div class="w-full max-w-5xl max-h-[85vh] overflow-hidden glass-strong rounded-[var(--emo-radius-xl)] shadow-2xl flex flex-col">
     <!-- Header -->
-    <div class="p-8 border-b border-white/5 flex items-center justify-between shrink-0">
-      <div class="flex items-center gap-4">
-        <div class="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary text-xl"><i class="fas fa-cog"></i></div>
-        <div><h2 class="text-xl font-extrabold tracking-tight">{{ tr.settings_title }}</h2><p class="text-xs opacity-40 font-medium">{{ tr.select_ai_backend }}</p></div>
+    <div class="px-8 py-5 border-b border-[var(--emo-border-light)] flex items-center justify-between shrink-0">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl flex items-center justify-center" style="background:var(--emo-blue-subtle);color:var(--emo-blue-light);"><i class="fas fa-cog"></i></div>
+        <div><h2 class="text-lg font-bold" style="color:var(--emo-text-primary);">{{ tr.settings_title }}</h2><p class="text-xs" style="color:var(--emo-text-secondary);">{{ tr.select_ai_backend }}</p></div>
       </div>
-      <button class="w-10 h-10 rounded-xl hover:bg-white/5 flex items-center justify-center transition-all" onclick="closeSettings()"><i class="fas fa-times"></i></button>
+      <button class="btn btn-ghost btn-icon" data-tooltip="Close" onclick="closeSettings()"><i class="fas fa-times"></i></button>
     </div>
-    <!-- Tabs -->
-    <div class="flex border-b border-white/5 shrink-0 overflow-x-auto">
-      <button class="settings-tab active px-6 py-4 text-xs font-bold uppercase tracking-wider whitespace-nowrap" data-tab="models" onclick="switchSettingsTab('models')">
-        <i class="fas fa-brain mr-2"></i> Models
-      </button>
-      <button class="settings-tab px-6 py-4 text-xs font-bold uppercase tracking-wider whitespace-nowrap" data-tab="integrations" onclick="switchSettingsTab('integrations')">
-        <i class="fas fa-puzzle-piece mr-2"></i> Integrations
-      </button>
-      <button class="settings-tab px-6 py-4 text-xs font-bold uppercase tracking-wider whitespace-nowrap" data-tab="general" onclick="switchSettingsTab('general')">
-        <i class="fas fa-sliders mr-2"></i> General
-      </button>
-      <button class="settings-tab px-6 py-4 text-xs font-bold uppercase tracking-wider whitespace-nowrap" data-tab="system" onclick="switchSettingsTab('system')">
-        <i class="fas fa-terminal mr-2"></i> System
-      </button>
-    </div>
-    <!-- Tab Content -->
-    <div class="flex-1 overflow-y-auto p-8 space-y-10">
-      <!-- Models Tab -->
-      <div id="settingsTabModels">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div class="space-y-6">
-            <label class="text-[10px] font-bold tracking-[0.2em] text-outline uppercase">LLM Provider</label>
-            <div class="grid grid-cols-1 gap-2" id="providerList"></div>
-          </div>
-          <div class="space-y-6">
-            <label class="text-[10px] font-bold tracking-[0.2em] text-outline uppercase">Connection</label>
-            <div class="p-6 rounded-3xl bg-surface-container-low border border-white/5 space-y-4">
-              <div>
-                <label class="text-[9px] font-bold opacity-40 uppercase mb-2 block">API Key</label>
-                <div class="relative">
-                  <input class="w-full bg-surface-container-lowest border-white/5 rounded-xl px-4 py-3 text-xs focus:ring-primary/20" id="settingsApiKey" placeholder="Enter API Key" type="password"/>
-                  <button class="absolute right-3 top-3 text-outline" onclick="toggleApiKeyVisibility()"><i class="fas fa-eye" id="apiKeyEye"></i></button>
-                </div>
-              </div>
-              <div>
-                <label class="text-[9px] font-bold opacity-40 uppercase mb-2 block">Model</label>
-                <select class="w-full bg-surface-container-low border-white/5 rounded-xl px-4 py-3 text-xs focus:ring-primary/20" id="settingsModel"></select>
-                <div class="flex items-center gap-1 mt-1">
-                  <button class="text-[9px] px-2 py-1 rounded-lg bg-primary/20 text-primary hover:bg-primary/30 transition-all" onclick="fetchModels()"><i class="fas fa-sync-alt text-[8px] mr-1"></i> Load models</button>
-                  <span class="text-[8px] opacity-40" id="modelsCount"></span>
-                </div>
-              </div>
-              <button class="w-full py-3 rounded-xl bg-white/5 hover:bg-white/10 font-bold text-xs transition-all flex items-center justify-center gap-2" id="testConnectionBtn" onclick="testConnection()"><i class="fas fa-plug-circle-bolt text-primary"></i> <span>Test API</span></button>
-              <div id="settingsConnectionStatus" class="text-center text-xs mt-2"></div>
-            </div>
-          </div>
-        </div>
+    <!-- Body: Sidebar + Content -->
+    <div class="settings-layout flex-1" style="overflow:hidden;">
+      <!-- Categories -->
+      <div class="settings-categories">
+        <div class="settings-category active" data-scat="models" onclick="switchSettingsCategory('models')"><i class="fas fa-brain"></i> Models</div>
+        <div class="settings-category" data-scat="integrations" onclick="switchSettingsCategory('integrations')"><i class="fas fa-puzzle-piece"></i> Integrations</div>
+        <div class="settings-category" data-scat="appearance" onclick="switchSettingsCategory('appearance')"><i class="fas fa-palette"></i> Appearance</div>
+        <div class="settings-category" data-scat="system" onclick="switchSettingsCategory('system')"><i class="fas fa-terminal"></i> System</div>
+        <div class="settings-category" data-scat="security" onclick="switchSettingsCategory('security')"><i class="fas fa-shield"></i> Security</div>
+        <div class="settings-category" data-scat="about" onclick="switchSettingsCategory('about')"><i class="fas fa-info-circle"></i> About</div>
       </div>
-      <!-- Integrations Tab -->
-      <div id="settingsTabIntegrations" class="hidden">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div class="space-y-6">
-            <label class="text-[10px] font-bold tracking-[0.2em] text-outline uppercase"><i class="fab fa-telegram mr-1 text-sky-400"></i> Telegram</label>
-            <div class="p-6 rounded-3xl bg-surface-container-low border border-white/5 space-y-4">
-              <div>
-                <label class="text-[9px] font-bold opacity-40 uppercase mb-2 block">Bot Token</label>
-                <div class="relative">
-                  <input class="w-full bg-surface-container-lowest border-white/5 rounded-xl px-4 py-3 text-xs focus:ring-primary/20" id="settingsTelegramToken" placeholder="123456:ABC-DEF1234" type="password"/>
-                  <button class="absolute right-3 top-3 text-outline" onclick="toggleFieldVisibility('settingsTelegramToken','telegramEye')"><i class="fas fa-eye" id="telegramEye"></i></button>
-                </div>
-              </div>
-              <button class="w-full py-3 rounded-xl bg-white/5 hover:bg-white/10 font-bold text-xs transition-all flex items-center justify-center gap-2" onclick="testTelegramConnection()"><i class="fab fa-telegram text-sky-400"></i> <span>Test Telegram</span></button>
-              <div id="telegramConnectionStatus" class="text-center text-xs mt-2"></div>
-            </div>
-          </div>
-          <div class="space-y-6">
-            <label class="text-[10px] font-bold tracking-[0.2em] text-outline uppercase"><i class="fab fa-github mr-1 text-gray-300"></i> GitHub</label>
-            <div class="p-6 rounded-3xl bg-surface-container-low border border-white/5 space-y-4">
-              <div>
-                <label class="text-[9px] font-bold opacity-40 uppercase mb-2 block">Personal Access Token</label>
-                <div class="relative">
-                  <input class="w-full bg-surface-container-lowest border-white/5 rounded-xl px-4 py-3 text-xs focus:ring-primary/20" id="settingsGithubToken" placeholder="ghp_xxxxxxxxxxxx" type="password"/>
-                  <button class="absolute right-3 top-3 text-outline" onclick="toggleFieldVisibility('settingsGithubToken','githubEye')"><i class="fas fa-eye" id="githubEye"></i></button>
-                </div>
-              </div>
-              <button class="w-full py-3 rounded-xl bg-white/5 hover:bg-white/10 font-bold text-xs transition-all flex items-center justify-center gap-2" onclick="testGithubConnection()"><i class="fab fa-github text-gray-300"></i> <span>Test GitHub</span></button>
-              <div id="githubConnectionStatus" class="text-center text-xs mt-2"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- General Tab -->
-      <div id="settingsTabGeneral" class="hidden">
-        <div class="max-w-lg space-y-6">
-          <div class="p-6 rounded-3xl bg-surface-container-low border border-white/5 space-y-4">
+      <!-- Content -->
+      <div class="settings-content">
+        <!-- Models -->
+        <div class="settings-section active" id="scat-models">
+          <h3>Models</h3>
+          <p class="desc">Configure AI providers and their API keys.</p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label class="text-[9px] font-bold opacity-40 uppercase mb-2 block">Language</label>
-              <select class="w-full bg-surface-container-lowest border-white/5 rounded-xl px-4 py-3 text-xs focus:ring-primary/20" id="settingsLang" onchange="setLang(this.value)">
-                <option value="en" class="bg-surface-container-low">English</option>
-                <option value="ar" class="bg-surface-container-low">العربية</option>
+              <label class="text-xs font-semibold block mb-2" style="color:var(--emo-text-secondary);">Provider</label>
+              <div class="grid grid-cols-1 gap-2" id="providerList"></div>
+            </div>
+            <div class="space-y-4">
+              <div class="provider-card">
+                <div class="flex items-center gap-3 mb-3">
+                  <div class="w-8 h-8 rounded-lg flex items-center justify-center" id="settingsCardIcon" style="background:var(--emo-blue-subtle);color:var(--emo-blue-light);"><i class="fas fa-key"></i></div>
+                  <div><div class="text-sm font-semibold" id="settingsCardTitle">API Key</div><div class="text-xs" id="settingsCardSub" style="color:var(--emo-text-muted);">Enter your API key</div></div>
+                  <span class="ml-auto" id="settingsCardBadge"></span>
+                </div>
+                <div class="relative">
+                  <input class="w-full px-4 py-3 rounded-xl text-sm" id="settingsApiKey" placeholder="Enter API Key" type="password" style="background:rgba(255,255,255,0.04);border:1px solid var(--emo-border-light);outline:none;"/>
+                  <button class="absolute right-3 top-3" style="color:var(--emo-text-muted);" onclick="toggleApiKeyVisibility()"><i class="fas fa-eye" id="apiKeyEye"></i></button>
+                </div>
+              </div>
+              <div class="provider-card">
+                <div class="text-xs font-semibold mb-2" style="color:var(--emo-text-secondary);">Model</div>
+                <select class="w-full px-4 py-3 rounded-xl text-sm mb-2" id="settingsModel" style="background:rgba(255,255,255,0.04);border:1px solid var(--emo-border-light);outline:none;appearance:none;"></select>
+                <div class="flex items-center gap-2">
+                  <button class="btn btn-secondary btn-sm" onclick="fetchModels()"><i class="fas fa-sync-alt"></i> Load models</button>
+                  <span class="text-xs" id="modelsCount" style="color:var(--emo-text-muted);"></span>
+                </div>
+              </div>
+              <button class="btn btn-primary w-full" id="testConnectionBtn" onclick="testConnection()"><i class="fas fa-plug"></i> Test API</button>
+              <div id="settingsConnectionStatus" class="text-sm text-center"></div>
+            </div>
+          </div>
+        </div>
+        <!-- Integrations -->
+        <div class="settings-section" id="scat-integrations">
+          <h3>Integrations</h3>
+          <p class="desc">Connect external services.</p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="provider-card">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:rgba(34,211,238,0.12);color:#22D3EE;"><i class="fab fa-telegram"></i></div>
+                <div><div class="text-sm font-semibold">Telegram</div><div class="text-xs" style="color:var(--emo-text-muted);">Bot Token</div></div>
+              </div>
+              <div class="relative mb-3">
+                <input class="w-full px-4 py-3 rounded-xl text-sm" id="settingsTelegramToken" placeholder="123456:ABC-DEF1234" type="password" style="background:rgba(255,255,255,0.04);border:1px solid var(--emo-border-light);outline:none;"/>
+                <button class="absolute right-3 top-3" style="color:var(--emo-text-muted);" onclick="toggleFieldVisibility('settingsTelegramToken','telegramEye')"><i class="fas fa-eye" id="telegramEye"></i></button>
+              </div>
+              <button class="btn btn-secondary w-full" onclick="testTelegramConnection()"><i class="fab fa-telegram"></i> Test Telegram</button>
+              <div id="telegramConnectionStatus" class="text-sm text-center mt-2"></div>
+            </div>
+            <div class="provider-card">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:rgba(255,255,255,0.08);color:#fff;"><i class="fab fa-github"></i></div>
+                <div><div class="text-sm font-semibold">GitHub</div><div class="text-xs" style="color:var(--emo-text-muted);">Personal Access Token</div></div>
+              </div>
+              <div class="relative mb-3">
+                <input class="w-full px-4 py-3 rounded-xl text-sm" id="settingsGithubToken" placeholder="ghp_xxxxxxxxxxxx" type="password" style="background:rgba(255,255,255,0.04);border:1px solid var(--emo-border-light);outline:none;"/>
+                <button class="absolute right-3 top-3" style="color:var(--emo-text-muted);" onclick="toggleFieldVisibility('settingsGithubToken','githubEye')"><i class="fas fa-eye" id="githubEye"></i></button>
+              </div>
+              <button class="btn btn-secondary w-full" onclick="testGithubConnection()"><i class="fab fa-github"></i> Test GitHub</button>
+              <div id="githubConnectionStatus" class="text-sm text-center mt-2"></div>
+            </div>
+          </div>
+        </div>
+        <!-- Appearance -->
+        <div class="settings-section" id="scat-appearance">
+          <h3>Appearance</h3>
+          <p class="desc">Customize the look and feel.</p>
+          <div class="provider-card max-w-md space-y-4">
+            <div class="flex items-center justify-between">
+              <div><div class="text-sm font-semibold">Theme</div><div class="text-xs" style="color:var(--emo-text-muted);">Dark or Light mode</div></div>
+              <button class="btn btn-secondary btn-sm" onclick="toggleTheme()"><i class="fas fa-moon mr-1" id="settingsThemeBtnIcon"></i> <span id="settingsThemeBtnText">Dark</span></button>
+            </div>
+            <div class="flex items-center justify-between">
+              <div><div class="text-sm font-semibold">Language</div><div class="text-xs" style="color:var(--emo-text-muted);">Interface language</div></div>
+              <select class="px-3 py-1.5 rounded-lg text-sm" id="settingsLang" onchange="setLang(this.value)" style="background:rgba(255,255,255,0.04);border:1px solid var(--emo-border-light);outline:none;">
+                <option value="en">English</option>
+                <option value="ar">العربية</option>
               </select>
             </div>
-            <div>
-              <div class="flex items-center justify-between">
-                <label class="text-[9px] font-bold opacity-40 uppercase mb-2 block">Theme</label>
-                <button class="text-xs px-3 py-1 rounded-lg bg-white/5 hover:bg-white/10 transition-all" onclick="toggleTheme(); switchSettingsTab('general'); updateSettingsGeneral();"><i class="fas fa-moon mr-1" id="settingsThemeBtnIcon"></i> <span id="settingsThemeBtnText">Dark</span></button>
-              </div>
-            </div>
-            <div>
-              <label class="text-[9px] font-bold opacity-40 uppercase mb-2 block">Active Model</label>
-              <div class="flex items-center gap-2">
-                <span class="text-xs font-semibold text-primary" id="settingsActiveModelDisplay">{{ cur_model }}</span>
-              </div>
+            <div class="flex items-center justify-between">
+              <div><div class="text-sm font-semibold">Active Model</div><div class="text-xs" style="color:var(--emo-text-muted);">Current AI model</div></div>
+              <span class="text-sm font-semibold" id="settingsActiveModelDisplay" style="color:var(--emo-blue-light);">{{ cur_model }}</span>
             </div>
           </div>
         </div>
-      </div>
-      <!-- System Tab -->
-      <div id="settingsTabSystem" class="hidden">
-        <div class="space-y-4">
-          <label class="text-[10px] font-bold tracking-[0.2em] text-outline uppercase" data-i18n="system_instructions">{{ tr.system_instructions }}</label>
-          <textarea class="w-full bg-surface-container-lowest border-white/5 rounded-xl px-4 py-3 text-xs focus:ring-primary/20 resize-y min-h-[200px]" id="settingsSystemInstructions" rows="6" data-i18n-placeholder="system_instructions_placeholder" placeholder="{{ tr.system_instructions_placeholder }}"></textarea>
+        <!-- System -->
+        <div class="settings-section" id="scat-system">
+          <h3>System</h3>
+          <p class="desc">System-wide instructions for all agents.</p>
+          <div class="provider-card max-w-2xl">
+            <textarea class="w-full px-4 py-3 rounded-xl text-sm resize-y min-h-[200px]" id="settingsSystemInstructions" rows="6" style="background:rgba(255,255,255,0.04);border:1px solid var(--emo-border-light);outline:none;" placeholder="{{ tr.system_instructions_placeholder }}"></textarea>
+          </div>
+        </div>
+        <!-- Security -->
+        <div class="settings-section" id="scat-security">
+          <h3>Security</h3>
+          <p class="desc">Authentication and access control.</p>
+          <div class="provider-card max-w-md">
+            <div class="flex items-center justify-between">
+              <div><div class="text-sm font-semibold">Authentication</div><div class="text-xs" style="color:var(--emo-text-muted);">Password protection</div></div>
+              <span class="btn btn-secondary btn-sm disabled">Coming Soon</span>
+            </div>
+          </div>
+        </div>
+        <!-- About -->
+        <div class="settings-section" id="scat-about">
+          <h3>About</h3>
+          <p class="desc">EMO AI Orchestrator — version information.</p>
+          <div class="provider-card max-w-md space-y-2 text-sm">
+            <div class="flex justify-between"><span style="color:var(--emo-text-secondary);">Version</span><span class="font-semibold">4.1.0</span></div>
+            <div class="flex justify-between"><span style="color:var(--emo-text-secondary);">Build</span><span class="font-semibold">Release Candidate</span></div>
+            <div class="flex justify-between"><span style="color:var(--emo-text-secondary);">UI</span><span class="font-semibold">Design System v1.0</span></div>
+          </div>
         </div>
       </div>
     </div>
     <!-- Footer -->
-    <div class="p-6 border-t border-white/5 flex items-center justify-between shrink-0 bg-surface-container-lowest/50">
-      <button class="px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 font-bold text-xs transition-all flex items-center gap-2 border border-white/10 text-on-surface" onclick="closeSettings()">
-        <i class="fas fa-arrow-right"></i> <span data-i18n="back">{{ tr.back }}</span>
-      </button>
-      <div class="flex items-center gap-2 text-[10px] opacity-30" id="settingsStatusText">
-        <i class="fas fa-circle text-[6px]"></i> <span>Changes unsaved</span>
+    <div class="px-8 py-4 border-t border-[var(--emo-border-light)] flex items-center justify-between shrink-0">
+      <button class="btn btn-ghost" onclick="closeSettings()"><i class="fas fa-arrow-left"></i> Back</button>
+      <div class="flex items-center gap-2 text-xs" id="settingsStatusText" style="color:var(--emo-text-muted);">
+        <i class="fas fa-circle text-[6px]"></i> <span>Changes saved</span>
       </div>
-      <button class="px-8 py-2.5 rounded-xl bg-primary text-on-primary font-bold text-xs shadow-lg hover:scale-105 active:scale-95 transition-all flex items-center gap-2" id="saveSettingsBtn" onclick="saveAllSettings()">
-        <i class="fas fa-check"></i> <span data-i18n="save">{{ tr.save }}</span>
-      </button>
+      <button class="btn btn-primary" id="saveSettingsBtn" onclick="saveAllSettings()"><i class="fas fa-check"></i> Save Changes</button>
     </div>
   </div>
 </div>
@@ -391,6 +403,7 @@
       window.selectProvider = selectProvider;
       window.toggleApiKeyVisibility = toggleApiKeyVisibility;
       window.toggleFieldVisibility = toggleFieldVisibility;
+      window.switchSettingsCategory = switchSettingsCategory;
       window.testTelegramConnection = testTelegramConnection;
       window.testGithubConnection = testGithubConnection;
       window.switchSettingsTab = switchSettingsTab;
@@ -1121,13 +1134,15 @@ async function activateProject(id) {
       : '<i class="fas fa-circle text-[6px] text-agent-coder"></i> <span>All saved</span>';
   }
 
+  function switchSettingsCategory(cat) {
+    document.querySelectorAll('.settings-category').forEach(c => c.classList.toggle('active', c.dataset.scat === cat));
+    document.querySelectorAll('.settings-section').forEach(s => s.classList.remove('active'));
+    const target = document.getElementById('scat-' + cat);
+    if(target) target.classList.add('active');
+  }
+
   function switchSettingsTab(tab) {
-    document.querySelectorAll('.settings-tab').forEach(t => {
-      t.classList.toggle('active', t.dataset.tab === tab);
-    });
-    document.querySelectorAll('[id^="settingsTab"]').forEach(el => el.classList.add('hidden'));
-    const target = document.getElementById('settingsTab' + tab.charAt(0).toUpperCase() + tab.slice(1));
-    if(target) target.classList.remove('hidden');
+    switchSettingsCategory(tab);
   }
 
   function openSettings() {
@@ -1136,7 +1151,7 @@ async function activateProject(id) {
     setupSettingsFromData(); renderProvidersList();
     document.getElementById('settingsModal').classList.remove('hidden');
     document.getElementById('settingsModal').classList.add('flex');
-    switchSettingsTab('models');
+    switchSettingsCategory('models');
     fetchModels();
     updateSettingsGeneral();
   }
