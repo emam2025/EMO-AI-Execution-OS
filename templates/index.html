@@ -625,8 +625,11 @@
   }
   function setLang(lang) {
     fetch('/api/settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({key:'lang',value:lang})}).then(()=>{
-      currentLang = lang; document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-      document.documentElement.lang = lang; applyTranslations(); loadConversations(); loadTasks();
+      currentLang = lang;
+      document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+      document.documentElement.lang = lang;
+      // Reload page to get fresh translations
+      window.location.reload();
     });
   }
 
