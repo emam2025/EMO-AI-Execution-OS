@@ -31,6 +31,7 @@
 .bg-primary\/30 { background-color: color-mix(in srgb, var(--primary) 30%, transparent); }
 .bg-white\/5 { background-color: rgba(255, 255, 255, 0.05); }
 .bg-white\/10 { background-color: rgba(255, 255, 255, 0.1); }
+.bg-white\/15 { background-color: rgba(255, 255, 255, 0.15); }
 .bg-white\/20 { background-color: rgba(255, 255, 255, 0.2); }
 .bg-white\/30 { background-color: rgba(255, 255, 255, 0.3); }
 .bg-black\/5 { background-color: rgba(0, 0, 0, 0.05); }
@@ -76,6 +77,7 @@ html.light .border-white\/20 { border-color: rgba(0, 0, 0, 0.15); }
 .hover\:bg-primary\/30:hover { background-color: color-mix(in srgb, var(--primary) 30%, transparent); }
 .hover\:bg-white\/5:hover { background-color: rgba(255, 255, 255, 0.05); }
 .hover\:bg-white\/10:hover { background-color: rgba(255, 255, 255, 0.1); }
+.hover\:bg-white\/15:hover { background-color: rgba(255, 255, 255, 0.15); }
 .hover\:bg-status-error\/20:hover { background-color: color-mix(in srgb, var(--status-error) 20%, transparent); }
 .hover\:bg-amber-500\/20:hover { background-color: rgba(245, 158, 11, 0.2); }
 .hover\:border-primary\/30:hover { border-color: color-mix(in srgb, var(--primary) 30%, transparent); }
@@ -111,6 +113,7 @@ html.light .border-white\/20 { border-color: rgba(0, 0, 0, 0.15); }
   .lg\:px-12 { padding-left: 3rem; padding-right: 3rem; }
 }
 .text-on-primary { color: var(--on-primary); }
+.text-on-surface { color: var(--on-surface); }
 .bg-transparent { background: transparent; }
 .border-none { border: none; }
 .ring-1 { box-shadow: 0 0 0 1px; }
@@ -234,6 +237,7 @@ html.light {
 .bg-surface-container-low { background-color: var(--surface-container-low); }
 .bg-surface-container { background-color: var(--surface-container); }
 .bg-surface-container-high { background-color: var(--surface-container-high); }
+.bg-surface-container-lowest\/50 { background-color: color-mix(in srgb, var(--surface-container-lowest) 50%, transparent); }
 .bg-primary { background-color: var(--primary); }
 
 .bg-gradient-to-br {
@@ -396,6 +400,7 @@ html.light {
 /* ── Colors ──────────────────────────────────── */
 .text-primary { color: var(--primary); }
 .text-on-primary { color: var(--on-primary); }
+.text-on-surface { color: var(--on-surface); }
 .text-outline { color: var(--outline); }
 .text-agent-planner { color: var(--agent-planner); }
 .text-agent-writer { color: var(--agent-writer); }

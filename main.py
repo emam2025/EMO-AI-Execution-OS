@@ -483,14 +483,22 @@ async def test_connection(provider: str = "openrouter", key: str = ""):
 
 @app.get("/api/test-telegram")
 async def test_telegram(token: str = ""):
-    """Test Telegram bot token."""
+    """Test Telegram bot token via direct API call."""
     if not token:
         return {"connected": False, "error": "No token provided"}
     try:
-        from telegram import Bot
-        bot = Bot(token=token)
-        me = await bot.get_me()
-        return {"connected": True, "bot_name": me.username or me.first_name}
+        import httpx
+        async with httpx.AsyncClient(timeout=10) as client:
+            r = await client.get(f"https://api.telegram.org/bot{token}/getMe")
+            if r.status_code == 200:
+                data = r.json()
+                if data.get("ok"):
+                    bot_user = data["result"]
+                    return {"connected": True, "bot_name": bot_user.get("username", bot_user.get("first_name", "ok"))}
+                else:
+                    return {"connected": False, "error": data.get("description", "Invalid token")}
+            else:
+                return {"connected": False, "error": f"HTTP {r.status_code}"}
     except Exception as e:
         return {"connected": False, "error": str(e)}
 
