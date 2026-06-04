@@ -233,7 +233,13 @@ jobs:
         run: |
           python3 scripts/audit/generate_release_manifest.py \
             --version ${{ github.ref_name }} \
-            --output release-manifest.json
+            --output release-manifest.json \
+            --binary emo-desktop-macos/*.dmg \
+            --binary emo-desktop-macos/*.app \
+            --binary emo-desktop-windows/*.exe \
+            --binary emo-desktop-windows/*.msi \
+            --binary emo-desktop-linux/*.AppImage \
+            --binary emo-desktop-linux/*.deb
 
       - name: Create release
         uses: softprops/action-gh-release@v2
@@ -246,7 +252,11 @@ jobs:
             emo-desktop-windows/**
             emo-desktop-linux/**
             release-manifest.json
+            SHA256SUMS
             artifacts/security/FINAL_SECURITY_CERTIFICATE.json
+            artifacts/runtime/MODEL_EXECUTION_CERTIFICATE.json
+            artifacts/runtime/FULL_AGENT_FLOW_CERTIFICATE.json
+            artifacts/runtime/FAILURE_MATRIX_CERTIFICATE.json
           draft: true
           prerelease: ${{ contains(github.ref_name, 'RC') || contains(github.ref_name, 'beta') }}
 

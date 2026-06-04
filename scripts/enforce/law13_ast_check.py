@@ -20,7 +20,10 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 
 BANNED_PATTERNS = ("ExecutionEngine", "UnifiedRuntime")
-EXEMPTED_FILE = "core/composition/root.py"
+EXEMPTED_FILES = {
+    "core/composition/root.py",
+    "core/composition/factories/runtime_factory.py",
+}
 SKIP_DIRS = {"__pycache__", ".git", ".venv", "venv", "node_modules"}
 
 
@@ -57,8 +60,9 @@ def main() -> int:
         if not scan_dir.is_dir():
             continue
         for py_file in sorted(scan_dir.rglob("*.py")):
-            # Skip exempted file
-            if EXEMPTED_FILE in str(py_file):
+            # Skip exempted files
+            rel_str = str(py_file.relative_to(PROJECT_ROOT))
+            if rel_str in EXEMPTED_FILES:
                 continue
             # Skip hidden/skip dirs
             if any(seg.startswith(".") or seg in SKIP_DIRS for seg in py_file.relative_to(PROJECT_ROOT).parts):

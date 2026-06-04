@@ -1,0 +1,57 @@
+{
+  "certificate": "P8_BETA_SETUP_CERTIFICATE",
+  "stage": "P8 — Closed Beta Infrastructure & AI Safety Guardrails",
+  "status": "CERTIFIED",
+  "timestamp": 1780368563940,
+  "checks": {
+    "user_access_control": {
+      "unauthorized_beta_access": 0,
+      "threshold": 0,
+      "status": "PASS"
+    },
+    "guardrail_blocking": {
+      "injection_bypass_attempts": 0,
+      "threshold": 0,
+      "status": "PASS"
+    },
+    "feedback_privacy": {
+      "sensitive_keys_in_transit": 0,
+      "threshold": 0,
+      "status": "PASS"
+    },
+    "monitor_latency": {
+      "dashboard_update_delay_ms": 0,
+      "threshold_ms": 500,
+      "status": "PASS"
+    },
+    "tests": {
+      "total": 25,
+      "passed": 25,
+      "threshold": 25,
+      "status": "PASS"
+    },
+    "core_freeze": {
+      "imports_from_core": 0,
+      "threshold": 0,
+      "status": "PASS"
+    }
+  },
+  "modules": {
+    "beta_user_manager": "emo-desktop/lib/beta/beta-user-manager.ts",
+    "ai_guardrails": "emo-desktop/lib/beta/ai-guardrails.ts",
+    "secure_feedback_channel": "emo-desktop/lib/beta/secure-feedback-channel.ts",
+    "active_users_grid": "emo-desktop/ui/beta-monitor/ActiveUsersGrid.tsx",
+    "safety_alerts_stream": "emo-desktop/ui/beta-monitor/SafetyAlertsStream.tsx",
+    "telemetry_heatmap": "emo-desktop/ui/beta-monitor/TelemetryHeatmap.tsx",
+    "feedback_queue": "emo-desktop/ui/beta-monitor/FeedbackQueue.tsx"
+  },
+  "tests": [
+    "tests/beta/test_beta_user_lifecycle.ts — 5 tests",
+    "tests/beta/test_ai_guardrails_enforcement.ts — 5 tests",
+    "tests/beta/test_secure_feedback_telemetry.ts — 5 tests",
+    "tests/beta/test_beta_monitor_ui.tsx — 5 tests",
+    "tests/beta/test_beta_integration_flow.ts — 5 tests"
+  ],
+  "core_freeze_verified": true,
+  "safety_bound": true
+}
