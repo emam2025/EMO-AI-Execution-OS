@@ -12,6 +12,8 @@ pub fn run() {
             commands::stop_runtime,
             commands::get_runtime_status,
             commands::set_api_key,
+            commands::get_api_key,
+            commands::delete_api_key,
             commands::run_agent,
         ])
         .setup(|app| {

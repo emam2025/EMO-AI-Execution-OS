@@ -7,7 +7,7 @@ import keyring
 
 logger = logging.getLogger("emo_ai.keychain")
 
-SERVICE_NAME = "EMO-AI-LLM-Credentials"
+SERVICE_NAME = "emo-desktop"  # must match Rust keyring service name
 AUDIT_LOGGER = logging.getLogger("emo_ai.audit.keychain")
 
 
@@ -36,13 +36,23 @@ class KeychainProvider:
 
     # ── Public API ────────────────────────────────────────────────
 
-    def get(self, account: str) -> Optional[str]:
+    @staticmethod
+    def _keyring_account(provider: str) -> str:
+        """Normalize provider name to keyring account name (match Rust prefix)."""
+        return f"provider_{provider}"
+
+    def get(self, provider: str) -> Optional[str]:
         """Retrieve a secret from the OS keychain.
+
+        Args:
+            provider: Provider name (e.g. 'openrouter', 'groq').
+            Stored under keyring account ``provider_{name}``.
 
         Returns ``None`` if the secret does not exist AND the
         environment is production (no fallback).  In development
-        mode, falls back to ``os.getenv("{account.upper()}_API_KEY")``.
+        mode, falls back to ``os.getenv("{name.upper()}_API_KEY")``.
         """
+        account = self._keyring_account(provider)
         try:
             secret = keyring.get_password(self.service, account)
             if secret is not None:
@@ -52,7 +62,7 @@ class KeychainProvider:
             logger.warning("[KEYCHAIN] Read failed for %s: %s", account, e)
 
         if self._is_dev:
-            env_key = f"{account.upper()}_API_KEY"
+            env_key = f"{provider.upper()}_API_KEY"
             fallback = os.getenv(env_key)
             if fallback is not None:
                 self._audit("read", account, "env_fallback", "success")
@@ -69,8 +79,13 @@ class KeychainProvider:
         self._audit("read", account, "keyring", "miss")
         return None
 
-    def set(self, account: str, secret: str) -> None:
-        """Store a secret in the OS keychain."""
+    def set(self, provider: str, secret: str) -> None:
+        """Store a secret in the OS keychain.
+
+        Args:
+            provider: Provider name (e.g. 'openrouter', 'groq').
+        """
+        account = self._keyring_account(provider)
         try:
             keyring.set_password(self.service, account, secret)
             self._audit("set", account, "keyring", "success")
@@ -79,8 +94,13 @@ class KeychainProvider:
             self._audit("set", account, "keyring", "error", detail=str(e))
             logger.error("[KEYCHAIN] Failed to store %s: %s", account, e)
 
-    def delete(self, account: str) -> None:
-        """Delete a secret from the OS keychain."""
+    def delete(self, provider: str) -> None:
+        """Delete a secret from the OS keychain.
+
+        Args:
+            provider: Provider name (e.g. 'openrouter', 'groq').
+        """
+        account = self._keyring_account(provider)
         try:
             keyring.delete_password(self.service, account)
             self._audit("delete", account, "keyring", "success")

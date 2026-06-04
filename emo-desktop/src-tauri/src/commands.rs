@@ -152,16 +152,31 @@ pub fn get_runtime_status(
     }
 }
 
-/// Stores an API key via tauri-plugin-keyring (OS keychain).
+/// Stores an API key in the OS keychain.
 #[tauri::command]
 pub fn set_api_key(provider: String, key: String) -> Result<(), String> {
     if key.len() < 8 {
         return Err("Key must be at least 8 characters".into());
     }
-    // Use keyring crate directly for OS keychain access
     let entry = keyring::Entry::new("emo-desktop", &format!("provider_{}", provider))
         .map_err(|e| format!("Keyring entry error: {}", e))?;
     entry.set_password(&key).map_err(|e| format!("Keyring error: {}", e))
+}
+
+/// Retrieves an API key from the OS keychain.
+#[tauri::command]
+pub fn get_api_key(provider: String) -> Result<String, String> {
+    let entry = keyring::Entry::new("emo-desktop", &format!("provider_{}", provider))
+        .map_err(|e| format!("Keyring entry error: {}", e))?;
+    entry.get_password().map_err(|e| format!("Keyring error: {}", e))
+}
+
+/// Deletes an API key from the OS keychain.
+#[tauri::command]
+pub fn delete_api_key(provider: String) -> Result<(), String> {
+    let entry = keyring::Entry::new("emo-desktop", &format!("provider_{}", provider))
+        .map_err(|e| format!("Keyring entry error: {}", e))?;
+    entry.delete_password().map_err(|e| format!("Keyring error: {}", e))
 }
 
 /// Sends a task to the runtime and returns the agent result.

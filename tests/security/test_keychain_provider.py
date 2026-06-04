@@ -181,7 +181,7 @@ class TestDevFallback:
 
     def test_keyring_available_in_dev_still_uses_keyring(self):
         mem = _make_memory_keyring()
-        mem.set_password(SERVICE_NAME, "openrouter", "keyring-key")
+        mem.set_password(SERVICE_NAME, "provider_openrouter", "keyring-key")
         keyring.set_keyring(mem)
         with patch.dict(os.environ, {
             "ENVIRONMENT": "development",
@@ -212,7 +212,7 @@ class TestAuditLogging:
 
     def test_get_logs_audit(self):
         mem = _make_memory_keyring()
-        mem.set_password(SERVICE_NAME, "audit_test", "secret")
+        mem.set_password(SERVICE_NAME, "provider_audit_test", "secret")
         keyring.set_keyring(mem)
 
         def do_get():
@@ -221,7 +221,7 @@ class TestAuditLogging:
 
         output = self._capture_audit(do_get)
         assert "action=read" in output
-        assert "account=audit_test" in output
+        assert "account=provider_audit_test" in output
         assert "status=success" in output
 
     def test_set_logs_audit(self):
@@ -234,7 +234,7 @@ class TestAuditLogging:
 
         output = self._capture_audit(do_set)
         assert "action=set" in output
-        assert "account=audit_test" in output
+        assert "account=provider_audit_test" in output
         assert "status=success" in output
 
     def test_delete_logs_audit(self):
@@ -248,7 +248,7 @@ class TestAuditLogging:
 
         output = self._capture_audit(do_delete)
         assert "action=delete" in output
-        assert "account=audit_test" in output
+        assert "account=provider_audit_test" in output
         assert "status=success" in output
 
     def test_get_miss_logs_audit(self):
@@ -323,7 +323,7 @@ class TestNoPlaintextStorage:
 
     def test_key_not_logged_in_audit(self):
         mem = _make_memory_keyring()
-        mem.set_password(SERVICE_NAME, "super_secret_account", "sk-or-v1-abc123")
+        mem.set_password(SERVICE_NAME, "provider_super_secret_account", "sk-or-v1-abc123")
         keyring.set_keyring(mem)
 
         log_capture = io.StringIO()

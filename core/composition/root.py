@@ -333,6 +333,13 @@ class CompositionRoot:
         self._readiness_state_machine: Any = None
         self._strict_readiness_mode = strict_readiness_mode
 
+        # Phase P10 — Final Delivery Production Components
+        self._cli_commands: Any = None
+        self._emo_sdk_client: Any = None
+        self._multi_tenant_router: Any = None
+        self._p10_audit_generator: Any = None
+        self._p10_compliance_reporter: Any = None
+
         # EXEC-DIRECTIVE-021 — Canary Deployment
         self._canary_observer = canary_observer
         self._strict_canary_mode = strict_canary_mode
@@ -1780,6 +1787,90 @@ class CompositionRoot:
         from core.readiness.certification_gate import CertificationGate
         return CertificationGate(
             state_machine=self.readiness_state_machine,
+        )
+
+    # ── Phase P10 — Final Delivery Production Components ────
+
+    @property
+    def cli_commands(self) -> Any:
+        """Return the EmoCLI instance (Phase P10 Final Delivery).
+
+        Routes all commands through UnifiedRuntimeAPI.
+        Zero direct execution logic.
+        """
+        if self._cli_commands is None:
+            self._cli_commands = self._build_cli_commands()
+        return self._cli_commands
+
+    @property
+    def emo_sdk_client(self) -> Any:
+        """Return the EmoClient instance (Phase P10 Final Delivery).
+
+        API wrapper routing through UnifiedRuntimeAPI.
+        """
+        if self._emo_sdk_client is None:
+            self._emo_sdk_client = self._build_emo_sdk_client()
+        return self._emo_sdk_client
+
+    @property
+    def multi_tenant_router(self) -> Any:
+        """Return the MultiTenantRouter instance (Phase P10 Enterprise).
+
+        Strict tenant_id filtering — zero cross-tenant data leaks.
+        """
+        if self._multi_tenant_router is None:
+            self._multi_tenant_router = self._build_multi_tenant_router()
+        return self._multi_tenant_router
+
+    @property
+    def p10_audit_generator(self) -> Any:
+        """Return the AuditGenerator instance (Phase P10 Enterprise).
+
+        Read-only EventStore aggregator for audit trail export.
+        """
+        if self._p10_audit_generator is None:
+            self._p10_audit_generator = self._build_p10_audit_generator()
+        return self._p10_audit_generator
+
+    @property
+    def p10_compliance_reporter(self) -> Any:
+        """Return the ComplianceReporter instance (Phase P10 Enterprise).
+
+        Read-only report generator for SOC2/GDPR/ISO27001.
+        """
+        if self._p10_compliance_reporter is None:
+            self._p10_compliance_reporter = self._build_p10_compliance_reporter()
+        return self._p10_compliance_reporter
+
+    def _build_cli_commands(self) -> Any:
+        from core.cli.commands import EmoCLI
+        return EmoCLI(
+            runtime_api=self.unified_runtime,
+        )
+
+    def _build_emo_sdk_client(self) -> Any:
+        from core.sdk.client import EmoClient
+        return EmoClient(
+            runtime_api=self.unified_runtime,
+        )
+
+    def _build_multi_tenant_router(self) -> Any:
+        from core.enterprise.multi_tenant_router import MultiTenantRouter
+        return MultiTenantRouter(
+            event_store=self.event_store,
+            event_bus=self._event_bus,
+        )
+
+    def _build_p10_audit_generator(self) -> Any:
+        from core.enterprise.audit_generator import AuditGenerator
+        return AuditGenerator(
+            event_store=self.event_store,
+        )
+
+    def _build_p10_compliance_reporter(self) -> Any:
+        from core.enterprise.compliance_reporter import ComplianceReporter
+        return ComplianceReporter(
+            event_store=self.event_store,
         )
 
     # ── EXEC-DIRECTIVE-021 — Canary Deployment ──────────────

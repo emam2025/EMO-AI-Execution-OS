@@ -5,6 +5,8 @@ from typing import Dict, List, Optional, Tuple
 from openai import OpenAI, AsyncOpenAI
 import httpx
 
+from core.security.keychain_provider import KeychainProvider
+
 
 class Brain:
     """LLM interface supporting multiple providers.
@@ -16,23 +18,21 @@ class Brain:
     - ollama: Local Ollama instance (http://localhost:11434)
 
     Provider is selected via LLM_PROVIDER env var.
-    API keys are loaded from environment variables.
+    API keys are loaded from OS Keychain (KeychainProvider) with
+    env var fallback for development only.
     """
 
     PROVIDERS = {
         "openrouter": {
             "base_url": "https://openrouter.ai/api/v1",
-            "api_key_env": "OPENROUTER_API_KEY",
             "default_model": "meta-llama/llama-3.3-70b-instruct",
         },
         "groq": {
             "base_url": "https://api.groq.com/openai/v1",
-            "api_key_env": "GROQ_API_KEY",
             "default_model": "llama-3.3-70b-versatile",
         },
         "gemini": {
             "base_url": "https://generativelanguage.googleapis.com/v1beta/openai/",
-            "api_key_env": "GEMINI_API_KEY",
             "default_model": "gemini-2.0-flash",
         },
         "ollama": {
@@ -58,13 +58,14 @@ class Brain:
         if not self.model:
             self.model = config["default_model"]
 
-        api_key_env = config["api_key_env"]
-        api_key = os.getenv(api_key_env, "") if api_key_env else "ollama"
-
-        # For providers that require an API key, use a placeholder if not set
-        # (will fail at runtime when making actual requests)
-        if not api_key and api_key_env:
-            api_key = "placeholder-key-not-configured"
+        # Load API key from OS Keychain first; dev fallback to env var
+        if self.provider == "ollama":
+            api_key = "ollama"
+        else:
+            kp = KeychainProvider()
+            api_key = kp.get(self.provider) or ""
+            if not api_key:
+                api_key = "placeholder-key-not-configured"
 
         self._client = OpenAI(
             base_url=config["base_url"],

@@ -7,6 +7,7 @@ from contextlib import asynccontextmanager
 from pathlib import Path
 from typing import Any, Optional
 from dotenv import load_dotenv
+from core.security.keychain_provider import KeychainProvider
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
@@ -300,7 +301,7 @@ async def api_status(user: dict = Depends(require_auth(role="operator"))):
         "status": "running",
         "provider": settings.get("provider", "openrouter"),
         "model": settings.get("model", ""),
-        "connected": bool(os.getenv("OPENROUTER_API_KEY") or os.getenv("GROQ_API_KEY") or os.getenv("GEMINI_API_KEY")),
+        "connected": bool(KeychainProvider().get("openrouter") or KeychainProvider().get("groq") or KeychainProvider().get("gemini") or os.getenv("OPENROUTER_API_KEY") or os.getenv("GROQ_API_KEY") or os.getenv("GEMINI_API_KEY")),
     })
 
 
@@ -332,11 +333,12 @@ async def root(request: Request):
     tools_json_str = json.dumps(tools_list, ensure_ascii=False)
 
     # Build providers_json
+    kp = KeychainProvider()
     providers_json = {
-        "openrouter": {"name": "OpenRouter", "api_key_env": "OPENROUTER_API_KEY"},
-        "groq": {"name": "Groq", "api_key_env": "GROQ_API_KEY"},
-        "gemini": {"name": "Gemini", "api_key_env": "GEMINI_API_KEY"},
-        "ollama": {"name": "Ollama (Local)", "api_key_env": ""},
+        "openrouter": {"name": "OpenRouter", "api_key_env": "OPENROUTER_API_KEY", "in_keychain": kp.get("openrouter") is not None},
+        "groq": {"name": "Groq", "api_key_env": "GROQ_API_KEY", "in_keychain": kp.get("groq") is not None},
+        "gemini": {"name": "Gemini", "api_key_env": "GEMINI_API_KEY", "in_keychain": kp.get("gemini") is not None},
+        "ollama": {"name": "Ollama (Local)", "api_key_env": "", "in_keychain": True},
     }
     providers_json_str = json.dumps(providers_json, ensure_ascii=False)
     settings_json_str = json.dumps(settings, ensure_ascii=False)
