@@ -6,6 +6,9 @@ export default defineConfig({
   root: "ui",
   build: {
     outDir: "../dist",
+    sourcemap: false,
+    minify: "esbuild",
+    target: "es2022",
   },
   server: {
     port: 5173,
