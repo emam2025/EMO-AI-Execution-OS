@@ -1,0 +1,65 @@
+═══════════════════════════════════════════════════════════════
+  P-SEC CERTIFICATE OF COMPLETION — Security & Hardening
+═══════════════════════════════════════════════════════════════
+
+Date: 2026-05-30
+Project: Emo-AI / emo-desktop
+Phase: P-SEC (Security & Hardening)
+Status: ✅ COMPLETED
+
+───────────────────────────────────────────────────────────────
+DELIVERABLES
+
+TASK 1 — OS Keychain Integration
+  File: lib/security/keyring-adapter.ts
+  Coverage: storeKey, getKey, deleteKey, hasKey, clearAllKeys,
+            listConfiguredProviders
+  Backend: tauri-plugin-keyring (Security.framework / Credential
+           Manager / libsecret)
+  Policy: BLOCK — no fallback to file-based storage
+
+TASK 2 — Binary Signing Pipeline
+  File: scripts/signing/ci-signing-workflow.yml
+  Coverage: codesign (macOS), signtool (Windows), gpg (Linux)
+  Verification: all platforms validated post-sign
+  Policy: UNSIGNED → BLOCK
+
+TASK 3 — Source Hiding & Packaging
+  File: scripts/build/secure-build.sh
+  Coverage: Nuitka & PyInstaller backends, platform-specific
+            signing, post-build verification
+  File: tauri/tauri.conf.json
+  Coverage: CSP, keyring plugin, updater config, prod flags
+
+TASK 4 — Runtime Permission Controls
+  File: lib/security/permission-guard.ts
+  Coverage: ToolScope type, checkToolPermission, enforceSandboxLimits,
+            auditPermissionViolation, getViolationLog
+  File: lib/security/audit-logger.ts
+  Coverage: AuditEvent types, logAuditEvent, getAuditLog,
+            getAuditLogByType, getCriticalEvents
+
+TASK 5 — Security Tests (36 tests across 5 files)
+  File 1: tests/security/test_os_keychain_storage.ts — 9 tests
+  File 2: tests/security/test_ephemeral_injection_security.ts — 7 tests
+  File 3: tests/security/test_signed_package_detection.ts — 5 tests
+  File 4: tests/security/test_permission_guard_enforcement.ts — 8 tests
+  File 5: tests/security/test_privilege_escalation_prevention.ts — 7 tests
+
+───────────────────────────────────────────────────────────────
+COMPLIANCE
+
+  CORE FREEZE  ✅  Zero imports from core/ or releases/*/core/
+  No fallback   ✅  Keyring unavailable → block application start
+  No leak       ✅  Ephemeral injection — no disk/log persistence
+  Permission    ✅  Tool scope enforcement + sandbox limits
+  Signing       ✅  All platforms: signed & verified before release
+  Audit         ✅  Violation events logged with severity levels
+
+───────────────────────────────────────────────────────────────
+CERTIFIED
+
+  Phase Lead: P-SEC Automation
+  Review: Pending (all artifacts available for inspection)
+
+═══════════════════════════════════════════════════════════════

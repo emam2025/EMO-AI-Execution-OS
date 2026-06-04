@@ -3,6 +3,7 @@
 ## Philosophy
 Linear/Raycast-inspired glass morphism design. Subtle, fast, non-distracting.
 Every component is CSS-only with zero external animation dependencies.
+Keyboard-first: all common tasks accessible without a mouse.
 
 ## Core Components
 
@@ -39,7 +40,61 @@ CSS classes: `.smooth-enter`, `.smooth-fade`, `.smooth-scale`
 <ExecutionTimeline>{children}</ExecutionTimeline>
 ```
 
-### Status Badge Usage Guidelines
+### Theme Provider (`theme-provider.tsx`)
+Dark/light toggle with localStorage persistence.
+```tsx
+import { ThemeProvider, useTheme } from "./styles/design-system/theme-provider";
+
+// Wrap app root:
+<ThemeProvider><App /></ThemeProvider>
+
+// Inside any component:
+const { theme, toggleTheme } = useTheme();
+// Ctrl+T toggles theme globally
+```
+
+### Empty State (`empty-state.tsx`)
+Consistent empty/placeholder state for all routes.
+```tsx
+<EmptyState
+  icon="🔌"
+  title="Runtime Disconnected"
+  description="Connect to the runtime to view data."
+  action={{ label: "Go to Settings", onClick: () => navigate("settings") }}
+/>
+```
+
+### Loading Skeleton (`loading-skeleton.tsx`)
+Three variants: card, list, text. Uses CSS skeleton-pulse animation.
+```tsx
+<LoadingSkeleton variant="card" />
+<LoadingSkeleton variant="list" lines={5} />
+<LoadingSkeleton variant="text" lines={3} />
+```
+
+### Error Recovery (`error-recovery.tsx`)
+Error display with optional retry callback.
+```tsx
+<ErrorRecovery message="Failed to load data." onRetry={() => fetchData()} />
+```
+
+## CSS Additions (`glass-panel.css`)
+- `@keyframes skeleton-pulse` — pulsing opacity for skeleton loaders
+- `[data-theme="dark"]` overrides for all glass-panel/input/metric-card/section-header
+- `*:focus-visible` — consistent focus ring for keyboard navigation
+- `.status-badge-running`, `.status-badge-pending`, `.status-badge-completed`, `.status-badge-failed`, `.status-badge-skipped`
+
+## Keyboard Shortcuts
+| Shortcut | Action | Registered In |
+|----------|--------|---------------|
+| `Ctrl+K` / `Cmd+K` | Open Command Palette | CommandPalette.tsx |
+| `Ctrl+N` / `Cmd+N` | New Project (navigate to Projects) | App.tsx |
+| `Ctrl+R` / `Cmd+R` | Run Agent (navigate to Agents) | App.tsx |
+| `Ctrl+T` / `Cmd+T` | Toggle Theme | App.tsx |
+| `Escape` | Close Palette / Wizard | CommandPalette.tsx + Wizard.tsx |
+| `↑↓` + `Enter` | Navigate + Select in Palette | CommandPalette.tsx |
+
+## Status Badge Usage Guidelines
 - Use `size="sm"` inside TimelineNodes and compact cards
 - Use default `size="md"` in tables and list views
 - Always pair with a visual indicator (colored dot or icon)
@@ -47,7 +102,7 @@ CSS classes: `.smooth-enter`, `.smooth-fade`, `.smooth-scale`
 ## Color Palette
 | Token | Light | Dark |
 |-------|-------|------|
-| Background | `#f5f5f7` | `#121218` |
+| Background | `#f5f5f7` | `#111118` |
 | Surface | `rgba(255,255,255,0.6)` | `rgba(18,18,24,0.75)` |
 | Primary | `#2563eb` | `#60a5fa` |
 | Success | `#16a34a` | `#4ade80` |

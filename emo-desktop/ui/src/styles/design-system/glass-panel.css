@@ -116,3 +116,85 @@
   background: #9ca3af;
   animation: none;
 }
+
+/* Skeleton loading pulse */
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.1; }
+}
+
+/* Status badge — running state */
+.status-badge-running {
+  background: rgba(59, 130, 246, 0.12);
+  color: #2563eb;
+}
+
+.status-badge-pending {
+  background: rgba(234, 179, 8, 0.12);
+  color: #ca8a04;
+}
+
+.status-badge-completed {
+  background: rgba(34, 197, 94, 0.12);
+  color: #16a34a;
+}
+
+.status-badge-failed {
+  background: rgba(239, 68, 68, 0.12);
+  color: #dc2626;
+}
+
+.status-badge-skipped {
+  background: rgba(156, 163, 175, 0.12);
+  color: #6b7280;
+}
+
+/* Dark mode overrides */
+[data-theme="dark"] .glass-panel {
+  background: rgba(18, 18, 24, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="dark"] .glass-input {
+  background: rgba(30, 30, 40, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #e5e7eb;
+}
+
+[data-theme="dark"] .metric-card {
+  background: rgba(30, 30, 40, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+[data-theme="dark"] .metric-card-value {
+  color: #f3f4f6;
+}
+
+[data-theme="dark"] .metric-card-label {
+  color: #9ca3af;
+}
+
+[data-theme="dark"] .section-header {
+  color: #6b7280;
+}
+
+[data-theme="dark"] body {
+  background: #111118;
+  color: #e5e7eb;
+}
+
+/* Focus visible for keyboard navigation */
+*:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Animations */
+@keyframes smooth-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.smooth-enter {
+  animation: smooth-fade-in 0.15s ease-out;
+}

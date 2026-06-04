@@ -13,7 +13,9 @@ Ref: DEVELOPER.md §15.9
 """
 
 from core.runtime.control_plane.autoscaler import Autoscaler
+from core.runtime.control_plane.cluster_manager import ClusterManager
 from core.runtime.control_plane.control_plane import ControlPlane
+from core.runtime.control_plane.coordinator import RuntimeCoordinator
 from core.runtime.control_plane.health_supervisor import HealthSupervisor
 from core.runtime.control_plane.oscillation_guard import (
     ConsecutiveCycleTracker,
@@ -26,6 +28,8 @@ from core.runtime.control_plane.worker_drainer import WorkerDrainer
 __all__ = [
     "ControlPlane",
     "Autoscaler",
+    "ClusterManager",
+    "RuntimeCoordinator",
     "HealthSupervisor",
     "ReconciliationLoop",
     "WorkerDrainer",

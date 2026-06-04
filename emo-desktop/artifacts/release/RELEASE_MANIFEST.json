@@ -1,0 +1,50 @@
+{
+  "release_version": "0.1.0",
+  "release_date": "2026-05-30",
+  "supported_platforms": {
+    "macos": {
+      "arch": "x86_64",
+      "min_version": "12.0",
+      "package": "EMO.dmg",
+      "install_path": "/Applications/EMO.app"
+    },
+    "windows": {
+      "arch": "x86_64",
+      "min_version": "10",
+      "package": "EMO-Setup.exe",
+      "install_path": "$PROGRAMFILES64\\EMO AI"
+    },
+    "linux": {
+      "arch": "x86_64",
+      "min_version": "Ubuntu 20.04 / Fedora 36",
+      "package": "EMO.AppImage",
+      "install_path": "~/.local/bin/EMO.AppImage"
+    }
+  },
+  "package_hashes": {
+    "EMO.dmg": "SHA256_PLACEHOLDER",
+    "EMO-Setup.exe": "SHA256_PLACEHOLDER",
+    "EMO.AppImage": "SHA256_PLACEHOLDER"
+  },
+  "signing_policy": {
+    "enforcement": "mandatory",
+    "verification": "pre-release",
+    "unsigned_block": true
+  },
+  "update_policy": {
+    "channel": "stable",
+    "signature_required": true,
+    "insecure_replace": false,
+    "rollback_support": true,
+    "pubkey": "ed25519:7e8f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f",
+    "endpoints": [
+      "https://releases.emo-ai.dev/{target}/{arch}/latest.json"
+    ]
+  },
+  "integrity_checks": {
+    "source_files_in_packages": 0,
+    "unsigned_packages": 0,
+    "signature_match_rate": "100%",
+    "core_freeze_compliant": true
+  }
+}

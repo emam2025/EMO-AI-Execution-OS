@@ -1,0 +1,83 @@
+{
+  "certificate": {
+    "phase": "P7",
+    "task_id": "EXEC-DIRECTIVE-P7-PORTAL-001",
+    "status": "COMPLETED",
+    "completion_date": "2026-06-01",
+    "core_freeze": true,
+    "core_freeze_violations": 0,
+    "faults_fixed_during_audit": [
+      "metric-aggregator: added P6 AES-256-CBC decryption for encrypted report ingestion",
+      "compliance-reporter: upgraded exportPDF to generate real PDF via jsPDF (Uint8Array)",
+      "compliance-reporter: generateReport now collects safety policy results + test results",
+      "FeedbackTriage: added severity/priority filter alongside category filter",
+      "test_portal_access_control.ts: created dedicated 5-test access control suite",
+      "test_metric_aggregation: added encrypted P6 report ingestion test",
+      "test_compliance_reporting: added safety policy + test result integration test"
+    ]
+  },
+  "deliverables": {
+    "task1_license_management": {
+      "file": "lib/portal/license-manager.ts",
+      "features": [
+        "registerCompany(name, licenseKey, options) — registers with hashed ID, 90d default expiry",
+        "validateLicense(key) — checks active/suspended/expired, remaining seats, features",
+        "listActivePilots() / getCompany(id) / getAllCompanies() / updateCompanyStatus()",
+        "getCompanyCounts() — total/active/suspended/expired breakdown"
+      ]
+    },
+    "task2_metric_aggregation": {
+      "file": "lib/portal/metric-aggregator.ts",
+      "features": [
+        "ingestReport(report) — appends with deep copy",
+        "ingestEncryptedReport(encryptedData) — decrypts P6 AES-256-CBC reports and ingests",
+        "decryptReport(encryptedData) — shared key with P6 (EMO_PILOT_ENCRYPTION_KEY)",
+        "aggregateDailyMetrics() — grouped avg/min/max/sum/count/stdDev",
+        "getTrendView(metricName, timeframe) — daily average trend points",
+        "detectAnomalies(threshold=2σ) — z-score anomaly detection with low/medium/high severity"
+      ]
+    },
+    "task3_compliance_reporter": {
+      "file": "lib/portal/compliance-reporter.ts",
+      "features": [
+        "generateReport(standard, by, companyId, auditLog, profiles, safetyResults?, testResults?)",
+        "SOC2 (5 sections), IEC62443 (6 sections), ISO27001 (9 sections)",
+        "Collects audit logs, compliance profiles, safety policy results, AND test results",
+        "exportPDF(reportData) — generates real PDF using jsPDF (Uint8Array output)",
+        "verifyAuditTrail(auditLog) — chronological order, valid decisions, required fields"
+      ]
+    },
+    "task4_portal_ui": {
+      "components": [
+        "CompanyRegistry.tsx — company table with status indicators, suspend/reactivate",
+        "MetricDashboard.tsx — metric cards with bar charts, stdDev coloring, anomaly banner",
+        "ComplianceExport.tsx — standard selector (SOC2/IEC/ISO), report preview with score ring, PDF/JSON export",
+        "FeedbackTriage.tsx — category filter + severity/priority filter, status workflow"
+      ]
+    },
+    "task5_tests": {
+      "files": 6,
+      "total_tests": 37,
+      "groups": [
+        "TestLicenseEnforcement: test_license_management.ts (5 tests)",
+        "TestDataAggregationPrivacy: test_metric_aggregation.ts (6 tests)",
+        "TestReportIntegrity: test_compliance_reporting.ts (6 tests)",
+        "TestPortalAccessControl: test_portal_access_control.ts (5 tests) ✓ CREATED",
+        "Portal UI: test_portal_ui.tsx (10 tests)",
+        "Integration: test_portal_integration.ts (5 tests)"
+      ]
+    }
+  },
+  "thresholds": {
+    "unauthorized_pilot_access": 0,
+    "data_leakage_in_aggregation": 0,
+    "report_generation_time_ms": 15,
+    "tampered_trail_detected": "100%",
+    "tests_passing": "37/37",
+    "core_freeze": 0
+  },
+  "acceptance": {
+    "status": "PASSED",
+    "notes": "P7 Enterprise Portal complete after audit fix cycle. All 5 gaps resolved: P6 encrypted report decryption, real jsPDF generation, severity filtering in FeedbackTriage, access control test suite, and safety policy + test result collection in compliance reports. Full suite: 483/483 passing across 59 files with zero core violations."
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "certificate": {
+    "phase": "P6",
+    "task_id": "EXEC-DIRECTIVE-P6-PILOT-001",
+    "status": "COMPLETED",
+    "completion_date": "2026-06-01",
+    "core_freeze": true,
+    "core_freeze_violations": 0
+  },
+  "deliverables": {
+    "task1_pilot_mode_metrics": {
+      "files": [
+        { "path": "lib/pilot/pilot-mode-manager.ts", "description": "Pilot toggle, secure metric collection, encryption, sensitive key filtering" },
+        { "path": "lib/pilot/daily-reporter.ts", "description": "Encrypted daily report generation and submission" }
+      ],
+      "features": ["enablePilotMode(companyId)", "trackMetric(name, value, tags)", "getAggregatedMetrics()", "encryptReport(data) — AES-256-CBC", "daily report generator"],
+      "privacy": ["company_id hashed (SHA-256 → 16 hex)", "sensitive key rejection (api_key, password, email, etc.)", "tag value sanitization", "AES-256-CBC report encryption"]
+    },
+    "task2_pilot_dashboard": {
+      "components": [
+        "ui/pilot-dashboard/CompanyHealth.tsx — Agent/company health score card",
+        "ui/pilot-dashboard/ResourceUsage.tsx — Real-time CPU/RAM/Token monitoring bars",
+        "ui/pilot-dashboard/ErrorHeatmap.tsx — Severity-colored error distribution heatmap",
+        "ui/pilot-dashboard/FeedbackInbox.tsx — Feedback item list with status management"
+      ]
+    },
+    "task3_feedback_reporter": {
+      "path": "components/feedback-bug-reporter.tsx",
+      "features": ["Category selection (bug/performance/feature/security)", "Description input with auto-scrubbing", "Log paste with sensitive data redaction", "Environment info collection (no PII)", "Confirmation notification"],
+      "scrub_patterns": ["API keys (sk-*, AIza*, ghp_*)", "Bearer tokens", "Passwords/secrets", "Email addresses"]
+    },
+    "task4_sector_checklists": {
+      "path": "config/sector-checklists/",
+      "profiles": [
+        "software-house.json — 6 criteria (25% coding time, 20% review accuracy, etc.)",
+        "factory.json — 6 criteria (25% uptime, 20% defect detection, etc.)",
+        "logistics.json — 6 criteria (25% fuel cost, 20% delivery accuracy, etc.)",
+        "consulting.json — 6 criteria (25% research time, 20% report accuracy, etc.)",
+        "internal-team.json — 9 criteria (team readiness validation)"
+      ],
+      "validation": "All 5 loadable, all weights sum to 100, all thresholds 0-1"
+    },
+    "task5_tests": {
+      "files": 5,
+      "total_tests": 35,
+      "paths": [
+        "tests/pilot/test_pilot_mode_privacy.ts (5 tests)",
+        "tests/pilot/test_pilot_dashboard.tsx (5 tests)",
+        "tests/pilot/test_feedback_submission.ts (5 tests)",
+        "tests/pilot/test_sector_checklists.ts (5 tests)",
+        "tests/pilot/test_pilot_integration.ts (15 tests)"
+      ]
+    }
+  },
+  "thresholds": {
+    "personal_data_leakage": 0,
+    "report_consistency": "100%",
+    "sensitive_keys_in_report": 0,
+    "sector_profiles": "5/5",
+    "tests_passing": "35/35",
+    "core_freeze": 0
+  },
+  "acceptance": {
+    "status": "PASSED",
+    "notes": "P6 Pilot Setup complete. Pilot mode manager with opt-in metrics collection, AES-256-CBC encryption, and sensitive data scrubbing. 3 dashboard components for company health, resource monitoring, and error heatmap. In-app feedback reporter with automatic sensitive data redaction. 5 sector validation checklists (software, factory, logistics, consulting, internal). 35 pilot tests passing. CORE FREEZE maintained. Full suite: 446/446 passing across 53 files."
+  }
+}

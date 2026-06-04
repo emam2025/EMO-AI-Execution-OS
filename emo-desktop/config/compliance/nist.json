@@ -1,0 +1,16 @@
+{
+  "id": "nist",
+  "name": "NIST SP 800-53 Rev. 5",
+  "standard": "NIST SP 800-53",
+  "version": "r5",
+  "industrialLevel": 3,
+  "overrides": {
+    "resourceLimits": { "maxCpuPercent": 50, "maxMemoryMb": 2048, "maxNetworkRequestsPerMin": 100 },
+    "toolPermissions": { "denyCategories": ["system_shutdown", "privilege_escalation", "network_access"], "requireApprovalCategories": ["deploy", "delete", "config_change", "data_export", "write"] },
+    "auditRequirements": { "logAllActions": true, "retentionDays": 365, "tamperProof": true },
+    "approvalPolicy": { "singleApproval": false, "dualApproval": true, "emergencyStop": true },
+    "dataRetention": { "maxDays": 1095, "autoPurge": false, "encryptAtRest": true }
+  },
+  "auditRequirements": ["AC-2_account_management", "AU-3_audit_record_content", "AU-6_audit_review", "IR-4_incident_handling", "SI-4_system_monitoring"],
+  "dataRetentionPolicy": { "maxDays": 1095, "autoPurge": false, "encryptAtRest": true }
+}

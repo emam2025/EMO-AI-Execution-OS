@@ -1,0 +1,16 @@
+{
+  "id": "iec62443",
+  "name": "IEC 62443-3-3",
+  "standard": "IEC 62443",
+  "version": "3.3",
+  "industrialLevel": 3,
+  "overrides": {
+    "resourceLimits": { "maxCpuPercent": 40, "maxMemoryMb": 2048, "maxNetworkRequestsPerMin": 80 },
+    "toolPermissions": { "denyCategories": ["system_shutdown", "privilege_escalation", "network_access", "delete"], "requireApprovalCategories": ["deploy", "config_change", "data_export", "write"] },
+    "auditRequirements": { "logAllActions": true, "retentionDays": 365, "tamperProof": true },
+    "approvalPolicy": { "singleApproval": false, "dualApproval": true, "emergencyStop": true },
+    "dataRetention": { "maxDays": 1095, "autoPurge": false, "encryptAtRest": true }
+  },
+  "auditRequirements": ["CR1_access_control", "CR2_usage_control", "CR3_system_integrity", "CR4_data_confidentiality"],
+  "dataRetentionPolicy": { "maxDays": 1095, "autoPurge": false, "encryptAtRest": true }
+}

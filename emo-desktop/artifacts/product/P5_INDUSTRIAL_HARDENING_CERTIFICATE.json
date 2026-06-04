@@ -1,0 +1,79 @@
+{
+  "certificate": {
+    "phase": "P5",
+    "task_id": "EXEC-DIRECTIVE-P5-INDUSTRIAL-HARDENING-001",
+    "status": "COMPLETED",
+    "completion_date": "2026-06-01",
+    "core_freeze": true,
+    "core_freeze_violations": 0
+  },
+  "deliverables": {
+    "task1_safety_policy_risk_engine": {
+      "files": [
+        { "path": "lib/safety/policy-engine.ts", "description": "Policy engine with ALLOW/DENY/REQUIRE_APPROVAL/EMERGENCY_STOP decisions across 4 industrial levels" },
+        { "path": "lib/safety/risk-calculator.ts", "description": "Risk/Impact/Confidence score calculator with weighted factor analysis" }
+      ],
+      "levels_implemented": [1, 2, 3, 4],
+      "decision_types": ["ALLOW", "DENY", "REQUIRE_APPROVAL", "EMERGENCY_STOP"],
+      "approval_policies": ["single_approval", "dual_approval"]
+    },
+    "task2_compliance_profiles": {
+      "loader": "lib/safety/compliance-loader.ts",
+      "profiles": [
+        "config/compliance/iso27001.json — ISO/IEC 27001:2022 (Level 2)",
+        "config/compliance/soc2.json — SOC 2 Type II (Level 2)",
+        "config/compliance/nist.json — NIST SP 800-53 Rev. 5 (Level 3)",
+        "config/compliance/iec62443.json — IEC 62443-3-3 (Level 3)",
+        "config/compliance/isa95.json — ISA-95/IEC 62264 (Level 2)",
+        "config/compliance/iec61511.json — IEC 61511 SIS (Level 4)"
+      ],
+      "profile_load_success": "6/6"
+    },
+    "task3_incident_center_ui": {
+      "components": [
+        "ui/incident-center/AlertsPanel.tsx — Severity-sorted alert list with acknowledge/action",
+        "ui/incident-center/RecoveryActions.tsx — Recovery action tracker with execute/rollback",
+        "ui/incident-center/AuditTrailViewer.tsx — Immutable chronological audit trail display",
+        "ui/incident-center/ExportReport.tsx — Compliance report generator with JSON/PDF export"
+      ],
+      "data_policy": "Zero mock data — all components accept props from live state"
+    },
+    "task4_fault_injection_tests": {
+      "files": [
+        "tests/safety/test_industrial_fault_injection.ts — Level 4 escalation, audit integrity, emergency stop",
+        "tests/safety/test_safety_integration.ts — End-to-end detection-to-recovery flow"
+      ],
+      "vectors_tested": [
+        "Level 4 critical command without dual approval → DENY",
+        "Emergency stop trigger → halt all operations",
+        "Audit trail integrity → append-only enforcement",
+        "Privilege escalation at level 3/4 → blocked",
+        "Full detection-to-recovery lifecycle"
+      ]
+    },
+    "task5_tests": {
+      "files": 5,
+      "total_tests": 45,
+      "paths": [
+        "tests/safety/test_policy_engine_decisions.ts (10 tests)",
+        "tests/safety/test_compliance_profiles.ts (10 tests)",
+        "tests/safety/test_incident_center_ui.ts (7 tests)",
+        "tests/safety/test_industrial_fault_injection.ts (13 tests)",
+        "tests/safety/test_safety_integration.ts (5 tests)"
+      ]
+    }
+  },
+  "thresholds": {
+    "unapproved_critical_actions": 0,
+    "score_calculation_latency": "≤ 5ms (actual: 5ms)",
+    "profile_load_success": "6/6 (100%)",
+    "tamper_attempts_blocked": "100% (append-only API)",
+    "trigger_to_halt_time": "≤ 5ms (synchronous)",
+    "tests_passing": "45/45",
+    "core_freeze": 0
+  },
+  "acceptance": {
+    "status": "PASSED",
+    "notes": "P5 Industrial Hardening overlay complete. Safety Policy Engine enforces 4-level risk matrix with ALLOW/DENY/APPROVAL/ESTOP. Risk calculator provides weighted Risk/Impact/Confidence scores. 6 compliance profiles (ISO27001, SOC2, NIST, IEC62443, ISA95, IEC61511) load and apply correctly. Incident Center UI (4 components) provides alert management, recovery tracking, audit trail viewer, and compliance export. 45 safety tests passing. CORE FREEZE maintained — zero imports from core/ or releases/. Full suite: 411/411 tests passing across 48 files."
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "id": "isa95",
+  "name": "ISA-95 / IEC 62264",
+  "standard": "ISA-95",
+  "version": "1.0",
+  "industrialLevel": 2,
+  "overrides": {
+    "resourceLimits": { "maxCpuPercent": 60, "maxMemoryMb": 4096, "maxNetworkRequestsPerMin": 200 },
+    "toolPermissions": { "denyCategories": ["system_shutdown", "privilege_escalation"], "requireApprovalCategories": ["deploy", "delete", "config_change"] },
+    "auditRequirements": { "logAllActions": true, "retentionDays": 730, "tamperProof": true },
+    "approvalPolicy": { "singleApproval": true, "dualApproval": false, "emergencyStop": true },
+    "dataRetention": { "maxDays": 1460, "autoPurge": false, "encryptAtRest": true }
+  },
+  "auditRequirements": ["production_scheduling_logs", "equipment_status_logs", "material_tracking_logs", "quality_assurance_logs"],
+  "dataRetentionPolicy": { "maxDays": 1460, "autoPurge": false, "encryptAtRest": true }
+}

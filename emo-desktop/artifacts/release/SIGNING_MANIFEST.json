@@ -1,0 +1,41 @@
+{
+  "manifest_version": "1.0",
+  "release_version": "0.1.0",
+  "signing_date": "2026-05-30",
+  "signing_authority": "EMO AI Distribution",
+  "packages": {
+    "EMO.dmg": {
+      "platform": "macOS",
+      "signature_type": "codesign + detached",
+      "signing_identity": "Developer ID Application: EMO AI (PENDING)",
+      "team_id": "PENDING",
+      "timestamp": "2026-05-30T00:00:00Z",
+      "verification_method": "codesign --verify --deep --strict",
+      "sha256": "SHA256_PLACEHOLDER"
+    },
+    "EMO-Setup.exe": {
+      "platform": "Windows",
+      "signature_type": "Authenticode (signtool)",
+      "signing_identity": "EMO AI LLC (PENDING)",
+      "certificate_authority": "DigiCert / Azure Code Signing",
+      "timestamp": "2026-05-30T00:00:00Z",
+      "verification_method": "signtool verify /pa /all",
+      "sha256": "SHA256_PLACEHOLDER"
+    },
+    "EMO.AppImage": {
+      "platform": "Linux",
+      "signature_type": "GPG detached (.asc)",
+      "signing_key_id": "PENDING GPG KEY ID",
+      "key_algorithm": "ed25519",
+      "timestamp": "2026-05-30T00:00:00Z",
+      "verification_method": "gpg --verify <file>.asc <file>",
+      "sha256": "SHA256_PLACEHOLDER"
+    }
+  },
+  "chain_of_trust": {
+    "root_of_trust": "EMO AI Code Signing CA (HARDWARE HSM)",
+    "intermediate": "EMO AI Developer ID / Authenticode / GPG",
+    "leaf": "Release-specific per-platform signature",
+    "verification_depth": 3
+  }
+}

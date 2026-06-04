@@ -1,0 +1,16 @@
+{
+  "id": "soc2",
+  "name": "SOC 2 Type II",
+  "standard": "SOC 2",
+  "version": "2.0",
+  "industrialLevel": 2,
+  "overrides": {
+    "resourceLimits": { "maxCpuPercent": 75, "maxMemoryMb": 4096, "maxNetworkRequestsPerMin": 500 },
+    "toolPermissions": { "denyCategories": ["system_shutdown", "privilege_escalation"], "requireApprovalCategories": ["deploy", "delete", "config_change"] },
+    "auditRequirements": { "logAllActions": true, "retentionDays": 365, "tamperProof": true },
+    "approvalPolicy": { "singleApproval": true, "dualApproval": false, "emergencyStop": true },
+    "dataRetention": { "maxDays": 365, "autoPurge": false, "encryptAtRest": true }
+  },
+  "auditRequirements": ["security_event_logs", "access_reviews", "change_management", "risk_assessments"],
+  "dataRetentionPolicy": { "maxDays": 365, "autoPurge": false, "encryptAtRest": true }
+}

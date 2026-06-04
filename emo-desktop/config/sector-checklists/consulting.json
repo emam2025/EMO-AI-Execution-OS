@@ -1,0 +1,14 @@
+{
+  "sector": "consulting",
+  "name": "Consulting Firm",
+  "description": "Checklist for consulting firms using EMO for research, analysis, and client deliverables.",
+  "criteria": [
+    { "id": "con-1", "label": "Research time reduced by >30%", "type": "metric", "target": 0.3, "weight": 25 },
+    { "id": "con-2", "label": "Report generation accuracy >95%", "type": "metric", "target": 0.95, "weight": 20 },
+    { "id": "con-3", "label": "Client data confidentiality maintained (zero leaks)", "type": "boolean", "target": true, "weight": 20 },
+    { "id": "con-4", "label": "Multi-client session isolation verified", "type": "boolean", "target": true, "weight": 15 },
+    { "id": "con-5", "label": "Agent adapts to firm-specific terminology", "type": "survey", "target": 4, "weight": 10 },
+    { "id": "con-6", "label": "Compliance with client SLA response times", "type": "metric", "target": 0.99, "weight": 10 }
+  ],
+  "successThreshold": 0.8
+}

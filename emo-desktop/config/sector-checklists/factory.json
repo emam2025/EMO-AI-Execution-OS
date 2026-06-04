@@ -1,0 +1,14 @@
+{
+  "sector": "factory",
+  "name": "Factory / Manufacturing Plant",
+  "description": "Checklist for industrial manufacturing environments using EMO for process optimization and monitoring.",
+  "criteria": [
+    { "id": "fac-1", "label": "Production line uptime improves by >10%", "type": "metric", "target": 0.1, "weight": 25 },
+    { "id": "fac-2", "label": "Defect detection rate >95%", "type": "metric", "target": 0.95, "weight": 20 },
+    { "id": "fac-3", "label": "Agent latency <200ms for critical alerts", "type": "metric", "target": 200, "weight": 15 },
+    { "id": "fac-4", "label": "Safety compliance alerts responded within 30s", "type": "metric", "target": 30, "weight": 15 },
+    { "id": "fac-5", "label": "Integration with SCADA/MES systems", "type": "boolean", "target": true, "weight": 15 },
+    { "id": "fac-6", "label": "Operator training completed for all shifts", "type": "boolean", "target": true, "weight": 10 }
+  ],
+  "successThreshold": 0.8
+}

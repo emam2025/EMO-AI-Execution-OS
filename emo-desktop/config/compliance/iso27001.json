@@ -1,0 +1,16 @@
+{
+  "id": "iso27001",
+  "name": "ISO/IEC 27001:2022",
+  "standard": "ISO/IEC 27001",
+  "version": "2022",
+  "industrialLevel": 2,
+  "overrides": {
+    "resourceLimits": { "maxCpuPercent": 70, "maxMemoryMb": 4096, "maxNetworkRequestsPerMin": 400 },
+    "toolPermissions": { "denyCategories": ["system_shutdown", "privilege_escalation"], "requireApprovalCategories": ["deploy", "delete", "config_change", "data_export"] },
+    "auditRequirements": { "logAllActions": true, "retentionDays": 365, "tamperProof": true },
+    "approvalPolicy": { "singleApproval": true, "dualApproval": false, "emergencyStop": true },
+    "dataRetention": { "maxDays": 730, "autoPurge": false, "encryptAtRest": true }
+  },
+  "auditRequirements": ["access_control_logs", "change_management_logs", "incident_response_logs", "backup_verification_logs"],
+  "dataRetentionPolicy": { "maxDays": 730, "autoPurge": false, "encryptAtRest": true }
+}

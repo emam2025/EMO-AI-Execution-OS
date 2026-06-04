@@ -1,69 +1,169 @@
 /**
- * RuntimeClient — Axios/Fetch wrapper with Bearer Token + WebSocket event handler.
+ * RuntimeClient — Tauri IPC wrapper with MockAdapter for test isolation.
  *
- * Communicates exclusively through the IPC Gateway (Tauri commands).
- * No direct access to emo-runtime-service or v4.15.0 Runtime Core.
+ * Production: uses @tauri-apps/api/core invoke() for all operations.
+ * Tests: uses MockAdapter to return controlled values without Tauri.
+ *
+ * CORE FREEZE: No imports from core/ or releases/
  */
-import type {
-  RuntimeSession,
-  RuntimeHealth,
-  RuntimeTelemetry,
-  RuntimeEvent,
-  ExecutionTrace,
-} from "../../../types/telemetry";
+import type { RuntimeSession, RuntimeHealth, RuntimeEvent } from "../../types/telemetry";
+import type { ProviderId } from "../../../lib/credentials/types";
 
-const WS_EVENTS_URL = "ws://localhost:8080/api/events";
-const HTTP_BASE = "http://localhost:8080";
+// ──────────────────────────────────────────────
+// Types
+// ──────────────────────────────────────────────
 
-let _sessionToken: string | null = null;
-let _ws: WebSocket | null = null;
-
-function authHeaders(): Record<string, string> {
-  const h: Record<string, string> = { "Content-Type": "application/json" };
-  if (_sessionToken) h["Authorization"] = `Bearer ${_sessionToken}`;
-  return h;
+export interface AgentTask {
+  project_id: string;
+  instruction: string;
 }
 
+export interface AgentResult {
+  run_id: string;
+  status: string;
+  result: string;
+  elapsed_seconds: number;
+}
+
+export interface RuntimeStatus {
+  running: boolean;
+  pid: number | null;
+  port: number | null;
+  healthy: boolean;
+}
+
+export interface RuntimeInfo {
+  pid: number;
+  port: number;
+  status: string;
+  session_token: string;
+}
+
+// ──────────────────────────────────────────────
+// Mock adapter for test isolation
+// ──────────────────────────────────────────────
+
+export interface MockAdapter {
+  startRuntime(): Promise<RuntimeInfo>;
+  stopRuntime(pid: number): Promise<void>;
+  getRuntimeStatus(): Promise<RuntimeStatus>;
+  setApiKey(provider: ProviderId, key: string): Promise<void>;
+  runAgent(task: AgentTask): Promise<AgentResult>;
+}
+
+let _mockAdapter: MockAdapter | null = null;
+
+export function setMockAdapter(adapter: MockAdapter | null): void {
+  _mockAdapter = adapter;
+}
+
+export function getMockAdapter(): MockAdapter | null {
+  return _mockAdapter;
+}
+
+// ──────────────────────────────────────────────
+// Session token management
+// ──────────────────────────────────────────────
+
+let _sessionToken: string | null = null;
+let _runtimePort: number | null = null;
+let _ws: WebSocket | null = null;
+
+export function getSessionToken(): string | null {
+  return _sessionToken;
+}
+
+export function closeEventStream(): void {
+  _ws?.close();
+  _ws = null;
+}
+
+// ──────────────────────────────────────────────
+// Production: Tauri IPC invoke
+// ──────────────────────────────────────────────
+
+async function tauriInvoke<T>(cmd: string, args?: Record<string, unknown>): Promise<T> {
+  try {
+    const { invoke } = await import("@tauri-apps/api/core");
+    return await invoke<T>(cmd, args);
+  } catch {
+    throw new Error(`IPC invoke failed: ${cmd} — Tauri backend unavailable`);
+  }
+}
+
+// ──────────────────────────────────────────────
+// RuntimeClient
+// ──────────────────────────────────────────────
+
 export const RuntimeClient = {
-  /** Start the emo-runtime-service and obtain a session. */
   async startRuntime(): Promise<RuntimeSession> {
-    // In production this invokes a Tauri IPC command.
-    // Skeleton: returns a mock session.
-    const session: RuntimeSession = {
-      session_token: `st_${crypto.randomUUID()}`,
-      port: 8080,
-      pid: Math.floor(Math.random() * 60000) + 1000,
-      status: "starting",
-    };
-    _sessionToken = session.session_token;
-    return session;
+    if (_mockAdapter) {
+      const info = await _mockAdapter.startRuntime();
+      _sessionToken = info.session_token;
+      _runtimePort = info.port;
+      return {
+        session_token: info.session_token,
+        port: info.port,
+        pid: info.pid,
+        status: info.status,
+      } as RuntimeSession;
+    }
+
+    const info = await tauriInvoke<RuntimeInfo>("start_runtime");
+    _sessionToken = info.session_token;
+    _runtimePort = info.port;
+    return {
+      session_token: info.session_token,
+      port: info.port,
+      pid: info.pid,
+      status: info.status,
+    } as RuntimeSession;
   },
 
-  /** Stop the runtime process by PID. */
   async stopRuntime(pid: number): Promise<{ pid: number; terminated: boolean; signal: string }> {
+    if (_mockAdapter) {
+      await _mockAdapter.stopRuntime(pid);
+      _sessionToken = null;
+      _runtimePort = null;
+      closeEventStream();
+      return { pid, terminated: true, signal: "SIGTERM" };
+    }
+
+    await tauriInvoke<void>("stop_runtime", { pid });
     _sessionToken = null;
+    _runtimePort = null;
     closeEventStream();
     return { pid, terminated: true, signal: "SIGTERM" };
   },
 
-  /** Get runtime health proxy. */
-  async getRuntimeStatus(port: number): Promise<RuntimeHealth> {
-    const res = await fetch(`${HTTP_BASE}/api/health`, { headers: authHeaders() });
-    if (!res.ok) throw new Error(`Health check failed: ${res.status}`);
-    return res.json();
+  async getRuntimeStatus(): Promise<RuntimeHealth> {
+    if (_mockAdapter) {
+      const status = await _mockAdapter.getRuntimeStatus();
+      return { status: status.running ? "running" : "stopped" } as RuntimeHealth;
+    }
+
+    const status = await tauriInvoke<RuntimeStatus>("get_runtime_status");
+    return { status: status.running ? "running" : "stopped" } as RuntimeHealth;
   },
 
-  /** Fetch a full execution trace. */
-  async getTrace(traceId: string): Promise<ExecutionTrace> {
-    const res = await fetch(`${HTTP_BASE}/api/trace/${traceId}`, { headers: authHeaders() });
-    if (!res.ok) throw new Error(`Trace fetch failed: ${res.status}`);
-    return res.json();
+  async setApiKey(provider: ProviderId, key: string): Promise<void> {
+    if (_mockAdapter) {
+      return _mockAdapter.setApiKey(provider, key);
+    }
+    await tauriInvoke<void>("set_api_key", { provider, key });
   },
 
-  /** Connect to the runtime.events WebSocket stream. */
+  async runAgent(task: AgentTask): Promise<AgentResult> {
+    if (_mockAdapter) {
+      return _mockAdapter.runAgent(task);
+    }
+    return tauriInvoke<AgentResult>("run_agent", { task });
+  },
+
   connectEventStream(onEvent: (event: RuntimeEvent) => void): void {
     if (_ws) closeEventStream();
-    _ws = new WebSocket(WS_EVENTS_URL);
+    const port = _runtimePort ?? 8080;
+    _ws = new WebSocket(`ws://localhost:${port}/api/events`);
     _ws.onmessage = (msg) => {
       try {
         const event: RuntimeEvent = JSON.parse(msg.data);
@@ -75,12 +175,3 @@ export const RuntimeClient = {
     _ws.onerror = () => console.error("[RuntimeClient] WebSocket error");
   },
 };
-
-export function closeEventStream(): void {
-  _ws?.close();
-  _ws = null;
-}
-
-export function getSessionToken(): string | null {
-  return _sessionToken;
-}

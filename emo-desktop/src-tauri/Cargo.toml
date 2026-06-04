@@ -1,0 +1,24 @@
+[package]
+name = "emo-desktop"
+version = "0.1.0"
+edition = "2021"
+description = "EMO AI Desktop — Rust Backend & IPC Bridge"
+
+[dependencies]
+tauri = { version = "2.0", features = ["native-tls-vendored"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+keyring = "2"
+tauri-plugin-shell = "2.3"
+uuid = { version = "1.0", features = ["v4"] }
+tokio = { version = "1.0", features = ["full"] }
+ureq = "2.12"
+
+[build-dependencies]
+tauri-build = { version = "2.0", features = [] }
+
+[profile.release]
+strip = true
+lto = true
+codegen-units = 1
+panic = "abort"

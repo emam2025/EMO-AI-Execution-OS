@@ -1,4 +1,7 @@
+# AI-SAFE WORKSPACE — emo-desktop layer
 node_modules/
 dist/
 .DS_Store
 *.db
+target/
+src-tauri/target/

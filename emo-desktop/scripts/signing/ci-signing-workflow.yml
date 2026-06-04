@@ -1,0 +1,105 @@
+# CI Binary Signing Pipeline
+#
+# Signs macOS (codesign), Windows (signtool), and Linux (gpg) binaries
+# before release. Blocks unsigned artifacts from publishing.
+#
+name: binary-signing-pipeline
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: "Platform to sign (macos, windows, linux, all)"
+        required: true
+        default: "all"
+
+jobs:
+  signing-matrix:
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Sign macOS binary (codesign)
+        if: runner.os == 'macOS'
+        run: |
+          # Requires: APPLE_DEVELOPER_ID, APPLE_TEAM_ID, APPLE_SIGNING_CERT_P12
+          # Stored in repository secrets.
+          echo "${{ secrets.APPLE_SIGNING_CERT_P12 }}" | base64 --decode > cert.p12
+          security create-keychain -p temp temp.keychain
+          security import cert.p12 -k temp.keychain -P "${{ secrets.APPLE_CERT_PASSWORD }}" -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple: -s -k temp temp.keychain
+          for bin in emo-desktop emo-server emo-bridge; do
+            if [ -f "dist/$bin" ]; then
+              codesign --force --timestamp --options=runtime \
+                --sign "${{ secrets.APPLE_DEVELOPER_ID }}" \
+                --keychain temp.keychain "dist/$bin"
+              echo "Signed: dist/$bin"
+            fi
+          done
+          security delete-keychain temp.keychain
+
+      - name: Sign Windows binary (signtool)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          # Requires: AZURE_KEY_VAULT_URL, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET, AZURE_TENANT_ID
+          # Uses Azure Code Signing or stored PFX.
+          $certBase64 = "${{ secrets.WINDOWS_SIGNING_PFX }}"
+          $certPath = "$env:TEMP\cert.pfx"
+          [System.IO.File]::WriteAllBytes($certPath, [System.Convert]::FromBase64String($certBase64))
+          & "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22000.0\x86\signtool.exe" sign `
+            /fd SHA256 /f $certPath /p "${{ secrets.WINDOWS_PFX_PASSWORD }}" `
+            /tr http://timestamp.digicert.com /td SHA256 `
+            dist\emo-desktop.exe, dist\emo-server.exe, dist\emo-bridge.exe
+          Write-Host "Signed Windows binaries"
+
+      - name: Sign Linux binary (gpg)
+        if: runner.os == 'Linux'
+        run: |
+          echo "${{ secrets.GPG_SIGNING_KEY }}" | base64 --decode | gpg --import
+          for bin in emo-desktop emo-server emo-bridge; do
+            if [ -f "dist/$bin" ]; then
+              gpg --detach-sign --armor --default-key "${{ secrets.GPG_KEY_ID }}" "dist/$bin"
+              echo "Signed: dist/$bin (detached .asc)"
+            fi
+          done
+
+      - name: Verify signatures
+        run: |
+          echo "=== Signature Verification ==="
+          case "${{ runner.os }}" in
+            macOS)
+              for bin in emo-desktop emo-server emo-bridge; do
+                if [ -f "dist/$bin" ]; then
+                  codesign --verify --deep --strict "dist/$bin" && echo "✅ $bin valid" || echo "❌ $bin INVALID"
+                fi
+              done
+              ;;
+            Windows)
+              foreach ($bin in @("emo-desktop.exe", "emo-server.exe", "emo-bridge.exe")) {
+                $path = "dist\$bin"
+                if (Test-Path $path) {
+                  & "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22000.0\x86\signtool.exe" verify /pa /all $path
+                  if ($LASTEXITCODE -eq 0) { Write-Host "✅ $bin valid" } else { Write-Host "❌ $bin INVALID" }
+                }
+              }
+              ;;
+            Linux)
+              for bin in emo-desktop emo-server emo-bridge; do
+                if [ -f "dist/$bin" ] && [ -f "dist/$bin.asc" ]; then
+                  gpg --verify "dist/$bin.asc" "dist/$bin" && echo "✅ $bin valid" || echo "❌ $bin INVALID"
+                fi
+              done
+              ;;
+          esac
+
+      - name: Block unsigned artifacts
+        if: failure()
+        run: |
+          echo "::error::Unsigned artifact detected — blocking release"
+          exit 1

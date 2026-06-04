@@ -1,0 +1,16 @@
+{
+  "id": "iec61511",
+  "name": "IEC 61511 (Safety Instrumented Systems)",
+  "standard": "IEC 61511",
+  "version": "2.0",
+  "industrialLevel": 4,
+  "overrides": {
+    "resourceLimits": { "maxCpuPercent": 20, "maxMemoryMb": 1024, "maxNetworkRequestsPerMin": 20 },
+    "toolPermissions": { "denyCategories": ["system_shutdown", "privilege_escalation", "network_access", "delete", "deploy", "config_change"], "requireApprovalCategories": ["write", "data_export"] },
+    "auditRequirements": { "logAllActions": true, "retentionDays": 730, "tamperProof": true },
+    "approvalPolicy": { "singleApproval": false, "dualApproval": true, "emergencyStop": true },
+    "dataRetention": { "maxDays": 2555, "autoPurge": false, "encryptAtRest": true }
+  },
+  "auditRequirements": ["SIF_performance_logs", "proof_test_results", "failure_records", "bypass_logs", "demand_event_logs"],
+  "dataRetentionPolicy": { "maxDays": 2555, "autoPurge": false, "encryptAtRest": true }
+}

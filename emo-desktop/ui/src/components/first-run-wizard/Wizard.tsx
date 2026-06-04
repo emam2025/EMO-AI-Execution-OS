@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { WelcomeStep } from "./WelcomeStep";
 import { ConnectModelsStep } from "./ConnectModelsStep";
 import { ChooseModeStep } from "./ChooseModeStep";
 import { CreateProjectStep } from "./CreateProjectStep";
 import { LaunchStep } from "./LaunchStep";
+import { useRuntimeStore } from "../../stores/runtime";
 
 type Step = "welcome" | "connect-models" | "choose-mode" | "create-project" | "launch";
 
@@ -30,6 +31,22 @@ export const FirstRunWizard: React.FC<WizardProps> = ({ onComplete, onClose }) =
     mode: "local" as "local" | "hybrid" | "cloud",
     projectName: "",
   });
+  const [validationPassed, setValidationPassed] = useState(false);
+  const { isConnected } = useRuntimeStore();
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && !isLast) onClose();
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [onClose]);
+
+  useEffect(() => {
+    if (currentStep === "launch") {
+      setValidationPassed(isConnected);
+    }
+  }, [currentStep, isConnected]);
 
   const goNext = () => {
     if (currentIndex < STEP_ORDER.length - 1) {
@@ -90,7 +107,8 @@ export const FirstRunWizard: React.FC<WizardProps> = ({ onComplete, onClose }) =
             providers={state.providers}
             mode={state.mode}
             projectName={state.projectName}
-            validationPassed={true}
+            validationPassed={validationPassed}
+            validationMessage={isConnected ? "Runtime connected" : "Runtime not connected — check your connection"}
             onLaunch={handleLaunch}
             onBack={goBack}
           />
@@ -101,35 +119,27 @@ export const FirstRunWizard: React.FC<WizardProps> = ({ onComplete, onClose }) =
   return (
     <div
       style={{
-        position: "fixed",
-        inset: 0,
-        zIndex: 9998,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        background: "rgba(0,0,0,0.4)",
-        backdropFilter: "blur(8px)",
+        position: "fixed", inset: 0, zIndex: 9998,
+        display: "flex", alignItems: "center", justifyContent: "center",
+        background: "rgba(0,0,0,0.4)", backdropFilter: "blur(8px)",
       }}
+      onClick={() => { if (!isLast) onClose(); }}
     >
       <div
         className="glass-panel"
         style={{
-          width: 560,
-          maxHeight: "80vh",
-          display: "flex",
-          flexDirection: "column",
-          overflow: "hidden",
+          width: 560, maxHeight: "80vh",
+          display: "flex", flexDirection: "column", overflow: "hidden",
           animation: "smooth-scale-in 0.2s ease-out",
         }}
+        onClick={(e) => e.stopPropagation()}
       >
         <div style={{ padding: "16px 24px 0", display: "flex", gap: 6 }}>
           {STEP_ORDER.map((step, i) => (
             <div
               key={step}
               style={{
-                flex: 1,
-                height: 3,
-                borderRadius: 2,
+                flex: 1, height: 3, borderRadius: 2,
                 background: i <= currentIndex ? "#3b82f6" : "rgba(0,0,0,0.08)",
                 transition: "background 0.3s",
               }}

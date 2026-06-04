@@ -1,0 +1,14 @@
+{
+  "sector": "software-house",
+  "name": "Software Development Company",
+  "description": "Checklist for software engineering teams using EMO for code generation, review, and debugging.",
+  "criteria": [
+    { "id": "sw-1", "label": "Agent reduces coding time by >20%", "type": "metric", "target": 0.2, "weight": 25 },
+    { "id": "sw-2", "label": "Code review accuracy >90%", "type": "metric", "target": 0.9, "weight": 20 },
+    { "id": "sw-3", "label": "Bug detection rate improves by >30%", "type": "metric", "target": 0.3, "weight": 20 },
+    { "id": "sw-4", "label": "Agent uptime >99.5%", "type": "metric", "target": 0.995, "weight": 15 },
+    { "id": "sw-5", "label": "Developer satisfaction score >4/5", "type": "survey", "target": 4, "weight": 10 },
+    { "id": "sw-6", "label": "Integration with existing CI/CD pipeline", "type": "boolean", "target": true, "weight": 10 }
+  ],
+  "successThreshold": 0.8
+}

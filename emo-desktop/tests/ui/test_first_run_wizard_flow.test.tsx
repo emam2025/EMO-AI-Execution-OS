@@ -4,6 +4,10 @@ import { describe, it, expect, vi, afterEach, beforeEach } from "vitest";
 import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import { FirstRunWizard } from "../../ui/src/components/first-run-wizard/Wizard";
 
+vi.mock("../../ui/src/stores/runtime", () => ({
+  useRuntimeStore: () => ({ isConnected: true }),
+}));
+
 afterEach(() => {
   cleanup();
   localStorage.clear();

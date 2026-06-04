@@ -1,0 +1,73 @@
+{
+  "phase": "Phase 4 — Runtime Isolation Layer",
+  "status": "CLOSED",
+  "timestamp": "2026-06-01T00:00:00Z",
+  "deliverables": {
+    "core/interfaces/isolation.py": {
+      "status": "CREATED",
+      "description": "IIsolationRuntime Protocol — contract for the 5-step RULE 3 isolation bridge",
+      "methods": [
+        "execute(tool_name, inputs, runner, sandbox_context) -> Dict[str, Any]",
+        "check_io(tool, operation, target, size) -> None",
+        "check_network(tool, url) -> None",
+        "check_filesystem_read(tool, path) -> str",
+        "check_filesystem_write(tool, path) -> str",
+        "shutdown() -> None"
+      ],
+      "properties": [
+        "sandbox_manager: SandboxManager",
+        "capability_guard: CapabilityGuard",
+        "resource_enforcer: ResourceEnforcer",
+        "sandbox_executor: SandboxExecutor",
+        "io_policy_engine: IOPolicyEngine",
+        "network_isolation: NetworkIsolation",
+        "filesystem_isolation: FilesystemIsolation"
+      ]
+    },
+    "tests/test_runtime_isolation.py": {
+      "status": "VERIFIED",
+      "test_count": 85,
+      "requirement": "81+ tests",
+      "result": "PASSED",
+      "coverage_areas": [
+        "Sandbox Context (8 tests)",
+        "Sandbox Errors (4 tests)",
+        "Sandbox Manager (7 tests)",
+        "Sandbox Executor (11 tests)",
+        "Capability Model (4 tests)",
+        "Capability Registry (6 tests)",
+        "Capability Guard (6 tests)",
+        "IO Policy Engine (5 tests)",
+        "Network Isolation (3 tests)",
+        "Filesystem Isolation (5 tests)",
+        "Resource Tracker (5 tests)",
+        "Quota Manager (7 tests)",
+        "Resource Enforcer (4 tests)",
+        "Isolation Runtime Integration (8 tests)"
+      ]
+    },
+    "emo-guard": {
+      "status": "CLEAN",
+      "new_violations": 0,
+      "exceptions_added": [
+        "core/interfaces/isolation.py (LAW 4 — Protocol type annotations)",
+        "core/interfaces/isolation.py (D8/LAW 2 — Protocol type annotations)"
+      ]
+    }
+  },
+  "underlying_implementation": {
+    "core/runtime/sandbox/": "SandboxExecutor, SandboxContext, SandboxManager, SandboxErrors — FULLY IMPLEMENTED",
+    "core/security/capabilities/": "Capability model, registry, guard, sensitive tools — FULLY IMPLEMENTED",
+    "core/runtime/io/": "IO policy engine, network isolation, filesystem isolation — FULLY IMPLEMENTED",
+    "core/runtime/resources/": "Resource tracker, quota manager, resource enforcer — FULLY IMPLEMENTED",
+    "core/runtime/isolation/": "IsolationRuntime bridge (5-step RULE 3) — FULLY IMPLEMENTED",
+    "core/composition/root.py": "Wires isolation_runtime — FULLY WIRED"
+  },
+  "exec_directive": "EXEC-DIRECTIVE-PHASEF4-002 (Phase 4 Closure)",
+  "next_steps": [
+    "PR-01: CANON-ADAPTATION — update canon/rules.py for Phase 4",
+    "PR-02: DOCS-SYNC — update DEVELOPER.md §15.15b + ROADMAP.md §5",
+    "PR-03: WIRED-ISOLATION — activate emo-guard rules for new layer",
+    "EXEC-DIRECTIVE-PHASEF1-001 — Unified Runtime API"
+  ]
+}

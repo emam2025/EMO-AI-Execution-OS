@@ -1,0 +1,57 @@
+═══════════════════════════════════════════════════════════════
+  EXECUTION LOG — P-SEC Phase Buildout
+═══════════════════════════════════════════════════════════════
+
+Date: 2026-05-30
+Starting State: emo-desktop skeleton with credentials/ directory
+                 (os-keyring.ts stubs, ephemeral_injection.ts, types.ts)
+                 tauri/src/main.ts skeleton
+                 No security/ directory, no scripts/, no CI, no tests
+
+───────────────────────────────────────────────────────────────
+STEP 1 — DIRECTORY AUDIT
+  Action: Inspected existing structure under emo-desktop/
+  Result: Found lib/credentials/ (3 files), tauri/src/ (commands + main),
+          no security/, no scripts/, no tests/security/
+
+STEP 2 — CREATE lib/security/
+  Files created:
+    keyring-adapter.ts   — Full OS Keychain adapter with BLOCK policy
+    permission-guard.ts  — ToolScope enforcement + sandbox limits
+    audit-logger.ts      — Encrypted local audit log for violations
+
+STEP 3 — CREATE scripts/
+  Files created:
+    scripts/signing/ci-signing-workflow.yml — 3-platform CI signing
+    scripts/build/secure-build.sh          — Nuitka/PyInstaller + sign + verify
+
+STEP 4 — CREATE tauri/tauri.conf.json
+  Action: Written from scratch (no existing config found)
+  Content: CSP, keyring plugin, updater, bundle targets
+
+STEP 5 — CREATE tests/security/ (5 files, 36 tests)
+  Files created:
+    test_os_keychain_storage.ts           — 9 tests
+    test_ephemeral_injection_security.ts  — 7 tests
+    test_signed_package_detection.ts      — 5 tests
+    test_permission_guard_enforcement.ts  — 8 tests
+    test_privilege_escalation_prevention.ts — 7 tests
+  Total: 36 tests ✅
+
+STEP 6 — CERTIFICATION
+  Files created:
+    P-SEC_CERTIFICATE.txt — Phase completion certificate
+    P-SEC_EXECUTION_LOG.txt — This file
+
+───────────────────────────────────────────────────────────────
+SUMMARY
+
+  Security modules:   3  (keyring-adapter, permission-guard, audit-logger)
+  Scripts:            2  (CI signing pipeline, secure build)
+  Config files:       1  (tauri.conf.json)
+  Test files:         5  (36 total tests)
+  Certificate files:  2  (certificate + execution log)
+  CORE FREEZE:        ✅ maintained throughout
+  Total new files:    13
+
+───────────────────────────────────────────────────────────────

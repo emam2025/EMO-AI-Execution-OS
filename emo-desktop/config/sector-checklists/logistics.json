@@ -1,0 +1,14 @@
+{
+  "sector": "logistics",
+  "name": "Logistics & Supply Chain",
+  "description": "Checklist for logistics companies using EMO for route optimization, tracking, and demand forecasting.",
+  "criteria": [
+    { "id": "log-1", "label": "Route optimization reduces fuel cost by >15%", "type": "metric", "target": 0.15, "weight": 25 },
+    { "id": "log-2", "label": "Delivery time prediction accuracy >90%", "type": "metric", "target": 0.9, "weight": 20 },
+    { "id": "log-3", "label": "Inventory forecasting error <10%", "type": "metric", "target": 0.1, "weight": 20 },
+    { "id": "log-4", "label": "Agent handles 500+ concurrent tracking requests", "type": "metric", "target": 500, "weight": 15 },
+    { "id": "log-5", "label": "Integration with WMS/TMS systems", "type": "boolean", "target": true, "weight": 10 },
+    { "id": "log-6", "label": "Real-time alert response <15s", "type": "metric", "target": 15, "weight": 10 }
+  ],
+  "successThreshold": 0.8
+}

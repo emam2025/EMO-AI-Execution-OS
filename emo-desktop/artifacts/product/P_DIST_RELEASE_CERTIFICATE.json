@@ -1,0 +1,72 @@
+{
+  "certificate": {
+    "phase": "P-DIST",
+    "task_id": "EXEC-DIRECTIVE-P-DIST-001",
+    "status": "COMPLETED",
+    "completion_date": "2026-05-30",
+    "core_freeze": true,
+    "core_freeze_violations": 0
+  },
+  "deliverables": {
+    "scripts_dist_build_installers": {
+      "path": "emo-desktop/scripts/dist/build-installers.sh",
+      "status": "created",
+      "platforms": ["macOS (dmg)", "Windows (exe)", "Linux (AppImage)"],
+      "signing": ["codesign", "signtool", "gpg"]
+    },
+    "scripts_dist_update_manifest": {
+      "path": "emo-desktop/scripts/dist/generate-update-manifest.ts",
+      "status": "created",
+      "output": "artifacts/release/latest.json"
+    },
+    "scripts_dist_verify_signatures": {
+      "path": "emo-desktop/scripts/dist/verify-signatures.sh",
+      "status": "created",
+      "coverage": ["codesign --verify", "signtool verify", "gpg --verify", "SHA-256"]
+    },
+    "tauri_config": {
+      "path": "emo-desktop/tauri/tauri.conf.json",
+      "status": "updated",
+      "updater": {
+        "active": true,
+        "pubkey": "ed25519:...",
+        "dangerous_insecure_replace": false,
+        "endpoints": ["https://releases.emo-ai.dev/{target}/{arch}/latest.json"]
+      }
+    },
+    "release_manifest": {
+      "path": "emo-desktop/artifacts/release/RELEASE_MANIFEST.json",
+      "status": "created",
+      "sections": ["platforms", "hashes", "signing_policy", "update_policy", "integrity_checks"]
+    },
+    "signing_manifest": {
+      "path": "emo-desktop/artifacts/release/SIGNING_MANIFEST.json",
+      "status": "created",
+      "sections": ["packages", "chain_of_trust", "verification_methods"]
+    },
+    "tests": {
+      "files": 6,
+      "total_tests": 30,
+      "paths": [
+        "tests/dist/test_installer_build_integrity.ts (5)",
+        "tests/dist/test_auto_update_security.ts (5)",
+        "tests/dist/test_release_manifest_integrity.ts (5)",
+        "tests/dist/test_first_run_installation.ts (5)",
+        "tests/dist/test_install_to_result_time.ts (5)",
+        "tests/dist/test_distribution_integration.ts (20)"
+      ]
+    }
+  },
+  "thresholds": {
+    "installer_integrity_unsigned_packages": 0,
+    "auto_update_verify_signature_enforced": true,
+    "manifest_chain_signature_match_rate": "100%",
+    "first_run_install_to_result": "<= 5 minutes",
+    "tests_passing": "30/30",
+    "core_freeze_imports_from_core": 0
+  },
+  "acceptance": {
+    "status": "PASSED",
+    "notes": "All P-DIST artifacts created. CORE FREEZE maintained. 30 tests written. Installer pipeline, update channel, manifests, and first-run simulation covered."
+  }
+}

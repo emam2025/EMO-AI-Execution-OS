@@ -1,0 +1,17 @@
+{
+  "sector": "internal-team",
+  "name": "Internal EMO Development Team",
+  "description": "Checklist for EMO's own development team validating the platform before external release.",
+  "criteria": [
+    { "id": "int-1", "label": "All P1-P5 certificates verified and passing", "type": "boolean", "target": true, "weight": 20 },
+    { "id": "int-2", "label": "Full test suite (400+) passes on every build", "type": "boolean", "target": true, "weight": 15 },
+    { "id": "int-3", "label": "Core freeze maintained for 30+ days", "type": "boolean", "target": true, "weight": 15 },
+    { "id": "int-4", "label": "No plaintext credentials in any layer", "type": "boolean", "target": true, "weight": 15 },
+    { "id": "int-5", "label": "Pilot telemetry operational for 7+ days", "type": "metric", "target": 7, "weight": 10 },
+    { "id": "int-6", "label": "Incident response drill completed successfully", "type": "boolean", "target": true, "weight": 10 },
+    { "id": "int-7", "label": "Documentation reviewed and approved", "type": "boolean", "target": true, "weight": 5 },
+    { "id": "int-8", "label": "Rollback procedure tested", "type": "boolean", "target": true, "weight": 5 },
+    { "id": "int-9", "label": "All 6 compliance profiles load successfully", "type": "boolean", "target": true, "weight": 5 }
+  ],
+  "successThreshold": 0.9
+}
