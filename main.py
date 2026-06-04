@@ -519,9 +519,8 @@ async def list_models(provider: str, key: str = ""):
 
 
 @app.get("/api/test-connection")
-async def test_connection(provider: str = "openrouter", key: str = ""):
-    """Test actual connection to a model provider."""
-    # Use passed key, or try Keychain
+async def test_connection(provider: str = "openrouter", key: str = "", model: str = ""):
+    """Test actual connection to a model provider with optional model."""
     api_key = key.strip() if key else None
     if not api_key:
         kp = KeychainProvider()
@@ -532,7 +531,7 @@ async def test_connection(provider: str = "openrouter", key: str = ""):
     try:
         import time
         start = time.time()
-        b = Brain(provider=provider, api_key=api_key)
+        b = Brain(provider=provider, api_key=api_key, model=model or None)
         response = b.ask(user="Reply with the word OK", max_tokens=10)
         latency = int((time.time() - start) * 1000)
         is_ok = 'OK' in response.strip().upper()
@@ -542,9 +541,8 @@ async def test_connection(provider: str = "openrouter", key: str = ""):
             return {"connected": True, "latency": latency, "note": f"Unexpected response: {response.strip()[:50]}"}
     except Exception as e:
         err = str(e)
-        # Ensure we return only ASCII-safe error to the UI
         safe_err = err.encode('ascii', errors='replace').decode('ascii')
-        return {"connected": False, "error": safe_err}
+        return {"connected": False, "error": safe_err, "model_tested": model or "default"}
 
 
 @app.get("/api/test-telegram")

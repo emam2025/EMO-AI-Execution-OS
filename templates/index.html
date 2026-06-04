@@ -1390,13 +1390,15 @@ async function activateProject(id) {
       await fetch('/api/settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({key:'provider',value:selectedProvider})});
     }
 
+    const model = document.getElementById('settingsModel').value.trim();
     try {
-      const res = await fetch('/api/test-connection?provider=' + selectedProvider + '&key=' + encodeURIComponent(key));
+      let testUrl = '/api/test-connection?provider=' + selectedProvider + '&key=' + encodeURIComponent(key);
+      if(model) testUrl += '&model=' + encodeURIComponent(model);
+      const res = await fetch(testUrl);
       const data = await res.json();
       if(data.connected) {
-        if(statusEl) statusEl.innerHTML = '<span class="text-agent-coder">✅ ' + t('connected') + ' (' + (data.latency || '--') + 'ms)</span>';
+        if(statusEl) statusEl.innerHTML = '<span class="text-agent-coder">✅ ' + t('connected') + ' (' + (data.latency || '--') + 'ms) [' + escapeHtml(model || 'default') + ']</span>';
         providersData[selectedProvider].in_keychain = true;
-        // Auto-reload models after successful connection
         fetchModels();
       } else {
         if(statusEl) statusEl.innerHTML = '<span class="text-status-error">❌ ' + t('connection_failed') + ': ' + escapeHtml(data.error || '') + '</span>';
