@@ -262,37 +262,140 @@
 <!-- Settings Modal -->
 <div class="modal-overlay fixed inset-0 z-[100] hidden items-center justify-center p-4" id="settingsModal">
   <div class="w-full max-w-4xl max-h-[90vh] overflow-hidden glass rounded-[2.5rem] shadow-2xl flex flex-col">
-    <div class="p-8 border-b border-white/5 flex items-center justify-between">
+    <!-- Header -->
+    <div class="p-8 border-b border-white/5 flex items-center justify-between shrink-0">
       <div class="flex items-center gap-4">
         <div class="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary text-xl"><i class="fas fa-cog"></i></div>
         <div><h2 class="text-xl font-extrabold tracking-tight">{{ tr.settings_title }}</h2><p class="text-xs opacity-40 font-medium">{{ tr.select_ai_backend }}</p></div>
       </div>
       <button class="w-10 h-10 rounded-xl hover:bg-white/5 flex items-center justify-center transition-all" onclick="closeSettings()"><i class="fas fa-times"></i></button>
     </div>
+    <!-- Tabs -->
+    <div class="flex border-b border-white/5 shrink-0 overflow-x-auto">
+      <button class="settings-tab active px-6 py-4 text-xs font-bold uppercase tracking-wider whitespace-nowrap" data-tab="models" onclick="switchSettingsTab('models')">
+        <i class="fas fa-brain mr-2"></i> Models
+      </button>
+      <button class="settings-tab px-6 py-4 text-xs font-bold uppercase tracking-wider whitespace-nowrap" data-tab="integrations" onclick="switchSettingsTab('integrations')">
+        <i class="fas fa-puzzle-piece mr-2"></i> Integrations
+      </button>
+      <button class="settings-tab px-6 py-4 text-xs font-bold uppercase tracking-wider whitespace-nowrap" data-tab="general" onclick="switchSettingsTab('general')">
+        <i class="fas fa-sliders mr-2"></i> General
+      </button>
+      <button class="settings-tab px-6 py-4 text-xs font-bold uppercase tracking-wider whitespace-nowrap" data-tab="system" onclick="switchSettingsTab('system')">
+        <i class="fas fa-terminal mr-2"></i> System
+      </button>
+    </div>
+    <!-- Tab Content -->
     <div class="flex-1 overflow-y-auto p-8 space-y-10">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div class="space-y-6"><label class="text-[10px] font-bold tracking-[0.2em] text-outline uppercase">LLM Provider</label><div class="grid grid-cols-1 gap-2" id="providerList"></div></div>
-        <div class="space-y-6"><label class="text-[10px] font-bold tracking-[0.2em] text-outline uppercase">Connection</label>
-          <div class="p-6 rounded-3xl bg-surface-container-low border border-white/5 space-y-4">
-            <div><label class="text-[9px] font-bold opacity-40 uppercase mb-2 block">API Key</label>
-              <div class="relative"><input class="w-full bg-surface-container-lowest border-white/5 rounded-xl px-4 py-3 text-xs focus:ring-primary/20" id="settingsApiKey" placeholder="Enter API Key" type="password"/><button class="absolute right-3 top-3 text-outline" onclick="toggleApiKeyVisibility()"><i class="fas fa-eye" id="apiKeyEye"></i></button></div>
-            </div>
-            <div><label class="text-[9px] font-bold opacity-40 uppercase mb-2 block">Model</label>
-              <select class="w-full bg-surface-container-low border-white/5 rounded-xl px-4 py-3 text-xs focus:ring-primary/20" id="settingsModel"></select>
-              <div class="flex items-center gap-1 mt-1">
-                <button class="text-[9px] px-2 py-1 rounded-lg bg-primary/20 text-primary hover:bg-primary/30 transition-all" onclick="fetchModels()"><i class="fas fa-sync-alt text-[8px] mr-1"></i> Load models</button>
-                <span class="text-[8px] opacity-40" id="modelsCount"></span>
+      <!-- Models Tab -->
+      <div id="settingsTabModels">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div class="space-y-6">
+            <label class="text-[10px] font-bold tracking-[0.2em] text-outline uppercase">LLM Provider</label>
+            <div class="grid grid-cols-1 gap-2" id="providerList"></div>
+          </div>
+          <div class="space-y-6">
+            <label class="text-[10px] font-bold tracking-[0.2em] text-outline uppercase">Connection</label>
+            <div class="p-6 rounded-3xl bg-surface-container-low border border-white/5 space-y-4">
+              <div>
+                <label class="text-[9px] font-bold opacity-40 uppercase mb-2 block">API Key</label>
+                <div class="relative">
+                  <input class="w-full bg-surface-container-lowest border-white/5 rounded-xl px-4 py-3 text-xs focus:ring-primary/20" id="settingsApiKey" placeholder="Enter API Key" type="password"/>
+                  <button class="absolute right-3 top-3 text-outline" onclick="toggleApiKeyVisibility()"><i class="fas fa-eye" id="apiKeyEye"></i></button>
+                </div>
               </div>
+              <div>
+                <label class="text-[9px] font-bold opacity-40 uppercase mb-2 block">Model</label>
+                <select class="w-full bg-surface-container-low border-white/5 rounded-xl px-4 py-3 text-xs focus:ring-primary/20" id="settingsModel"></select>
+                <div class="flex items-center gap-1 mt-1">
+                  <button class="text-[9px] px-2 py-1 rounded-lg bg-primary/20 text-primary hover:bg-primary/30 transition-all" onclick="fetchModels()"><i class="fas fa-sync-alt text-[8px] mr-1"></i> Load models</button>
+                  <span class="text-[8px] opacity-40" id="modelsCount"></span>
+                </div>
+              </div>
+              <button class="w-full py-3 rounded-xl bg-white/5 hover:bg-white/10 font-bold text-xs transition-all flex items-center justify-center gap-2" id="testConnectionBtn" onclick="testConnection()"><i class="fas fa-plug-circle-bolt text-primary"></i> <span>Test API</span></button>
+              <div id="settingsConnectionStatus" class="text-center text-xs mt-2"></div>
             </div>
-            <button class="w-full py-3 rounded-xl bg-white/5 hover:bg-white/10 font-bold text-xs transition-all flex items-center justify-center gap-2" id="testConnectionBtn" onclick="testConnection()"><i class="fas fa-plug-circle-bolt text-primary"></i> <span>Test API</span></button>
-            <div id="settingsConnectionStatus" class="text-center text-xs mt-2"></div>
           </div>
         </div>
       </div>
-      <div class="space-y-4"><label class="text-[10px] font-bold tracking-[0.2em] text-outline uppercase" data-i18n="system_instructions">{{ tr.system_instructions }}</label><textarea class="w-full bg-surface-container-lowest border-white/5 rounded-xl px-4 py-3 text-xs focus:ring-primary/20 resize-y" id="settingsSystemInstructions" rows="4" data-i18n-placeholder="system_instructions_placeholder" placeholder="{{ tr.system_instructions_placeholder }}"></textarea></div>
+      <!-- Integrations Tab -->
+      <div id="settingsTabIntegrations" class="hidden">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div class="space-y-6">
+            <label class="text-[10px] font-bold tracking-[0.2em] text-outline uppercase"><i class="fab fa-telegram mr-1 text-sky-400"></i> Telegram</label>
+            <div class="p-6 rounded-3xl bg-surface-container-low border border-white/5 space-y-4">
+              <div>
+                <label class="text-[9px] font-bold opacity-40 uppercase mb-2 block">Bot Token</label>
+                <div class="relative">
+                  <input class="w-full bg-surface-container-lowest border-white/5 rounded-xl px-4 py-3 text-xs focus:ring-primary/20" id="settingsTelegramToken" placeholder="123456:ABC-DEF1234" type="password"/>
+                  <button class="absolute right-3 top-3 text-outline" onclick="toggleFieldVisibility('settingsTelegramToken','telegramEye')"><i class="fas fa-eye" id="telegramEye"></i></button>
+                </div>
+              </div>
+              <button class="w-full py-3 rounded-xl bg-white/5 hover:bg-white/10 font-bold text-xs transition-all flex items-center justify-center gap-2" onclick="testTelegramConnection()"><i class="fab fa-telegram text-sky-400"></i> <span>Test Telegram</span></button>
+              <div id="telegramConnectionStatus" class="text-center text-xs mt-2"></div>
+            </div>
+          </div>
+          <div class="space-y-6">
+            <label class="text-[10px] font-bold tracking-[0.2em] text-outline uppercase"><i class="fab fa-github mr-1 text-gray-300"></i> GitHub</label>
+            <div class="p-6 rounded-3xl bg-surface-container-low border border-white/5 space-y-4">
+              <div>
+                <label class="text-[9px] font-bold opacity-40 uppercase mb-2 block">Personal Access Token</label>
+                <div class="relative">
+                  <input class="w-full bg-surface-container-lowest border-white/5 rounded-xl px-4 py-3 text-xs focus:ring-primary/20" id="settingsGithubToken" placeholder="ghp_xxxxxxxxxxxx" type="password"/>
+                  <button class="absolute right-3 top-3 text-outline" onclick="toggleFieldVisibility('settingsGithubToken','githubEye')"><i class="fas fa-eye" id="githubEye"></i></button>
+                </div>
+              </div>
+              <button class="w-full py-3 rounded-xl bg-white/5 hover:bg-white/10 font-bold text-xs transition-all flex items-center justify-center gap-2" onclick="testGithubConnection()"><i class="fab fa-github text-gray-300"></i> <span>Test GitHub</span></button>
+              <div id="githubConnectionStatus" class="text-center text-xs mt-2"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- General Tab -->
+      <div id="settingsTabGeneral" class="hidden">
+        <div class="max-w-lg space-y-6">
+          <div class="p-6 rounded-3xl bg-surface-container-low border border-white/5 space-y-4">
+            <div>
+              <label class="text-[9px] font-bold opacity-40 uppercase mb-2 block">Language</label>
+              <select class="w-full bg-surface-container-lowest border-white/5 rounded-xl px-4 py-3 text-xs focus:ring-primary/20" id="settingsLang" onchange="setLang(this.value)">
+                <option value="en" class="bg-surface-container-low">English</option>
+                <option value="ar" class="bg-surface-container-low">العربية</option>
+              </select>
+            </div>
+            <div>
+              <div class="flex items-center justify-between">
+                <label class="text-[9px] font-bold opacity-40 uppercase mb-2 block">Theme</label>
+                <button class="text-xs px-3 py-1 rounded-lg bg-white/5 hover:bg-white/10 transition-all" onclick="toggleTheme(); switchSettingsTab('general'); updateSettingsGeneral();"><i class="fas fa-moon mr-1" id="settingsThemeBtnIcon"></i> <span id="settingsThemeBtnText">Dark</span></button>
+              </div>
+            </div>
+            <div>
+              <label class="text-[9px] font-bold opacity-40 uppercase mb-2 block">Active Model</label>
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-semibold text-primary" id="settingsActiveModelDisplay">{{ cur_model }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- System Tab -->
+      <div id="settingsTabSystem" class="hidden">
+        <div class="space-y-4">
+          <label class="text-[10px] font-bold tracking-[0.2em] text-outline uppercase" data-i18n="system_instructions">{{ tr.system_instructions }}</label>
+          <textarea class="w-full bg-surface-container-lowest border-white/5 rounded-xl px-4 py-3 text-xs focus:ring-primary/20 resize-y min-h-[200px]" id="settingsSystemInstructions" rows="6" data-i18n-placeholder="system_instructions_placeholder" placeholder="{{ tr.system_instructions_placeholder }}"></textarea>
+        </div>
+      </div>
     </div>
-    <div class="p-8 border-t border-white/5 flex items-center justify-between bg-surface-container-lowest">
-      <div class="flex gap-3"><button class="px-6 py-3 rounded-xl hover:bg-white/5 font-bold text-xs transition-all" onclick="closeSettings()">Cancel</button><button class="px-8 py-3 rounded-xl bg-primary text-on-primary font-bold text-xs shadow-lg hover:scale-105 active:scale-95 transition-all" id="saveSettingsBtn" onclick="saveAllSettings()">Save &amp; Apply</button></div>
+    <!-- Footer -->
+    <div class="p-6 border-t border-white/5 flex items-center justify-between shrink-0 bg-surface-container-lowest/50">
+      <button class="px-5 py-2.5 rounded-xl hover:bg-white/5 font-bold text-xs transition-all flex items-center gap-2 border border-white/5" onclick="closeSettings()">
+        <i class="fas fa-arrow-right"></i> <span data-i18n="back">{{ tr.back }}</span>
+      </button>
+      <div class="flex items-center gap-2 text-[10px] opacity-30" id="settingsStatusText">
+        <i class="fas fa-circle text-[6px]"></i> <span>Changes unsaved</span>
+      </div>
+      <button class="px-8 py-2.5 rounded-xl bg-primary text-on-primary font-bold text-xs shadow-lg hover:scale-105 active:scale-95 transition-all flex items-center gap-2" id="saveSettingsBtn" onclick="saveAllSettings()">
+        <i class="fas fa-check"></i> <span data-i18n="save">{{ tr.save }}</span>
+      </button>
     </div>
   </div>
 </div>
@@ -425,6 +528,10 @@
       window.saveAllSettings = saveAllSettings;
       window.selectProvider = selectProvider;
       window.toggleApiKeyVisibility = toggleApiKeyVisibility;
+      window.toggleFieldVisibility = toggleFieldVisibility;
+      window.testTelegramConnection = testTelegramConnection;
+      window.testGithubConnection = testGithubConnection;
+      window.switchSettingsTab = switchSettingsTab;
       window.toggleTools = toggleTools;
       window.closeTools = closeTools;
       window.filterTools = filterTools;
@@ -1135,12 +1242,34 @@ async function activateProject(id) {
   }
 
   // Settings
+  let settingsDirty = false;
+
+  function markSettingsDirty() { settingsDirty = true; updateSettingsStatus(); }
+  function updateSettingsStatus() {
+    const el = document.getElementById('settingsStatusText');
+    if(el) el.innerHTML = settingsDirty 
+      ? '<i class="fas fa-circle text-[6px] text-amber-400"></i> <span class="text-amber-400/70">Unsaved changes</span>' 
+      : '<i class="fas fa-circle text-[6px] text-agent-coder"></i> <span>All saved</span>';
+  }
+
+  function switchSettingsTab(tab) {
+    document.querySelectorAll('.settings-tab').forEach(t => {
+      t.classList.toggle('active', t.dataset.tab === tab);
+    });
+    document.querySelectorAll('[id^="settingsTab"]').forEach(el => el.classList.add('hidden'));
+    const target = document.getElementById('settingsTab' + tab.charAt(0).toUpperCase() + tab.slice(1));
+    if(target) target.classList.remove('hidden');
+  }
+
   function openSettings() {
     selectedProvider = settingsData.provider || 'openrouter';
+    settingsDirty = false;
     setupSettingsFromData(); renderProvidersList();
     document.getElementById('settingsModal').classList.remove('hidden');
     document.getElementById('settingsModal').classList.add('flex');
+    switchSettingsTab('models');
     fetchModels();
+    updateSettingsGeneral();
   }
   function closeSettings() {
     document.getElementById('settingsModal').classList.add('hidden');
@@ -1150,18 +1279,44 @@ async function activateProject(id) {
     document.getElementById('settingsModel').value = settingsData.model || '';
     document.getElementById('settingsApiKey').value = '';
     document.getElementById('settingsSystemInstructions').value = settingsData.system_instructions || '';
+    document.getElementById('settingsTelegramToken').value = '';
+    document.getElementById('settingsGithubToken').value = '';
+    document.getElementById('settingsLang').value = LANG || 'en';
     updateApiKeyInput();
+    loadKeyFields();
+  }
+  async function loadKeyFields() {
+    try {
+      const res = await fetch('/api/settings/keys');
+      if(!res.ok) return;
+      const data = await res.json();
+      if(data.telegram_token) document.getElementById('settingsTelegramToken').value = data.telegram_token;
+      if(data.github_token) document.getElementById('settingsGithubToken').value = data.github_token;
+    } catch(e) {}
+  }
+  function updateSettingsGeneral() {
+    const theme = document.documentElement.classList.contains('dark') ? 'Dark' : 'Light';
+    const el = document.getElementById('settingsThemeBtnText');
+    const icon = document.getElementById('settingsThemeBtnIcon');
+    if(el) el.textContent = theme;
+    if(icon) icon.className = theme === 'Dark' ? 'fas fa-moon mr-1' : 'fas fa-sun mr-1';
+    const modelEl = document.getElementById('settingsActiveModelDisplay');
+    if(modelEl) modelEl.textContent = settingsData.model || '{{ cur_model }}';
   }
   function renderProvidersList() {
     const container = document.getElementById('providerList');
     if(!container) return; container.innerHTML = '';
     Object.entries(providersData).forEach(([name,cfg])=>{
       const div = document.createElement('div');
-      div.className = `provider-card p-2 rounded-xl glass border ${selectedProvider===name?'border-primary bg-primary/10':'border-white/5'} cursor-pointer flex items-center gap-2 text-xs`;
+      const isSelected = selectedProvider === name;
+      div.className = `p-2 rounded-xl glass border ${isSelected ? 'border-primary bg-primary/10' : 'border-white/5'} cursor-pointer flex items-center gap-2 text-xs hover:border-primary/30 transition-all`;
       div.onclick = () => selectProvider(name);
-      div.innerHTML = `<div class="w-2 h-2 rounded-full ${selectedProvider===name?'bg-primary':'bg-outline'}"></div><span class="flex-1">${name}</span>`;
+      const dot = cfg.in_keychain ? 'text-agent-coder' : (cfg.api_key_env ? 'text-amber-400' : 'text-outline');
+      const keyIcon = cfg.in_keychain ? '<i class="fas fa-check-circle text-[8px] ml-1 text-agent-coder"></i>' : '';
+      div.innerHTML = `<div class="w-2 h-2 rounded-full ${dot}"></div><span class="flex-1 capitalize">${escapeHtml(cfg.name || name)} ${keyIcon}</span>`;
       container.appendChild(div);
     });
+    updateSettingsStatus();
   }
   function selectProvider(name) { selectedProvider = name; renderProvidersList(); updateApiKeyInput(); }
   function updateApiKeyInput() {
@@ -1204,13 +1359,18 @@ async function activateProject(id) {
     if(input.type === 'password') { input.type = 'text'; eye.className = 'fas fa-eye-slash'; }
     else { input.type = 'password'; eye.className = 'fas fa-eye'; }
   }
+  function toggleFieldVisibility(fieldId, eyeId) {
+    const input = document.getElementById(fieldId);
+    const eye = document.getElementById(eyeId);
+    if(input.type === 'password') { input.type = 'text'; eye.className = 'fas fa-eye-slash'; }
+    else { input.type = 'password'; eye.className = 'fas fa-eye'; }
+  }
   async function testConnection() {
     const btn = document.getElementById('testConnectionBtn');
     const statusEl = document.getElementById('settingsConnectionStatus');
     const key = document.getElementById('settingsApiKey').value.trim();
     btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Testing...';
 
-    // Check if key is provided or already stored
     const hasKey = key || providersData[selectedProvider]?.in_keychain;
     if(!hasKey && selectedProvider !== 'ollama') {
       if(statusEl) statusEl.innerHTML = '<span class="text-status-error">❌ Enter API key first</span>';
@@ -1218,7 +1378,6 @@ async function activateProject(id) {
       return;
     }
 
-    // Save key if entered
     const keyName = (providersData[selectedProvider]?.api_key_env||'').toLowerCase().replace('_api_key','')+'_key';
     if(keyName && key) {
       await fetch('/api/settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({key:keyName,value:key})});
@@ -1227,12 +1386,12 @@ async function activateProject(id) {
       await fetch('/api/settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({key:'provider',value:selectedProvider})});
     }
 
-    // Real connection test via backend
     try {
       const res = await fetch('/api/test-connection?provider=' + selectedProvider + '&key=' + encodeURIComponent(key));
       const data = await res.json();
       if(data.connected) {
         if(statusEl) statusEl.innerHTML = '<span class="text-agent-coder">✅ ' + t('connected') + ' (' + (data.latency || '--') + 'ms)</span>';
+        providersData[selectedProvider].in_keychain = true;
       } else {
         if(statusEl) statusEl.innerHTML = '<span class="text-status-error">❌ ' + t('connection_failed') + ': ' + escapeHtml(data.error || '') + '</span>';
       }
@@ -1240,17 +1399,56 @@ async function activateProject(id) {
       if(statusEl) statusEl.innerHTML = '<span class="text-status-error">❌ ' + t('connection_failed') + '</span>';
     }
     btn.disabled = false; btn.innerHTML = '<i class="fas fa-plug-circle-bolt"></i> Test API';
+    renderProvidersList();
+  }
+  async function testTelegramConnection() {
+    const btn = event.target.closest('button');
+    const statusEl = document.getElementById('telegramConnectionStatus');
+    const token = document.getElementById('settingsTelegramToken').value.trim();
+    if(!token) { statusEl.innerHTML = '<span class="text-status-error">❌ Enter Telegram token first</span>'; return; }
+    btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Testing...';
+    try {
+      const res = await fetch('/api/test-telegram?token=' + encodeURIComponent(token));
+      const data = await res.json();
+      if(data.connected) statusEl.innerHTML = '<span class="text-agent-coder">✅ Bot: ' + escapeHtml(data.bot_name || 'Connected') + '</span>';
+      else statusEl.innerHTML = '<span class="text-status-error">❌ ' + escapeHtml(data.error || 'Failed') + '</span>';
+    } catch(e) {
+      statusEl.innerHTML = '<span class="text-status-error">❌ Network error</span>';
+    }
+    btn.disabled = false; btn.innerHTML = '<i class="fab fa-telegram"></i> Test Telegram';
+  }
+  async function testGithubConnection() {
+    const btn = event.target.closest('button');
+    const statusEl = document.getElementById('githubConnectionStatus');
+    const token = document.getElementById('settingsGithubToken').value.trim();
+    if(!token) { statusEl.innerHTML = '<span class="text-status-error">❌ Enter GitHub token first</span>'; return; }
+    btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Testing...';
+    try {
+      const res = await fetch('/api/test-github?token=' + encodeURIComponent(token));
+      const data = await res.json();
+      if(data.connected) statusEl.innerHTML = '<span class="text-agent-coder">✅ ' + escapeHtml(data.user || 'Connected') + '</span>';
+      else statusEl.innerHTML = '<span class="text-status-error">❌ ' + escapeHtml(data.error || 'Failed') + '</span>';
+    } catch(e) {
+      statusEl.innerHTML = '<span class="text-status-error">❌ Network error</span>';
+    }
+    btn.disabled = false; btn.innerHTML = '<i class="fab fa-github"></i> Test GitHub';
   }
   async function saveAllSettings() {
     const model = document.getElementById('settingsModel').value.trim();
     const key = document.getElementById('settingsApiKey').value.trim();
     const systemInstructions = document.getElementById('settingsSystemInstructions').value.trim();
+    const telegramToken = document.getElementById('settingsTelegramToken').value.trim();
+    const githubToken = document.getElementById('settingsGithubToken').value.trim();
     const keyName = (providersData[selectedProvider]?.api_key_env||'').toLowerCase().replace('_api_key','')+'_key';
     if(keyName && key) await fetch('/api/settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({key:keyName,value:key})});
     if(model !== settingsData.model) await fetch('/api/settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({key:'model',value:model})});
     if(selectedProvider !== settingsData.provider) await fetch('/api/settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({key:'provider',value:selectedProvider})});
     if(systemInstructions !== settingsData.system_instructions) await fetch('/api/settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({key:'system_instructions',value:systemInstructions})});
+    if(telegramToken) await fetch('/api/settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({key:'telegram_token',value:telegramToken})});
+    if(githubToken) await fetch('/api/settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({key:'github_token',value:githubToken})});
     settingsData.system_instructions = systemInstructions; settingsData.model = model; settingsData.provider = selectedProvider;
+    settingsDirty = false;
+    updateSettingsStatus();
     showToast('Settings saved', 'success'); closeSettings(); refreshStatus();
   }
 

@@ -481,6 +481,38 @@ async def test_connection(provider: str = "openrouter", key: str = ""):
         return {"connected": False, "error": safe_err}
 
 
+@app.get("/api/test-telegram")
+async def test_telegram(token: str = ""):
+    """Test Telegram bot token."""
+    if not token:
+        return {"connected": False, "error": "No token provided"}
+    try:
+        from telegram import Bot
+        bot = Bot(token=token)
+        me = await bot.get_me()
+        return {"connected": True, "bot_name": me.username or me.first_name}
+    except Exception as e:
+        return {"connected": False, "error": str(e)}
+
+
+@app.get("/api/test-github")
+async def test_github(token: str = ""):
+    """Test GitHub personal access token."""
+    if not token:
+        return {"connected": False, "error": "No token provided"}
+    try:
+        import httpx
+        async with httpx.AsyncClient(timeout=10) as client:
+            r = await client.get("https://api.github.com/user", headers={"Authorization": f"Bearer {token}", "User-Agent": "EmoAI"})
+            if r.status_code == 200:
+                data = r.json()
+                return {"connected": True, "user": data.get("login", "ok")}
+            else:
+                return {"connected": False, "error": f"HTTP {r.status_code}: {r.text[:100]}"}
+    except Exception as e:
+        return {"connected": False, "error": str(e)}
+
+
 @app.get("/api/tray/ping")
 async def tray_ping():
     return {"status": "ok"}

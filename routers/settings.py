@@ -40,10 +40,20 @@ async def get_settings():
     # Don't return sensitive keys
     safe_settings = {
         k: v for k, v in settings.items()
-        if not k.endswith("_key") and k not in ("auth_password_hash", "telegram_token")
+        if not k.endswith("_key") and k not in ("auth_password_hash", "telegram_token", "github_token")
     }
     safe_settings["auth_enabled"] = os.getenv("EMO_AUTH_ENABLED", "false").lower() == "true"
     return JSONResponse(safe_settings)
+
+
+@router.get("/keys")
+async def get_sensitive_keys():
+    """Return masked tokens for UI display."""
+    settings = load_settings()
+    return JSONResponse({
+        "telegram_token": settings.get("telegram_token", ""),
+        "github_token": settings.get("github_token", ""),
+    })
 
 
 @router.post("")
@@ -66,6 +76,12 @@ async def update_setting(req: SettingsUpdate):
         settings[req.key] = req.value
         save_settings(settings)
         return JSONResponse({"status": "saved", "key": req.key, "stored_in": "keychain"})
+    
+    if req.key in ("telegram_token", "github_token") and req.value:
+        settings = load_settings()
+        settings[req.key] = req.value
+        save_settings(settings)
+        return JSONResponse({"status": "saved", "key": req.key})
     
     settings = load_settings()
     settings[req.key] = req.value

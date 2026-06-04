@@ -532,6 +532,11 @@ html.light .chat-bubble-ai {
 .archive-item { opacity: 0.6; }
 .archive-item:hover { opacity: 1; }
 
+/* Settings tabs */
+.settings-tab { transition: all 0.2s; color: var(--outline); border-bottom: 2px solid transparent; }
+.settings-tab:hover { color: var(--primary); background: color-mix(in srgb, var(--primary) 8%, transparent); }
+.settings-tab.active { color: var(--primary); border-bottom-color: var(--primary); background: color-mix(in srgb, var(--primary) 12%, transparent); }
+
 /* Workspace tabs */
 .workspace-tab { transition: all 0.2s; }
 .workspace-tab.active { background: color-mix(in srgb, var(--primary) 15%, transparent); color: var(--primary); border-bottom: 2px solid var(--primary); }
