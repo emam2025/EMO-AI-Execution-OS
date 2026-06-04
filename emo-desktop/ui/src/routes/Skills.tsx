@@ -27,7 +27,7 @@ export const Skills: React.FC = () => {
         <div className="section-header">Skill Library</div>
         {skills.length === 0 && (
           <p style={{ color: "#9ca3af", fontSize: "0.85rem", padding: 24, textAlign: "center" }}>
-            {isConnected ? "No skills extracted yet. Skills are auto-extracted from execution traces." : "Connect to runtime to view skills."}
+            {isConnected ? "No skills extracted yet. Skills are auto-extracted from execution traces." : "Connect to view skills."}
           </p>
         )}
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>

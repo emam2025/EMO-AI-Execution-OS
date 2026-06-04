@@ -37,7 +37,7 @@ export const ActivityStream: React.FC = () => {
       <div ref={listRef} style={{ flex: 1, overflow: "auto", padding: 8 }}>
         {events.length === 0 && (
           <p style={{ padding: "24px 8px", textAlign: "center", color: "#9ca3af", fontSize: "0.8rem" }}>
-            {isConnected ? "Waiting for events…" : "Connect to runtime to see live activity."}
+            {isConnected ? "Waiting for events…" : "Connect to see live activity."}
           </p>
         )}
         {events.map((event, i) => (

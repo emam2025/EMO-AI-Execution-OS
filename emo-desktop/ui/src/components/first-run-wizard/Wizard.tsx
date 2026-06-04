@@ -108,7 +108,7 @@ export const FirstRunWizard: React.FC<WizardProps> = ({ onComplete, onClose }) =
             mode={state.mode}
             projectName={state.projectName}
             validationPassed={validationPassed}
-            validationMessage={isConnected ? "Runtime connected" : "Runtime not connected — check your connection"}
+            validationMessage={isConnected ? "Connected" : "Not connected — check your connection"}
             onLaunch={handleLaunch}
             onBack={goBack}
           />

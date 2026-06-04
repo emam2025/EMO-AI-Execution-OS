@@ -13,7 +13,7 @@ export const Workflows: React.FC = () => {
           Workflows
         </h1>
         <p style={{ margin: "2px 0 0", fontSize: "0.8rem", color: "#6b7280" }}>
-          Active DAG executions with real-time status
+          Active workflow executions with real-time status
         </p>
       </div>
 
@@ -21,7 +21,7 @@ export const Workflows: React.FC = () => {
         <div className="section-header">Active Executions</div>
         {traces.length === 0 && (
           <p style={{ color: "#9ca3af", fontSize: "0.85rem", padding: 24, textAlign: "center" }}>
-            {isConnected ? "No active workflows. Run an agent to see execution traces here." : "Connect to runtime to view workflows."}
+            {isConnected ? "No active workflows. Run an agent to see execution traces here." : "Connect to view workflows."}
           </p>
         )}
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>

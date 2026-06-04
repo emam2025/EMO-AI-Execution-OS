@@ -8,7 +8,7 @@ export const Agents: React.FC = () => {
   const { health, isConnected, telemetry } = useRuntimeStore();
 
   if (!isConnected) {
-    return <EmptyState icon="🔌" title="Runtime Disconnected" description="Connect to the runtime to view agent status." />;
+    return <EmptyState icon="🔌" title="Not Connected" description="Connect to view agent status." />;
   }
 
   if (!health && !telemetry) {

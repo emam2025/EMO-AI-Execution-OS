@@ -15,7 +15,7 @@ const NAV_ITEMS: { id: Route; label: string; icon: string }[] = [
   { id: "knowledge", label: "Knowledge", icon: "◎" },
   { id: "skills", label: "Skills", icon: "⚡" },
   { id: "workflows", label: "Workflows", icon: "◈" },
-  { id: "runtime-monitor", label: "Runtime", icon: "⊞" },
+  { id: "runtime-monitor", label: "Monitor", icon: "⊞" },
   { id: "ai-gateway", label: "AI Gateway", icon: "⚙" },
   { id: "trace-explorer", label: "Trace Explorer", icon: "◎" },
   { id: "settings", label: "Settings", icon: "⚙" },

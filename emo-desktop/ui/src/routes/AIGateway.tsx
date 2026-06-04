@@ -15,7 +15,7 @@ export const AIGateway: React.FC<AIGatewayProps> = ({ onNavigate }) => {
   const { routingStatus, gatewayMetrics, isConnected } = useRuntimeStore();
 
   if (!isConnected) {
-    return <EmptyState icon="🔌" title="Runtime Disconnected" description="Connect to the runtime to view AI Gateway status." action={undefined} />;
+    return <EmptyState icon="🔌" title="Not Connected" description="Connect to view AI Gateway status." action={undefined} />;
   }
 
   if (!routingStatus && !gatewayMetrics) {

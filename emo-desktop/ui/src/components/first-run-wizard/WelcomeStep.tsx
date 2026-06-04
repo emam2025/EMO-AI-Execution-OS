@@ -40,7 +40,7 @@ export const WelcomeStep: React.FC<WelcomeStepProps> = ({ onNext }) => {
         <ul style={{ paddingLeft: 20, color: "#6b7280" }}>
           <li>Connect your AI provider accounts (OpenAI, Anthropic, etc.)</li>
           <li>Select your runtime mode (Local / Sandbox / Enterprise)</li>
-          <li>Validate the IPC connection to the runtime service</li>
+          <li>Validate the connection to EMO AI</li>
           <li>Launch your workspace</li>
         </ul>
       </div>

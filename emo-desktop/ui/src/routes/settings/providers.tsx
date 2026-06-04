@@ -95,7 +95,7 @@ export const ProvidersSettings: React.FC = () => {
       <div className="mt-8 p-4 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-700">
         <p className="font-semibold mb-1">🔒 Security Notice</p>
         <ul className="list-disc list-inside space-y-1 text-amber-600">
-          <li>Keys are stored in OS keychain only — never in .env or config files</li>
+          <li>Keys are stored in OS keychain only — never in config files</li>
           <li>Keys are injected ephemerally into the runtime — cleared after 5 seconds</li>
           <li>No key data is logged, telemetried, or exposed in network headers</li>
           <li>Default/test keys are blocked in production mode</li>

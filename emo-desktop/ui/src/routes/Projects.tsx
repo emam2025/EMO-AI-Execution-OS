@@ -20,7 +20,7 @@ export const Projects: React.FC = () => {
         <div className="section-header">All Projects</div>
         {projects.length === 0 && (
           <p style={{ color: "#9ca3af", fontSize: "0.85rem", padding: 24, textAlign: "center" }}>
-            {isConnected ? "No projects yet. Create your first project to get started." : "Connect to runtime to view projects."}
+            {isConnected ? "No projects yet. Create your first project to get started." : "Connect to view projects."}
           </p>
         )}
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>

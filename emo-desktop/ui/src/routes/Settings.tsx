@@ -11,12 +11,12 @@ export const Settings: React.FC = () => {
           Settings
         </h1>
         <p style={{ margin: "2px 0 0", fontSize: "0.8rem", color: "#6b7280" }}>
-          Runtime connection, session info, and system details
+          Connection, session, and system details
         </p>
       </div>
 
       <div className="glass-panel" style={{ padding: 16 }}>
-        <div className="section-header">Runtime Connection</div>
+        <div className="section-header">Connection</div>
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
           <div className="metric-card" style={{ padding: 10 }}>
             <span className="metric-card-label">Status</span>
@@ -37,7 +37,7 @@ export const Settings: React.FC = () => {
           </div>
           {session && (
             <div className="metric-card" style={{ padding: 10 }}>
-              <span className="metric-card-label">Session Token</span>
+              <span className="metric-card-label">Session</span>
               <span style={{ marginLeft: 8, fontFamily: "monospace", fontSize: "0.75rem", color: "#6b7280" }}>
                 {session.session_token?.slice(0, 20)}…
               </span>
@@ -49,8 +49,8 @@ export const Settings: React.FC = () => {
       <div className="glass-panel" style={{ padding: 16 }}>
         <div className="section-header">Authentication</div>
         <p style={{ fontSize: "0.85rem", color: "#6b7280", margin: "8px 0 0" }}>
-          Session token managed by RuntimeClient. Re-authenticate by restarting the runtime.
-          Governance layer (RBAC, audit trail, tenant isolation) is active for all IPC operations.
+          Session managed by the application. Re-authenticate by restarting.
+          Governance layer (RBAC, audit trail, tenant isolation) is active for all system operations.
         </p>
         <div style={{ marginTop: 8, display: "flex", gap: 8 }}>
           <span className="status-badge status-badge-active">RBAC: Active</span>

@@ -15,7 +15,7 @@ export const RuntimeMonitor: React.FC = () => {
       <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
         <div>
           <h1 style={{ fontSize: "1.4rem", fontWeight: 700, letterSpacing: "-0.02em", margin: 0 }}>
-            Runtime Monitor
+            System Monitor
           </h1>
           <p style={{ margin: "2px 0 0", fontSize: "0.8rem", color: "#6b7280" }}>
             Real-time system metrics · Updates every 500ms
