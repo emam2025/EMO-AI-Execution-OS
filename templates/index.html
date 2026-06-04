@@ -236,10 +236,15 @@
 
   <!-- Footer -->
   <footer class="h-12 glass border-x-0 border-b-0 flex items-center px-6 text-[10px] gap-6 shrink-0 z-50">
-    <div class="flex items-center gap-2">
+    <div class="flex items-center gap-2 relative cursor-pointer" onclick="toggleProviderPopup(event)">
       <span class="w-1.5 h-1.5 rounded-full bg-agent-coder" id="statusDot"></span>
       <span class="font-bold opacity-60 uppercase tracking-tighter" id="statusProvider">{{ provider_sel }}</span>
       <span class="font-bold px-1.5 py-0.5 rounded-full bg-agent-coder/20 text-agent-coder text-[8px]" data-i18n="online">Online</span>
+      <!-- Provider Status Popup -->
+      <div class="provider-popup hidden absolute bottom-full left-0 mb-2 w-64 rounded-2xl glass border border-white/10 shadow-2xl p-3 z-[200]" id="providerPopup">
+        <div class="text-[9px] font-bold tracking-wider text-outline uppercase mb-2">Providers</div>
+        <div class="space-y-1.5" id="providerPopupList"></div>
+      </div>
     </div>
     <div class="h-4 w-[1px] bg-white/10"></div>
     <div class="flex items-center gap-2 font-mono"><i class="fas fa-microchip opacity-30"></i><span class="opacity-60" id="statusModelFooter">{{ cur_model }}</span></div>
@@ -537,6 +542,7 @@
       window.filterTools = filterTools;
       window.startSpeedTest = startSpeedTest;
       window.refreshStatus = refreshStatus;
+      window.toggleProviderPopup = toggleProviderPopup;
       window.onFileSelected = onFileSelected;
       window.clearFileUpload = clearFileUpload;
       window.sendMessage = sendMessage;
@@ -1522,6 +1528,55 @@ async function activateProject(id) {
       }
     } catch(e) {}
   }
+  // Provider Status Popup
+  let providerPopupOpen = false;
+
+  function toggleProviderPopup(event) {
+    event.stopPropagation();
+    const popup = document.getElementById('providerPopup');
+    providerPopupOpen = !providerPopupOpen;
+    if(providerPopupOpen) {
+      popup.classList.remove('hidden');
+      fetchProviderStatus();
+    } else {
+      popup.classList.add('hidden');
+    }
+  }
+
+  // Close popup when clicking outside
+  document.addEventListener('click', function(e) {
+    if(providerPopupOpen && !e.target.closest('.provider-popup') && !e.target.closest('#statusDot') && !e.target.closest('#statusProvider')) {
+      document.getElementById('providerPopup').classList.add('hidden');
+      providerPopupOpen = false;
+    }
+  });
+
+  async function fetchProviderStatus() {
+    const list = document.getElementById('providerPopupList');
+    list.innerHTML = '<div class="text-[10px] text-center py-2 opacity-40"><i class="fas fa-spinner fa-spin"></i> Loading...</div>';
+    try {
+      const res = await fetch('/api/providers/status');
+      const data = await res.json();
+      list.innerHTML = '';
+      Object.entries(data.providers).forEach(([id, info]) => {
+        const isActive = id === data.active;
+        const statusColor = info.status === 'connected' ? 'text-agent-coder' : (info.status === 'no_key' ? 'text-outline' : 'text-status-error');
+        const statusIcon = info.status === 'connected' ? 'fa-check-circle' : (info.status === 'no_key' ? 'fa-circle' : 'fa-exclamation-circle');
+        const row = document.createElement('div');
+        row.className = `flex items-center gap-2 px-2 py-1.5 rounded-lg text-xs ${isActive ? 'bg-primary/10 border border-primary/20' : 'hover:bg-white/5'} transition-all`;
+        row.innerHTML = `
+          <div class="w-1.5 h-1.5 rounded-full ${info.key_saved ? 'bg-agent-coder' : 'bg-outline'} shrink-0"></div>
+          <span class="flex-1 font-semibold capitalize">${escapeHtml(info.name || id)}</span>
+          ${info.model ? `<span class="text-[8px] font-mono opacity-60 truncate max-w-[80px]">${escapeHtml(info.model)}</span>` : ''}
+          <i class="fas ${statusIcon} ${statusColor} text-[10px]"></i>
+        `;
+        list.appendChild(row);
+      });
+    } catch(e) {
+      list.innerHTML = '<div class="text-[10px] text-status-error text-center py-2">Failed to load</div>';
+    }
+  }
+
   function showToast(msg, type='info') {
     const toast = document.createElement('div');
     toast.className = 'fixed bottom-20 left-1/2 transform -translate-x-1/2 z-50 px-4 py-2 rounded-xl glass text-xs backdrop-blur-md';

@@ -552,6 +552,18 @@ html.light .chat-bubble-ai {
 .op-error { border-left: 3px solid #ef4444; }
 .op-pending { border-left: 3px solid var(--outline); }
 
+/* Provider status popup */
+.provider-popup {
+  backdrop-filter: blur(20px);
+  background: color-mix(in srgb, var(--surface-container) 95%, transparent);
+  animation: fadeIn 0.15s ease-out;
+  transform-origin: bottom left;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
 /* Form elements */
 input, textarea, select {
   background-color: var(--surface-container-low);

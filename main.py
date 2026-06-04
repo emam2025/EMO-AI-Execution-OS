@@ -308,6 +308,45 @@ async def api_status(user: dict = Depends(require_auth(role="operator"))):
     })
 
 
+PROVIDERS_INFO = {
+    "openrouter": {"name": "OpenRouter"},
+    "groq": {"name": "Groq"},
+    "gemini": {"name": "Gemini"},
+    "ollama": {"name": "Ollama (Local)"},
+}
+
+
+@app.get("/api/providers/status")
+async def providers_status():
+    """Get status of all providers (key saved, model, connection)."""
+    from routers.settings import load_settings
+    settings = load_settings()
+    kp = KeychainProvider()
+    active_provider = settings.get("provider", "openrouter")
+    active_model = settings.get("model", "")
+
+    result = {}
+    for pid, info in PROVIDERS_INFO.items():
+        key = kp.get(pid) or (settings.get(f"{pid}_key") if pid in ("openrouter", "gemini", "groq") else None)
+        model = settings.get(f"{pid}_model", "")
+        if not model and pid == active_provider:
+            model = active_model
+        result[pid] = {
+            "name": info["name"],
+            "key_saved": bool(key),
+            "model": model,
+            "status": "connected" if (bool(key) or pid == "ollama") else "no_key",
+        }
+        # Mark Ollama as offline if no local response
+        if pid == "ollama" and bool(key):
+            result[pid]["status"] = "unknown"
+
+    return JSONResponse({
+        "providers": result,
+        "active": active_provider,
+    })
+
+
 @app.get("/")
 async def root(request: Request):
     """Render the main web UI."""
