@@ -372,15 +372,52 @@ async def root(request: Request):
 
 @app.get("/api/models/{provider}")
 async def list_models(provider: str):
-    """Fetch available models from a provider."""
+    """Fetch available models from a provider with pricing info."""
     default_models = {
-        "openrouter": [{"id": "openai/gpt-4o", "name": "GPT-4o"}, {"id": "openai/gpt-4o-mini", "name": "GPT-4o Mini"}, {"id": "anthropic/claude-3-opus", "name": "Claude 3 Opus"}, {"id": "anthropic/claude-3-sonnet", "name": "Claude 3 Sonnet"}, {"id": "google/gemini-pro", "name": "Gemini Pro"}, {"id": "mistral/mistral-large", "name": "Mistral Large"}, {"id": "meta-llama/llama-3-70b", "name": "Llama 3 70B"}, {"id": "deepseek/deepseek-r1", "name": "DeepSeek R1"}],
-        "groq": [{"id": "llama3-70b-8192", "name": "Llama 3 70B"}, {"id": "llama3-8b-8192", "name": "Llama 3 8B"}, {"id": "mixtral-8x7b-32768", "name": "Mixtral 8x7B"}, {"id": "gemma2-9b-it", "name": "Gemma 2 9B"}],
-        "gemini": [{"id": "gemini-pro", "name": "Gemini Pro"}, {"id": "gemini-2.0-flash", "name": "Gemini 2.0 Flash"}],
-        "ollama": [{"id": "llama3", "name": "Llama 3"}, {"id": "llama2", "name": "Llama 2"}, {"id": "mistral", "name": "Mistral"}, {"id": "codellama", "name": "CodeLlama"}, {"id": "gemma", "name": "Gemma"}],
+        "openrouter": [
+            {"id": "openai/gpt-4o", "name": "GPT-4o", "free": False},
+            {"id": "openai/gpt-4o-mini", "name": "GPT-4o Mini", "free": False},
+            {"id": "openai/gpt-4.1", "name": "GPT-4.1", "free": False},
+            {"id": "openai/o3-mini", "name": "o3 Mini", "free": False},
+            {"id": "anthropic/claude-sonnet-4", "name": "Claude Sonnet 4", "free": False},
+            {"id": "anthropic/claude-haiku-4", "name": "Claude Haiku 4", "free": False},
+            {"id": "google/gemini-2.0-flash-001", "name": "Gemini 2.0 Flash", "free": True},
+            {"id": "google/gemini-2.5-flash-preview", "name": "Gemini 2.5 Flash", "free": True},
+            {"id": "mistralai/mistral-small-3.1", "name": "Mistral Small 3.1", "free": False},
+            {"id": "mistralai/mistral-large-2411", "name": "Mistral Large", "free": False},
+            {"id": "meta-llama/llama-3.3-70b-instruct", "name": "Llama 3.3 70B", "free": True},
+            {"id": "meta-llama/llama-3.1-8b-instruct", "name": "Llama 3.1 8B", "free": True},
+            {"id": "deepseek/deepseek-r1", "name": "DeepSeek R1", "free": False},
+            {"id": "deepseek/deepseek-chat", "name": "DeepSeek V3", "free": False},
+            {"id": "qwen/qwq-32b", "name": "QwQ 32B", "free": False},
+            {"id": "microsoft/phi-4", "name": "Phi-4", "free": True},
+        ],
+        "groq": [
+            {"id": "llama-3.3-70b-versatile", "name": "Llama 3.3 70B", "free": True},
+            {"id": "llama-3.1-8b-instant", "name": "Llama 3.1 8B", "free": True},
+            {"id": "mixtral-8x7b-32768", "name": "Mixtral 8x7B", "free": True},
+            {"id": "gemma2-9b-it", "name": "Gemma 2 9B", "free": True},
+            {"id": "deepseek-r1-distill-llama-70b", "name": "DeepSeek R1 70B", "free": True},
+        ],
+        "gemini": [
+            {"id": "gemini-2.0-flash", "name": "Gemini 2.0 Flash", "free": True},
+            {"id": "gemini-2.5-flash-preview", "name": "Gemini 2.5 Flash", "free": True},
+            {"id": "gemini-2.5-pro-preview", "name": "Gemini 2.5 Pro", "free": False},
+            {"id": "gemini-1.5-flash", "name": "Gemini 1.5 Flash", "free": True},
+            {"id": "gemini-1.5-pro", "name": "Gemini 1.5 Pro", "free": False},
+        ],
+        "ollama": [
+            {"id": "llama3.2", "name": "Llama 3.2", "free": True},
+            {"id": "llama3.1", "name": "Llama 3.1", "free": True},
+            {"id": "mistral", "name": "Mistral", "free": True},
+            {"id": "codellama", "name": "CodeLlama", "free": True},
+            {"id": "gemma2", "name": "Gemma 2", "free": True},
+            {"id": "deepseek-r1", "name": "DeepSeek R1", "free": True},
+            {"id": "phi4", "name": "Phi-4", "free": True},
+        ],
     }
 
-    # Try fetching from OpenRouter API if key exists
+    # Try fetching real models from OpenRouter API
     if provider == "openrouter":
         kp = KeychainProvider()
         key = kp.get("openrouter")
@@ -394,13 +431,24 @@ async def list_models(provider: str):
                     )
                     if r.status_code == 200:
                         data = r.json()
-                        models = [{"id": m["id"], "name": m.get("name", m["id"])} for m in data.get("data", [])]
+                        models = []
+                        for m in data.get("data", []):
+                            pricing = m.get("pricing", {})
+                            # Free if both prompt and completion cost < $0.00001
+                            prompt_cost = float(pricing.get("prompt", 1))
+                            compl_cost = float(pricing.get("completion", 1))
+                            is_free = prompt_cost < 0.00001 and compl_cost < 0.00001
+                            models.append({
+                                "id": m["id"],
+                                "name": m.get("name", m["id"]),
+                                "free": is_free,
+                            })
                         if models:
                             return {"models": models}
             except Exception:
                 pass
 
-    models = default_models.get(provider, [{"id": "unknown", "name": "Unknown"}])
+    models = default_models.get(provider, [{"id": "unknown", "name": "Unknown", "free": False}])
     return {"models": models}
 
 

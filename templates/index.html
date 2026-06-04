@@ -1173,7 +1173,7 @@ async function activateProject(id) {
   async function fetchModels() {
     const select = document.getElementById('settingsModel');
     const count = document.getElementById('modelsCount');
-    select.innerHTML = '<option class="bg-surface-container-low">Loading...</option>';
+    select.innerHTML = '<option class="bg-surface-container-low" value="">Loading...</option>';
     count.textContent = '';
     try {
       const res = await fetch('/api/models/' + selectedProvider);
@@ -1183,17 +1183,18 @@ async function activateProject(id) {
         data.models.forEach(m => {
           const opt = document.createElement('option');
           opt.value = m.id;
-          opt.textContent = m.name || m.id;
+          opt.textContent = (m.free ? '🆓 ' : '💳 ') + (m.name || m.id);
           opt.className = 'bg-surface-container-low';
           if(m.id === settingsData.model) opt.selected = true;
           select.appendChild(opt);
         });
-        count.textContent = data.models.length + ' models';
+        const freeCount = data.models.filter(m => m.free).length;
+        count.textContent = data.models.length + ' models (' + freeCount + ' free)';
       } else {
-        select.innerHTML = '<option class="bg-surface-container-low">' + (data.error || 'No models') + '</option>';
+        select.innerHTML = '<option class="bg-surface-container-low" value="">' + (data.error || 'No models') + '</option>';
       }
     } catch(e) {
-      select.innerHTML = '<option class="bg-surface-container-low">Failed to load</option>';
+      select.innerHTML = '<option class="bg-surface-container-low" value="">Failed to load</option>';
     }
   }
 
