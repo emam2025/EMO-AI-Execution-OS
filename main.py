@@ -79,9 +79,9 @@ async def lifespan(app: FastAPI):
 
         _ai_index = str(_Path(".ai") / "index")
         _gq = _GQ(str(_Path(_ai_index) / "repository.db"))
-        _gre = _GRE(_gq)
-        _agent = _Agent(_gq, _gre)
         _ctx = _Ctx(_gq)
+        _gre = _GRE(_gq, ctx=_ctx)
+        _agent = _Agent(_gq, _gre)
         _metrics = _Metrics(str(_Path(_ai_index) / "metrics.db"))
         _mem = _Mem(str(_Path(_ai_index) / "execution_memory.db"))
 
