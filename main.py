@@ -370,6 +370,40 @@ async def root(request: Request):
     )
 
 
+@app.get("/api/models/{provider}")
+async def list_models(provider: str):
+    """Fetch available models from a provider."""
+    default_models = {
+        "openrouter": [{"id": "openai/gpt-4o", "name": "GPT-4o"}, {"id": "openai/gpt-4o-mini", "name": "GPT-4o Mini"}, {"id": "anthropic/claude-3-opus", "name": "Claude 3 Opus"}, {"id": "anthropic/claude-3-sonnet", "name": "Claude 3 Sonnet"}, {"id": "google/gemini-pro", "name": "Gemini Pro"}, {"id": "mistral/mistral-large", "name": "Mistral Large"}, {"id": "meta-llama/llama-3-70b", "name": "Llama 3 70B"}, {"id": "deepseek/deepseek-r1", "name": "DeepSeek R1"}],
+        "groq": [{"id": "llama3-70b-8192", "name": "Llama 3 70B"}, {"id": "llama3-8b-8192", "name": "Llama 3 8B"}, {"id": "mixtral-8x7b-32768", "name": "Mixtral 8x7B"}, {"id": "gemma2-9b-it", "name": "Gemma 2 9B"}],
+        "gemini": [{"id": "gemini-pro", "name": "Gemini Pro"}, {"id": "gemini-2.0-flash", "name": "Gemini 2.0 Flash"}],
+        "ollama": [{"id": "llama3", "name": "Llama 3"}, {"id": "llama2", "name": "Llama 2"}, {"id": "mistral", "name": "Mistral"}, {"id": "codellama", "name": "CodeLlama"}, {"id": "gemma", "name": "Gemma"}],
+    }
+
+    # Try fetching from OpenRouter API if key exists
+    if provider == "openrouter":
+        kp = KeychainProvider()
+        key = kp.get("openrouter")
+        if key:
+            try:
+                import httpx
+                async with httpx.AsyncClient(timeout=10) as client:
+                    r = await client.get(
+                        "https://openrouter.ai/api/v1/models",
+                        headers={"Authorization": f"Bearer {key}"}
+                    )
+                    if r.status_code == 200:
+                        data = r.json()
+                        models = [{"id": m["id"], "name": m.get("name", m["id"])} for m in data.get("data", [])]
+                        if models:
+                            return {"models": models}
+            except Exception:
+                pass
+
+    models = default_models.get(provider, [{"id": "unknown", "name": "Unknown"}])
+    return {"models": models}
+
+
 @app.get("/api/test-connection")
 async def test_connection(provider: str = "openrouter"):
     """Test actual connection to a model provider."""
