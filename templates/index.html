@@ -7,79 +7,7 @@
 <link href="/static/styles.css" rel="stylesheet"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" onerror="this.remove()"/>
 <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet"/></noscript>
-<script>
-  tailwind.config = {
-    darkMode: "class",
-    theme: {
-      extend: {
-        colors: {
-          "tertiary-fixed": "#6ffbbe",
-          "secondary": "#ffb0cd",
-          "surface-card": "#18183a",
-          "tertiary-container": "#00a572",
-          "on-surface-variant": "#cbc3d7",
-          "surface-bright": "#383847",
-          "surface": "#121220",
-          "surface-tint": "#d0bcff",
-          "tertiary-fixed-dim": "#4edea3",
-          "secondary-container": "#aa0266",
-          "error-container": "#93000a",
-          "surface-container-lowest": "#0d0d1a",
-          "text-vibrant": "#eef2ff",
-          "on-secondary-fixed-variant": "#8c0053",
-          "surface-container-low": "#1a1a28",
-          "on-secondary": "#640039",
-          "on-primary-fixed": "#23005c",
-          "agent-planner": "#8b5cf6",
-          "on-secondary-fixed": "#3e0022",
-          "surface-dim": "#121220",
-          "on-primary": "#3c0091",
-          "agent-writer": "#ec4899",
-          "border-muted": "#28285a",
-          "surface-container": "#1e1e2c",
-          "agent-coder": "#10b981",
-          "surface-container-high": "#292937",
-          "outline-variant": "#494454",
-          "agent-researcher": "#f59e0b",
-          "on-primary-container": "#340080",
-          "text-dim": "#8899bb",
-          "on-secondary-container": "#ffbad3",
-          "inverse-on-surface": "#2f2f3e",
-          "surface-deep": "#0f0f24",
-          "primary": "#d0bcff",
-          "on-tertiary-fixed": "#002113",
-          "primary-fixed": "#e9ddff",
-          "outline": "#958ea0",
-          "error": "#ffb4ab",
-          "primary-fixed-dim": "#d0bcff",
-          "on-error": "#690005",
-          "on-tertiary": "#003824",
-          "background": "#121220",
-          "secondary-fixed": "#ffd9e4",
-          "on-tertiary-container": "#00311f",
-          "on-surface": "#e3e0f4",
-          "secondary-fixed-dim": "#ffb0cd",
-          "on-tertiary-fixed-variant": "#005236",
-          "on-primary-fixed-variant": "#5516be",
-          "status-error": "#ef4444",
-          "surface-container-highest": "#343342",
-          "primary-container": "#a078ff",
-          "inverse-primary": "#6d3bd7",
-          "on-error-container": "#ffdad6",
-          "tertiary": "#4edea3",
-          "inverse-surface": "#e3e0f4",
-          "surface-variant": "#343342",
-          "on-background": "#e3e0f4"
-        },
-        borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", "3xl": "1.5rem", full: "9999px" },
-        spacing: {
-          "header-height": "64px", "sidebar-nav": "260px", "sidebar-projects": "240px",
-          "sidebar-sessions": "220px", "workspace-panel": "300px"
-        }
-      }
-    }
-  }
-</script>
+
 
 </head>
 <body class="{{ theme }}">
@@ -90,7 +18,7 @@
       <button class="lg:hidden p-2 rounded-lg hover:bg-white/5" onclick="togglePanel('projects')"><i class="fas fa-folder-tree"></i></button>
       <button class="lg:hidden p-2 rounded-lg hover:bg-white/5" onclick="togglePanel('sessions')"><i class="fas fa-layer-group"></i></button>
       <div class="flex items-center gap-2">
-        <div class="w-9 h-9 rounded-xl flex items-center justify-center bg-gradient-to-br from-primary to-secondary-container shadow-lg shadow-primary/20">
+        <div class="w-9 h-9 rounded-xl flex items-center justify-center bg-gradient-to-br shadow-lg">
           <i class="fas fa-robot text-on-primary text-sm"></i>
         </div>
         <div class="flex flex-col leading-tight">
@@ -180,7 +108,7 @@
         <div class="flex flex-col items-center justify-center h-full text-center max-w-md mx-auto" id="welcome">
           <div class="relative mb-8">
             <div class="absolute inset-0 blur-3xl bg-primary/20 rounded-full"></div>
-            <div class="w-24 h-24 rounded-[2rem] bg-gradient-to-br from-primary to-secondary-container flex items-center justify-center relative border border-white/20">
+            <div class="w-24 h-24 rounded-[2rem] bg-gradient-to-br flex items-center justify-center relative border border-white/20">
               <i class="fas fa-robot text-4xl text-on-primary"></i>
             </div>
           </div>
@@ -221,7 +149,7 @@
                   <span class="text-[8px] font-bold text-outline uppercase tracking-widest">Active Model</span>
                   <span class="text-[10px] font-semibold text-primary truncate max-w-[120px]" id="statusModel">{{ cur_model }}</span>
                 </div>
-                <button class="h-10 px-6 rounded-2xl bg-gradient-to-r from-primary to-primary-container text-on-primary font-bold text-xs flex items-center gap-2 shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all disabled:opacity-50" id="sendBtn" onclick="sendMessage()">
+                <button class="h-10 px-6 rounded-2xl bg-gradient-to-r text-on-primary font-bold text-xs flex items-center gap-2 shadow-lg hover:scale-105 active:scale-95 transition-all disabled:opacity-50" id="sendBtn" onclick="sendMessage()">
                   <span>Send</span><i class="fas fa-paper-plane text-[10px]"></i>
                 </button>
               </div>
@@ -360,7 +288,7 @@
       <div class="space-y-4"><label class="text-[10px] font-bold tracking-[0.2em] text-outline uppercase" data-i18n="system_instructions">{{ tr.system_instructions }}</label><textarea class="w-full bg-surface-container-lowest border-white/5 rounded-xl px-4 py-3 text-xs focus:ring-primary/20 resize-y" id="settingsSystemInstructions" rows="4" data-i18n-placeholder="system_instructions_placeholder" placeholder="{{ tr.system_instructions_placeholder }}"></textarea></div>
     </div>
     <div class="p-8 border-t border-white/5 flex items-center justify-between bg-surface-container-lowest">
-      <div class="flex gap-3"><button class="px-6 py-3 rounded-xl hover:bg-white/5 font-bold text-xs transition-all" onclick="closeSettings()">Cancel</button><button class="px-8 py-3 rounded-xl bg-primary text-on-primary font-bold text-xs shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all" id="saveSettingsBtn" onclick="saveAllSettings()">Save &amp; Apply</button></div>
+      <div class="flex gap-3"><button class="px-6 py-3 rounded-xl hover:bg-white/5 font-bold text-xs transition-all" onclick="closeSettings()">Cancel</button><button class="px-8 py-3 rounded-xl bg-primary text-on-primary font-bold text-xs shadow-lg hover:scale-105 active:scale-95 transition-all" id="saveSettingsBtn" onclick="saveAllSettings()">Save &amp; Apply</button></div>
     </div>
   </div>
 </div>
@@ -1031,7 +959,7 @@ async function activateProject(id) {
   function createMessageBubble(role, content, fileData) {
     const div = document.createElement('div');
     div.className = `flex items-start gap-3 ${role==='user'?'flex-row-reverse':''}`;
-    const avatar = role==='user' ? '<div class="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center"><i class="fas fa-user text-white text-xs"></i></div>' : '<div class="w-8 h-8 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center"><i class="fas fa-robot text-white text-xs"></i></div>';
+    const avatar = role==='user' ? '<div class="w-8 h-8 rounded-xl bg-gradient-to-br flex items-center justify-center"><i class="fas fa-user text-white text-xs"></i></div>' : '<div class="w-8 h-8 rounded-xl bg-gradient-to-br flex items-center justify-center"><i class="fas fa-robot text-white text-xs"></i></div>';
     let contentHtml = '';
     if(fileData && fileData.base64 && fileData.type?.startsWith('image/')) contentHtml += `<img src="data:${fileData.type};base64,${fileData.base64}" class="max-w-[200px] rounded-lg mb-2">`;
     contentHtml += `<div class="whitespace-pre-wrap">${escapeHtml(content)}</div>`;
@@ -1078,7 +1006,7 @@ async function activateProject(id) {
     const typing = document.createElement('div');
     typing.id = 'typing-indicator';
     typing.className = 'flex items-start gap-3';
-    typing.innerHTML = '<div class="w-8 h-8 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center"><i class="fas fa-robot text-white text-xs"></i></div><div class="px-4 py-3 rounded-2xl chat-bubble-ai"><div class="flex gap-1"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div></div>';
+    typing.innerHTML = '<div class="w-8 h-8 rounded-xl bg-gradient-to-br flex items-center justify-center"><i class="fas fa-robot text-white text-xs"></i></div><div class="px-4 py-3 rounded-2xl chat-bubble-ai"><div class="flex gap-1"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div></div>';
     container.appendChild(typing);
     document.getElementById('chatArea').scrollTop = document.getElementById('chatArea').scrollHeight;
     try {
