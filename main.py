@@ -295,13 +295,16 @@ async def api_status(user: dict = Depends(require_auth(role="operator"))):
     """Get server status.  Requires operator role."""
     from routers.settings import load_settings
     settings = load_settings()
+    kp = KeychainProvider()
+    current_provider = settings.get("provider", "openrouter")
+    key = kp.get(current_provider)
     return JSONResponse({
         "name": "Emo AI Orchestrator",
         "version": "4.1.0",
         "status": "running",
-        "provider": settings.get("provider", "openrouter"),
+        "provider": current_provider,
         "model": settings.get("model", ""),
-        "connected": bool(KeychainProvider().get("openrouter") or KeychainProvider().get("groq") or KeychainProvider().get("gemini") or os.getenv("OPENROUTER_API_KEY") or os.getenv("GROQ_API_KEY") or os.getenv("GEMINI_API_KEY")),
+        "connected": bool(key or os.getenv(f"{current_provider.upper()}_API_KEY")),
     })
 
 
@@ -365,6 +368,30 @@ async def root(request: Request):
             "placeholder_send": tr("send_placeholder"),
         }
     )
+
+
+@app.get("/api/test-connection")
+async def test_connection(provider: str = "openrouter"):
+    """Test actual connection to a model provider."""
+    kp = KeychainProvider()
+    key = kp.get(provider)
+    if not key and provider != "ollama":
+        return {"connected": False, "error": f"No API key in Keychain for {provider}"}
+
+    try:
+        import time
+        start = time.time()
+        b = Brain(provider=provider)
+        response = b.ask(user="Reply with the word OK", max_tokens=10)
+        latency = int((time.time() - start) * 1000)
+        is_ok = 'OK' in response.strip().upper()
+        if is_ok:
+            return {"connected": True, "latency": latency}
+        else:
+            return {"connected": True, "latency": latency, "note": f"Unexpected response: {response.strip()[:50]}"}
+    except Exception as e:
+        err = str(e)
+        return {"connected": False, "error": err}
 
 
 @app.get("/api/tray/ping")

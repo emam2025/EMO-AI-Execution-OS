@@ -1169,15 +1169,39 @@ async function activateProject(id) {
   }
   async function testConnection() {
     const btn = document.getElementById('testConnectionBtn');
-    btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Testing...';
-    const key = document.getElementById('settingsApiKey').value.trim();
-    const keyName = (providersData[selectedProvider]?.api_key_env||'').toLowerCase().replace('_api_key','')+'_key';
-    if(keyName && key) await fetch('/api/settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({key:keyName,value:key})});
-    if(selectedProvider !== settingsData.provider) await fetch('/api/settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({key:'provider',value:selectedProvider})});
-    const res = await fetch('/api/status'); const data = await res.json();
     const statusEl = document.getElementById('settingsConnectionStatus');
-    if(data.connected) { if(statusEl) statusEl.innerHTML = '<span class="text-agent-coder">✅ Connected</span>'; }
-    else { if(statusEl) statusEl.innerHTML = '<span class="text-status-error">❌ Connection failed</span>'; }
+    const key = document.getElementById('settingsApiKey').value.trim();
+    btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Testing...';
+
+    // Check if key is provided or already stored
+    const hasKey = key || providersData[selectedProvider]?.in_keychain;
+    if(!hasKey && selectedProvider !== 'ollama') {
+      if(statusEl) statusEl.innerHTML = '<span class="text-status-error">❌ Enter API key first</span>';
+      btn.disabled = false; btn.innerHTML = '<i class="fas fa-plug-circle-bolt"></i> Test API';
+      return;
+    }
+
+    // Save key if entered
+    const keyName = (providersData[selectedProvider]?.api_key_env||'').toLowerCase().replace('_api_key','')+'_key';
+    if(keyName && key) {
+      await fetch('/api/settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({key:keyName,value:key})});
+    }
+    if(selectedProvider !== settingsData.provider) {
+      await fetch('/api/settings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({key:'provider',value:selectedProvider})});
+    }
+
+    // Real connection test via backend
+    try {
+      const res = await fetch('/api/test-connection?provider=' + selectedProvider);
+      const data = await res.json();
+      if(data.connected) {
+        if(statusEl) statusEl.innerHTML = '<span class="text-agent-coder">✅ ' + t('connected') + ' (' + (data.latency || '--') + 'ms)</span>';
+      } else {
+        if(statusEl) statusEl.innerHTML = '<span class="text-status-error">❌ ' + t('connection_failed') + ': ' + escapeHtml(data.error || '') + '</span>';
+      }
+    } catch(e) {
+      if(statusEl) statusEl.innerHTML = '<span class="text-status-error">❌ ' + t('connection_failed') + '</span>';
+    }
     btn.disabled = false; btn.innerHTML = '<i class="fas fa-plug-circle-bolt"></i> Test API';
   }
   async function saveAllSettings() {
