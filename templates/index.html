@@ -18,11 +18,9 @@
       <button class="lg:hidden p-2 rounded-lg hover:bg-white/5" onclick="togglePanel('projects')"><i class="fas fa-folder-tree"></i></button>
       <button class="lg:hidden p-2 rounded-lg hover:bg-white/5" onclick="togglePanel('sessions')"><i class="fas fa-layer-group"></i></button>
       <div class="flex items-center gap-2">
-        <div class="w-9 h-9 rounded-xl flex items-center justify-center bg-gradient-to-br shadow-lg">
-          <i class="fas fa-robot text-on-primary text-sm"></i>
-        </div>
+        <img src="/static/logo.png" alt="EMO AI" class="w-9 h-9 rounded-xl object-cover"/>
         <div class="flex flex-col leading-tight">
-          <span class="font-bold text-base gradient-text tracking-tight uppercase">Emo AI</span>
+          <span class="font-bold text-base text-primary tracking-tight uppercase">Emo AI</span>
           <span class="text-[8px] font-medium tracking-widest opacity-40 uppercase">Orchestrator v1.2</span>
         </div>
       </div>
@@ -108,8 +106,8 @@
         <div class="flex flex-col items-center justify-center h-full text-center max-w-md mx-auto" id="welcome">
           <div class="relative mb-8">
             <div class="absolute inset-0 blur-3xl bg-primary/20 rounded-full"></div>
-            <div class="w-24 h-24 rounded-[2rem] bg-gradient-to-br flex items-center justify-center relative border border-white/20">
-              <i class="fas fa-robot text-4xl text-on-primary"></i>
+            <div class="w-32 h-32 flex items-center justify-center relative">
+              <img src="/static/logo.png" alt="EMO AI" class="w-full h-full object-contain"/>
             </div>
           </div>
           <h2 class="text-3xl font-extrabold tracking-tight mb-3 gradient-text" data-i18n="welcome_title">{{ tr.app_name }}</h2>
