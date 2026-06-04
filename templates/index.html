@@ -1229,7 +1229,7 @@ async function activateProject(id) {
 
     // Real connection test via backend
     try {
-      const res = await fetch('/api/test-connection?provider=' + selectedProvider);
+      const res = await fetch('/api/test-connection?provider=' + selectedProvider + '&key=' + encodeURIComponent(key));
       const data = await res.json();
       if(data.connected) {
         if(statusEl) statusEl.innerHTML = '<span class="text-agent-coder">✅ ' + t('connected') + ' (' + (data.latency || '--') + 'ms)</span>';

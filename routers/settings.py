@@ -6,6 +6,7 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
 from brain import Brain
+from core.security.keychain_provider import KeychainProvider
 
 SETTINGS_FILE = Path(".emo_settings.json")
 
@@ -47,7 +48,25 @@ async def get_settings():
 
 @router.post("")
 async def update_setting(req: SettingsUpdate):
-    """Update a single setting."""
+    """Update a single setting.
+    
+    If the key ends with '_key', it's an API key — store in system Keychain,
+    not in the settings JSON file (which is git-visible).
+    """
+    if req.key.endswith("_key") and req.value:
+        # Store in system Keychain
+        provider_name = req.key.replace("_key", "")
+        try:
+            kp = KeychainProvider()
+            kp.set(provider_name, req.value)
+        except Exception:
+            pass
+        # Still save to file for backward compatibility
+        settings = load_settings()
+        settings[req.key] = req.value
+        save_settings(settings)
+        return JSONResponse({"status": "saved", "key": req.key, "stored_in": "keychain"})
+    
     settings = load_settings()
     settings[req.key] = req.value
     save_settings(settings)

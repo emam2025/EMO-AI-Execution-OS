@@ -453,16 +453,22 @@ async def list_models(provider: str):
 
 
 @app.get("/api/test-connection")
-async def test_connection(provider: str = "openrouter"):
+async def test_connection(provider: str = "openrouter", key: str = ""):
     """Test actual connection to a model provider."""
-    kp = KeychainProvider()
-    key = kp.get(provider)
-    if not key and provider != "ollama":
-        return {"connected": False, "error": f"No API key in Keychain for {provider}"}
+    # Use passed key, or try Keychain
+    api_key = key.strip() if key else None
+    if not api_key:
+        kp = KeychainProvider()
+        api_key = kp.get(provider)
+    if not api_key and provider != "ollama":
+        return {"connected": False, "error": f"No API key for {provider}"}
 
     try:
         import time
         start = time.time()
+        # Temporarily inject key into env so Brain uses it
+        if api_key:
+            os.environ[f"{provider.upper()}_API_KEY"] = api_key
         b = Brain(provider=provider)
         response = b.ask(user="Reply with the word OK", max_tokens=10)
         latency = int((time.time() - start) * 1000)
