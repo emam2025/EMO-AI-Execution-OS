@@ -46,6 +46,7 @@ class Brain:
         self,
         provider: Optional[str] = None,
         model: Optional[str] = None,
+        api_key: Optional[str] = None,
     ):
         self.provider = provider or os.getenv("LLM_PROVIDER", "openrouter")
         self.model = model or os.getenv("LLM_MODEL", "")
@@ -58,23 +59,27 @@ class Brain:
         if not self.model:
             self.model = config["default_model"]
 
-        # Load API key from OS Keychain first; dev fallback to env var
-        if self.provider == "ollama":
-            api_key = "ollama"
+        # API key priority: parameter > Keychain > env var
+        if api_key:
+            resolved_key = api_key
+        elif self.provider == "ollama":
+            resolved_key = "ollama"
         else:
             kp = KeychainProvider()
-            api_key = kp.get(self.provider) or ""
-            if not api_key:
-                api_key = "placeholder-key-not-configured"
+            resolved_key = kp.get(self.provider) or ""
+            if not resolved_key:
+                resolved_key = os.getenv(f"{self.provider.upper()}_API_KEY", "")
+            if not resolved_key:
+                resolved_key = "placeholder-key-not-configured"
 
         self._client = OpenAI(
             base_url=config["base_url"],
-            api_key=api_key,
+            api_key=resolved_key,
         )
 
         self._async_client = AsyncOpenAI(
             base_url=config["base_url"],
-            api_key=api_key,
+            api_key=resolved_key,
         )
 
     def ask(

@@ -466,10 +466,7 @@ async def test_connection(provider: str = "openrouter", key: str = ""):
     try:
         import time
         start = time.time()
-        # Temporarily inject key into env so Brain uses it
-        if api_key:
-            os.environ[f"{provider.upper()}_API_KEY"] = api_key
-        b = Brain(provider=provider)
+        b = Brain(provider=provider, api_key=api_key)
         response = b.ask(user="Reply with the word OK", max_tokens=10)
         latency = int((time.time() - start) * 1000)
         is_ok = 'OK' in response.strip().upper()
@@ -479,7 +476,9 @@ async def test_connection(provider: str = "openrouter", key: str = ""):
             return {"connected": True, "latency": latency, "note": f"Unexpected response: {response.strip()[:50]}"}
     except Exception as e:
         err = str(e)
-        return {"connected": False, "error": err}
+        # Ensure we return only ASCII-safe error to the UI
+        safe_err = err.encode('ascii', errors='replace').decode('ascii')
+        return {"connected": False, "error": safe_err}
 
 
 @app.get("/api/tray/ping")
@@ -491,5 +490,5 @@ if __name__ == "__main__":
     import uvicorn
     port = int(os.getenv("PORT", "8080"))
     host = os.getenv("HOST", "0.0.0.0")
-    uvicorn.run(app, host=host, port=port)
+    uvicorn.run(app, host=host, port=port, log_config=None)
 
