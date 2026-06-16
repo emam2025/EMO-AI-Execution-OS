@@ -5,6 +5,204 @@ All notable changes to EMO AI Orchestrator will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0-RC17.4] — 2026-06-15
+
+### Added
+
+**RC17.4 — Water Pack Foundation (6 sub-phases, 32 new tests):**
+
+- **RC17.4.1: Water Domain Models & Safety Policies (6 tests)**
+  - `core/models/water.py`: TreatmentPlant, PumpStation, WaterQualitySensor, WaterActionType, WaterSafetyDecision, WaterEventSeverity, WaterTwinState, WaterOperationalEvent
+  - `core/governance/water_policies.py`: WaterPolicy + WaterSafetyGate with WHO/EPA compliance, Default Deny for CONTROL_WRITE/PUMP_SHUTDOWN/VALVE_OVERRIDE
+
+- **RC17.4.2: Water Connectors — SCADA/Modbus V1 (6 tests)**
+  - `core/connectors/water/water_scada_connector.py`: Read-only SCADA connector, ConnectorError on missing tags, EventBus integration
+  - `core/connectors/water/water_modbus_connector.py`: Read-only Modbus connector, register-based read, EventBus integration
+
+- **RC17.4.3: Water Twin & DataPipeline Integration (6 tests)**
+  - `core/industrial/water_twin.py`: WaterTwin digital twin with state management, simulate, predict, record_event, audit trail
+  - `core/industrial/water_data_pipeline.py`: WaterDataPipeline with Connector → WaterSafetyGate → WaterTwin wiring, ingest_water_data, ingest_from_connector
+
+- **RC17.4.4: Water Agent Integration (8 tests)**
+  - `core/agents/water/water_monitoring_agent.py`: Plant output monitoring, anomaly reporting
+  - `core/agents/water/water_quality_agent.py`: pH/turbidity/chlorine threshold checks, WHO/EPA violations
+  - `core/agents/water/water_maintenance_agent.py`: Maintenance recommendations with approval gate for PUMP_SHUTDOWN
+  - `core/agents/water/water_distribution_agent.py`: Network status, flow adjustment, distribution issue reporting
+
+- **RC17.4.5: Water E2E Scenario (1 test, 11 stages)**
+  - Full pipeline simulation: SCADA/Modbus → WaterSafetyGate → WaterTwin → 4 Agents → Audit Trail verification
+
+- **RC17.4.6: Water E2E Audit Trail Verification (5 tests)**
+  - WaterSafetyGate audit completeness (7 evaluations, 3 allowed, 4 denied)
+  - WaterDataPipeline ingestion audit (3 entries: 2 updated, 1 blocked)
+  - WaterTwin operational event recording (5 events with metadata)
+  - Trust level enforcement audit (trust_insufficient vs policy_denied classification)
+  - Full E2E audit trail verification (pipeline + gate + twin + 4 agents)
+
+### Changed
+
+- **Test Count**: 607 → 633 (+26 new tests, 0 regression)
+
+---
+
+## [Unreleased] — Phase G.2 Complete (Cognitive Orchestration)
+
+### Added
+
+**Phase G.2 — Adaptive Planning & Critic Agent (6 tests):**
+
+- `core/models/critic.py`: CriticDecision (APPROVED/REJECTED/NEEDS_ADAPTATION), CriticReport, ExecutionFeedback — frozen dataclasses
+- `core/agents/critic_agent.py`: CriticAgent with review_plan (DAG validation, tool availability, duplicate detection), CRITIC_STARTED/CRITIC_APPROVED/CRITIC_REJECTED events
+- `core/agents/adaptive_planner.py`: AdaptivePlanner with adapt_plan (fallback step insertion, dependency re-linking), PLAN_ADAPTED event
+- `tests/test_g2_critic_adaptive.py`: 6 tests — approve valid plan, reject missing deps, adaptive modification, event publishing, no execution methods, end-to-end loop
+
+**Phase G.1 — Planner Agent Foundation (6 tests):**
+
+- `core/models/planner.py`: IntentType, PlanStatus, StepStatus enums + Intent, PlanStep, Plan, PlanningContext, PlanningConstraint — frozen dataclasses (stdlib only, zero internal imports)
+- `core/agents/planner_agent.py`: PlannerAgent with create_plan (DAG validation, tool validation, cycle detection), submit_plan (delegates to runtime_api), PLANNING_STARTED/PLANNING_COMPLETED/PLANNING_FAILED events
+- `tests/test_planner_agent.py`: 6 tests — valid plan generation, DAG validation, unknown tool rejection, runtime API delegation, event publishing, graceful failure
+
+**Phase F — Runtime Platform (24 tests):**
+
+- `core/models/runtime_api.py`: RuntimeSubmitRequest/Response, RuntimeObserveRequest/Response — frozen dataclasses
+- `core/runtime/unified_api.py`: UnifiedRuntimeAPI with submit/resume/cancel/observe/replay (delegates to D8 services)
+- `core/models/control_plane.py`: WorkerStatus, ClusterState, ReconciliationAction — frozen dataclasses
+- `core/runtime/control_plane/f2_cluster_manager.py`: F2ClusterManager with register_worker/deregister_worker/run_reconciliation_loop/get_cluster_state
+- `core/models/resource_scheduler.py`: AllocationStatus, ResourceRequest, ResourceAllocation, WorkerQuota — frozen dataclasses
+- `core/runtime/resource_scheduler/f3_resource_scheduler.py`: F3ResourceScheduler with schedule_execution/check_quotas/enforce_limits/get_available_capacity
+- `core/models/distributed_tracing.py`: SpanStatus, TraceContext, SpanRecord, TraceSummary — frozen dataclasses
+- `core/runtime/tracing/distributed_tracer.py`: DistributedTracer with start_trace/start_child_span/end_span/get_trace_summary/inject_context/extract_context
+- F1-F4: 6 tests each (24 total)
+
+**Phase D8 — Service Mesh Contracts (39 tests):**
+
+- `core/interfaces/mesh.py`: IServiceMesh aggregate Protocol (new)
+- `core/models/failure_propagation.py`: FailureMode, ConsistencyLevel, FailureContext, PropagationRule — frozen dataclasses
+- `tests/test_service_interfaces.py`: 6 protocol existence tests
+- `tests/test_failure_propagation.py`: 6 failure propagation model tests
+- `tests/test_service_isolation.py`: 23 isolation compliance tests
+- `tests/test_d8_ownership_laws.py`: 4 AST-based ownership law static enforcement tests
+
+**Phase F — EventTopic Extensions:**
+
+- Added PLANNING_STARTED, PLANNING_COMPLETED, PLANNING_FAILED, CRITIC_STARTED, CRITIC_APPROVED, CRITIC_REJECTED, PLAN_ADAPTED to EventTopic enum
+
+### Changed
+
+- **Test Count**: 3180 → 3255 (+75 new tests: D8.1(6) + D8.2(6) + D8.3(23) + D8.4(4) + F1(6) + F2(6) + F3(6) + F4(6) + G1(6) + G2(6), 0 regression)
+
+---
+
+## [Unreleased] — RC17.5 Healthcare Pack Foundation
+
+### Added
+
+**RC17.5 — Healthcare Pack Foundation (6 sub-phases, 30 new tests):**
+
+- **RC17.5.1: Healthcare Domain Models & Safety Policies (6 tests)**
+  - `core/models/healthcare.py`: HealthcareAssetType, HealthcareActionType, PatientRecord, MedicalDevice, Clinic, HealthcareSafetyDecision — frozen dataclasses, HIPAA/FDA compliance
+  - `core/governance/healthcare_policies.py`: HealthcarePolicyType (HIPAA_DATA_PRIVACY, FDA_DEVICE_SAFETY, CONTROL_WRITE_DENY), evaluate_policy with Default Deny for CONTROL_WRITE/PATIENT_DATA_EXPORT/DEVICE_RECONFIGURATION
+
+- **RC17.5.2: Healthcare Connectors — HL7/FHIR V1 & Medical MQTT (6 tests)**
+  - `core/connectors/healthcare/fhir_connector.py`: Read-only FHIR connector, Patient/Observation/Device resource mock, CONNECTOR_READ_SUCCESS/CONNECTOR_READ_FAILURE events
+  - `core/connectors/healthcare/medical_mqtt_connector.py`: Read-only MQTT connector, subscribe/read_topics only, vitals monitoring topics
+
+- **RC17.5.3: Healthcare Twin & DataPipeline Integration (6 tests)**
+  - `core/industrial/healthcare_twin.py`: HealthcareTwin with get_twin_state, update_twin_state, simulate, predict, record_event, audit trail
+  - `core/industrial/healthcare_data_pipeline.py`: HealthcareDataPipeline with HealthcareSafetyGate enforcement, ingest_healthcare_data, SAFETY_VIOLATION events
+
+- **RC17.5.4: Healthcare Agent Integration (8 tests)**
+  - `core/agents/healthcare/patient_monitor_agent.py`: Vitals monitoring, anomaly detection, PATIENT_VITALS_UPDATED/ANOMALY_DETECTED events
+  - `core/agents/healthcare/device_manager_agent.py`: Device checks, maintenance recommendations, PREDICTIVE_ALERT events
+  - `core/agents/healthcare/compliance_auditor_agent.py`: HIPAA/FDA compliance enforcement, COMPLIANCE_VIOLATION events
+  - `core/agents/healthcare/healthcare_analyst_agent.py`: Trend analysis, prediction, TREND_ANALYSIS_REPORT events
+
+- **RC17.5.5: Healthcare E2E Scenario (1 test, 6 stages)**
+  - Full pipeline simulation: Setup → Normal Monitoring → Anomaly Detection → Compliance Audit → Trusted Intervention → Audit Trail Verification
+
+- **RC17.5.6: Healthcare E2E Audit Trail Verification (5 tests)**
+  - SafetyGate audit trail completeness (allowed/denied with action_type, reason, violation_type)
+  - DataPipeline ingestion audit (asset_id, action, status)
+  - Twin operational event recording (vitals_update, admission with timestamp/version)
+  - Trust level enforcement audit (UNTRUSTED vs TRUSTED classification)
+  - Full E2E audit trail verification (Pipeline + Gate + Twin + Agents)
+
+### Changed
+
+- **Test Count**: 633 → 3180 (+30 new tests, 0 regression, 36 pre-existing collection errors)
+
+---
+
+## [1.0.0-RC16.6.1] — 2026-06-10
+
+### Security Architecture Consolidation
+
+- **ADDED**: `core/security/decision_gateway.py` — Single authorization gate for ALL operations
+- **ADDED**: `core/security/identity_provider.py` — Single source of truth for identity (no caller-supplied roles)
+- **ADDED**: `core/security/connector_boundary.py` — Security boundary for all connector operations
+- **ADDED**: `core/security/key_management.py` — Persistent key management (local, Vault, K8s, AWS, Azure)
+- **ADDED**: `tests/phase80_security_consolidation.py` — 84 tests for all new security modules
+- **FIXED**: `core/security/encryption.py` — ciphertext field; SecretProtector stores/retrieves actual ciphertext
+- **FIXED**: `core/security/enforcement.py` — RBAC bypass for unregistered roles now denied
+- **FIXED**: `core/security/guardian.py` — Referenced by decision_gateway
+- **FIXED**: `core/knowledge_os/knowledge_engine.py` — Access control + thread lock
+- **FIXED**: `core/knowledge_os/knowledge_audit.py` — Hash chain integrity
+- **FIXED**: `core/knowledge_os/knowledge_policy.py` — allowed_types enforcement
+- **FIXED**: `core/knowledge_os/document_processor.py` — chunk_overlap crash
+- **FIXED**: `core/workflow_runtime_v2/workflow_v2.py` — Human gate, parallel execution, compensation, thread lock
+- **FIXED**: `core/generative_ui/renderer.py` — 'approval_box' → 'approval_panel'
+- **FIXED**: `core/security/capabilities/capability_guard.py` — enum comparison + AccessMode.NONE
+- **FIXED**: `core/security/insider_threat.py` — hourly_count for avg_requests
+- **FIXED**: `core/human_twin/profile.py` — operator precedence
+- **FIXED**: `core/workspace_intelligence/state_manager.py` — WorkspacePanel from dict
+- **FIXED**: `core/connector_cert/__init__.py` — latest valid cert
+- **FIXED**: `core/digital_twin_v2/__init__.py` — split crash
+- **FIXED**: `simulation_lab/__init__.py` — Atomic inventory deduction
+
+### Deep Audit (42 issues fixed)
+
+- **Gateway**: Guardian/policy fallback default DENY, blocked_resources under lock, input validation, approval timeout, exception handling.
+- **Identity**: HMAC actually verified, ephemeral secret key default, token expiry enforced, max tokens/user, deep-copy returns, token prefix leak reduced.
+- **Connector**: connector dict access under lock, revoke_credential cleanup fix, credential expiry check, gateway enum comparison, deadlock fixes in suspend/stats.
+- **Key Management**: kubectl command injection, TOCTOU fixes on get/delete, atomic file writes, key_id validation, rotate_key race prevention, Vault URL validation.
+
+### Post-Audit Fixes (2026-06-10)
+
+- **FIXED**: `core/recovery_coordinator.py` — `DeterministicResume.resume()` now restores completed/failed node states after `execute()` resets them to PLANNED.
+- **FIXED**: `core/recovery_coordinator.py` — `build_dag_from_token()` no longer passes invalid `version=` kwarg to `DependencyGraph.__init__()`.
+- **FIXED**: `tests/rc12_5_acceptance.py` — Updated to use current guardian API (`GuardianDecision` instead of removed `GuardianVerdict`). Removed `get_guardian` import. Fixed ABAC default-deny assertion.
+- **FIXED**: `tests/phase25_guardian_core.py` — Marked deprecated (tests old guardian API removed in RC16.6.1).
+- **FIXED**: `tests/phase26_approval_persistence.py` — Marked deprecated (tests old guardian API removed in RC16.6.1).
+- **FIXED**: `tests/test_bootstrap.py` — DI enforcement scan now excludes `releases/` archive directory.
+- **FIXED**: `pytest.ini` — Added `phase*.py` to `python_files` pattern so phase tests are discovered.
+- **FIXED**: `core/projectos/notifications.py` — Replaced deprecated `datetime.utcnow()` with `datetime.now(timezone.utc)` (4 occurrences).
+- **FIXED**: `EMO-AI-PROJECT ROADMAP.md` — Complete update with all RC16, RC16.6, RC16.6.1 status.
+- **FIXED**: `docs/ROADMAP.md` — Updated timeline with RC16.6.1 security hardening.
+- **FIXED**: `DEVELOPER.md` — Updated version to 1.0.0-RC16.6.1, test count, security architecture docs.
+- **TESTS**: 2430 passed / 0 failed (was 2401 passed / 3 failed)
+
+## [1.0.0-RC16.6] — 2026-06-10
+
+### Release Engineering & Knowledge Freeze
+
+- **ADDED**: `docs/releases/RC16.6/` — Official release snapshot (5 files)
+- **ADDED**: `docs/ROADMAP.md` — Full timeline RC12 → RC16.5 → RC17
+- **ADDED**: `docs/architecture/system-map.md` — System hierarchy (3 levels)
+- **ADDED**: `docs/INDEX.md` — Documentation index (80+ documents)
+- **ADDED**: `docs/codebase-map.md` — Complete codebase catalog (96 directories)
+- **ADDED**: `docs/api/` — API documentation (12 files, 290+ endpoints)
+- **ADDED**: `docs/sdk/` — Developer SDK contracts (4 guides)
+- **ADDED**: `docs/security/` — Security documentation (5 new files)
+- **ADDED**: `docs/deployment/` — Deployment guides (5 files: Local, Docker, K8s, Air-gapped, Edge)
+- **ADDED**: `docs/testing.md` — Complete test registry
+- **UPDATED**: `.github/workflows/ci.yml` — RC16.6 release validation pipeline
+- **UPDATED**: `README.md` — Updated for RC16.6 (1583 tests, new features, documentation links)
+- **UPDATED**: `VERSION` — RC15.9-FINAL → RC16.6
+- **UPDATED**: `Dockerfile` — Version label RC16.6
+- **UPDATED**: `helm/emo-ai/Chart.yaml` — appVersion RC16.6
+- **UPDATED**: `helm/emo-ai/values.yaml` — image tag RC16.6
+- **NO CODE CHANGES** — Documentation and release engineering only
+
 ## [r3-skill-os-v1.0.0] — 2026-05-30
 
 ### R3 Skill OS — Extraction, Library & Evolution (CLOSED & ARCHIVED)

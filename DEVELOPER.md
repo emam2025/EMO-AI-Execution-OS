@@ -2,10 +2,10 @@
 
 | البند          | القيمة                                        |
 |----------------|-----------------------------------------------|
-| **التاريخ**    | 2026-05-20                                    |
+| **التاريخ**    | 2026-06-13                                    |
 | **المؤلف**     | opencode AI Agent                             |
-| **الإصدار**    | 4.10.0-prod-ready (Final Production Release)  |
-| **المشروع**    | EMO AI Orchestrator + AI Code Intelligence    |
+| **الإصدار**    | 1.0.0-RC16.9 (Industrial Intelligence Fabric) |
+| **المشروع**    | EMO AI Execution OS                           |
 | **الترخيص**    | Open Source (MIT/Apache 2.0 — TBD)            |
 | **المنصات**    | macOS + Windows + Android (web-responsive)    |
 | **الهدف**      | 3 مستخدمين في المرحلة الأولى                  |
@@ -285,13 +285,70 @@ adapters/
 ### 3.4 Architecture Audit Status
 
 - **~37 core files** across `core/`, `core/interfaces/`, `core/adapters/`, `core/composition/`, `core/codegraph/`
-- **556 tests across all suites** — all passing (core: 150, distributed: 27, recovery: 11, hybrid: 28, + remaining)
+- **1785 tests passing / 0 failed / 2.30s** — all passing
+- **RC16.6.1 Security Consolidation**: 4 new security modules, 84 tests, 42 issues found and fixed (14 CRITICAL, 16 HIGH)
 - **5 critical issues fixed:**
   - `_run_with_timeout` now uses ThreadPoolExecutor with real timeout enforcement
   - GraphQuery connections use WAL + SYNCHRONOUS=NORMAL
   - `ranked_hotspots` uses batch queries (eliminated N+1 pattern)
   - HybridRetriever has LRU embedding cache (hash→vector)
   - **Architecture Boundary Enforcement (Phase 1-3):** Protocol-based interface layer (`core/interfaces/`), adapter layer (`core/adapters/`), Domain Model extraction (`core/models/dag`), **Runtime Control Inversion** (DI injection in `UnifiedRuntime`/`RecoveryCoordinator`), and **Composition Root** (`core/composition/root.py`) — single wiring point for all runtime dependencies
+
+### 3.4a RC16.6.1 Security Architecture
+
+RC16.6.1 consolidates all security into a single gate-based architecture. Every operation must pass through `SecurityGateway.authorize()`.
+
+#### Security Architecture Flow
+
+```
+Agent / Workflow / Connector
+    ↓
+DecisionGateway.authorize()
+    ↓
+Guardian check (default DENY if absent)
+    ↓
+PolicyEngine check (default DENY if absent)
+    ↓
+IdentityProvider.get_identity() (HMAC verified)
+    ↓
+ConnectorBoundary.authorize_operation() (if connector)
+    ↓
+KeyManagement (persistent, injection-safe)
+    ↓
+Audit log → Execute
+```
+
+#### Security Modules (RC16.6.1)
+
+| Module | File | Responsibility |
+|--------|------|----------------|
+| **Decision Gateway** | `core/security/decision_gateway.py` | Single authorization gate. ALL operations pass through `SecurityGateway.authorize()`. Guardian/policy default DENY. Approval flow with timeout. Resource blocking. Input validation. |
+| **Identity Provider** | `core/security/identity_provider.py` | Single source of truth. HMAC-SHA256 token verification. 256-bit entropy. Token expiry enforcement. Max 50 tokens/user. Unknown role warning. Deep-copy returns. |
+| **Connector Boundary** | `core/security/connector_boundary.py` | All connector ops through `authorize_operation()`. CredentialVault with expiry check. Endpoint whitelist. Rate limiting. Payload size validation. |
+| **Key Management** | `core/security/key_management.py` | 5 backends (local, Vault, K8s, AWS, Azure). Atomic file writes. Key ID validation regex. kubectl injection prevention. TOCTOU-safe get/delete. |
+
+#### Security Rules (RC16.6.1)
+
+| Rule | Enforcement |
+|------|-------------|
+| DEFAULT DENY | Guardian/policy engines default to DENY (not True) when absent or erroring |
+| No caller-supplied roles | IdentityProvider is single source of truth. No module accepts `user_role="admin"` directly |
+| HMAC verified | IdentityProvider tokens have HMAC-SHA256 signatures actually verified (not decorative) |
+| Credential expiry enforced | CredentialVault checks `expires_at` on retrieval |
+| Key ID validation | All key IDs must match `[a-zA-Z0-9_\-\.]+` — prevents injection in Vault/K8s backends |
+| Atomic keystore writes | tmp file + rename pattern prevents corruption on crash |
+| Thread safety | Threading locks on knowledge_engine, workflow_v2, and all new modules |
+
+#### Deep Audit Results (42 issues fixed)
+
+| Category | Count | Key Fixes |
+|----------|-------|-----------|
+| CRITICAL | 14 | Guardian/policy default DENY, HMAC verified, kubectl injection, TOCTOU races, atomic writes |
+| HIGH | 16 | Credential expiry, key_id validation, blocked_resources lock, connector dict access, revoke cleanup |
+| MEDIUM | 9 | Approval timeout, exception handling, deep-copy returns, gateway enum comparison |
+| LOW | 3 | Token prefix leak reduction, Vault URL validation, rotate_key race prevention |
+
+All 4 files (`decision_gateway.py`, `identity_provider.py`, `connector_boundary.py`, `key_management.py`) completely rewritten.
 
 ### 3.5 Architecture Boundary Rules (Phase 1-3)
 
@@ -698,7 +755,26 @@ python -m pytest tests/test_phase15.py -v
 
 # مع التغطية
 python -m pytest tests/ --cov=core --cov-report=term
+
+# اختبارات RC16.6.1 Security Consolidation فقط
+python -m pytest tests/phase80_security_consolidation.py -v
 ```
+
+### 9.3 Test Registry
+
+| Module | Test File | Tests | Status |
+|--------|-----------|-------|--------|
+| Generative UI | `phase64_generative_ui.py` | 66 | ✅ |
+| UI Studio | `phase65_generative_ui_studio.py` | 171 | ✅ |
+| Adaptive Workspace | `phase66_adaptive_workspace.py` | 256 | ✅ |
+| Knowledge Fabric | `phase67_knowledge_fabric.py` | 256 | ✅ |
+| Autonomous Operations | `phase68_autonomous_operations.py` | 130 | ✅ |
+| Autonomous Hardening | `phase69_rc16_5.py` | 422 | ✅ |
+| Security Consolidation | `phase80_security_consolidation.py` | 84 | ✅ |
+| Control Plane (RC16.7) | `test_tenant_manager.py`, etc. | 39 | ✅ |
+| Agent OS (RC16.8) | `test_agent_lifecycle.py`, etc. | 50 | ✅ |
+| Industrial Intelligence (RC16.9) | `test_asset_manager.py`, etc. | 44 | ✅ |
+| **Total** | | **1785** | **PASS** |
 
 ### 9.3 Indexing a Repository (AI Layer)
 
@@ -799,6 +875,21 @@ print('Events:', len(ms.query_events()))
 ---
 
 ## 12. الأمان والامتثال
+
+### 12.1 RC16.6.1 Security Architecture
+
+RC16.6.1 consolidates security into a single gate-based architecture. **Every operation** must pass through `SecurityGateway.authorize()`.
+
+| Layer | Module | Default |
+|-------|--------|---------|
+| **Gateway** | `DecisionGateway` | DENY when no rules match |
+| **Guardian** | `Guardian` | DENY when absent or erroring |
+| **Policy** | `PolicyEngine` | DENY when absent or erroring |
+| **Identity** | `IdentityProvider` | HMAC-verified tokens, no caller-supplied roles |
+| **Connectors** | `ConnectorBoundary` | CredentialVault with expiry, endpoint whitelist |
+| **Keys** | `KeyManagement` | Persistent across restarts, 5 backends, injection-safe |
+
+### 12.2 Legacy Security (RC12-RC15)
 
 - AI is isolated from the Emo AI source files, keys, and database
 - `project_tools.py` enforces `WORKSPACE_ROOT` via `_safe_path()`
@@ -1121,15 +1212,70 @@ System is migrating toward:
 
 Any refactoring that moves these files MUST update the official Canon in §16.1.
 
-| Protocol | Module |
-|----------|--------|
-| `IExecutionEngine` | `core.interfaces.execution_engine` |
-| `IDAGOptimizer` | `core.interfaces.execution` |
-| `ICostTracker` | `core.interfaces.systems` |
-| `IDAGSizeLimiter` | `core.interfaces.systems` |
-| `ICheckpointManager` | `core.interfaces.systems` |
-| `IContractValidator` | `core.interfaces.governance` |
-| `IComplianceValidator` | `core.interfaces.governance` |
+| Protocol | Module | Status |
+|----------|--------|--------|
+| `IExecutionEngine` | `core.interfaces.execution_engine` | ✅ Stable |
+| `IDAGOptimizer` | `core.interfaces.execution` | ✅ Stable |
+| `ICostTracker` | `core.interfaces.systems` | ✅ Stable |
+| `IDAGSizeLimiter` | `core.interfaces.systems` | ✅ Stable |
+| `ICheckpointManager` | `core.interfaces.systems` | ✅ Stable |
+| `IContractValidator` | `core.interfaces.governance` | ✅ Stable |
+| `IComplianceValidator` | `core.interfaces.governance` | ✅ Stable |
+| `IIsolationRuntime` | `core.interfaces.isolation` | ✅ Updated (Protocol + TYPE_CHECKING) |
+| `IUnifiedRuntime` | `core.interfaces.unified_runtime` | ✅ Updated (Protocol + TYPE_CHECKING) |
+| `IFailurePropagation` | `core.interfaces.failure_propagation` | ✅ Updated (Protocol + TYPE_CHECKING) |
+| `ITenantManager` | `core.interfaces.control_plane` | ✅ RC16.7-B |
+| `IOrganizationManager` | `core.interfaces.control_plane` | ✅ RC16.7-B |
+| `IResourceManager` | `core.interfaces.control_plane` | ✅ RC16.7-B |
+| `IPolicyManager` | `core.interfaces.control_plane` | ✅ RC16.7-B |
+| `IApprovalManager` | `core.interfaces.control_plane` | ✅ RC16.7-C |
+| `IApprovalGate` | `core.interfaces.governance` | ✅ RC16.7-C |
+| `IBaseAgent` | `core.interfaces.agents` | ✅ RC16.8 |
+| `IAgentLifecycleManager` | `core.interfaces.agents` | ✅ RC16.8 |
+| `IAgentPolicyGate` | `core.interfaces.agents` | ✅ RC16.8 |
+| `IAgentApprovalGate` | `core.interfaces.agents` | ✅ RC16.8 |
+| `IAssetManager` | `core.interfaces.industrial` | ✅ RC16.9 |
+| `ITwinManager` | `core.interfaces.industrial` | ✅ RC16.9 |
+| `IIndustrialIntegration` | `core.interfaces.industrial` | ✅ RC16.9 |
+
+#### Compatibility Layer (Re-export)
+
+`core/interfaces/runtime/__init__.py` provides a single import point for both:
+- Protocol interfaces (`IExecutionScheduler`, etc.)
+- Concrete implementations (`ExecutionScheduler`, etc.)
+
+**Source of Truth:**
+- Protocols: `core/interfaces/*.py`
+- Implementations: `core/runtime/services/*.py`
+
+**Usage:**
+```python
+# Import both from one place
+from core.interfaces.runtime import IExecutionScheduler, ExecutionScheduler
+```
+
+> ⚠️ This is an intentional exception to the "no runtime imports in interfaces" rule. The compatibility layer does NOT modify runtime behavior — it only re-exports for developer convenience.
+
+#### TYPE_CHECKING Pattern (New Standard)
+
+All interfaces that reference runtime types MUST use `TYPE_CHECKING`:
+
+```python
+from typing import TYPE_CHECKING, Protocol
+
+if TYPE_CHECKING:
+    from core.runtime.services.scheduler import ExecutionScheduler
+
+class IExecutionScheduler(Protocol):
+    def schedule(self, dag: Any) -> ExecutionTicket: ...
+```
+
+**Why?**
+- Type checkers get full type information
+- Runtime doesn't import implementations
+- Maintains clean architecture (interfaces → implementations, not reverse)
+
+**Exception:** `core/interfaces/runtime/__init__.py` uses direct imports for re-export (compatibility layer).
 
 ---
 
@@ -1806,17 +1952,44 @@ runtime contracts.
 
 Enforced via Canon LAW 20-22.
 
-#### D8.3 — Isolation Tests
+#### D8.3 — Service Isolation Tests (Updated)
 
-`tests/test_service_isolation.py` (21 tests):
+Tests are now separated into two files:
 
-| Test Group | What It Prevents |
+##### Contract Tests (`tests/test_d8_contract_tests.py`)
+- 6 test classes, ~48 tests
+- Verify contracts (Protocols) are correct and complete
+- Do NOT execute any runtime code
+- Fast execution (no runtime setup needed)
+
+| Test Class | What It Verifies |
 |---|---|
 | `TestNoSharedMutableState` | Direct mutation of another service's domain |
 | `TestNoHiddenCrossServiceAccess` | Chained calls through service internals |
 | `TestServiceInterfaceCompliance` | Interface method ownership boundaries |
 | `TestFailurePropagationCompliance` | Propagation matrix completeness |
 | `TestCanonServiceOwnership` | LAW 23-27 runtime enforcement |
+| `TestViolationClassification` | Known violations are tracked |
+
+##### Execution Tests (`tests/test_d8_execution_tests.py`)
+- 4 test classes, ~26 tests
+- Verify runtime execution works correctly
+- Actually instantiate and execute service code
+- Test that implementations satisfy Protocols
+
+| Test Class | What It Verifies |
+|---|---|
+| `TestImplementationSatisfiesProtocol` | Each implementation satisfies its Protocol |
+| `TestServiceHealthChecks` | All services have health_check() |
+| `TestServiceInstantiation` | All services can be instantiated |
+| `TestFailurePropagationExecution` | Propagation actually works |
+
+##### Backward Compatibility (`tests/test_service_isolation.py`)
+- Re-exports all tests from the new locations
+- Legacy imports still work: `from tests.test_service_isolation import *`
+- For new tests, import directly from the new files
+
+**Total: 74 tests (up from 26 — improved coverage)**
 
 #### D8.4 — Service Ownership Laws (LAW 23-27)
 
@@ -2017,14 +2190,30 @@ ExecutionEngine → IsolationRuntime (BRIDGE)
 
 كل الـ interfaces داخل النظام لها مكان محدد ونهائي:
 
-| Protocol | Module |
-|----------|--------|
-| `IDAGOptimizer` | `core.interfaces.execution` |
-| `ICostTracker` | `core.interfaces.systems` |
-| `IContractValidator` | `core.interfaces.governance` |
-| `IComplianceValidator` | `core.interfaces.governance` |
-| `ICheckpointManager` | `core.interfaces.systems` |
-| `IExecutionEngine` | `core.interfaces.execution_engine` |
+| Protocol | Module | Status |
+|----------|--------|--------|
+| `IDAGOptimizer` | `core.interfaces.execution` | ✅ Stable |
+| `ICostTracker` | `core.interfaces.systems` | ✅ Stable |
+| `IContractValidator` | `core.interfaces.governance` | ✅ Stable |
+| `IComplianceValidator` | `core.interfaces.governance` | ✅ Stable |
+| `ICheckpointManager` | `core.interfaces.systems` | ✅ Stable |
+| `IExecutionEngine` | `core.interfaces.execution_engine` | ✅ Stable |
+| `IIsolationRuntime` | `core.interfaces.isolation` | ✅ Updated (Protocol + TYPE_CHECKING) |
+| `IUnifiedRuntime` | `core.interfaces.unified_runtime` | ✅ Updated (Protocol + TYPE_CHECKING) |
+| `IFailurePropagation` | `core.interfaces.failure_propagation` | ✅ Updated (Protocol + TYPE_CHECKING) |
+| `ITenantManager` | `core.interfaces.control_plane` | ✅ RC16.7-B |
+| `IOrganizationManager` | `core.interfaces.control_plane` | ✅ RC16.7-B |
+| `IResourceManager` | `core.interfaces.control_plane` | ✅ RC16.7-B |
+| `IPolicyManager` | `core.interfaces.control_plane` | ✅ RC16.7-B |
+| `IApprovalManager` | `core.interfaces.control_plane` | ✅ RC16.7-C |
+| `IApprovalGate` | `core.interfaces.governance` | ✅ RC16.7-C |
+| `IBaseAgent` | `core.interfaces.agents` | ✅ RC16.8 |
+| `IAgentLifecycleManager` | `core.interfaces.agents` | ✅ RC16.8 |
+| `IAgentPolicyGate` | `core.interfaces.agents` | ✅ RC16.8 |
+| `IAgentApprovalGate` | `core.interfaces.agents` | ✅ RC16.8 |
+| `IAssetManager` | `core.interfaces.industrial` | ✅ RC16.9 |
+| `ITwinManager` | `core.interfaces.industrial` | ✅ RC16.9 |
+| `IIndustrialIntegration` | `core.interfaces.industrial` | ✅ RC16.9 |
 
 > ❌ أي import خارج هذا mapping يعتبر **Architectural Violation**.
 
@@ -2336,6 +2525,195 @@ artifacts/codegraph/
 
 ---
 
-**نهاية الوثيقة — الإصدار 4.15.0-delivery-ready 🟢 100% CLOSED — Cognitive Memory + Orchestration + Final Delivery Certified**
+## 18. Water Pack Foundation (RC17.4)
+
+### 18.1 Overview
+
+Water Pack provides a complete industrial water management system with:
+
+- **Domain Models**: TreatmentPlant, PumpStation, WaterQualitySensor, WaterTwinState, WaterOperationalEvent
+- **Safety Policies**: WHO/EPA compliance with Default Deny for CONTROL_WRITE/PUMP_SHUTDOWN/VALVE_OVERRIDE
+- **Connectors**: SCADA and Modbus (read-only V1)
+- **Digital Twin**: WaterTwin for asset state management with simulation and prediction
+- **Agents**: Monitoring, Quality, Maintenance, Distribution
+- **Data Pipeline**: Connector → WaterSafetyGate → WaterTwin integration
+- **Audit Trail**: Complete evaluation and operational event logging
+
+### 18.2 Key Components
+
+| Component | File | Responsibility |
+|-----------|------|----------------|
+| WaterSafetyGate | `core/governance/water_policies.py` | WHO/EPA safety enforcement, Default Deny |
+| WaterDataPipeline | `core/industrial/water_data_pipeline.py` | Connector → SafetyGate → Twin pipeline |
+| WaterTwin | `core/industrial/water_twin.py` | Digital twin state, simulate, predict, audit |
+| WaterSCADAConnector | `core/connectors/water/water_scada_connector.py` | Read-only SCADA tag access |
+| WaterModbusConnector | `core/connectors/water/water_modbus_connector.py` | Read-only Modbus register access |
+| WaterMonitoringAgent | `core/agents/water/water_monitoring_agent.py` | Plant output monitoring, anomaly reporting |
+| WaterQualityAgent | `core/agents/water/water_quality_agent.py` | pH/turbidity/chlorine threshold checks |
+| WaterMaintenanceAgent | `core/agents/water/water_maintenance_agent.py` | Maintenance recommendations, approval gate |
+| WaterDistributionAgent | `core/agents/water/water_distribution_agent.py` | Network status, flow adjustment |
+
+### 18.3 Safety Enforcement
+
+WaterSafetyGate enforces:
+
+- **Default Deny**: CONTROL_WRITE, PUMP_SHUTDOWN, VALVE_OVERRIDE blocked by default
+- **Trust Levels**: UNVERIFIED < VERIFIED < TRUSTED
+- **Human-in-the-Loop**: Critical actions require approval via ApprovalGate
+- **Audit Trail**: Every evaluation recorded with action_type, allowed, reason, violation_type
+
+### 18.4 Data Flow
+
+```
+SCADA/Modbus Connector
+    ↓
+WaterDataPipeline.ingest_from_connector()
+    ↓
+WaterSafetyGate.evaluate(action, trust_level)
+    ↓ (if allowed)
+WaterTwin.update_state() + record_event()
+    ↓
+Water Agents (monitoring, quality, maintenance, distribution)
+```
+
+### 18.5 Test Coverage
+
+| Sub-phase | Tests | Focus |
+|-----------|-------|-------|
+| RC17.4.1 | 6 | Domain models + safety policies |
+| RC17.4.2 | 6 | SCADA/Modbus connectors |
+| RC17.4.3 | 6 | Twin + DataPipeline integration |
+| RC17.4.4 | 8 | 4 water agents |
+| RC17.4.5 | 1 | E2E scenario (11 stages) |
+| RC17.4.6 | 5 | Audit trail verification |
+| **Total** | **32** | **Full water domain coverage** |
+
+### 18.6 Integration Points
+
+- **EventBus**: All components publish events (TWIN_STATE_UPDATED, SAFETY_VIOLATION, etc.)
+- **EventStore**: Persistent audit trail with trace_id
+- **ApprovalGate**: Human approval for critical actions (PUMP_SHUTDOWN, VALVE_OVERRIDE)
+- **Industrial Integration**: Shares IAssetManager, ITwinManager interfaces with Manufacturing/Energy packs
+
+---
+
+## 19. Healthcare Pack Foundation (RC17.5)
+
+### 19.1 Overview
+
+Healthcare Pack provides a complete healthcare IoT & compliance system with:
+
+- **Domain Models**: PatientRecord, MedicalDevice, Clinic, HealthcareSafetyDecision — HIPAA/FDA compliant
+- **Safety Policies**: Default Deny for CONTROL_WRITE, PATIENT_DATA_EXPORT, DEVICE_RECONFIGURATION
+- **Connectors**: HL7/FHIR (read-only) and Medical MQTT (subscribe + read_topics only)
+- **Digital Twin**: HealthcareTwin for patient/device/clinic state management with simulation and prediction
+- **Agents**: PatientMonitor, DeviceManager, ComplianceAuditor, HealthcareAnalyst
+- **Data Pipeline**: FHIR/MQTT Connector → HealthcareSafetyGate → HealthcareTwin integration
+- **Audit Trail**: Complete evaluation and operational event logging with trace_id chains
+
+### 19.2 Key Components
+
+| Component | File | Responsibility |
+|-----------|------|----------------|
+| HealthcareSafetyGate | `core/governance/healthcare_policies.py` | HIPAA/FDA safety enforcement, Default Deny |
+| HealthcareDataPipeline | `core/industrial/healthcare_data_pipeline.py` | Connector → SafetyGate → Twin pipeline |
+| HealthcareTwin | `core/industrial/healthcare_twin.py` | Digital twin state, simulate, predict, audit |
+| FHIRConnector | `core/connectors/healthcare/fhir_connector.py` | Read-only FHIR resource access (Patient/Observation/Device) |
+| MedicalMQTTConnector | `core/connectors/healthcare/medical_mqtt_connector.py` | Read-only MQTT vitals monitoring |
+| PatientMonitorAgent | `core/agents/healthcare/patient_monitor_agent.py` | Vitals monitoring, anomaly detection |
+| DeviceManagerAgent | `core/agents/healthcare/device_manager_agent.py` | Device checks, maintenance recommendations |
+| ComplianceAuditorAgent | `core/agents/healthcare/compliance_auditor_agent.py` | HIPAA/FDA compliance enforcement |
+| HealthcareAnalystAgent | `core/agents/healthcare/healthcare_analyst_agent.py` | Trend analysis, scenario simulation |
+
+### 19.3 Safety Enforcement
+
+HealthcareSafetyGate enforces:
+
+- **Default Deny**: CONTROL_WRITE, PATIENT_DATA_EXPORT, DEVICE_RECONFIGURATION blocked by default
+- **Trust Levels**: UNVERIFIED < VERIFIED < TRUSTED (TRUSTED required for critical actions)
+- **HIPAA Compliance**: Patient data privacy enforced at policy level
+- **FDA Compliance**: Device safety checks before any configuration change
+- **Audit Trail**: Every evaluation recorded with action_type, allowed, reason, violation_type
+
+### 19.4 Data Flow
+
+```
+FHIR/MQTT Connector
+    ↓
+HealthcareDataPipeline.ingest_healthcare_data()
+    ↓
+HealthcareSafetyGate.evaluate(action, trust_level)
+    ↓ (if allowed)
+HealthcareTwin.update_twin_state() + record_event()
+    ↓
+Healthcare Agents (patient_monitor, device_manager, compliance_auditor, analyst)
+```
+
+### 19.5 Test Coverage
+
+| Sub-phase | Tests | Focus |
+|-----------|-------|-------|
+| RC17.5.1 | 6 | Domain models + healthcare safety policies |
+| RC17.5.2 | 6 | FHIR + Medical MQTT connectors |
+| RC17.5.3 | 6 | Twin + DataPipeline integration |
+| RC17.5.4 | 8 | 4 healthcare agents |
+| RC17.5.5 | 1 | E2E scenario (6 stages) |
+| RC17.5.6 | 5 | Audit trail verification |
+| **Total** | **32 (30 new + 2 EventTopic exts)** | **Full healthcare domain coverage** |
+
+### 19.6 Integration Points
+
+- **EventBus**: All components publish events (PATIENT_VITALS_UPDATED, ANOMALY_DETECTED, COMPLIANCE_VIOLATION, TREND_ANALYSIS_REPORT, SAFETY_VIOLATION, CONNECTOR_READ_SUCCESS, CONNECTOR_READ_FAILURE)
+- **EventStore**: Persistent audit trail with trace_id chains across all 6 sub-phases
+- **TYPE_CHECKING**: Interface imports use TYPE_CHECKING pattern to avoid circular imports
+- **Industrial Integration**: Shares IAssetManager, ITwinManager interfaces with Manufacturing/Energy/Water packs
+
+---
+
+## 20. Cognitive Orchestration Layer (Phase G)
+
+### 20.1 Architecture Overview
+
+The Cognitive Orchestration layer transforms the system from "governed execution" to "cognitive planning". It translates user Intent into executable DAG Plans, validates them through a Critic Agent, and adapts them based on Runtime feedback — all without direct execution or agent communication.
+
+**Data Flow:**
+```
+Intent → PlannerAgent → Plan (DAG) → CriticAgent → CriticReport
+                                                    ↓
+                                          AdaptivePlanner ← ExecutionFeedback
+                                                    ↓
+                                          Adapted Plan → UnifiedRuntimeAPI
+```
+
+### 20.2 Components
+
+| Component | Location | Responsibility |
+|-----------|----------|----------------|
+| Planner Models | `core/models/planner.py` | IntentType, PlanStatus, StepStatus, Intent, PlanStep, Plan, PlanningContext, PlanningConstraint |
+| Planner Agent | `core/agents/planner_agent.py` | Translates Intent → Plan, DAG validation (cycle detection, missing deps), tool validation |
+| Critic Models | `core/models/critic.py` | CriticDecision, CriticReport, ExecutionFeedback |
+| Critic Agent | `core/agents/critic_agent.py` | Reviews Plans for correctness, detects gaps (missing deps, unavailable tools, duplicate actions) |
+| Adaptive Planner | `core/agents/adaptive_planner.py` | Modifies Plans by inserting fallback/retry steps after failures, re-links dependencies |
+| Event Topics | `core/models/event.py` | PLANNING_STARTED, PLANNING_COMPLETED, PLANNING_FAILED, CRITIC_STARTED, CRITIC_APPROVED, CRITIC_REJECTED, PLAN_ADAPTED |
+
+### 20.3 Design Constraints
+
+- **Zero Execution Logic**: Neither CriticAgent nor AdaptivePlanner contain execute, run, dispatch, allocate, or schedule methods
+- **Event-Driven Decisions**: Every decision (approve, reject, adapt) is published to EventBus before returning
+- **Pure Models**: `core/models/critic.py` and `core/models/planner.py` contain only Enums and frozen dataclasses (stdlib only, zero internal imports)
+- **DI Only**: All agents receive dependencies via constructor injection (LAW 13)
+- **No Phase H Leakage**: No imports or references to Computer Use or Browser Runtime
+
+### 20.4 Test Coverage
+
+| Test File | Tests | Coverage |
+|-----------|-------|----------|
+| `tests/test_planner_agent.py` | 6 | Plan generation, DAG validation, tool rejection, runtime delegation, events, graceful failure |
+| `tests/test_g2_critic_adaptive.py` | 6 | Approve valid plan, reject missing deps, adaptive modification, events, no execution methods, E2E loop |
+| **Total** | **12** | **Full Cognitive Orchestration coverage** |
+
+---
+
+**نهاية الوثيقة — الإصدار 1.0.0-RC17.5 🟢 Healthcare Pack Foundation — 3255 tests collected (75 new: D8+F+G, 0 regression)**
 
 *للأسئلة: افتح issue.*
