@@ -1,0 +1,40 @@
+{
+  "type_mapping": {
+    "INTEGER": "BIGINT",
+    "TEXT": "TEXT",
+    "REAL": "DOUBLE PRECISION",
+    "BLOB": "BYTEA",
+    "NUMERIC": "NUMERIC",
+    "BOOLEAN": "BOOLEAN",
+    "DATETIME": "TIMESTAMP WITH TIME ZONE",
+    "DATE": "DATE",
+    "TIME": "TIME WITH TIME ZONE"
+  },
+  "table_mapping": {
+    "users": {
+      "postgres_table": "users",
+      "indexes": ["idx_users_username", "idx_users_email"],
+      "constraints": ["username UNIQUE NOT NULL", "email UNIQUE"]
+    },
+    "conversations": {
+      "postgres_table": "conversations",
+      "indexes": ["idx_conversations_user_id", "idx_conversations_created_at"],
+      "constraints": ["user_id REFERENCES users(id) ON DELETE CASCADE"]
+    },
+    "messages": {
+      "postgres_table": "messages",
+      "indexes": ["idx_messages_conversation_id", "idx_messages_created_at"],
+      "constraints": ["conversation_id REFERENCES conversations(id) ON DELETE CASCADE"]
+    },
+    "tasks": {
+      "postgres_table": "tasks",
+      "indexes": ["idx_tasks_status", "idx_tasks_created_at"],
+      "constraints": ["status CHECK (status IN ('pending', 'running', 'complete', 'error'))"]
+    },
+    "audit_logs": {
+      "postgres_table": "audit_logs",
+      "indexes": ["idx_audit_user_id", "idx_audit_created_at"],
+      "constraints": []
+    }
+  }
+}

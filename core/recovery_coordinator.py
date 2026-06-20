@@ -401,19 +401,35 @@ class DeterministicResume:
                 continue
             node.state = NodeState.PENDING
 
-        # 4  All other nodes remain PENDING by default
+        # 4. All other nodes remain PENDING by default
         # (they'll run normally in the level loop)
 
         # 5. Re-check schema version
         self._engine._check_schema_version(dag)
 
-        # 6. Run via normal execute — but restore completed results
-        # We use a modified version of execute that skips completed
-        return self._engine.execute(
+        # 6. Run via normal execute
+        result = self._engine.execute(
             dag=dag,
             session_id=session_id,
             tool_runner=tool_runner,
         )
+
+        # 7. Restore completed nodes' states (execute resets all to PLANNED)
+        for node_id in token.completed_nodes:
+            node = dag.nodes.get(node_id)
+            if node is not None:
+                node.state = NodeState.COMPLETED
+                node.result = token.node_results.get(node_id, {})
+
+        # 8. Restore failed nodes to PENDING for retry
+        for node_id in token.failed_nodes:
+            node = dag.nodes.get(node_id)
+            if node is not None:
+                node.state = NodeState.PENDING
+                node.error = None
+                node.retry_count = 0
+
+        return result
 
     @staticmethod
     def build_dag_from_token(
@@ -428,7 +444,8 @@ class DeterministicResume:
 
         Creates one node per completed + pending + failed entry.
         """
-        dag = DependencyGraph(version=token.dag_version)
+        dag = DependencyGraph()
+        dag.version = token.dag_version
         all_nodes = set(
             token.completed_nodes
             + token.pending_nodes

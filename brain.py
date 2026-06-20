@@ -59,16 +59,53 @@ class Brain:
         if not self.model:
             self.model = config["default_model"]
 
-        # API key priority: parameter > Keychain > env var
+        # API key resolution priority:
+        # 1) Explicit `api_key` parameter (test endpoints, manual overrides)
+        # 2) provider_keys pool (round-robin, sync) — new multi-key table
+        # 3) OS Keychain (KeychainProvider)
+        # 4) `.emo_settings.json` legacy field `{provider}_key`
+        # 5) Env var `{PROVIDER}_API_KEY`
+        # 6) placeholder (will fail at call time if no real key was set)
         if api_key:
             resolved_key = api_key
         elif self.provider == "ollama":
             resolved_key = "ollama"
         else:
-            kp = KeychainProvider()
-            resolved_key = kp.get(self.provider) or ""
+            resolved_key = ""
+            # 2) provider_keys pool
+            try:
+                from core.key_pool import pick_key_for_brain
+                v = pick_key_for_brain(self.provider)
+                if v:
+                    resolved_key = v
+            except Exception:
+                pass
+            # 3) Keychain (already inside key_pool as fallback, but also try directly)
+            if not resolved_key:
+                try:
+                    kp = KeychainProvider()
+                    v = kp.get(self.provider)
+                    if v:
+                        resolved_key = v
+                except Exception:
+                    pass
+            # 4) .emo_settings.json
+            if not resolved_key:
+                try:
+                    import json
+                    from pathlib import Path
+                    sf = Path(".emo_settings.json")
+                    if sf.exists():
+                        s = json.loads(sf.read_text())
+                        v = s.get(f"{self.provider}_key")
+                        if v:
+                            resolved_key = v
+                except Exception:
+                    pass
+            # 5) Env var
             if not resolved_key:
                 resolved_key = os.getenv(f"{self.provider.upper()}_API_KEY", "")
+            # 6) placeholder
             if not resolved_key:
                 resolved_key = "placeholder-key-not-configured"
 

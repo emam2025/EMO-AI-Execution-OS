@@ -10,20 +10,21 @@ Ref: Canon RULE 1, RULE 4
 
 from __future__ import annotations
 
-from typing import Any, Dict, Optional, Protocol
+from typing import TYPE_CHECKING, Any, Dict, Optional, Protocol
 
-from core.runtime.api.unified_runtime_api import (
-    CancellationReceipt,
-    ExecutionStatus,
-    ExecutionTicket,
-    LiveStateStream,
-    ReplayTicket,
-    ScalingReceipt,
-    WorkerRegistration,
-    ExecutionContext,
-    SubmissionOptions,
-    ScalingPolicy,
-)
+if TYPE_CHECKING:
+    from core.runtime.api.unified_runtime_api import (
+        CancellationReceipt,
+        ExecutionContext,
+        ExecutionStatus,
+        ExecutionTicket,
+        LiveStateStream,
+        ReplayTicket,
+        ScalingPolicy,
+        ScalingReceipt,
+        SubmissionOptions,
+        WorkerRegistration,
+    )
 
 
 class IUnifiedRuntime(Protocol):
@@ -96,7 +97,7 @@ class IUnifiedRuntime(Protocol):
     def scale(
         self,
         target_worker_count: int,
-        policy: ScalingPolicy = ScalingPolicy.BALANCED,
+        policy: ScalingPolicy = ...,
     ) -> ScalingReceipt:
         """Scale the distributed worker pool.
 

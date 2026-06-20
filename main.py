@@ -31,6 +31,7 @@ from routers.conversations import router as conversations_router
 from routers.settings import router as settings_router
 from routers.history import router as history_router
 from routers.project import router as project_router
+from routers.security import router as security_router
 from core.state import state
 from core.tasks import cleanup_old_tasks_loop
 from core.db import db
@@ -48,6 +49,20 @@ async def lifespan(app: FastAPI):
     # Initialize database
     await db.initialize()
     logger.info("Database initialized")
+
+    # Seed default agents (v1.1 Phase 3)
+    try:
+        await db.seed_default_agents()
+        logger.info("Default agents seeded")
+    except Exception as e:
+        logger.warning(f"Agent seeding skipped: {e}")
+
+    # Seed default enterprise org + super_admin (v1.1 Phase 5)
+    try:
+        await db.seed_default_enterprise()
+        logger.info("Default enterprise seeded")
+    except Exception as e:
+        logger.warning(f"Enterprise seeding skipped: {e}")
 
     # Initialize AI Code Intelligence Layer
     try:
@@ -86,7 +101,11 @@ async def lifespan(app: FastAPI):
         _mem = _Mem(str(_Path(_ai_index) / "execution_memory.db"))
 
         # Execution feedback intelligence (was latent — now connected)
-        _feedback = _Feedback(db_path=str(_Path(_ai_index) / "feedback.db"))
+        try:
+            _feedback = _Feedback(db_path=_Path(_ai_index) / "feedback.db")
+        except Exception as ex:
+            logger.warning(f"Feedback intelligence init skipped: {ex}")
+            _feedback = None
 
         # Semantic layer is optional
         _hybrid: Optional[Any] = None
@@ -116,14 +135,26 @@ async def lifespan(app: FastAPI):
 
         from core.execution_cache import ExecutionCache as _Cache
 
-        _exec_cache = _Cache(
-            db_path=str(_Path(_ai_index) / "execution_cache.db"),
-            max_entries=2000, default_ttl_seconds=3600,
-        )
+        try:
+            _exec_cache = _Cache(
+                db_path=str(_Path(_ai_index) / "execution_cache.db"),
+                max_entries=2000, default_ttl_seconds=3600,
+            )
+        except Exception as cache_ex:
+            logger.warning(f"Cache init failed: {cache_ex}")
+            _exec_cache = None
 
-        _rt = _RT(_gq, _gre, _agent, _ctx, hybrid=_hybrid, metrics=_metrics, memory=_mem,
-                  cache=_exec_cache, worker_pool_size=4, feedback_intel=_feedback)
-        _replay = _Replay(_mem)
+        try:
+            _rt = _RT(_gq, _gre, _agent, _ctx, hybrid=_hybrid, metrics=_metrics, memory=_mem,
+                      cache=_exec_cache, worker_pool_size=4, feedback_intel=_feedback)
+        except Exception as rt_ex:
+            logger.warning(f"UnifiedRuntime init failed: {rt_ex}")
+            _rt = None
+        try:
+            _replay = _Replay(_mem)
+        except Exception as replay_ex:
+            logger.warning(f"Replay init failed: {replay_ex}")
+            _replay = None
 
         # Store in shared state
         _ai_state.initialized = True
@@ -184,16 +215,22 @@ async def lifespan(app: FastAPI):
     # Start background cleanup
     cleanup_task = asyncio.create_task(cleanup_old_tasks_loop(state.task_manager))
 
-    yield
-
-    # Cleanup
-    if telegram_bot:
-        telegram_bot.stop()
-    cleanup_task.cancel()
     try:
-        await cleanup_task
-    except asyncio.CancelledError:
-        pass
+        yield
+    finally:
+        # Cleanup
+        try:
+            if telegram_bot:
+                telegram_bot.stop()
+        except NameError:
+            pass
+        cleanup_task.cancel()
+        try:
+            await cleanup_task
+        except asyncio.CancelledError:
+            pass
+        except Exception:
+            pass
 
 
 # ── Security Headers Middleware ────────────────────────────────
@@ -202,8 +239,9 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
         response = await call_next(request)
         response.headers["Content-Security-Policy"] = (
             "default-src 'self'; script-src 'self' 'unsafe-inline'; "
-            "style-src 'self' 'unsafe-inline'; img-src 'self' data:; "
-            "font-src 'self'; connect-src 'self'"
+            "style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; "
+            "img-src 'self' data:; "
+            "font-src 'self' https://cdnjs.cloudflare.com; connect-src 'self'"
         )
         response.headers["Strict-Transport-Security"] = (
             "max-age=31536000; includeSubDomains"
@@ -265,6 +303,85 @@ app.include_router(settings_router)
 app.include_router(history_router)
 app.include_router(project_router)
 
+# Multi-key provider management (Settings → Models redesign)
+try:
+    from routers.provider_keys import router as provider_keys_router
+    app.include_router(provider_keys_router)
+    logger.info("Provider keys router registered")
+except Exception as e:
+    logger.error(f"Failed to register provider_keys router: {e}")
+
+# Tool Marketplace (v1.1 Phase 1)
+try:
+    from routers.tools import router as tools_router
+    app.include_router(tools_router)
+    logger.info("Tools router registered")
+except Exception as e:
+    logger.error(f"Failed to register tools router: {e}")
+
+# Agent Control Center (v1.1 Phase 3)
+try:
+    from routers.agents import router as agents_router
+    app.include_router(agents_router)
+    logger.info("Agents router registered")
+except Exception as e:
+    logger.error(f"Failed to register agents router: {e}")
+
+# Security Dashboard (RC12.5)
+try:
+    app.include_router(security_router)
+    logger.info("Security router registered")
+except Exception as e:
+    logger.error(f"Failed to register security router: {e}")
+
+# Autonomous Missions (v1.1 Phase 4)
+try:
+    from routers.missions import router as missions_router
+    app.include_router(missions_router)
+    logger.info("Missions router registered")
+except Exception as e:
+    logger.error(f"Failed to register missions router: {e}")
+
+# Human Approval Layer (v1.1 Phase 4.5.10)
+try:
+    from routers.approvals import router as approvals_router
+    app.include_router(approvals_router)
+    logger.info("Approvals router registered")
+except Exception as e:
+    logger.error(f"Failed to register approvals router: {e}")
+
+# Skill Evolution Layer (RC12.4)
+try:
+    from routers.skills import router as skills_router
+    app.include_router(skills_router)
+    logger.info("Skills router registered")
+except Exception as e:
+    logger.error(f"Failed to register skills router: {e}")
+
+# Industrial Control Plane (v1.1 Phase 5)
+try:
+    from routers.enterprise import router as enterprise_router
+    app.include_router(enterprise_router)
+    logger.info("Enterprise router registered")
+except Exception as e:
+    logger.error(f"Failed to register enterprise router: {e}")
+
+# Digital Twin + Industrial Profiles (RC12.6)
+try:
+    from routers.digital_twin import router as digital_twin_router
+    app.include_router(digital_twin_router)
+    logger.info("Digital Twin router registered")
+except Exception as e:
+    logger.error(f"Failed to register Digital Twin router: {e}")
+
+# Connectors Framework (RC12.7)
+try:
+    from routers.connectors import router as connectors_router
+    app.include_router(connectors_router)
+    logger.info("Connectors router registered")
+except Exception as e:
+    logger.error(f"Failed to register Connectors router: {e}")
+
 # AI Code Intelligence API
 try:
     from routers.ai import router as ai_router
@@ -288,6 +405,30 @@ try:
     logger.info("Observability dashboard router registered")
 except Exception as e:
     logger.error(f"Failed to register observability router: {e}")
+
+# Project Management OS (RC12.8)
+try:
+    from routers.projectos import router as projectos_router
+    app.include_router(projectos_router)
+    logger.info("Project OS router registered")
+except Exception as e:
+    logger.error(f"Failed to register Project OS router: {e}")
+
+# Project OS Experience Layer (RC12.8.2)
+try:
+    from routers.projectos_experience import router as projectos_exp_router
+    app.include_router(projectos_exp_router)
+    logger.info("Project OS Experience router registered")
+except Exception as e:
+    logger.error(f"Failed to register Project OS Experience router: {e}")
+
+# Enterprise Command Center (RC15.7)
+try:
+    from routers.command_center import router as command_center_router
+    app.include_router(command_center_router)
+    logger.info("Command Center router registered")
+except Exception as e:
+    logger.error(f"Failed to register Command Center router: {e}")
 
 
 @app.get("/api/status")
@@ -386,7 +527,7 @@ async def root(request: Request):
     settings_json_str = json.dumps(settings, ensure_ascii=False)
     tr_json_str = json.dumps(tr_json, ensure_ascii=False)
 
-    return templates.TemplateResponse(
+    response = templates.TemplateResponse(
         request=request,
         name="index.html",
         context={
@@ -407,6 +548,10 @@ async def root(request: Request):
             "placeholder_send": tr("send_placeholder"),
         }
     )
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
 
 
 DEFAULT_MODELS = {

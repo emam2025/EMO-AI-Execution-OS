@@ -1,354 +1,201 @@
-"""Phase 4.1.1 — SandboxExecutor: subprocess/container execution layer.
+"""SandboxExecutor — Subprocess Isolation with Resource Limits.
 
-Spawns isolated workers, enforces timeouts, and provides
-kill-safe execution for untrusted tasks.
+Executes Python scripts in isolated subprocesses with enforced CPU
+and memory limits via resource.setrlimit(). Kill-safe cleanup via
+finally block. Publishes telemetry events via IEventBus.
 
-Every execution goes through:
-    SandboxExecutor → subprocess worker → result
+Ref: Phase E.1.2 — Sandboxed Executor (Subprocess Isolation)
 """
 
 from __future__ import annotations
 
+import asyncio
 import json
 import logging
 import os
-import signal
+import resource
 import subprocess
 import sys
 import tempfile
-import threading
 import time
-import uuid
-from typing import Any, Dict, Optional
+from typing import TYPE_CHECKING, Any, Optional
 
-from core.runtime.sandbox.sandbox_context import SandboxContext
-from core.runtime.sandbox.sandbox_errors import (
-    ExecutionTimeoutError,
-    ResourceLimitExceeded,
-    SandboxViolationError,
-)
+from core.models.sandbox import SandboxContext, SandboxResult
 
-logger = logging.getLogger("emo_ai.sandbox.executor")
+if TYPE_CHECKING:
+    from core.interfaces.event_bus import IEventBus
 
-# NOTE: SANDBOX_PY removed in EXEC-DIRECTIVE-SEC-001.
-# The constant contained eval()+exec() — a CRITICAL sandbox escape vector.
-# All sandbox execution goes through _build_worker_script() which uses
-# safe subprocess execution (no eval/exec). See execute() method below.
+logger = logging.getLogger(__name__)
+
+
+class ResourceLimitExceeded(Exception):
+    """Raised when a subprocess exceeds its resource limits."""
 
 
 class SandboxExecutor:
-    """Executes tasks in isolated subprocess workers.
+    """Subprocess-only sandbox executor with resource limits.
 
-    Each execution spawns a separate process with resource limits
-    enforced via the OS (``resource`` module) and a watchdog thread
-    for timeout enforcement.
-
-    Supports kill-on-demand via execution ID tracking.
+    Each execution spawns a separate subprocess running a Python script.
+    No threading is used. Resource limits (CPU, memory) are enforced
+    via resource.setrlimit() in the child process via preexec_fn.
     """
 
-    def __init__(self, sandbox_py_path: Optional[str] = None):
-        self._sandbox_py_path = sandbox_py_path
-        self._processes: Dict[str, Any] = {}
-        self._cancel_events: Dict[str, threading.Event] = {}
-        self._lock = threading.Lock()
+    def __init__(self, event_bus: Optional[IEventBus] = None) -> None:
+        self._event_bus = event_bus
 
     def execute(
         self,
-        tool_name: str,
-        inputs: Dict[str, Any],
+        script: str,
         context: SandboxContext,
-    ) -> Dict[str, Any]:
-        """Execute a tool in an isolated subprocess.
+    ) -> SandboxResult:
+        """Execute a Python script in an isolated subprocess.
 
         Args:
-            tool_name: Name of the tool to execute.
-            inputs: Input parameters for the tool.
+            script: Python source code to execute in the subprocess.
             context: Sandbox context with resource limits.
 
         Returns:
-            Execution result dict with keys: status, result/error.
-
-        Raises:
-            ExecutionTimeoutError: If execution exceeds context.timeout.
-            ResourceLimitExceeded: If resource limits are breached.
-            SandboxViolationError: If sandbox rules are violated.
+            SandboxResult with output, exit code, and telemetry.
         """
-        exec_id = uuid.uuid4().hex[:12]
-        start = time.time()
-        cancel_event = threading.Event()
+        self._publish_event(
+            "EXECUTION_STARTED",
+            {
+                "tool_id": context.tool_id,
+                "timeout_seconds": context.timeout_seconds,
+                "max_memory_mb": context.max_memory_mb,
+                "max_cpu_seconds": context.max_cpu_seconds,
+            },
+        )
 
-        with self._lock:
-            self._cancel_events[exec_id] = cancel_event
-
-        with tempfile.NamedTemporaryFile(
-            mode="w", suffix=".py", delete=False,
-        ) as f:
-            worker_path = f.name
-            f.write(self._build_worker_script(tool_name, inputs))
+        worker_path: Optional[str] = None
+        proc: Optional[subprocess.Popen] = None
+        start_time = time.time()
 
         try:
-            proc = subprocess.Popen(
-                [sys.executable, worker_path],
-                stdin=subprocess.DEVNULL,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                preexec_fn=self._make_preexec(context),
-                cwd=context.working_dir or os.path.dirname(worker_path),
-            )
+            worker_path = self._write_script(script)
+            proc = self._spawn_subprocess(worker_path, context)
 
-            with self._lock:
-                self._processes[exec_id] = proc
-
-            timed_out = threading.Event()
-
-            def watchdog() -> None:
-                try:
-                    proc.wait(timeout=context.timeout)
-                    timed_out.set()
-                except Exception:
-                    pass
-
-            watcher = threading.Thread(target=watchdog, daemon=True)
-            watcher.start()
-
-            # Wait for completion, cancellation, or timeout
-            while watcher.is_alive():
-                if cancel_event.is_set():
-                    proc.kill()
-                    proc.wait()
-                    elapsed = time.time() - start
-                    with self._lock:
-                        self._processes.pop(exec_id, None)
-                        self._cancel_events.pop(exec_id, None)
-                    return {
-                        "status": "cancelled",
-                        "elapsed": elapsed,
-                    }
-                watcher.join(timeout=0.1)
-
-            if proc.poll() is None:
+            try:
+                stdout_bytes, stderr_bytes = proc.communicate(
+                    timeout=context.timeout_seconds
+                )
+            except subprocess.TimeoutExpired:
                 proc.kill()
                 proc.wait()
-                elapsed = time.time() - start
-                with self._lock:
-                    self._processes.pop(exec_id, None)
-                    self._cancel_events.pop(exec_id, None)
-                raise ExecutionTimeoutError(
-                    tool=tool_name,
-                    timeout=context.timeout,
-                    elapsed=elapsed,
+                duration = time.time() - start_time
+                self._publish_event(
+                    "EXECUTION_FAILED",
+                    {"tool_id": context.tool_id, "reason": "timeout", "duration_seconds": duration},
+                )
+                self._publish_event(
+                    "RESOURCE_LIMIT_EXCEEDED",
+                    {"tool_id": context.tool_id, "limit_type": "timeout", "timeout_seconds": context.timeout_seconds},
+                )
+                return SandboxResult(
+                    success=False,
+                    error=f"Execution timed out after {context.timeout_seconds}s",
+                    exit_code=-1,
+                    duration_seconds=duration,
+                    timed_out=True,
+                    killed=True,
                 )
 
-            stdout, stderr = proc.communicate()
-            elapsed = time.time() - start
+            duration = time.time() - start_time
+            stdout = stdout_bytes.decode(errors="replace") if stdout_bytes else ""
+            stderr = stderr_bytes.decode(errors="replace") if stderr_bytes else ""
 
             if proc.returncode != 0:
-                return {
-                    "status": "failed",
-                    "error": stderr.decode() or f"exit code {proc.returncode}",
-                    "elapsed": elapsed,
-                }
+                self._publish_event(
+                    "EXECUTION_FAILED",
+                    {"tool_id": context.tool_id, "exit_code": proc.returncode, "duration_seconds": duration},
+                )
+                return SandboxResult(
+                    success=False,
+                    output=stdout,
+                    error=stderr or f"Exit code {proc.returncode}",
+                    exit_code=proc.returncode,
+                    duration_seconds=duration,
+                )
 
-            result = self._parse_output(stdout.decode())
-            result["elapsed"] = elapsed
-            result["status"] = result.get("status", "completed")
-            return result
-
-        except ExecutionTimeoutError:
-            raise
-        except ResourceLimitExceeded:
-            raise
-        except SandboxViolationError:
-            raise
-        except Exception as e:
-            logger.exception("Sandbox execution failed for %s", tool_name)
-            return {
-                "status": "failed",
-                "error": f"{type(e).__name__}: {e}",
-            }
-        finally:
-            with self._lock:
-                self._processes.pop(exec_id, None)
-                self._cancel_events.pop(exec_id, None)
-            self._cleanup_worker(worker_path)
-
-    def execute_direct(
-        self,
-        runner: Any,
-        execution_input: Any,
-        context: SandboxContext,
-        exec_id: str = "",
-    ) -> Dict[str, Any]:
-        """Execute a callable in a thread with timeout.
-
-        Falls back to thread-based execution when subprocess is
-        not feasible (non-serializable callables).
-
-        Supports cancellation via ``kill(exec_id)``.
-        """
-        if not exec_id:
-            exec_id = uuid.uuid4().hex[:12]
-
-        cancel_event = threading.Event()
-        with self._lock:
-            self._cancel_events[exec_id] = cancel_event
-
-        start = time.time()
-        result_container: list = [None]
-        exception_container: list = [None]
-        done = threading.Event()
-
-        def _run() -> None:
-            try:
-                if cancel_event.is_set():
-                    return
-                result_container[0] = runner(execution_input)
-            except Exception as e:
-                exception_container[0] = e
-            finally:
-                done.set()
-
-        t = threading.Thread(target=_run, daemon=True)
-        t.start()
-
-        # Wait for completion, cancellation, or timeout
-        remaining = context.timeout
-        while remaining > 0 and t.is_alive() and not cancel_event.is_set():
-            t.join(timeout=min(0.1, remaining))
-            remaining -= 0.1
-
-        with self._lock:
-            self._cancel_events.pop(exec_id, None)
-
-        if cancel_event.is_set():
-            return {
-                "status": "cancelled",
-                "elapsed": time.time() - start,
-            }
-
-        if t.is_alive():
-            tool_name = (
-                execution_input if isinstance(execution_input, str)
-                else getattr(execution_input, "tool", "unknown")
+            result = self._parse_output(stdout)
+            self._publish_event(
+                "EXECUTION_COMPLETED",
+                {"tool_id": context.tool_id, "exit_code": 0, "duration_seconds": duration},
             )
-            return {
-                "status": "failed",
-                "error": str(ExecutionTimeoutError(
-                    tool=str(tool_name),
-                    timeout=context.timeout,
-                    elapsed=time.time() - start,
-                )),
-                "elapsed": time.time() - start,
-            }
+            return SandboxResult(
+                success=True,
+                output=result.get("result", stdout),
+                exit_code=0,
+                duration_seconds=duration,
+            )
 
-        if exception_container[0] is not None:
-            return {
-                "status": "failed",
-                "error": str(exception_container[0]),
-                "elapsed": time.time() - start,
-            }
+        except ResourceLimitExceeded:
+            self._publish_event(
+                "RESOURCE_LIMIT_EXCEEDED",
+                {"tool_id": context.tool_id, "limit_type": "memory", "max_memory_mb": context.max_memory_mb},
+            )
+            raise
 
-        return {
-            "status": "completed",
-            "result": result_container[0],
-            "elapsed": time.time() - start,
-        }
-
-    def kill(self, exec_id: str) -> bool:
-        """Kill a running execution by ID.
-
-        For subprocess executions: sends SIGKILL to the process.
-        For direct/thread executions: sets the cancel event flag.
-
-        Returns True if the execution was found and killed,
-        False if no such execution exists.
-        """
-        with self._lock:
-            # Cancel thread-based execution
-            cancel_event = self._cancel_events.get(exec_id)
-            if cancel_event is not None:
-                cancel_event.set()
-                logger.info("Cancel set for execution %s", exec_id)
-
-            # Kill subprocess
-            proc = self._processes.pop(exec_id, None)
-            if proc is None:
-                if cancel_event is None:
-                    logger.warning("No execution found for kill: %s", exec_id)
-                    return False
-                # Thread-only execution, cancel event was set above
-                return True
-
-        try:
-            proc.kill()
-            proc.wait(timeout=5.0)
-            logger.info("Killed execution %s (pid=%d)", exec_id, proc.pid)
         except Exception as e:
-            logger.error("Failed to kill execution %s: %s", exec_id, e)
+            duration = time.time() - start_time
+            self._publish_event(
+                "EXECUTION_FAILED",
+                {"tool_id": context.tool_id, "error": str(e), "duration_seconds": duration},
+            )
+            return SandboxResult(
+                success=False,
+                error=f"{type(e).__name__}: {e}",
+                exit_code=-1,
+                duration_seconds=duration,
+            )
 
-        return True
+        finally:
+            if proc is not None and proc.poll() is None:
+                try:
+                    proc.kill()
+                    proc.wait(timeout=5.0)
+                except Exception:
+                    pass
+            if worker_path is not None:
+                self._cleanup_worker(worker_path)
 
-    # ── Internal helpers ──
+    def _spawn_subprocess(
+        self, worker_path: str, context: SandboxContext
+    ) -> subprocess.Popen:
+        """Spawn a subprocess with resource limits."""
+        memory_bytes = context.max_memory_mb * 1024 * 1024
+        cpu_seconds = int(context.max_cpu_seconds)
 
-    def _build_worker_script(self, tool_name: str, inputs: Dict[str, Any]) -> str:
-        return (
-            "import json, sys, traceback\n"
-            "TOOL_NAME = " + repr(tool_name) + "\n"
-            "INPUTS = " + repr(inputs) + "\n"
-            "def _find_tool_fn(name):\n"
-            "    try:\n"
-            "        mod = __import__('core.tools', fromlist=[name])\n"
-            "        fn = getattr(mod, name, None)\n"
-            "        if fn: return fn\n"
-            "    except Exception: pass\n"
-            "    try:\n"
-            "        from core.tools.registry import tool_registry\n"
-            "        return tool_registry.get(name)\n"
-            "    except Exception: pass\n"
-            "    return None\n"
-            "def _run_tool():\n"
-            "    fn = _find_tool_fn(TOOL_NAME)\n"
-            "    if fn:\n"
-            "        result = fn(**INPUTS)\n"
-            "        return {'status': 'completed', 'tool': TOOL_NAME, 'result': result}\n"
-            "    return {'status': 'completed', 'tool': TOOL_NAME, 'result': INPUTS}\n"
-            "if __name__ == '__main__':\n"
-            "    try:\n"
-            "        result = _run_tool()\n"
-            "        sys.stdout.write(json.dumps(result))\n"
-            "    except Exception as e:\n"
-            "        sys.stdout.write(json.dumps({'status': 'failed', 'error': str(e), 'traceback': traceback.format_exc()}))\n"
-            "    sys.stdout.flush()\n"
+        def preexec_fn() -> None:
+            try:
+                if memory_bytes > 0:
+                    resource.setrlimit(resource.RLIMIT_AS, (memory_bytes, memory_bytes))
+                if cpu_seconds > 0:
+                    resource.setrlimit(resource.RLIMIT_CPU, (cpu_seconds, cpu_seconds))
+            except (ValueError, OSError):
+                pass
+
+        return subprocess.Popen(
+            [sys.executable, worker_path],
+            stdin=subprocess.DEVNULL,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            preexec_fn=preexec_fn,
         )
 
     @staticmethod
-    def _make_preexec(context: SandboxContext) -> Any:
-        def preexec() -> None:
-            try:
-                import resource
-
-                if context.memory_limit > 0:
-                    resource.setrlimit(
-                        resource.RLIMIT_AS,
-                        (context.memory_limit, context.memory_limit),
-                    )
-                if context.cpu_limit > 0:
-                    resource.setrlimit(
-                        resource.RLIMIT_CPU,
-                        (int(context.cpu_limit), int(context.cpu_limit)),
-                    )
-            except (ImportError, ValueError, resource.error):
-                pass
-            os.nice(10)
-
-        return preexec
+    def _write_script(script: str) -> str:
+        """Write a script to a temp file for subprocess execution."""
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".py", delete=False) as f:
+            f.write(script)
+            return f.name
 
     @staticmethod
-    def _parse_output(raw: str) -> Dict[str, Any]:
+    def _parse_output(raw: str) -> dict:
         try:
             return json.loads(raw.strip())
         except (json.JSONDecodeError, ValueError):
-            return {"status": "completed", "raw": raw.strip()}
+            return {"status": "completed", "result": raw.strip()}
 
     @staticmethod
     def _cleanup_worker(path: str) -> None:
@@ -356,4 +203,31 @@ class SandboxExecutor:
             if os.path.exists(path):
                 os.unlink(path)
         except OSError:
+            pass
+
+    def _publish_event(self, event_type: str, payload: dict) -> None:
+        """Publish a telemetry event via IEventBus."""
+        if self._event_bus is None:
+            return
+        try:
+            from core.models.event import EventTopic, ExecutionEvent
+
+            topic_map = {
+                "EXECUTION_STARTED": EventTopic.EXECUTION_STARTED,
+                "EXECUTION_COMPLETED": EventTopic.EXECUTION_COMPLETED,
+                "EXECUTION_FAILED": EventTopic.EXECUTION_FAILED,
+                "RESOURCE_LIMIT_EXCEEDED": EventTopic.RESOURCE_LIMIT_EXCEEDED,
+            }
+            topic = topic_map.get(event_type)
+            if topic is None:
+                return
+
+            event = ExecutionEvent(
+                topic=topic,
+                payload=payload,
+                trace_id=f"sandbox-{payload.get('tool_id', 'unknown')}",
+            )
+            loop = asyncio.get_running_loop()
+            loop.create_task(self._event_bus.publish(topic, event))
+        except RuntimeError:
             pass

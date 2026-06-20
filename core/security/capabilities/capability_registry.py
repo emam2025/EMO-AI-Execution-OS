@@ -23,8 +23,13 @@ logger = logging.getLogger("emo_ai.security.capability_registry")
 DEFAULT_CAPABILITY = Capability.restricted()
 
 FULL_TRUST_TOOLS = {
-    "calculate", "search", "read_file", "write_file",
-    "execute_command", "web_fetch", "analyze",
+    "calculate", "search", "analyze",
+}
+
+RESTRICTED_TOOLS = {
+    "execute_command": "Full shell access — requires explicit approval per execution",
+    "write_file": "Filesystem write — requires path validation and approval",
+    "delete_file": "Filesystem delete — requires approval and backup verification",
 }
 
 
@@ -57,6 +62,7 @@ class CapabilityRegistry:
 
     def __init__(self) -> None:
         self._capabilities: Dict[str, Capability] = {}
+        self._audit_log: List[Dict[str, Any]] = []
         self._init_defaults()
 
     def _init_defaults(self) -> None:
@@ -65,7 +71,14 @@ class CapabilityRegistry:
 
     def register(self, tool_name: str, capability: Capability) -> None:
         """Register a capability for a tool."""
+        old_cap = self._capabilities.get(tool_name)
         self._capabilities[tool_name] = capability
+        self._audit_log.append({
+            'action': 'register',
+            'tool': tool_name,
+            'old_trust': old_cap.description if old_cap else 'none',
+            'new_trust': capability.description,
+        })
         logger.debug("Registered capability for %s: %s", tool_name, capability.description)
 
     def get_capability(self, tool_name: str) -> Capability:
@@ -78,7 +91,17 @@ class CapabilityRegistry:
 
     def remove(self, tool_name: str) -> None:
         """Remove a tool's capability (reverts to restricted)."""
-        self._capabilities.pop(tool_name, None)
+        old_cap = self._capabilities.pop(tool_name, None)
+        if old_cap:
+            self._audit_log.append({
+                'action': 'remove',
+                'tool': tool_name,
+                'old_trust': old_cap.description,
+            })
+
+    def get_audit_log(self) -> List[Dict[str, Any]]:
+        """Return the capability audit log."""
+        return list(self._audit_log)
 
     def all_capabilities(self) -> Dict[str, Capability]:
         """Return all registered capabilities."""

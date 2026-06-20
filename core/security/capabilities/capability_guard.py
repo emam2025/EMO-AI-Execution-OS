@@ -10,7 +10,7 @@ from __future__ import annotations
 import logging
 from typing import Any, Dict, Optional
 
-from core.security.capabilities.capability_model import Capability, Scope
+from core.security.capabilities.capability_model import AccessMode, Capability, Scope
 from core.security.capabilities.capability_registry import CapabilityRegistry
 from core.security.capabilities.sensitive_tools import (
     SensitiveToolRegistry,
@@ -92,11 +92,18 @@ class CapabilityGuard:
 
         # Filesystem checks
         path = inputs.get("path", "") or inputs.get("file_path", "")
-        if path and capability.filesystem == "none":
-            raise CapabilityViolation(
-                tool=tool_name,
-                reason="Filesystem access blocked by capability policy",
-            )
+        if path:
+            if capability.filesystem == AccessMode.NONE:
+                raise CapabilityViolation(
+                    tool=tool_name,
+                    reason="Filesystem access blocked by capability policy",
+                )
+            if '..' in path or path.startswith('/'):
+                if capability.filesystem != AccessMode.FULL:
+                    raise CapabilityViolation(
+                        tool=tool_name,
+                        reason=f"Path traversal or absolute path blocked: {path}",
+                    )
 
         # Subprocess check
         command = inputs.get("command", "") or inputs.get("script", "")

@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: General Feedback
+    url: https://forms.gle/YOUR_FORM_ID
+    about: شاركنا تعليقاتك العامة عن المنتج
+  - name: Discord Community
+    url: https://discord.gg/YOUR_DISCORD_LINK
+    about: انضم إلى مجتمعنا للنقاش والمساعدة
+  - name: Documentation
+    url: https://github.com/emo-ai/emo-ai#readme
+    about: اقرأ التوثيق قبل تقديم البلاغ

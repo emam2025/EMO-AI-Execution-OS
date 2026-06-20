@@ -1,5 +1,19 @@
-from core.enterprise.audit_generator import AuditGenerator
-from core.enterprise.compliance_reporter import ComplianceReporter
-from core.enterprise.multi_tenant_router import MultiTenantRouter
+"""Enterprise Systems Layer — ERP integration, security, and digital twins."""
 
-__all__ = ["AuditGenerator", "ComplianceReporter", "MultiTenantRouter"]
+from core.enterprise.erp_connector import (
+    ERPSystem,
+    ERPModule,
+    ERPAccessLevel,
+    ERPRecord,
+    ERPConnection,
+    EnterpriseConnector,
+)
+
+__all__ = [
+    "ERPSystem",
+    "ERPModule",
+    "ERPAccessLevel",
+    "ERPRecord",
+    "ERPConnection",
+    "EnterpriseConnector",
+]

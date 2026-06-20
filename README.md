@@ -1,117 +1,230 @@
-# Emo AI Orchestrator
+# 🧠 EMO AI Execution OS
 
-> Multi-Agent Intelligence Orchestration System — مفتوح المصدر
+**نظام تشغيل ذكاء اصطناعي للتنفيذ الموزع**
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688.svg)](https://fastapi.tiangolo.com/)
-[![CI/CD](https://github.com/emo-ai/emo-ai/actions/workflows/ci.yml/badge.svg)](.github/workflows/ci.yml)
-[![Tests](https://img.shields.io/badge/tests-35%20passed-brightgreen)](tests/)
+[![Python](https://img.shields.io/badge/Python-3.14+-blue.svg)](https://python.org)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.136+-green.svg)](https://fastapi.tiangolo.com)
+[![Tests](https://img.shields.io/badge/Tests-1667%20PASS-brightgreen.svg)](./tests/)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
-نظام تنسيق ذكي متعدد الوكلاء يعمل كطبقة وسيطة بين المستخدم ونماذج الذكاء الاصطناعي المختلفة. يدعم النماذج السحابية (OpenRouter, Groq, Gemini) والمحلية (Ollama).
+---
 
-## المزايا
+## 📖 نظرة عامة
 
-- 🤖 **وكلاء متعددون**: Planner, Coder, Writer, Researcher (متصلون بـ LLM)
-- 🌐 **4 مزودين LLM**: OpenRouter, Groq, Gemini (API) + Ollama (محلي)
-- 💬 **بث مباشر**: SSE للبث المباشر لتقدم المهام
-- 🛠️ **30+ أداة**: DevOps, GitHub, Supabase, Firebase, Project Intelligence (متصلة بالوكلاء)
-- 🌍 **عربي/إنجليزي**: واجهة ثنائية اللغة مع RTL/LTR
-- 📱 **متعدد المنصات**: macOS + Windows + Android (web-responsive)
-- 🔒 **آمن**: مفاتيح API في `.env`، مصادقة JWT + bcrypt
-- 📲 **Telegram Bot**: دردشة عبر Telegram
-- 🖥️ **System Tray**: pystray (cross-platform)
-- 🐳 **Docker**: جاهز للنشر
-- ✅ **35 اختبار**: تغطية شاملة للمكونات الأساسية
-- 🔧 **CI/CD**: GitHub Actions (tests + Docker + security)
-- 📋 **Logging**: نظام تسجيل شامل مع audit trail
-- 🚀 **Setup Script**: تثبيت تلقائي بنقرة واحدة
+EMO AI ليس مجرد مساعد ذكاء اصطناعي أو إطار عمل للوكلاء. إنه **نظام تشغيل كامل للتنفيذ الذكي** مصمم لتشغيل سير العمل المعقدة، إدارة الوكلاء المتعددين، والتكامل مع الأنظمة الصناعية والمؤسسية.
 
-## التثبيت السريع
+### 🎯 ما يميز EMO AI؟
 
-### الطريقة 1: سكربت الإعداد التلقائي (موصى به)
-```bash
-python setup.py
-```
+- **🏭 جاهز للإنتاج الصناعي**: محاكاة كاملة لقطاعات المياه، الطاقة، التصنيع، وERP
+- **🔒 أمان مؤسسي**: RBAC، ABAC، Guardian Pipeline، تشفير AES-256
+- **🌐 موزع بالكامل**: Service Mesh، Lease-based Execution، Distributed Scheduler
+- **🧩 قابل للتوسع**: Plugin Architecture، Connector Certification Pipeline
+- **📊 observable بالكامل**: Telemetry، Tracing، Metrics، Audit Logs
 
-### الطريقة 2: يدوياً
+---
+
+## 🚀 Quick Start
+
+### التثبيت
+
 ```bash
 # 1. استنساخ المشروع
-git clone <repo-url> && cd Emo-AI
+git clone https://github.com/emo-ai/emo-ai.git
+cd emo-ai
 
 # 2. إنشاء بيئة افتراضية
-python3 -m venv venv && source venv/bin/activate
+python3 -m venv venv
+source venv/bin/activate  # macOS/Linux
 
 # 3. تثبيت المتطلبات
 pip install -r requirements.txt
 
 # 4. إعداد المتغيرات البيئية
 cp .env.example .env
-# عدّل .env بمفاتيحك
+# عدّل .env بمفاتيح API الخاصة بك
 
+# 🧠 EMO AI Execution OS
 # 5. تشغيل الخادم
 python main.py
-# → http://localhost:8080
+# → Server running on http://localhost:8080
 ```
 
-## التشغيل مع Ollama (محلي ومجاني)
+### التشغيل السريع
 
-```bash
-# تثبيت Ollama
-brew install ollama
-ollama serve &
-ollama pull llama3.2
+```python
+from core.workflow_runtime_v2 import WorkflowV2, WorkflowNode, NodeType
 
-# تشغيل EMO AI
-LLM_PROVIDER=ollama python main.py
+# إنشاء workflow بسيط
+wf = WorkflowV2(name="My First Workflow")
+wf.add_node(WorkflowNode(node_id="n1", node_type=NodeType.STANDARD, name="Step 1"))
+wf.add_node(WorkflowNode(node_id="n2", node_type=NodeType.HUMAN_GATE, name="Approval"))
+
+# تنفيذ
+wf.start()
+wf.execute_node("n1")
+wf.execute_node("n2")
+wf.complete()
 ```
 
-## التشغيل مع Docker
+---
 
-```bash
-docker build -t emo-ai .
-docker run -p 8080:8080 --env-file .env emo-ai
+## 🏗️ Architecture
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    Multi-Agent Layer                         │
+│  Planner Agent • Critic Agent • Optimizer Agent             │
+└────────────────────────┬────────────────────────────────────┘
+                         │
+┌────────────────────────▼────────────────────────────────────┐
+│                  AI Execution OS                             │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐     │
+│  │ Workflow V2  │  │  Knowledge   │  │   Digital    │     │
+│  │   Engine     │  │     OS       │  │    Twin      │     │
+│  └──────────────┘  └──────────────┘  └──────────────┘     │
+└────────────────────────┬────────────────────────────────────┘
+                         │
+┌────────────────────────▼────────────────────────────────────┐
+│                  Distributed Runtime                         │
+│  Service Mesh • Lease Manager • Scheduler • EventBus        │
+└────────────────────────┬────────────────────────────────────┘
+                         │
+┌────────────────────────▼────────────────────────────────────┐
+│               Governance & Security                          │
+│  RBAC • ABAC • Guardian • Audit Trail • Encryption          │
+└─────────────────────────────────────────────────────────────┘
 ```
 
-## الاختبارات
+---
+
+## 🧩 المكونات الرئيسية
+
+| المكون | الوصف | الحالة |
+|--------|-------|--------|
+| Workflow V2 | محرك سير العمل مع 6 أنواع عقد | ✅ Production |
+| Knowledge OS | إدارة المعرفة مع RAG وGraph | ✅ Production |
+| Digital Twin | محاكاة القطاعات الصناعية | ✅ Production |
+| Service Mesh | اتصال موزع بين الخدمات | ✅ Production |
+| Security Gateway | بوابة أمان موحدة | ✅ Production |
+
+---
+
+## 📡 API Endpoints
+
+### Authentication
+
+```
+POST /api/auth/signup        — إنشاء حساب
+POST /api/auth/login         — تسجيل دخول
+GET  /api/auth/verify        — التحقق من Token
+```
+
+### Workflows
+
+```
+POST /api/runtime/submit                — تنفيذ workflow
+POST /api/runtime/{ticket_id}/resume    — استئناف
+POST /api/runtime/{ticket_id}/cancel    — إلغاء
+GET  /api/runtime/{ticket_id}/observe   — مراقبة
+```
+
+### Knowledge
+
+```
+POST /api/projectos/knowledge              — إنشاء قاعدة معرفة
+GET  /api/projectos/knowledge              — قائمة قواعد المعرفة
+POST /api/projectos/knowledge/documents    — إضافة وثيقة
+```
+
+### Digital Twin
+
+```
+POST /api/digital-twin/entities    — إنشاء كيان
+GET  /api/digital-twin/hierarchy   — التسلسل الهرمي
+GET  /api/digital-twin/stats       — إحصائيات
+```
+
+📚 **Full API Documentation**: docs/api/
+
+---
+
+## 🧪 Testing
 
 ```bash
+# تشغيل جميع الاختبارات
 python -m pytest tests/ -v
-# → 30 passed, 1 skipped
+
+# تشغيل مجموعة محددة
+python -m pytest tests/test_workflow_v2.py -v
+
+# مع التغطية
+python -m pytest tests/ --cov=core --cov-report=html
 ```
 
-## الهيكل
+**Test Coverage**: 1667+ اختبار، 100% Pass Rate
 
-```
-Emo-AI/
-├── main.py              # نقطة الدخول
-├── brain.py             # واجهة LLM (4 مزودين)
-├── agent.py             # نظام الوكلاء (4 وكلاء)
-├── tools.py             # Tool base class + Registry
-├── core/
-│   ├── db.py            # SQLite manager
-│   ├── state.py         # حالة التطبيق
-│   ├── task_manager.py  # إدارة المهام
-│   └── context_builder.py # بناء السياق
-├── routers/
-│   ├── chat.py          # Chat API + SSE
-│   └── stream.py        # SSE streaming
-├── templates/           # واجهة الويب
-├── tests/               # اختبارات وحدة
-└── docs/                # وثائق المشروع
+---
+
+## 📦 Deployment
+
+### Docker
+
+```bash
+# بناء الصورة
+docker build -t emo-ai:latest .
+
+# تشغيل الحاوية
+docker run -p 8080:8080 --env-file .env emo-ai:latest
 ```
 
-## التوثيق
+### Kubernetes
 
-| المستند | الوصف |
-|---------|-------|
-| [DEVELOPER.md](DEVELOPER.md) | مرجع المطورين الشامل |
-| [docs/REQUIREMENTS_UNDERSTANDING.md](docs/REQUIREMENTS_UNDERSTANDING.md) | وثيقة المتطلبات |
-| [docs/EXPLORATION_REPORT.md](docs/EXPLORATION_REPORT.md) | تقرير الاستكشاف |
-| [docs/ARCHITECTURE_DESIGN.md](docs/ARCHITECTURE_DESIGN.md) | التصميم المعماري |
-| [docs/EXECUTION_REPORT.md](docs/EXECUTION_REPORT.md) | تقرير التنفيذ |
-| [docs/core_features_api.json](docs/core_features_api.json) | مواصفات API |
+```bash
+# تثبيت Helm chart
+helm install emo-ai ./helm/emo-ai
 
-## الترخيص
+# التحقق من الحالة
+kubectl get pods -l app=emo-ai
+```
 
-MIT License — راجع [LICENSE](LICENSE) للمزيد.
+📚 **Deployment Guides**: docs/deployment/
+
+---
+
+## 🤝 Contributing
+
+نرحب بالمساهمات! يرجى قراءة دليل المساهمة قبل البدء.
+
+### خطوات المساهمة
+
+1. Fork المشروع
+2. إنشاء فرع للميزة (`git checkout -b feature/amazing-feature`)
+3. Commit التغييرات (`git commit -m 'Add amazing feature'`)
+4. Push للفرع (`git push origin feature/amazing-feature`)
+5. فتح Pull Request
+
+---
+
+## 📄 License
+
+هذا المشروع مرخص تحت MIT License
+
+---
+
+## 📞 Support
+
+- **Documentation**: docs/
+- **Issues**: GitHub Issues
+- **Discussions**: GitHub Discussions
+
+---
+
+## 🌟 Acknowledgments
+
+- FastAPI team for the amazing framework
+- Python community for continuous support
+- All contributors who made this project possible
+
+---
+
+**Made with ❤️ by the EMO AI Team**

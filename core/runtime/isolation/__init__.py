@@ -1,28 +1,22 @@
-"""Phase 4.5 — Isolation Integration Layer (BRIDGE).
+"""Isolation Integration Layer.
 
 Exports all isolation-layer components:
-  - IsolationRuntime:      The 5-step RULE 3 bridge
+  - IsolationRuntime:      The integration bridge (Capability → IO → Sandbox)
   - CapabilityGuard:       Pre-execution capability validation
-  - ResourceEnforcer:      Three-phase resource governance
-  - SandboxExecutor:       Kill-safe subprocess execution
   - IOPolicyEngine:        IO allow/deny policy engine
+  - SandboxExecutor:       Kill-safe subprocess execution
 
-Ref: DEVELOPER.md §15.15b
-Ref: Architecture Canon §16 (LAW 10, 13, 23-27, RULE 1-4)
+Ref: Phase E.1.3 — IsolationRuntime Integration Layer
 """
 
 from core.runtime.isolation.isolation_runtime import IsolationRuntime
-from core.runtime.isolation.capability_guard import CapabilityGuard, CapabilityStatus
-from core.runtime.isolation.resource_enforcer import ResourceEnforcer, ResourceLimitExceeded
-from core.runtime.isolation.sandbox_executor import SandboxExecutor
-from core.runtime.isolation.io_policy_engine import IOPolicyEngine
+from core.security.capability_guard import CapabilityGuard
+from core.security.io_policy_engine import IOPolicyEngine
+from core.runtime.sandbox.sandbox_executor import SandboxExecutor
 
 __all__ = [
     "IsolationRuntime",
     "CapabilityGuard",
-    "CapabilityStatus",
-    "ResourceEnforcer",
-    "ResourceLimitExceeded",
-    "SandboxExecutor",
     "IOPolicyEngine",
+    "SandboxExecutor",
 ]

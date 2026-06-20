@@ -3,12 +3,60 @@ import time
 import hashlib
 import secrets
 import threading
+import logging
 from typing import Dict, Optional
 from fastapi import Request, HTTPException, status
 from fastapi.responses import JSONResponse
 import jwt
 from pydantic import BaseModel
 
+
+logger = logging.getLogger("emo_ai.auth")
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# AUTH MODE — 3 states per DIRECTIVE-008
+# ══════════════════════════════════════════════════════════════════════════════
+
+class AuthMode:
+    """Three authentication modes for gradual migration.
+
+    OFF:       No auth checks (legacy default). All requests pass through.
+    MIGRATION: Auth is optional. Requests WITHOUT auth get a migration bypass
+               identity (SUPER_ADMIN). Requests WITH valid tokens get proper
+               identity. This allows gradual endpoint protection.
+    ENFORCED:  Auth is mandatory. All requests must have valid token.
+    """
+    OFF       = "off"
+    MIGRATION = "migration"
+    ENFORCED  = "enforced"
+
+
+def get_auth_mode() -> str:
+    """Get current auth mode from environment.
+
+    Priority: EMO_AUTH_MODE > EMO_AUTH_ENABLED (backward compat)
+
+    EMO_AUTH_ENABLED=true  -> ENFORCED
+    EMO_AUTH_ENABLED=false + EMO_AUTH_MODE not set -> OFF
+    EMO_AUTH_MODE=migration -> MIGRATION
+    EMO_AUTH_MODE=enforced  -> ENFORCED
+    EMO_AUTH_MODE=off       -> OFF
+    """
+    mode = os.getenv("EMO_AUTH_MODE", "").lower()
+    if mode in (AuthMode.OFF, AuthMode.MIGRATION, AuthMode.ENFORCED):
+        return mode
+
+    # Backward compat: EMO_AUTH_ENABLED=true means ENFORCED
+    if os.getenv("EMO_AUTH_ENABLED", "false").lower() == "true":
+        return AuthMode.ENFORCED
+
+    return AuthMode.OFF
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# JWT CONFIG
+# ══════════════════════════════════════════════════════════════════════════════
 
 JWT_SECRET = os.environ.get("EMO_JWT_SECRET")
 if not JWT_SECRET:
@@ -22,7 +70,6 @@ REFRESH_EXPIRE_DAYS = 7
 
 
 # ── Refresh token store (in-memory; production should use DB/Redis) ──
-# Structure: {refresh_token_hash: {"user_id": str, "expires": float, "used": bool}}
 _refresh_store: Dict[str, Dict] = {}
 _refresh_lock = threading.RLock()
 
@@ -32,16 +79,7 @@ class RefreshTokenPayload(BaseModel):
 
 
 def create_token(user_id: str, username: str, role: str = "user") -> str:
-    """Create a JWT access token with short expiry.
-
-    Args:
-        user_id: The user's unique ID.
-        username: The user's username.
-        role: User role (default "user"; "operator" for elevated access).
-
-    Returns:
-        str: Encoded JWT token.
-    """
+    """Create a JWT access token with short expiry."""
     expire = time.time() + (JWT_EXPIRE_HOURS * 3600)
     payload = {
         "sub": user_id,
@@ -54,17 +92,7 @@ def create_token(user_id: str, username: str, role: str = "user") -> str:
 
 
 def decode_token(token: str) -> dict:
-    """Decode and validate a JWT token.
-
-    Args:
-        token: The JWT token string.
-
-    Returns:
-        dict: The token payload.
-
-    Raises:
-        HTTPException: If the token is invalid or expired.
-    """
+    """Decode and validate a JWT token."""
     try:
         payload = jwt.decode(token, JWT_SECRET, algorithms=[JWT_ALGORITHM])
         return payload
@@ -83,18 +111,7 @@ def decode_token(token: str) -> dict:
 
 
 def generate_refresh_token(user_id: str) -> str:
-    """Generate a one-time-use refresh token.
-
-    Returns a raw token string.  The SHA-256 hash of the token is stored
-    in the in-memory store with an expiry of REFRESH_EXPIRE_DAYS.
-    The raw token is returned to the caller (and must be stored by the
-    client); the plaintext is never persisted.
-
-    Security properties:
-        - one-time-use: ``used`` flag set to True after first validation
-        - revoke-on-rotation: old token invalidated when a new one is issued
-        - hashed storage: plaintext never persisted server-side
-    """
+    """Generate a one-time-use refresh token."""
     raw = secrets.token_urlsafe(48)
     h = hashlib.sha256(f"{raw}:{user_id}".encode()).hexdigest()
     expires = time.time() + (REFRESH_EXPIRE_DAYS * 86400)
@@ -108,17 +125,7 @@ def generate_refresh_token(user_id: str) -> str:
 
 
 def validate_refresh_token(raw_token: str, user_id: str) -> bool:
-    """Validate a refresh token.
-
-    Checks:
-        1. Token hash exists in store.
-        2. Token belongs to *user_id*.
-        3. Token has not expired.
-        4. Token has NOT already been used (one-time use enforcement).
-
-    On success the token is marked as ``used = True`` (one-time use).
-    Returns True if valid, False otherwise.
-    """
+    """Validate a refresh token."""
     h = hashlib.sha256(f"{raw_token}:{user_id}".encode()).hexdigest()
     with _refresh_lock:
         entry = _refresh_store.get(h)
@@ -130,10 +137,8 @@ def validate_refresh_token(raw_token: str, user_id: str) -> bool:
             _refresh_store.pop(h, None)
             return False
         if entry["used"]:
-            # Replay detected — invalidate ALL tokens for this user
             _revoke_all_for_user(user_id)
             return False
-        # Mark used (one-time use)
         entry["used"] = True
     return True
 
@@ -146,44 +151,50 @@ def _revoke_all_for_user(user_id: str) -> None:
             _refresh_store.pop(k, None)
 
 
+# ══════════════════════════════════════════════════════════════════════════════
+# USER EXTRACTION
+# ══════════════════════════════════════════════════════════════════════════════
+
 def get_current_user(request: Request) -> Optional[dict]:
-    """Extract and validate the current user from the request.
-
-    Args:
-        request: The FastAPI request object.
-
-    Returns:
-        dict or None: The user payload if authenticated, None otherwise.
-    """
+    """Extract and validate the current user from the request."""
     auth_header = request.headers.get("Authorization", "")
     if not auth_header.startswith("Bearer "):
         return None
-
     token = auth_header.split(" ", 1)[1]
     return decode_token(token)
 
 
+def get_identity(request: Request):
+    """Get the Identity object from request state (set by middleware)."""
+    return getattr(request.state, "identity", None)
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# require_auth — FastAPI dependency (updated for AUTH_MODE + Identity)
+# ══════════════════════════════════════════════════════════════════════════════
+
 def require_auth(role: Optional[str] = None):
     """FastAPI dependency: require authentication with optional role check.
 
-    Usage::
-
-        @app.get("/api/status")
-        async def status(user: dict = Depends(require_auth(role="operator"))):
-            ...
-
-    Returns the user dict on success.  Raises 401 or 403 on failure.
-
-    When EMO_AUTH_ENABLED=false, bypasses all auth checks.
+    Behavior depends on AUTH_MODE:
+    - OFF:       bypass (returns migration identity)
+    - MIGRATION: bypass but log (returns migration identity)
+    - ENFORCED:  require valid JWT token
     """
-    auth_enabled = os.getenv("EMO_AUTH_ENABLED", "false").lower() == "true"
-    if not auth_enabled:
+    auth_mode = get_auth_mode()
+
+    if auth_mode == AuthMode.OFF:
         def _bypass() -> dict:
-            return {"role": "operator", "user_id": "system"}
+            return {"role": "super_admin", "user_id": "system", "source": "auth_off"}
         return _bypass
 
-    from fastapi import Depends
+    if auth_mode == AuthMode.MIGRATION:
+        def _migration_bypass() -> dict:
+            logger.debug("AUTH_MIGRATION: bypass for role=%s", role)
+            return {"role": "super_admin", "user_id": "migration", "source": "migration"}
+        return _migration_bypass
 
+    # ENFORCED mode
     def _check(request: Request) -> dict:
         user = get_current_user(request)
         if user is None:
@@ -196,24 +207,72 @@ def require_auth(role: Optional[str] = None):
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail=f"Role '{role}' required",
             )
+        user["source"] = "jwt"
         return user
 
     return _check
 
 
-async def auth_middleware(request: Request, call_next):
-    """FastAPI middleware that enforces authentication.
+def require_permission(resource: str, action: str, scope: str = "own"):
+    """FastAPI dependency: require a specific RBAC permission.
 
-    Skips auth for:
-    - Public endpoints (/, /api/auth/*, /static/*, /api/tray/ping)
-    - When EMO_AUTH_ENABLED=false
+    Usage::
+
+        @app.post("/api/tools")
+        async def create_tool(user = Depends(require_permission("tool", "create", "org"))):
+            ...
+
+    Builds Identity from JWT and checks RBAC permission.
     """
-    auth_enabled = os.getenv("EMO_AUTH_ENABLED", "false").lower() == "true"
+    auth_mode = get_auth_mode()
 
-    if not auth_enabled:
-        return await call_next(request)
+    if auth_mode in (AuthMode.OFF, AuthMode.MIGRATION):
+        def _bypass():
+            return True
+        return _bypass
 
-    # Public paths that don't require auth
+    from fastapi import Depends
+    from core.security.rbac import Resource, Action, Scope, get_rbac
+    from core.security.identity import get_identity_builder
+
+    def _check(request: Request) -> bool:
+        user = get_current_user(request)
+        if user is None:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Authentication required",
+            )
+        # Build Identity from JWT
+        builder = get_identity_builder()
+        identity = builder.from_jwt(user, ip_address=request.client.host if request.client else "")
+        request.state.identity = identity
+        # Check RBAC
+        rbac = get_rbac()
+        decision = rbac.check(identity.role, Resource(resource), Action(action), Scope(scope))
+        if not decision.allowed:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail=f"Permission denied: {resource}:{action}:{scope} (role={identity.role.value})",
+            )
+        return True
+
+    return _check
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# AUTH MIDDLEWARE (updated for AUTH_MODE)
+# ══════════════════════════════════════════════════════════════════════════════
+
+async def auth_middleware(request: Request, call_next):
+    """FastAPI middleware that enforces authentication based on AUTH_MODE.
+
+    OFF:       Skip all auth checks.
+    MIGRATION: Skip auth but attach migration identity to request state.
+    ENFORCED:  Validate JWT token on all non-public paths.
+    """
+    auth_mode = get_auth_mode()
+
+    # Public paths that never require auth
     public_paths = [
         "/",
         "/api/auth/login",
@@ -233,7 +292,25 @@ async def auth_middleware(request: Request, call_next):
     if path in public_paths or path.startswith("/static/") or path.startswith("/api/stream"):
         return await call_next(request)
 
-    # Check for token
+    # OFF mode: no auth
+    if auth_mode == AuthMode.OFF:
+        return await call_next(request)
+
+    # MIGRATION mode: attach bypass identity, let request through
+    if auth_mode == AuthMode.MIGRATION:
+        from core.security.identity import get_identity_builder
+        builder = get_identity_builder()
+        identity = builder.migration_bypass()
+        request.state.user = {
+            "role": "super_admin",
+            "user_id": "migration",
+            "source": "migration",
+        }
+        request.state.identity = identity
+        request.state.identity_source = "migration"
+        return await call_next(request)
+
+    # ENFORCED mode: validate JWT
     auth_header = request.headers.get("Authorization", "")
     if not auth_header.startswith("Bearer "):
         return JSONResponse(
@@ -245,8 +322,14 @@ async def auth_middleware(request: Request, call_next):
     token = auth_header.split(" ", 1)[1]
     try:
         payload = decode_token(token)
-        # Attach user info to request state
+        payload["source"] = "jwt"
         request.state.user = payload
+        request.state.identity_source = "jwt"
+        # Build Identity from JWT payload
+        from core.security.identity import get_identity_builder
+        builder = get_identity_builder()
+        identity = builder.from_jwt(payload, ip_address=request.client.host if request.client else "")
+        request.state.identity = identity
     except HTTPException as e:
         return JSONResponse(
             status_code=e.status_code,

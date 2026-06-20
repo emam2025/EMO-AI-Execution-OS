@@ -40,6 +40,51 @@ class ExecutionScheduler:
         self._level_queue: List[List[Any]] = []
         self._running_futures: Dict[str, Future] = {}
         self._node_worker_map: Dict[str, str] = {}
+        self._start_time: float = time.time()
+        self._last_error: Optional[str] = None
+        self._error_count: int = 0
+
+    def health_check(self) -> Dict[str, Any]:
+        """Service health check for monitoring.
+
+        Returns:
+            Dict with:
+            - status: "healthy" | "degraded" | "unhealthy"
+            - service: "scheduler"
+            - version: str
+            - uptime_seconds: float
+            - active_tasks: int
+            - queue_depth: int
+            - last_error: Optional[str]
+        """
+        try:
+            active_tasks = len(self._running_futures)
+            queue_depth = len(self._level_queue)
+
+            if self._error_count > 0:
+                status = "degraded"
+            else:
+                status = "healthy"
+
+            return {
+                "status": status,
+                "service": "scheduler",
+                "version": "1.0.0",
+                "uptime_seconds": time.time() - self._start_time,
+                "active_tasks": active_tasks,
+                "queue_depth": queue_depth,
+                "last_error": self._last_error,
+            }
+        except Exception as e:
+            return {
+                "status": "unhealthy",
+                "service": "scheduler",
+                "version": "1.0.0",
+                "uptime_seconds": 0.0,
+                "active_tasks": 0,
+                "queue_depth": 0,
+                "last_error": str(e),
+            }
 
     def schedule(
         self,

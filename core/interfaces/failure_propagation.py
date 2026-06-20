@@ -3,7 +3,7 @@
 Backward-compatible layer that provides:
   - Old Protocol enums (FailureDomain, PropagationAction, DegradeMode)
   - Old data structures (PropagationRule, PROPAGATION_MATRIX)
-  - Re-exported implementation (FailureMatrix, FailureMode, FailureEvent)
+  - Re-exported types (FailureMatrix, FailureMode, FailureEvent)
 
 Source of Truth: core/runtime/services/failure_propagation.py::FailureMatrix
 
@@ -15,13 +15,47 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import Dict, List, Optional
+from typing import TYPE_CHECKING, Dict, List, Optional, Protocol
 
-from core.runtime.services.failure_propagation import (
-    FailureEvent as FailureEvent,
-    FailureMatrix as FailureMatrix,
-    FailureMode as FailureMode,
-)
+if TYPE_CHECKING:
+    from core.runtime.services.failure_propagation import (
+        FailureEvent as FailureEvent,
+        FailureMatrix as FailureMatrix,
+        FailureMode as FailureMode,
+    )
+
+
+class FailureMatrix:
+    """Runtime stub for backward compatibility.
+
+    The real implementation lives in core/runtime/services/failure_propagation.py.
+    This stub exists so that existing imports like
+    `from core.interfaces.failure_propagation import FailureMatrix`
+    continue to work at runtime. Type checkers will use the
+    TYPE_CHECKING import above for proper type information.
+    """
+
+    def evaluate(self, source: FailureDomain, context: dict | None = None) -> list[PropagationRule]:
+        return PROPAGATION_MATRIX.get(source, [])
+
+    def apply(self, domain: str) -> list[str]:
+        if domain not in _STRING_MATRIX:
+            raise KeyError(f"Unknown failure domain: {domain}")
+        return list(_STRING_MATRIX[domain])
+
+    def should_retry(self, source: FailureDomain, fail_count: int) -> bool:
+        rules = self.evaluate(source)
+        for r in rules:
+            if r.action == PropagationAction.RETRY:
+                return fail_count < r.escalate_after
+        return False
+
+    def degrade_mode(self, source: FailureDomain) -> DegradeMode | None:
+        rules = self.evaluate(source)
+        for r in rules:
+            if r.action == PropagationAction.DEGRADE:
+                return r.degrade_mode
+        return None
 
 
 # ── Backward-compatible enums (kept for test_service_isolation.py) ──
@@ -182,20 +216,91 @@ PROPAGATION_MATRIX: Dict[FailureDomain, List[PropagationRule]] = {
 }
 
 
-class FailurePropagationPolicy(FailureMatrix):
-    """Backward-compatible alias for FailureMatrix.
+# String-based matrix matching runtime format (keys are PascalCase strings)
+_STRING_MATRIX: Dict[str, List[str]] = {
+    "Dispatcher": ["RETRY", "CLASSIFY", "RELEASE", "NOTIFY"],
+    "LeaseManager": ["CANCEL", "ROLLBACK", "REASSIGN", "RECORD"],
+    "StateStore": ["DEGRADE", "BUFFER", "CONTINUE", "DEFER"],
+    "Scheduler": ["FAIL_FAST", "RECORD", "NOTIFY"],
+    "RetryHandler": ["FAIL_FAST", "RELEASE", "RECORD", "NOTIFY"],
+    "Engine": ["CANCEL", "RELEASE", "RECORD", "NOTIFY"],
+    "Core": ["CLASSIFY", "RETRY", "RELEASE", "RECORD"],
+}
 
-    FailurePropagationPolicy was the original interface name before D8
-    contract alignment. It now extends FailureMatrix directly so that
-    all existing code continues to work without changes.
+
+class FailurePropagationPolicy:
+    """Backward-compatible interface for failure propagation.
+
+    Provides a minimal implementation using the local PROPAGATION_MATRIX.
+    The full implementation lives in core/runtime/services/failure_propagation.py.
     """
+
+    def evaluate(
+        self,
+        source: FailureDomain,
+        context: Optional[Dict] = None,
+    ) -> List[PropagationRule]:
+        """Return all propagation rules for a given failure source."""
+        return PROPAGATION_MATRIX.get(source, [])
+
+    def apply(self, domain: str) -> List[str]:
+        """Apply failure propagation for a domain name (case-insensitive).
+
+        Returns list of action code strings matching the runtime format.
+        """
+        if domain not in _STRING_MATRIX:
+            raise KeyError(f"Unknown failure domain: {domain}")
+        return list(_STRING_MATRIX[domain])
+
+    def should_retry(
+        self,
+        source: FailureDomain,
+        fail_count: int,
+    ) -> bool:
+        """Determine whether a retry should be attempted."""
+        rules = self.evaluate(source)
+        for r in rules:
+            if r.action == PropagationAction.RETRY:
+                return fail_count < r.escalate_after
+        return False
+
+    def degrade_mode(
+        self,
+        source: FailureDomain,
+    ) -> Optional[DegradeMode]:
+        """Return the degrade mode for a failure, if any."""
+        rules = self.evaluate(source)
+        for r in rules:
+            if r.action == PropagationAction.DEGRADE:
+                return r.degrade_mode
+        return None
+
+    def get_all_scenarios(self) -> List[Dict]:
+        """Return all F01-F08 scenarios for test verification."""
+        _SCENARIO_MAP = {
+            "Dispatcher": ("F01", "dispatch_tool_call raises DispatchError or timeout", ["Scheduler", "RetryHandler", "LeaseManager", "Core"]),
+            "LeaseManager": ("F02", "monitor_heartbeat returns False or lease TTL expired", ["Engine", "Scheduler", "StateStore"]),
+            "StateStore": ("F03", "save_state or store_checkpoint raises PersistenceError", ["Core", "Scheduler", "RetryHandler"]),
+            "Scheduler": ("F04", "schedule() raises SchedulingError (cycle, invalid deps)", ["Dispatcher", "Engine"]),
+            "RetryHandler": ("F05", "decide_retry raises RetryDecisionError or max_attempts exhausted", ["Dispatcher", "LeaseManager", "StateStore"]),
+            "Engine": ("F06", "cancel() called during execute()", ["Scheduler", "LeaseManager", "StateStore"]),
+            "LeaseManager_acquire": ("F07", "acquire_lease returns None or raises LeaseError", ["Scheduler", "Dispatcher"]),
+            "Core": ("F08", "Node tool execution raises unhandled Exception", ["RetryHandler", "Dispatcher", "StateStore"]),
+        }
+        return [
+            {
+                "scenario_id": sid,
+                "source_domain": domain,
+                "failure": failure,
+                "effect_on": list(effect_on),
+                "action": list(_STRING_MATRIX.get(domain, [])),
+            }
+            for domain, (sid, failure, effect_on) in _SCENARIO_MAP.items()
+        ]
 
 
 __all__ = [
     "FailureDomain",
-    "FailureEvent",
-    "FailureMatrix",
-    "FailureMode",
     "FailurePropagationPolicy",
     "PropagationAction",
     "DegradeMode",

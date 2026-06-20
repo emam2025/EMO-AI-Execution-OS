@@ -1,27 +1,36 @@
-from typing import Any, Callable, Dict, List, Protocol
+"""EventBus Protocol for execution event stream.
 
-from ..models.events import ExecutionEvent
+Protocol-only interface. No implementation.
 
+Ref: P6.1 — Event Domain Models & EventBus Protocol
+"""
 
-EventHandler = Callable[[ExecutionEvent], None]
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Awaitable, Callable, Protocol
+
+if TYPE_CHECKING:
+    from core.models.event import EventTopic, ExecutionEvent
 
 
 class IEventBus(Protocol):
+    """Protocol for publish/subscribe event bus.
 
-    def publish(self, topic: str, event: ExecutionEvent) -> None:
+    Supports topic-based routing with async handlers.
+    """
+
+    def publish(self, topic: EventTopic, event: ExecutionEvent) -> None:
+        """Publish an event to a topic."""
         ...
 
-    def subscribe(self, topic: str, handler: EventHandler) -> None:
+    def subscribe(
+        self,
+        topic: EventTopic,
+        handler: Callable[[ExecutionEvent], Awaitable[None]],
+    ) -> str:
+        """Subscribe a handler to a topic. Returns subscription_id."""
         ...
 
-    def unsubscribe(self, topic: str, handler: EventHandler) -> None:
-        ...
-
-    def get_events(self, topic: str, limit: int = 100) -> List[ExecutionEvent]:
-        ...
-
-    def get_all_events(self, limit: int = 100) -> List[ExecutionEvent]:
-        ...
-
-    def clear(self) -> None:
+    def unsubscribe(self, subscription_id: str) -> None:
+        """Remove a subscription by ID."""
         ...

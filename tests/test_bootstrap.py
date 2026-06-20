@@ -41,11 +41,12 @@ ALLOWED_EXECUTION_ENGINE_FILES: Set[str] = {
 def _find_py_files(root: str) -> List[str]:
     py_files = []
     for dirpath, dirnames, filenames in os.walk(root):
-        # Skip __pycache__, virtual envs, hidden dirs
+        # Skip __pycache__, virtual envs, hidden dirs, releases archive
         dirnames[:] = [
             d for d in dirnames
             if not d.startswith(".") and d != "__pycache__"
             and d != "site-packages" and d != "node_modules"
+            and d != "releases"
         ]
         for fn in filenames:
             if fn.endswith(".py"):

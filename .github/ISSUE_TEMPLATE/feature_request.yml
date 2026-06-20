@@ -1,0 +1,63 @@
+name: Feature Request
+description: اقتراح ميزة جديدة
+title: "[FEATURE] "
+labels: ["enhancement", "feature-request", "beta"]
+body:
+  - type: textarea
+    id: title
+    attributes:
+      label: عنوان الميزة
+      description: عنوان مختصر للميزة المطلوبة
+      placeholder: "مثل: إضافة وضع الليلي"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: وصف الميزة
+      description: وصف تفصيلي للميزة المطلوبة
+      placeholder: اشرح الميزة بالتفصيل...
+    validations:
+      required: true
+
+  - type: textarea
+    id: usecase
+    attributes:
+      label: الحالة الاستخدامية
+      description: كيف سيتم استخدام هذه الميزة ولماذا نحتاجها؟
+      placeholder: |
+        سأستخدم هذه الميزة عندما...
+        لأن...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: الأولوية
+      description: مدى أهمية هذه الميزة لك
+      options:
+        - Must have - ضرورية للعمل
+        - Nice to have - تحسين كبير
+        - Low priority - تحسين بسيط
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternative
+    attributes:
+      label: البدائل الممكنة
+      description: هل لديك بديل حالياً لتحقيق نفس الهدف؟
+      placeholder: حالياً أستخدم...
+    validations:
+      required: false
+
+  - type: textarea
+    id: context
+    attributes:
+      label: سياق إضافي
+      description: معلومات إضافية عن الميزة
+      placeholder: أي تفاصيل أخرى...
+    validations:
+      required: false

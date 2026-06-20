@@ -12,6 +12,7 @@ router = APIRouter(prefix="/api/projects", tags=["projects"])
 class ProjectCreate(BaseModel):
     name: str
     description: str = ""
+    path: str = ""
 
 
 class ProjectUpdate(BaseModel):
@@ -55,9 +56,22 @@ async def create_project(req: ProjectCreate):
     if name.lower() in blocked_names:
         return JSONResponse({"status": "error", "message": "Project name conflicts with system files"})
 
-    project_path = WORKSPACE_ROOT / name
-    if project_path.exists():
-        return JSONResponse({"status": "error", "message": "Project already exists"})
+    custom_path = (req.path or "").strip()
+    if custom_path:
+        project_path = Path(custom_path).expanduser().resolve()
+        if not project_path.is_absolute():
+            project_path = (Path.cwd() / project_path).resolve()
+    else:
+        project_path = WORKSPACE_ROOT / name
+    if project_path.exists() and not project_path.is_dir():
+        return JSONResponse({"status": "error", "message": "Path exists but is not a directory"})
+
+    existing = await get_db().get_projects()
+    for p in existing:
+        if p["name"] == name and p["path"] == str(project_path):
+            return JSONResponse({"status": "error", "message": "A project with this name and path already exists"})
+    if project_path.exists() and any(project_path.iterdir()):
+        return JSONResponse({"status": "error", "message": "Directory already exists and is not empty. Pick an empty folder or remove the contents first."})
 
     try:
         project_path.mkdir(parents=True, exist_ok=True)
@@ -331,3 +345,40 @@ async def read_file_content(project_id: str = "", file_path: str = ""):
         return JSONResponse({"content": content})
     except Exception as e:
         return JSONResponse({"content": f"Error reading file: {str(e)}"})
+
+
+@router.get("/browse-folders")
+async def browse_folders(path: str = ""):
+    """List sub-folders of a given path (server-side). Used by the new-project dialog."""
+    from project_tools import WORKSPACE_ROOT
+
+    base = WORKSPACE_ROOT
+    if path:
+        try:
+            base = Path(path).expanduser().resolve()
+        except Exception as e:
+            return JSONResponse({"error": f"Invalid path: {e}", "folders": []})
+    if not base.exists() or not base.is_dir():
+        return JSONResponse({"error": "Path does not exist or is not a directory", "folders": []})
+
+    parent = None
+    if str(base) != "/":
+        parent_path = base.parent
+        if parent_path != base:
+            parent = str(parent_path)
+
+    folders = []
+    try:
+        for item in sorted(base.iterdir(), key=lambda x: x.name.lower()):
+            if not item.is_dir():
+                continue
+            if item.name.startswith("."):
+                continue
+            try:
+                folders.append({"name": item.name, "path": str(item)})
+            except Exception:
+                continue
+    except PermissionError:
+        return JSONResponse({"error": "Permission denied", "folders": [], "current": str(base), "parent": parent})
+
+    return JSONResponse({"current": str(base), "parent": parent, "folders": folders[:200]})
