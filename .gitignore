@@ -48,7 +48,6 @@ __pycache__/
 
 # === ENVIRONMENT / SECRETS ===
 .env
-.env.example
 .emo_settings.json
 .emo_chat_history.json
 .emo_conversations.json
@@ -102,3 +101,22 @@ emo-ai-BACKUP-*/
 
 # Temp snapshots
 .snapshot_commit_hash
+
+# === PHASE P ADDITIONS ===
+.cache/
+tmp/
+coverage/
+artifacts/
+keys/
+*.db
+*.sqlite
+.env.local
+.env.production
+next.config.js.map
+
+# Docker
+docker-compose.override.yml
+
+# Deployment
+*.pid
+*.sock
