@@ -32,6 +32,8 @@ from routers.settings import router as settings_router
 from routers.history import router as history_router
 from routers.project import router as project_router
 from routers.security import router as security_router
+from routers.workflow import router as workflow_router
+from routers.workspace import router as workspace_router
 from core.state import state
 from core.tasks import cleanup_old_tasks_loop
 from core.db import db
@@ -63,6 +65,37 @@ async def lifespan(app: FastAPI):
         logger.info("Default enterprise seeded")
     except Exception as e:
         logger.warning(f"Enterprise seeding skipped: {e}")
+
+    # Initialize ProviderGateway (Phase P — Policy Router)
+    try:
+        from core.gateway.provider_gateway import ProviderGateway
+        from core.gateway.models import ProviderType, ProviderPolicy, ProviderConfig, UsageQuota
+
+        policies = {
+            ProviderType.OPENAI: ProviderPolicy(provider=ProviderType.OPENAI, allowed_models=["gpt-4", "gpt-3.5-turbo"], max_requests_per_minute=60),
+            ProviderType.ANTHROPIC: ProviderPolicy(provider=ProviderType.ANTHROPIC, allowed_models=["claude-3"], max_requests_per_minute=30),
+            ProviderType.GEMINI: ProviderPolicy(provider=ProviderType.GEMINI, allowed_models=["gemini-pro"], max_requests_per_minute=60),
+            ProviderType.LOCAL: ProviderPolicy(provider=ProviderType.LOCAL, allowed_models=["*"], max_requests_per_minute=9999),
+        }
+        configs = {
+            ProviderType.OPENAI: ProviderConfig(provider=ProviderType.OPENAI, api_key_env="OPENAI_API_KEY", timeout_seconds=30),
+            ProviderType.ANTHROPIC: ProviderConfig(provider=ProviderType.ANTHROPIC, api_key_env="ANTHROPIC_API_KEY", timeout_seconds=30),
+            ProviderType.GEMINI: ProviderConfig(provider=ProviderType.GEMINI, api_key_env="GEMINI_API_KEY", timeout_seconds=30),
+            ProviderType.LOCAL: ProviderConfig(provider=ProviderType.LOCAL, api_key_env="", base_url="http://localhost:11434", timeout_seconds=60),
+        }
+        quotas = {
+            ProviderType.OPENAI: UsageQuota(provider=ProviderType.OPENAI, requests_limit=1000, tokens_limit=1000000),
+            ProviderType.ANTHROPIC: UsageQuota(provider=ProviderType.ANTHROPIC, requests_limit=500, tokens_limit=500000),
+            ProviderType.GEMINI: UsageQuota(provider=ProviderType.GEMINI, requests_limit=1000, tokens_limit=1000000),
+            ProviderType.LOCAL: UsageQuota(provider=ProviderType.LOCAL, requests_limit=999999, tokens_limit=999999999),
+        }
+
+        gateway = ProviderGateway(policies=policies, configs=configs, quotas=quotas)
+        app.state.provider_gateway = gateway
+        logger.info("ProviderGateway initialized and activated")
+    except Exception as e:
+        logger.warning(f"ProviderGateway init skipped: {e}")
+        app.state.provider_gateway = None
 
     # Initialize AI Code Intelligence Layer
     try:
@@ -333,6 +366,20 @@ try:
     logger.info("Security router registered")
 except Exception as e:
     logger.error(f"Failed to register security router: {e}")
+
+# Workflow Management (Phase P Batch 3 + Batch 5)
+try:
+    app.include_router(workflow_router)
+    logger.info("Workflow router registered")
+except Exception as e:
+    logger.error(f"Failed to register workflow router: {e}")
+
+# Workspace Management (Phase P Batch 2 — Multi-Tenant Isolation)
+try:
+    app.include_router(workspace_router)
+    logger.info("Workspace router registered")
+except Exception as e:
+    logger.error(f"Failed to register workspace router: {e}")
 
 # Autonomous Missions (v1.1 Phase 4)
 try:

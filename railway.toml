@@ -1,0 +1,42 @@
+[project]
+name = "emo-ai-pilot"
+description = "Emo-AI Pilot Expansion — Staging Environment"
+buildCommand = ""
+startCommand = "uvicorn main:app --host 0.0.0.0 --port $PORT"
+healthcheckPath = "/api/status"
+watchPatterns = ["core/**/*.py", "routers/**/*.py", "main.py"]
+
+[deploy]
+kind = "docker"
+dockerfilePath = "Dockerfile"
+restartPolicyType = "on_failure"
+restartPolicyMaxRetries = 3
+
+[service]
+name = "backend"
+port = 8080
+rootDirectory = "."
+
+[[service.variables]]
+name = "EMO_AUTH_MODE"
+value = "migration"
+
+[[service.variables]]
+name = "EMO_PILOT_MODE"
+value = "true"
+
+[[service.variables]]
+name = "EMO_LOG_LEVEL"
+value = "INFO"
+
+[[service.variables]]
+name = "PYTHONPATH"
+value = "/app"
+
+[[service.variables]]
+name = "DATABASE_URL"
+value = "sqlite:///./data/emo_ai.db"
+
+[[service.variables]]
+name = "HOST"
+value = "0.0.0.0"

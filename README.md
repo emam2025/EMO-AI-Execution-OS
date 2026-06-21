@@ -5,6 +5,7 @@
 [![Python](https://img.shields.io/badge/Python-3.14+-blue.svg)](https://python.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.136+-green.svg)](https://fastapi.tiangolo.com)
 [![Tests](https://img.shields.io/badge/Tests-1667%20PASS-brightgreen.svg)](./tests/)
+[![Status](https://img.shields.io/badge/Status-RC18%20PILOT-yellow.svg)](./docs/PILOT_DEPLOYMENT_REPORT.md)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 
 ---
@@ -68,31 +69,21 @@ wf.complete()
 
 ---
 
-## 🏗️ Architecture
+## 🏗️ Architecture (10 Layers)
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                    Multi-Agent Layer                         │
-│  Planner Agent • Critic Agent • Optimizer Agent             │
-└────────────────────────┬────────────────────────────────────┘
-                         │
-┌────────────────────────▼────────────────────────────────────┐
-│                  AI Execution OS                             │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐     │
-│  │ Workflow V2  │  │  Knowledge   │  │   Digital    │     │
-│  │   Engine     │  │     OS       │  │    Twin      │     │
-│  └──────────────┘  └──────────────┘  └──────────────┘     │
-└────────────────────────┬────────────────────────────────────┘
-                         │
-┌────────────────────────▼────────────────────────────────────┐
-│                  Distributed Runtime                         │
-│  Service Mesh • Lease Manager • Scheduler • EventBus        │
-└────────────────────────┬────────────────────────────────────┘
-                         │
-┌────────────────────────▼────────────────────────────────────┐
-│               Governance & Security                          │
-│  RBAC • ABAC • Guardian • Audit Trail • Encryption          │
-└─────────────────────────────────────────────────────────────┘
+┌───────────────────────────────────────────────────────────┐
+│  10. Agent OS        — Agents, Swarms, Skills             │
+│   9. Workflow OS     — WorkflowV2, Marketplace            │
+│   8. Project OS      — Projects, Tasks, Teams             │
+│   7. Industrial OS   — Digital Twins, Data Pipelines      │
+│   6. Integration OS  — Connectors, Service Mesh           │
+│   5. Cognitive Layer — Planner, Critic, Optimizer, Swarm  │
+│   4. Security Layer  — RBAC, ABAC, Guardian, Encryption   │
+│   3. Governance OS   — Audit, Policies, Tenant Isolation  │
+│   2. Memory OS       — Knowledge Graph, RAG, State Store  │
+│   1. Command Center  — Dashboard, Reports, Supervisor     │
+└───────────────────────────────────────────────────────────┘
 ```
 
 ---
@@ -106,6 +97,7 @@ wf.complete()
 | Digital Twin | محاكاة القطاعات الصناعية | ✅ Production |
 | Service Mesh | اتصال موزع بين الخدمات | ✅ Production |
 | Security Gateway | بوابة أمان موحدة | ✅ Production |
+| **Pilot (4 Sectors)** | **تصنيع • طاقة • مياه • رعاية صحية** | 🟡 **RC18 Pilot Snapshot** |
 
 ---
 
@@ -166,6 +158,17 @@ python -m pytest tests/ --cov=core --cov-report=html
 ---
 
 ## 📦 Deployment
+
+### Railway (Staging — Pilot)
+
+```bash
+# Railway staging
+railway up --service emo-ai-pilot --detach
+# → https://emo-ai-pilot-production.up.railway.app
+```
+
+**Pilot Status:** 🟡 RC18 — Pilot Snapshot (Hardening Complete)
+**Next:** Upgrade Railway tier → Re-certify Green → Phase H
 
 ### Docker
 

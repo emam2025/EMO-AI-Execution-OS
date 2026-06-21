@@ -34,10 +34,11 @@ RUN groupadd -r emo && useradd -r -g emo -d /app -s /sbin/nologin emo
 WORKDIR /app
 
 COPY core/ core/
-COPY interfaces/ interfaces/
 COPY routers/ routers/
 COPY middleware/ middleware/
-COPY main.py .
+COPY static/ static/
+COPY templates/ templates/
+COPY *.py .
 COPY VERSION .
 
 RUN mkdir -p /app/data /app/logs /tmp && \

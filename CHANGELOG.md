@@ -5,6 +5,38 @@ All notable changes to EMO AI Orchestrator will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0-RC18] — 2026-06-21
+
+### Added
+
+**RC18 — Pilot Snapshot (Hardening Complete):**
+
+- **Architecture Ownership Map** — `docs/ARCHITECTURE_OWNERSHIP_MAP.md`: 10-layer hierarchy, 122 entries mapped
+- **Pilot Execution Plan** — `docs/PILOT_EXECUTION_PLAN.md`: 4-sector scenarios, acceptance gates, 5 metrics
+- **Pilot Deployment Report** — `docs/PILOT_DEPLOYMENT_REPORT.md`: post-deployment Yellow → hardening applied
+- **Pilot Runbooks** — `docs/PILOT_RUNBOOKS.md`: start/stop/rollback/incident procedures
+- **Pilot Monitoring Specs** — `docs/PILOT_MONITORING_SPECS.md`: metrics, alerts, success criteria
+- **Security Modules:**
+  - `core/security/identity.py` — Identity, IdentityBuilder, Role
+  - `core/security/rbac.py` — RBACEngine, RoleDefinition, ROLE_DEFINITIONS
+  - `routers/security.py` — unified security router (identity + rbac + gateway verification)
+- **ProviderGateway Activation** — wired with policies/configs/quotas for OPENAI, ANTHROPIC, GEMINI, LOCAL
+- **Wiring Fixes:**
+  - `routers/workflow.py` connected in `main.py`
+  - `routers/workspace.py` connected in `main.py`
+  - Dockerfile: `COPY *.py .` — simplified, added `static/` and `templates/`
+- **Railway Deployment** — staging at `https://emo-ai-pilot-production.up.railway.app`
+- **Release Notes** — `docs/RELEASE_NOTES/v1.0.0-RC18.md`
+
+### Changed
+- `main.py` — ProviderGateway initialization with full dependency injection
+- `VERSION` — updated to `1.0.0-RC18`
+
+### Known Issues
+- Latency p95 ~900ms (Railway free tier — needs Pro upgrade)
+- 2/16 endpoints missing (`/` root, `/observability/` — no templates)
+- Phase H deferred until Pilot Green certification
+
 ## [1.0.0-RC17.4] — 2026-06-15
 
 ### Added
