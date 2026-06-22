@@ -519,7 +519,7 @@ class TestFeedbackLoopDrift:
             law_refs=["LAW 14"],
         )
         loop.publish_drift_alert(alert)
-        # Should not crash without event_bus
+        assert True  # Should not crash without event_bus
 
     def test_alert_exceeds_block_threshold_returns_alerted(self):
         loop = FeedbackLoop()

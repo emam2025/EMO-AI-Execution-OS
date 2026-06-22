@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import hashlib
-from typing import List, Sequence
+from typing import List
 
 
 def make_node_id(path: str, type_name: str, name: str) -> str:

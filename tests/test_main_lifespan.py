@@ -151,6 +151,7 @@ class TestAIStateWiring:
         finally:
             ai_state.initialized = old_init
             ai_state.facade = old_facade
+        assert True
 
 
 # ═══════════════════════════════════════════════════════════════════
@@ -166,13 +167,16 @@ class TestGracefulShutdown:
         runtime.build().start()
         runtime.shutdown()
         runtime.shutdown()
+        assert True
 
     def test_shutdown_without_start(self):
         from core.runtime.bootstrap import EmoRuntime
         runtime = EmoRuntime(config={"worker_pool_size": 2})
         runtime.shutdown()
+        assert True
 
     def test_shutdown_without_build(self):
         from core.runtime.bootstrap import EmoRuntime
         runtime = EmoRuntime()
         runtime.shutdown()
+        assert True

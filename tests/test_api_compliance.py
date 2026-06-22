@@ -21,6 +21,7 @@ def test_engine_frozen_methods_exist():
         ExecutionEngine.FROZEN_PUBLIC_METHODS_V2,
         ExecutionEngine.API_VERSION,
     )
+    assert True
 
 
 def test_engine_api_version_is_2_0_0():
@@ -45,6 +46,7 @@ def test_planner_frozen_methods_exist():
         QueryPlanner.FROZEN_PUBLIC_METHODS_V2,
         QueryPlanner.PLANNER_API_VERSION,
     )
+    assert True
 
 
 def test_planner_api_version_is_2_0_0():

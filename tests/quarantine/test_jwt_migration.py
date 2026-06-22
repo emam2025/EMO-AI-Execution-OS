@@ -8,13 +8,3 @@ JWT implementation was migrated but some test assertions reference old behavior.
 Root cause: JWT migration in progress (EMO_JWT_SECRET hardening, refresh token lifecycle).
 Estimated effort: 2-3 hours (update test assertions + env setup).
 """
-import pytest
-
-
-@pytest.mark.quarantined
-@pytest.mark.jwt_migration
-class TestJWTMigration:
-    """~19 JWT/security migration failures."""
-
-    def test_jwt_placeholder(self):
-        pytest.skip("19 JWT/security tests quarantined — see DEBT_RESOLUTION_PLAN.md")

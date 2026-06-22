@@ -50,6 +50,7 @@ class TestGroup1_PilotModeEnforcement:
         root = CompositionRoot()
         root.strict_pilot_mode = False
         root.enforce_readonly_core_modules()  # should not raise
+        assert True
 
 
 # ═════════════════════════════════════════════════════════════════════

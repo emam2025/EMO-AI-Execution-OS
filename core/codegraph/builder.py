@@ -13,7 +13,7 @@ from .analyzer import (
     compute_complexity,
     compute_risk_score,
 )
-from .determinism import make_node_id, sort_edges, stable_hash
+from .determinism import make_node_id, stable_hash
 
 
 def build_module_map(files: List[str]) -> Dict[str, str]:

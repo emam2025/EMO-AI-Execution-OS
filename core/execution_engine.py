@@ -43,7 +43,7 @@ from .models.events import EventType, make_trace_id
 from .models.dag import (
     NodeState, DependencyGraph, PlanNode,
 )
-from .adapters.governance_adapter import DefaultContractValidator, DefaultComplianceValidator
+from .adapters.governance_adapter import DefaultContractValidator
 from .cost_intel import NodeCost
 from .runtime.services.scheduler import ExecutionScheduler
 from .runtime.services.state_store import ExecutionStateStore
