@@ -1,0 +1,38 @@
+# EMO AI Execution OS — CODEOWNERS
+#
+# Each line is a file pattern followed by one or more owners.
+# Order matters: the last matching pattern takes precedence.
+
+# Global owners
+* @emam2025
+
+# Core runtime — no direct changes without review
+/core/runtime/ @emam2025
+
+# Architecture and design docs
+/docs/EMO_AI_MASTER_ARCHITECTURE_REFERENCE.md @emam2025
+/docs/ARCHITECTURE_OWNERSHIP_MAP.md @emam2025
+/docs/SOURCE_OF_TRUTH.md @emam2025
+
+# Release and deployment
+/VERSION @emam2025
+/releases/ @emam2025
+/railway.toml @emam2025
+/Dockerfile @emam2025
+/docker-compose.yml @emam2025
+
+# CI/CD
+/.github/ @emam2025
+
+# Security
+/SECURITY.md @emam2025
+/core/runtime/secrets/ @emam2025
+
+# Tests
+/tests/ @emam2025
+
+# Configuration
+/opencode.jsonc @emam2025
+/pytest.ini @emam2025
+/setup.py @emam2025
+/requirements.txt @emam2025

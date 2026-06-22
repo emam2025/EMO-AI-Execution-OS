@@ -10,6 +10,8 @@
 
 - 📖 اقرأ [DEVELOPER.md](DEVELOPER.md) — الدليل التقني الشامل
 - 🏗️ اقرأ [ARCHITECTURE_DESIGN.md](docs/architecture/) — التصميم المعماري
+- 📐 اقرأ [SOURCE_OF_TRUTH.md](docs/SOURCE_OF_TRUTH.md) — ترتيب الثقة وسياسة التوثيق
+- 🗺️ اقرأ [REPOSITORY_STRUCTURE_MAP.md](docs/REPOSITORY_STRUCTURE_MAP.md) — خريطة هيكل المستودع
 - ⚖️ فهم **Architecture Canon** (LAW 1-27) — القواعد المعمارية الصارمة
 
 > ⚠️ **تحذير صارم**: عدم فهم القواعد المعمارية قد يؤدي إلى رفض Pull Request الخاص بك.
