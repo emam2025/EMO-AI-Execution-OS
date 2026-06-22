@@ -69,3 +69,27 @@
 - **SQLite connection pooling** — `core/db.py` opens a new `aiosqlite.connect()` for every query (~80+ sites). Implementing a persistent connection pool would significantly reduce per-query latency. (Recommend dedicated issue.)
 - **HTTP connection pooling** — `httpx.AsyncClient` or `aiohttp.ClientSession` could reuse TCP connections to OpenAI/providers. Currently each request may open a new connection.
 - **Query optimization** — Some `SELECT` queries in `core/db.py` may return more columns than needed.
+
+---
+
+## Performance Measurements (pytest-free audit)
+
+Run: `python scripts/audit/rc18_perf_verification.py`
+Date: 2026-06-22
+
+| Metric | Before | After | Reduction | Speedup |
+|---|---|---|---|---|
+| settings.json load | 25µs | 0.0µs | 100% | 795.3x |
+| keychain.get() | 69µs | 0.0µs | 100% | 1419.3x |
+| startup (simulated 2.4s work) | 2404.86ms | 1001.72ms | 58% | 2.4x |
+
+### Interpretation
+- **Settings cache** eliminates repeated `json.loads()` + file I/O on every endpoint call.
+- **Keychain cache** eliminates OS-level IPC (macOS Keychain / D-Bus) per credential lookup.
+- **Parallel init** reduces wall-clock startup time by running I/O-bound tasks concurrently.
+- **Async test-connection** prevents event loop blocking during LLM round-trips.
+- **OpenAI timeouts** prevent indefinite stalls on upstream failures.
+
+### Next
+- Deploy to staging and measure real p50/p95 request latency.
+- Profile with `py-spy` or `memray` under load.
