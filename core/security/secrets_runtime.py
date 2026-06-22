@@ -4,16 +4,22 @@ Injects secrets into sandboxed tool execution contexts.
 Prevents leakage via logs, events, or stdout.
 All access is audited via EventBus.
 
+Uses Fernet (AES-128-CBC with HMAC-SHA256) for authenticated encryption.
+
 Ref: Phase E.3 — Secrets Runtime (Ephemeral Secret Injection)
 """
 
 from __future__ import annotations
 
 import asyncio
+import base64
 import hashlib
 import logging
+import os
 import time
 from typing import TYPE_CHECKING, Any, Dict, List, Optional
+
+from cryptography.fernet import Fernet, InvalidToken
 
 from core.models.secrets import SecretRef, SecretScope
 
@@ -31,34 +37,39 @@ class SecretsRuntime:
     All access is audited via EventBus.
     """
 
-    def __init__(self, event_bus: Optional[IEventBus] = None) -> None:
+    def __init__(
+        self,
+        event_bus: Optional[IEventBus] = None,
+        encryption_key: Optional[str] = None,
+    ) -> None:
         self._event_bus = event_bus
-        self._secrets: Dict[str, str] = {}  # secret_id → hashed_value
+        if encryption_key:
+            derived = hashlib.sha256(encryption_key.encode()).digest()
+            self._fernet = Fernet(base64.urlsafe_b64encode(derived))
+        else:
+            self._fernet = Fernet(Fernet.generate_key())
+        self._secrets: Dict[str, str] = {}  # secret_id → encrypted_value
         self._refs: Dict[str, SecretRef] = {}  # secret_id → SecretRef
         self._access_log: List[Dict[str, Any]] = []
         self._active_injections: Dict[str, List[str]] = {}  # tool_id → [secret_ids]
         self._secret_timestamps: Dict[str, float] = {}  # secret_id → registration_time
 
     def _encrypt(self, value: str) -> str:
-        """Mock encryption — SHA-256 hash of the value.
+        """Encrypt a value using Fernet (AES-128-CBC + HMAC-SHA256)."""
+        return self._fernet.encrypt(value.encode()).decode()
 
-        In production, use AES-256-GCM or similar.
-        This is a V1 placeholder that proves the value is not stored in plaintext.
-        """
-        return hashlib.sha256(value.encode("utf-8")).hexdigest()
-
-    def _decrypt(self, hashed: str, original: str) -> str:
-        """Mock decryption — returns original value.
-
-        In production, use proper key management.
-        For V1, the caller passes the original value during inject.
-        """
-        return original
+    def _decrypt(self, encrypted: str) -> str:
+        """Decrypt a value encrypted with _encrypt, verifying HMAC integrity."""
+        try:
+            return self._fernet.decrypt(encrypted.encode()).decode()
+        except InvalidToken:
+            logger.error("Fernet integrity check failed for secret")
+            return ""
 
     def register_secret(self, secret_id: str, value: str, ref: SecretRef) -> None:
         """Register a secret with scope and access control.
 
-        The secret value is stored hashed (not in plaintext).
+        The secret value is stored encrypted (not in plaintext).
         """
         self._secrets[secret_id] = self._encrypt(value)
         self._refs[secret_id] = ref
@@ -69,7 +80,6 @@ class SecretsRuntime:
         self,
         tool_id: str,
         requested_secrets: List[str],
-        raw_values: Optional[Dict[str, str]] = None,
     ) -> Dict[str, str]:
         """Inject secrets for tool execution. Returns decrypted secrets.
 
@@ -80,14 +90,10 @@ class SecretsRuntime:
         Args:
             tool_id: The tool requesting secrets.
             requested_secrets: List of secret_ids to inject.
-            raw_values: Map of secret_id → original plaintext (for V1 mock decrypt).
 
         Returns:
             Dict of secret_id → decrypted value for authorized secrets.
         """
-        if raw_values is None:
-            raw_values = {}
-
         now = time.time()
         injected: Dict[str, str] = {}
         denied: List[str] = []
@@ -107,8 +113,8 @@ class SecretsRuntime:
                     denied.append(secret_id)
                     continue
 
-            raw = raw_values.get(secret_id, "")
-            decrypted = self._decrypt(self._secrets.get(secret_id, ""), raw)
+            encrypted = self._secrets.get(secret_id, "")
+            decrypted = self._decrypt(encrypted)
             injected[secret_id] = decrypted
 
         if injected:

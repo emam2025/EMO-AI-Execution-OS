@@ -1,13 +1,15 @@
 """E3.2 — RuntimeVault: secure in-memory secret storage.
 
-Stores secrets with encryption at rest, TTL expiration,
-and scope-based access control.
+Stores secrets with AES-128-CBC + HMAC-SHA256 encryption at rest,
+TTL expiration, and scope-based access control.
+
+Uses Fernet (authenticated encryption) from the cryptography library.
 """
 
 from __future__ import annotations
 
+import base64
 import hashlib
-import hmac
 import json
 import logging
 import os
@@ -15,6 +17,8 @@ import time
 import threading
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional
+
+from cryptography.fernet import Fernet, InvalidToken
 
 logger = logging.getLogger("emo_ai.secrets.vault")
 
@@ -34,16 +38,22 @@ class SecretEntry:
 class RuntimeVault:
     """Secure in-memory secret storage with encryption and TTL.
 
+    Uses Fernet (AES-128-CBC with HMAC-SHA256) for authenticated encryption.
+
     Usage:
-        vault = RuntimeVault(master_key="my-encryption-key")
-        vault.store("db_password", "s3cr3t", scope="exec_123", ttl=300)
+        vault = RuntimeVault()
+        vault.store("db_password", "<your-password>", scope="exec_123", ttl=300)
         val = vault.retrieve("db_password", scope="exec_123")
     """
 
     def __init__(self, master_key: str = "") -> None:
         self._lock = threading.Lock()
         self._secrets: Dict[str, SecretEntry] = {}
-        self._master_key = master_key or os.urandom(32).hex()
+        if master_key:
+            derived = hashlib.sha256(master_key.encode()).digest()
+            self._fernet = Fernet(base64.urlsafe_b64encode(derived))
+        else:
+            self._fernet = Fernet(Fernet.generate_key())
         self._started_at = time.time()
 
     # ── CRUD ──────────────────────────────────────────────────────
@@ -66,7 +76,7 @@ class RuntimeVault:
             metadata: Optional metadata.
 
         Returns:
-            The encrypted secret ID.
+            The secret key.
         """
         now = time.time()
         entry = SecretEntry(
@@ -159,46 +169,26 @@ class RuntimeVault:
             logger.info("Purged %d expired secrets", len(expired))
         return len(expired)
 
-    # ── Encryption ────────────────────────────────────────────────
+    # ── Encryption (Fernet — AES-128-CBC with HMAC-SHA256) ────────
 
     def _encrypt(self, value: str) -> str:
-        """Simple XOR-based encryption with HMAC integrity.
-
-        NOTE: This is a lightweight obfuscation for in-memory storage.
-        For production, replace with AES-GCM or similar.
-        """
-        if not self._master_key:
-            return value
-        h = hmac.new(self._master_key.encode(), value.encode(), hashlib.sha256).hexdigest()[:16]
-        key_bytes = self._master_key.encode()
-        encrypted_chars = []
-        for i, c in enumerate(value):
-            encrypted_chars.append(chr(ord(c) ^ key_bytes[i % len(key_bytes)]))
-        return f"{h}:{''.join(encrypted_chars)}"
+        """Encrypt a value using Fernet (AES-128-CBC + HMAC-SHA256)."""
+        return self._fernet.encrypt(value.encode()).decode()
 
     def _decrypt(self, encrypted: str) -> str:
         """Decrypt a value encrypted with _encrypt, verifying HMAC integrity."""
-        if not self._master_key or ":" not in encrypted:
-            return encrypted
-        expected_hmac, payload = encrypted.split(":", 1)
-        key_bytes = self._master_key.encode()
-        decrypted_chars = []
-        for i, c in enumerate(payload):
-            decrypted_chars.append(chr(ord(c) ^ key_bytes[i % len(key_bytes)]))
-        plaintext = "".join(decrypted_chars)
-        actual_hmac = hmac.new(self._master_key.encode(), plaintext.encode(), hashlib.sha256).hexdigest()[:16]
-        if not hmac.compare_digest(expected_hmac, actual_hmac):
-            logger.error("HMAC integrity check failed for secret")
+        try:
+            return self._fernet.decrypt(encrypted.encode()).decode()
+        except InvalidToken:
+            logger.error("Fernet integrity check failed for secret")
             return ""
-        return plaintext
 
     # ── Stats ─────────────────────────────────────────────────────
 
     def stats(self) -> Dict[str, Any]:
-        """Return vault statistics."""
+        """Return vault statistics (no secret keys exposed)."""
         with self._lock:
             return {
                 "total_secrets": len(self._secrets),
                 "uptime": time.time() - self._started_at,
-                "keys": list(self._secrets.keys()),
             }

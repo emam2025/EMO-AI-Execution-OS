@@ -23,6 +23,9 @@ _SIGNING_KEY: str = ""  # Set once via init()
 
 def init(signing_key: str) -> None:
     global _SIGNING_KEY
+    if not signing_key:
+        logger = logging.getLogger("emo_ai.audit")
+        logger.critical("Audit trail signing key is empty — audit signatures will be FORGEABLE")
     _SIGNING_KEY = signing_key
 
 

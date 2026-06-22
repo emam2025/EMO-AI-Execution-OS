@@ -184,11 +184,13 @@ def require_auth(role: Optional[str] = None):
     auth_mode = get_auth_mode()
 
     if auth_mode == AuthMode.OFF:
+        logger.critical("AUTH MODE IS 'OFF' — ALL REQUESTS ARE SUPER_ADMIN. Set EMO_AUTH_MODE=enforced for production.")
         def _bypass() -> dict:
             return {"role": "super_admin", "user_id": "system", "source": "auth_off"}
         return _bypass
 
     if auth_mode == AuthMode.MIGRATION:
+        logger.critical("AUTH MODE IS 'MIGRATION' — ALL REQUESTS WITHOUT TOKEN ARE SUPER_ADMIN. Set EMO_AUTH_MODE=enforced for production.")
         def _migration_bypass() -> dict:
             logger.debug("AUTH_MIGRATION: bypass for role=%s", role)
             return {"role": "super_admin", "user_id": "migration", "source": "migration"}
