@@ -1,3 +1,0 @@
-[2026-05-21T06:16:29.655516Z] RENEW exec-001 2e0f9100-1a3... ttl=5.0 → True
-[2026-05-21T06:16:31.159790Z] RENEW exec-001 2e0f9100-1a3... ttl=5.0 → True
-[2026-05-21T06:16:37.161793Z] CHECK_EXPIRED exec-001 → status=active, deadline_passed=True

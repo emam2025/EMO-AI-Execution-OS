@@ -1,5 +1,0 @@
-[2026-05-21T07:17:41.227769Z] EXECUTED P1 → completed, checkpoint saved
-[2026-05-21T07:17:41.228745Z] EXECUTED P2 → completed, checkpoint saved
-[2026-05-21T07:17:41.229051Z] CRASH after P2 → restart from checkpoint
-[2026-05-21T07:17:41.230253Z] RESUME P3→P6 → status=completed in 0.00s
-[2026-05-21T07:17:41.230270Z] FINAL STATES: {"P1": "completed", "P2": "completed", "P3": "completed", "P4": "completed", "P5": "completed", "P6": "completed"}

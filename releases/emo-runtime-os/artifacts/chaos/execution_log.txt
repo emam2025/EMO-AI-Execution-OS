@@ -1,8 +1,0 @@
-[2026-05-29T00:56:54.847694Z] CHAOS-001 started
-[2026-05-29T00:56:54.847694Z] Composite Recovery: PASS (metrics: {'recovery_convergence_time': 0.0, 'lease_reassignment_success_rate': 1.0, 'state_reconciliation_drift': 0.003, 'workers_reconnected': 4, 'leases_reassigned': 6})
-[2026-05-29T00:56:54.847694Z] Facade Integrity: PASS (metrics: {'contract_integrity_rate': 1.0, 'unstructured_errors': 0, 'avg_response_time_ms': 0.0})
-[2026-05-29T00:56:54.847694Z] Trace & Replay Continuity: PASS (metrics: {'trace_continuity_pct': 99.95, 'replay_determinism_score': 100.0, 'event_backlog_recovery': True})
-[2026-05-29T00:56:54.847694Z] Cascade Prevention: PASS (metrics: {'propagation_matrix_match': 100.0, 'cascade_containment_rate': 100.0, 'cross_plane_leakage': 0})
-[2026-05-29T00:56:54.847694Z] Router Isolation: PASS (metrics: {'router_core_leakage': 0})
-[2026-05-29T00:56:54.847694Z] Regression Guard: PASS (metrics: {'regressions': 0})
-[2026-05-29T00:56:54.847694Z] Overall: PASS

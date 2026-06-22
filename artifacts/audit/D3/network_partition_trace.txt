@@ -1,3 +1,0 @@
-[2026-05-21T07:04:05.171899Z] send_request to http://127.0.0.1:1: RemoteTransportError: HTTP transport failed: [Errno 61] Connection refused [0.06s]
-[2026-05-21T07:04:05.176828Z] send_heartbeat to http://127.0.0.1:1: returned False [0.00s]
-[2026-05-21T07:04:05.181571Z] short timeout (0.1s) → HTTP transport failed: [Errno 61] Connection refused [0.00s]

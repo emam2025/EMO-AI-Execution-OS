@@ -1,6 +1,0 @@
-[
-  "{\"timestamp\": \"2026-05-21T04:38:45.010716Z\", \"method\": \"execute_task\", \"service\": \"execution_engine\", \"payload\": {\"execution_id\": \"041d9da9fb82\", \"lease_id\": \"08f3a8752122\", \"attempt\": 1, \"task\": \"test_compute\"}, \"trace_id\": \"428908bf49ad\", \"correlation_id\": \"\", \"ttl\": 30.0, \"priority\": 0, \"msg_type\": \"request\"}",
-  "{\"timestamp\": \"2026-05-21T04:38:46.528761Z\", \"method\": \"slow_task\", \"service\": \"execution_engine\", \"payload\": {\"execution_id\": \"041d9da9fb82\"}, \"trace_id\": \"\", \"correlation_id\": \"\", \"ttl\": 30.0, \"priority\": 0, \"msg_type\": \"request\"}",
-  "{\"timestamp\": \"2026-05-21T04:38:47.738681Z\", \"method\": \"execute_task\", \"service\": \"execution_engine\", \"payload\": {\"execution_id\": \"041d9da9fb82\"}, \"trace_id\": \"281c1a241ff1\", \"correlation_id\": \"\", \"ttl\": 30.0, \"priority\": 0, \"msg_type\": \"request\"}",
-  "{\"timestamp\": \"2026-05-21T04:38:47.744038Z\", \"method\": \"execute_task\", \"service\": \"execution_engine\", \"payload\": {\"execution_id\": \"041d9da9fb82\", \"lease_id\": \"08f3a8752122\", \"task\": \"lease_test\"}, \"trace_id\": \"a623e073f77d\", \"correlation_id\": \"\", \"ttl\": 30.0, \"priority\": 0, \"msg_type\": \"request\"}"
-]

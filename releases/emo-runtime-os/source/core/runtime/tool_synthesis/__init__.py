@@ -1,1 +1,0 @@
-"""Phase G4 — Tool Synthesis Agent package."""

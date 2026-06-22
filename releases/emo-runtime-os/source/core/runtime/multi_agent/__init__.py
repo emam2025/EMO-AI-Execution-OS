@@ -1,1 +1,0 @@
-"""Phase G5 — Multi-Agent Runtime package."""

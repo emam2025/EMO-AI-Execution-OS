@@ -1,5 +1,0 @@
-[2026-05-21T07:04:05.184380Z] CLAIM exec-crash-801f404d worker-1 ttl=5.0 → lease=35abba78-2bf0-4a8c-9705-43f201ac0a8d
-[2026-05-21T07:04:10.687637Z] CHECK_OWNER exec-crash-801f404d after sleep → None
-[2026-05-21T07:04:10.688393Z] REASSIGN_EXPIRED → ['exec-crash-801f404d']
-[2026-05-21T07:04:10.689269Z] CLAIM exec-crash-801f404d worker-2 → lease=7c97d1c3-126c-4c6f-baa0-1fa744347d34
-[2026-05-21T07:04:10.689781Z] DUPLICATE CLAIM exec-crash-801f404d worker-1 → None

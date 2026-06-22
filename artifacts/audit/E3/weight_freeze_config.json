@@ -1,8 +1,0 @@
-{
-  "weights_provider": null,
-  "calibration_provider": null,
-  "graph_query_db": "/Users/AI Workspace/Emo-AI/.ai/index/repository.db",
-  "feedback_frozen": true,
-  "llm_involvement": "none (planner uses pure regex)",
-  "freeze_timestamp": "2026-05-21T19:57:33.445738Z"
-}

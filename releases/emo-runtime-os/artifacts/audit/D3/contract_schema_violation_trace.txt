@@ -1,4 +1,0 @@
-[2026-05-21T07:04:10.690205Z] VALIDATE_INPUTS missing max_results → ["Missing required input 'max_results' (int)"]
-[2026-05-21T07:04:10.690224Z] VALIDATE_INPUTS wrong type → ["Input 'max_results': expected int, got str"]
-[2026-05-21T07:04:10.690233Z] VALIDATE_OUTPUTS missing field → ["Missing required output 'result' (str)"]
-[2026-05-21T07:04:10.690259Z] SCHEMA_CHECK v999.999.999 → SchemaVersionMismatch: DAG schema v999.999.999 not in supported versions: ['1.0.0']
