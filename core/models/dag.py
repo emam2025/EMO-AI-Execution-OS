@@ -96,10 +96,10 @@ class DependencyGraph:
     edges: List[PlanEdge]
     version: str
 
-    def __init__(self) -> None:
+    def __init__(self, version: str = DAG_SCHEMA_VERSION) -> None:
         self.nodes = {}
         self.edges = []
-        self.version = DAG_SCHEMA_VERSION
+        self.version = version
 
     def add_node(self, node: PlanNode) -> None:
         self.nodes[node.id] = node

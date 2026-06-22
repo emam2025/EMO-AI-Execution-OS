@@ -180,6 +180,7 @@ class ExecutionEngine(IExecutionEngine):
         session_id: Optional[str] = None,
         strategy: str = "balanced",
         tool_runner: Optional[Callable] = None,
+        preserve_states: bool = False,
     ) -> Dict[str, Any]:
         self._cancel_flag.clear()
         self._trace_id = make_trace_id()
@@ -231,8 +232,9 @@ class ExecutionEngine(IExecutionEngine):
             "node_count": len(dag.nodes),
         }, session_id=session_id)
 
-        for node in dag.nodes.values():
-            self._runtime.set_state(node, NodeState.PLANNED, session_id)
+        if not preserve_states:
+            for node in dag.nodes.values():
+                self._runtime.set_state(node, NodeState.PLANNED, session_id)
 
         runner = tool_runner or self._core.default_tool_runner
 
@@ -251,6 +253,13 @@ class ExecutionEngine(IExecutionEngine):
             # ── Parallel execution via worker pool ──
             futures = {}
             for node in level:
+                if preserve_states and node.state in (NodeState.COMPLETED, NodeState.FAILED):
+                    if node.state == NodeState.COMPLETED:
+                        results[node.id] = {
+                            "status": "completed", "node_id": node.id,
+                            "result": node.result,
+                        }
+                    continue
                 future = self._pool.submit(
                     self._runtime.execute_node_safe, node, runner,
                     dag, session_id, strategy,

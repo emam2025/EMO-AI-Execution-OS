@@ -14,11 +14,34 @@ Architecture:
 
 from __future__ import annotations
 
+import json
 import logging
+import re
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Set
 
 logger = logging.getLogger("emo_ai.contracts")
+
+MAX_PAYLOAD_SIZE = 10 * 1024 * 1024  # 10 MB
+
+# Dangerous unicode patterns: bidirectional text, zero-width chars, confusables
+_UNSAFE_UNICODE_RE = re.compile(
+    "["
+    "\U0000200B"  # ZERO WIDTH SPACE
+    "\U0000200C"  # ZERO WIDTH NON-JOINER
+    "\U0000200D"  # ZERO WIDTH JOINER
+    "\U0000200E"  # LEFT-TO-RIGHT MARK
+    "\U0000200F"  # RIGHT-TO-LEFT MARK
+    "\U00002028"  # LINE SEPARATOR
+    "\U00002029"  # PARAGRAPH SEPARATOR
+    "\U0000202A"  # LEFT-TO-RIGHT EMBEDDING
+    "\U0000202B"  # RIGHT-TO-LEFT EMBEDDING
+    "\U0000202C"  # POP DIRECTIONAL FORMATTING
+    "\U0000202D"  # LEFT-TO-RIGHT OVERRIDE
+    "\U0000202E"  # RIGHT-TO-LEFT OVERRIDE
+    "\U0000FEFF"  # ZERO WIDTH NO-BREAK SPACE (BOM)
+    "]"
+)
 
 # Current DAG schema version. Bump when PlanNode/PlanEdge fields change.
 DAG_SCHEMA_VERSION = "1.0.0"
@@ -89,12 +112,57 @@ class ToolContract:
 
 
 class ContractValidator:
-    """Validates tool inputs/outputs against a ToolContract."""
+    """Validates tool inputs/outputs against a ToolContract.
+
+    Hardening applied (AD-002 resolution):
+      1. Payload size limit enforced on serialized inputs/outputs.
+      2. Unicode sanitization — dangerous bidirectional/zero-width chars rejected.
+      3. Unknown type hints log a warning instead of silently accepting.
+    """
+
+    @staticmethod
+    def _check_payload_size(data: Dict[str, Any], label: str) -> List[str]:
+        errors: List[str] = []
+        try:
+            size = len(json.dumps(data, default=str))
+        except Exception:
+            size = 0
+        if size > MAX_PAYLOAD_SIZE:
+            errors.append(
+                f"{label} payload {size} bytes exceeds limit of {MAX_PAYLOAD_SIZE} bytes"
+            )
+        return errors
+
+    @staticmethod
+    def _check_unicode(value: Any, path: str) -> List[str]:
+        errors: List[str] = []
+        if isinstance(value, str):
+            match = _UNSAFE_UNICODE_RE.search(value)
+            if match:
+                errors.append(
+                    f"Unicode sanitization: dangerous char U+{ord(match.group()):04X} "
+                    f"at {path}"
+                )
+        elif isinstance(value, dict):
+            for k, v in value.items():
+                errors.extend(ContractValidator._check_unicode(k, f"{path}.{k}"))
+                errors.extend(ContractValidator._check_unicode(v, f"{path}.{k}"))
+        elif isinstance(value, list):
+            for i, v in enumerate(value):
+                errors.extend(ContractValidator._check_unicode(v, f"{path}[{i}]"))
+        return errors
 
     @staticmethod
     def validate_inputs(contract: ToolContract, inputs: Dict[str, Any]) -> List[str]:
         """Return a list of violation messages (empty = valid)."""
         errors: List[str] = []
+
+        # AD-002: payload size limit
+        errors.extend(ContractValidator._check_payload_size(inputs, "Input"))
+
+        # AD-002: unicode sanitization
+        for k, v in inputs.items():
+            errors.extend(ContractValidator._check_unicode(v, f"inputs.{k}"))
 
         spec_map = {p.name: p for p in contract.inputs}
         provided = set(inputs.keys())
@@ -116,7 +184,7 @@ class ContractValidator:
         # Strict mode: reject unknown inputs
         if contract.strict_inputs:
             unknown = provided - set(spec_map.keys())
-            if unknown and contract.inputs:  # only if contract defines inputs
+            if unknown and contract.inputs:
                 for k in sorted(unknown):
                     errors.append(f"Unknown input '{k}' (not in contract)")
 
@@ -126,6 +194,13 @@ class ContractValidator:
     def validate_outputs(contract: ToolContract, outputs: Dict[str, Any]) -> List[str]:
         """Return a list of violation messages (empty = valid)."""
         errors: List[str] = []
+
+        # AD-002: payload size limit
+        errors.extend(ContractValidator._check_payload_size(outputs, "Output"))
+
+        # AD-002: unicode sanitization
+        for k, v in outputs.items():
+            errors.extend(ContractValidator._check_unicode(v, f"outputs.{k}"))
 
         spec_map = {p.name: p for p in contract.outputs}
         provided = set(outputs.keys())
@@ -166,7 +241,8 @@ class ContractValidator:
         }
         expected = mapping.get(type_hint)
         if expected is None:
-            return True  # unknown type hint = accept
+            logger.warning("Unknown type hint '%s' in contract — accepting value", type_hint)
+            return True
         return isinstance(value, expected)
 
 

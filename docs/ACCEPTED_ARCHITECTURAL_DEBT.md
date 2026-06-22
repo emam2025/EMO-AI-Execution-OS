@@ -13,8 +13,8 @@ Ref: DEVELOPER.md §15.22, §16 (Architecture Canon)
 
 | ID | Area | Debt Description | Impact | Remediation Target | Status |
 |----|------|------------------|--------|-------------------|--------|
-| AD-001 | ExecutionEngine | `DeterministicResume.resume()` resets node states via `execute()`, `build_dag_from_token()` passes invalid `version=` kwarg to `DependencyGraph()` | 3 pre-existing test failures — non-blocking for production | Post-freeze refactor | **CERTIFIED** |
-| AD-002 | Contracts | 3 permissive defaults in `ContractValidator` (no payload size limit, unicode sanitization omitted) | Theoretical injection vector — no exploit path in current deployment | Post-freeze hardening | **CERTIFIED** |
+| AD-001 | ExecutionEngine | `DeterministicResume.resume()` resets node states via `execute()`, `build_dag_from_token()` passes invalid `version=` kwarg to `DependencyGraph()` | 3 pre-existing test failures — non-blocking for production | Post-freeze refactor | **RESOLVED** — `execute()` now accepts `preserve_states=True`; `DependencyGraph()` accepts `version=` kwarg; resume skips reset-restore cycle |
+| AD-002 | Contracts | 3 permissive defaults in `ContractValidator` (no payload size limit, unicode sanitization omitted) | Theoretical injection vector — no exploit path in current deployment | Post-freeze hardening | **RESOLVED** — payload size limit (10 MB), unicode sanitization, unknown type-hint warning added |
 | AD-003 | Multi-Agent | Agent lifecycle layer (G5) has zero test coverage — conceptual only | No runtime impact — layer is not activated in production | K6 phase | **CERTIFIED** |
 | AD-004 | Telemetry | F4 TelemetryAggregator skips DAG visualization data for DAGs > 500 nodes | Dashboard DAG view is sparse for large DAGs — CLI/API unaffected | K6 optimization phase | **CERTIFIED** |
 | AD-005 | TopologyViewer | `topology_viewer.py` returns static/mocked worker topology — no live agent inventory | Operator CLI worker command shows placeholder data — monitoring unaffected | Post-freeze agent discovery | **CERTIFIED** |

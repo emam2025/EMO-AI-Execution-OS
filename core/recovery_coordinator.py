@@ -362,6 +362,9 @@ class DeterministicResume:
     ) -> Dict[str, Any]:
         """Resume execution from a checkpoint token.
 
+        Uses preserve_states=True to avoid the wasteful reset-restore
+        cycle that AD-001 identified.
+
         Args:
             token: ResumeToken from RecoveryCoordinator.recover().
             dag: The full DAG to execute (must match token's DAG).
@@ -385,14 +388,8 @@ class DeterministicResume:
             node.state = NodeState.COMPLETED
             node.result = result
 
-        # 2. Mark failed nodes for retry (reset to PENDING)
-        for node_id in token.failed_nodes:
-            node = dag.nodes.get(node_id)
-            if node is None:
-                continue
-            node.state = NodeState.PENDING
-            node.error = None
-            node.retry_count = 0
+        # 2. Collect failed node IDs for retry (restored to PENDING after execute)
+        retry_node_ids = list(token.failed_nodes)
 
         # 3. Mark pending nodes as PENDING
         for node_id in token.pending_nodes:
@@ -401,28 +398,17 @@ class DeterministicResume:
                 continue
             node.state = NodeState.PENDING
 
-        # 4. All other nodes remain PENDING by default
-        # (they'll run normally in the level loop)
-
-        # 5. Re-check schema version
-        self._engine._check_schema_version(dag)
-
-        # 6. Run via normal execute
+        # 4. Run via execute with preserve_states=True
+        # (skips COMPLETED+FAILED nodes, eliminating the reset-restore cycle)
         result = self._engine.execute(
             dag=dag,
             session_id=session_id,
             tool_runner=tool_runner,
+            preserve_states=True,
         )
 
-        # 7. Restore completed nodes' states (execute resets all to PLANNED)
-        for node_id in token.completed_nodes:
-            node = dag.nodes.get(node_id)
-            if node is not None:
-                node.state = NodeState.COMPLETED
-                node.result = token.node_results.get(node_id, {})
-
-        # 8. Restore failed nodes to PENDING for retry
-        for node_id in token.failed_nodes:
+        # 5. Restore failed nodes to PENDING for retry readiness
+        for node_id in retry_node_ids:
             node = dag.nodes.get(node_id)
             if node is not None:
                 node.state = NodeState.PENDING
