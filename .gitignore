@@ -11,6 +11,7 @@ build/
 *.zip
 *.dmg
 *.AppImage
+*.egg-info/
 
 # === DEPENDENCIES (heavy — 100MB+ each) ===
 node_modules/
@@ -25,14 +26,18 @@ __pycache__/
 *.pyo
 .pytest_cache/
 .ai/
+.ai.*
 .memory/
-.pytest_cache/
 .ruff_cache/
 .mypy_cache/
+.cache/
+.cache/
+tmp/
 
 # === IDE/OS FILES ===
 .DS_Store
 **/.DS_Store
+Thumbs.db
 .idea/
 .vscode/
 *.swp
@@ -48,75 +53,39 @@ __pycache__/
 
 # === ENVIRONMENT / SECRETS ===
 .env
+.env.local
+.env.production
 .emo_settings.json
 .emo_chat_history.json
 .emo_conversations.json
-
-# === LOGS ===
-logs/
-*.log
-
-# === DOCS / GENERATED ===
-*.pdf
-*.html
-
-# === RELEASES ===
-releases/
-
-# === PYTHON ===
-*.egg-info/
-
-# Secrets
-.env
 *.key
 *.pem
 *.cert
 
-# Build artifacts
-dist/
-build/
-target/
-__pycache__/
-*.pyc
-*.pyo
-.pytest_cache/
-.ruff_cache/
-
-# IDE
-.idea/
-.vscode/
-*.swp
-*.swo
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Dependencies
-node_modules/
-.venv/
-
-# Release backups
-emo-ai-BACKUP-*/
-
-# Temp snapshots
-.snapshot_commit_hash
-
-# === PHASE P ADDITIONS ===
-.cache/
-tmp/
+# === LOGS / AUDIT / GENERATED ===
+logs/
+audit/
 coverage/
-artifacts/
-keys/
-*.db
-*.sqlite
-.env.local
-.env.production
-next.config.js.map
-
-# Docker
-docker-compose.override.yml
-
-# Deployment
+*.log
+*.pdf
+*.html
 *.pid
 *.sock
+
+# === RELEASES (archived snapshots) ===
+releases/
+
+# === RELEASE BACKUPS ===
+emo-ai-BACKUP-*/
+
+# === TEMP / SNAPSHOTS ===
+.snapshot_commit_hash
+
+# === ARTIFACTS (generated execution logs) ===
+artifacts/
+
+# === DOCKER ===
+docker-compose.override.yml
+
+# === NEXT.JS ===
+next.config.js.map
