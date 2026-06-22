@@ -2152,7 +2152,7 @@ ExecutionEngine → IsolationRuntime (BRIDGE)
 | **Governance** | RBAC (4 roles, 8 permissions) + Append-only Audit Trail (SHA-256 chain, HMAC) + Tenant Isolation (namespace scoped) |
 | **Desktop UI** | 7 live-bound routes + MemoryExplorer stub + CommandPalette (Ctrl+K) + FirstRunWizard (5 steps). All use design system (glass-panel, smooth-motion, timeline-node). |
 | **Canon Compliance** | All laws and rules — 100% compliant across all phases |
-| **Test Count** | 3047+ PASS (governance 16 + UI 140 = 156 new), 100 quarantined (pre-existing) |
+| **Test Count** | 4126+ PASS (governance 16 + UI 140 = 156 new), 100 quarantined (pre-existing) |
 | **Composition Root** | `strict_orchestration_mode` + `strict_memory_mode` enforces DI wiring |
 | **Tags** | `v4.15.0-delivery-ready`, `v1-runtime-stable`, `v0.1.0`–`v0.1.3`, `r1-runtime-os-v1.0.0` |
 

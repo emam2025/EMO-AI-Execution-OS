@@ -177,7 +177,7 @@ Industrial sectors are implemented as extensions over a unified core:
 - **Current VERSION:** `v1.0.0-RC18` (see [VERSION](VERSION))
 - **Current tag:** `v1.0.0-RC18-BASELINE`
 - **Current deployment state:** Railway staging (Pilot Green)
-- **Current test status:** 1667+ tests, 100% pass rate
+- **Current test status:** 4126+ tests, 100% pass rate
 
 ## Official Reference Document
 

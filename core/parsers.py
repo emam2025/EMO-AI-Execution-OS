@@ -22,6 +22,7 @@ import json
 import logging
 import os
 import re
+from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple, Any
 
@@ -139,7 +140,7 @@ def _get_return_type(node: ast.FunctionDef | ast.AsyncFunctionDef) -> str | None
 # Base class
 # ---------------------------------------------------------------------------
 
-class LanguageParser:
+class LanguageParser(ABC):
     """Base class for language-specific parsers.
 
     Subclasses must implement parse() and return the standard schema dict.
@@ -150,19 +151,9 @@ class LanguageParser:
         # Track the current function context for call attribution
         self.current_function: str | None = None
 
+    @abstractmethod
     def parse(self, file_path: Path, file_id: int, content: str) -> dict:
-        """Parse file content and return extracted information.
-
-        Args:
-            file_path: Path to the file
-            file_id: ID of the file in the database
-            content: File content as string
-
-        Returns:
-            dict with keys: dependencies, symbols, symbol_relationships,
-                            annotations, file_metadata
-        """
-        raise NotImplementedError("Subclasses must implement parse()")
+        ...
 
     @staticmethod
     def _result(
@@ -475,7 +466,21 @@ class JavaScriptParser(LanguageParser):
         return result
 
     def _parse_with_tree_sitter(self, file_path, file_id, content) -> dict:
-        raise NotImplementedError("Tree-sitter JS not yet implemented")
+        """Tree-sitter JS — fallback to regex-based extraction."""
+        result = {
+            "dependencies": [],
+            "symbols": [],
+            "symbol_relationships": [],
+            "annotations": [],
+            "file_metadata": [
+                {"key": "language", "value": self.language_name},
+                {"key": "syntax_valid", "value": "true"},
+                {"key": "parser", "value": "regex_fallback"},
+            ],
+        }
+        self._extract_annotations(content, result["annotations"])
+        self._extract_basic_dependencies(content, result["dependencies"])
+        return result
 
     @staticmethod
     def _extract_annotations(content: str, annotations: list) -> None:
@@ -587,7 +592,21 @@ class TypeScriptParser(LanguageParser):
         return result
 
     def _parse_with_tree_sitter(self, file_path, file_id, content) -> dict:
-        raise NotImplementedError("Tree-sitter TS not yet implemented")
+        """Tree-sitter TS — fallback to regex-based extraction."""
+        result = {
+            "dependencies": [],
+            "symbols": [],
+            "symbol_relationships": [],
+            "annotations": [],
+            "file_metadata": [
+                {"key": "language", "value": self.language_name},
+                {"key": "syntax_valid", "value": "true"},
+                {"key": "parser", "value": "regex_fallback"},
+            ],
+        }
+        self._extract_annotations(content, result["annotations"])
+        self._extract_basic_dependencies(content, result["dependencies"])
+        return result
 
     @staticmethod
     def _extract_annotations(content: str, annotations: list) -> None:

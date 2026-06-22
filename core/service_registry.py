@@ -26,6 +26,7 @@ import logging
 import time
 import urllib.error
 import urllib.request
+from abc import ABC, abstractmethod
 from typing import Any, Callable, Dict, List, Optional
 
 from .models.dag import ToolSpec
@@ -35,8 +36,8 @@ logger = logging.getLogger("emo_ai.service_registry")
 SERVICE_REGISTRY_VERSION = "1.1.0"
 
 
-class ToolEndpoint:
-    """Abstracts a single tool execution target.
+class ToolEndpoint(ABC):
+    """Abstract base for a tool execution endpoint.
 
     Can be local (in-process callable) or remote (HTTP endpoint).
     """
@@ -45,8 +46,9 @@ class ToolEndpoint:
         self.tool_name = tool_name
         self.spec = spec
 
+    @abstractmethod
     def execute(self, inputs: Dict[str, Any]) -> Dict[str, Any]:
-        raise NotImplementedError
+        ...
 
 
 class LocalEndpoint(ToolEndpoint):

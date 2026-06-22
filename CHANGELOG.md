@@ -31,6 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - `main.py` — ProviderGateway initialization with full dependency injection
 - `VERSION` — updated to `1.0.0-RC18`
+- **Test Count**: 633 → 4126+ (current cumulative; 245 files, 4109 functions + 21 parametrized)
 
 ### Known Issues
 - Latency p95 ~900ms (Railway free tier — needs Pro upgrade)

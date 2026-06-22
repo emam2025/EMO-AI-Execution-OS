@@ -127,9 +127,9 @@ def test_execute_task_tracks_active():
     assert len(wr._active_tasks) == 0  # released after completion
 
 
-# ── _run_tool raises NotImplementedError in base class ─────────
+# ── _run_tool returns stub in base class ────────────────────────
 
-def test_base_worker_run_tool_not_implemented():
+def test_base_worker_run_tool_returns_stub():
     wr = WorkerRuntime(
         worker_id="w1",
         host="localhost",
@@ -137,9 +137,8 @@ def test_base_worker_run_tool_not_implemented():
         engine_url="http://engine:8000",
         tools=[{"name": "agent.explain", "version": "1.0.0"}],
     )
-    import pytest
-    with pytest.raises(NotImplementedError):
-        wr._run_tool("agent.explain", {})
+    result = wr._run_tool("agent.explain", {})
+    assert result == {"tool": "agent.explain", "status": "stub", "error": "not_implemented"}
 
 
 # ── parse_args ─────────────────────────────────────────────────

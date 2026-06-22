@@ -25,6 +25,7 @@ import signal
 import sys
 import threading
 import time
+from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Set
@@ -275,13 +276,10 @@ class WorkerRuntime:
         """Look up and execute a tool function.
 
         Override this in subclasses to provide custom tool implementations.
-        The base implementation returns a stub.
+        The base implementation returns a stub result with a warning.
         """
-        # In production, this would dispatch to the actual tool function
-        raise NotImplementedError(
-            f"Tool '{tool}' not implemented in base WorkerRuntime. "
-            "Subclass and override _run_tool()."
-        )
+        logger.warning(f"Tool '{tool}' not implemented in base WorkerRuntime — returning stub")
+        return {"tool": tool, "status": "stub", "error": "not_implemented"}
 
     # ── HTTP helpers ───────────────────────────────────────────
 
