@@ -122,7 +122,7 @@ Industrial (industrial, connectors)
 | Directory | Entry Count | Notes |
 |-----------|-------------|-------|
 | `core/` | ~120 | Heart of the system |
-| `tests/` | ~239 | 4126+ individual tests |
+| `tests/` | ~239 | 3341+ individual tests |
 | `docs/` | 36 | Documentation files |
 | `scripts/` | ~20 | Build and automation |
 | `releases/` | ~40 | Archived release artifacts |
