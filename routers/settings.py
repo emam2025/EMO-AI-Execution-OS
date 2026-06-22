@@ -1,5 +1,7 @@
+import functools
 import json
 import os
+import time
 from pathlib import Path
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
@@ -9,6 +11,9 @@ from brain import Brain
 from core.security.keychain_provider import KeychainProvider
 
 SETTINGS_FILE = Path(".emo_settings.json")
+_SETTINGS_CACHE_TTL = 2.0  # seconds
+_last_settings_load: float = 0.0
+_cached_settings: dict = {}
 
 router = APIRouter(prefix="/api/settings", tags=["settings"])
 
@@ -19,18 +24,26 @@ class SettingsUpdate(BaseModel):
 
 
 def load_settings() -> dict:
-    """Load settings from file."""
+    """Load settings from file with in-memory caching (2s TTL)."""
+    global _last_settings_load, _cached_settings
+    now = time.time()
+    if now - _last_settings_load < _SETTINGS_CACHE_TTL and _cached_settings:
+        return _cached_settings
     if SETTINGS_FILE.exists():
         try:
-            return json.loads(SETTINGS_FILE.read_text())
+            _cached_settings = json.loads(SETTINGS_FILE.read_text())
+            _last_settings_load = now
+            return _cached_settings
         except Exception:
             return {}
     return {}
 
 
 def save_settings(settings: dict) -> None:
-    """Save settings to file."""
+    """Save settings to file and invalidate cache."""
+    global _last_settings_load
     SETTINGS_FILE.write_text(json.dumps(settings, indent=2, ensure_ascii=False))
+    _last_settings_load = 0.0  # invalidate cache
 
 
 @router.get("")

@@ -112,11 +112,15 @@ class Brain:
         self._client = OpenAI(
             base_url=config["base_url"],
             api_key=resolved_key,
+            timeout=30.0,
+            max_retries=1,
         )
 
         self._async_client = AsyncOpenAI(
             base_url=config["base_url"],
             api_key=resolved_key,
+            timeout=30.0,
+            max_retries=1,
         )
 
     def ask(

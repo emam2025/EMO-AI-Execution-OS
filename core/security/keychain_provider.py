@@ -1,7 +1,8 @@
 import os
 import logging
+import time
 from datetime import datetime, timezone
-from typing import Optional
+from typing import Dict, Optional, Tuple
 
 import keyring
 
@@ -9,6 +10,7 @@ logger = logging.getLogger("emo_ai.keychain")
 
 SERVICE_NAME = "emo-desktop"  # must match Rust keyring service name
 AUDIT_LOGGER = logging.getLogger("emo_ai.audit.keychain")
+_CACHE_TTL = 30.0  # seconds
 
 
 class KeychainProvider:
@@ -22,6 +24,9 @@ class KeychainProvider:
 
     Every operation is logged to the ``emo_ai.audit.keychain`` logger.
 
+    Caches retrieved secrets in memory for ``_CACHE_TTL`` seconds
+    to avoid synchronous OS keychain IPC on every request.
+
     Usage::
 
         provider = KeychainProvider()
@@ -29,6 +34,8 @@ class KeychainProvider:
         provider.set("openrouter", "sk-or-...")
         provider.delete("openrouter")
     """
+
+    _cache: Dict[str, Tuple[float, str]] = {}  # account -> (timestamp, value)
 
     def __init__(self, service: str = SERVICE_NAME):
         self.service = service
@@ -42,7 +49,7 @@ class KeychainProvider:
         return f"provider_{provider}"
 
     def get(self, provider: str) -> Optional[str]:
-        """Retrieve a secret from the OS keychain.
+        """Retrieve a secret from the OS keychain with in-memory caching.
 
         Args:
             provider: Provider name (e.g. 'openrouter', 'groq').
@@ -53,9 +60,17 @@ class KeychainProvider:
         mode, falls back to ``os.getenv("{name.upper()}_API_KEY")``.
         """
         account = self._keyring_account(provider)
+
+        # Check cache first
+        now = time.time()
+        cached = self._cache.get(account)
+        if cached and (now - cached[0]) < _CACHE_TTL:
+            return cached[1]
+
         try:
             secret = keyring.get_password(self.service, account)
             if secret is not None:
+                self._cache[account] = (now, secret)
                 self._audit("read", account, "keyring", "success")
                 return secret
         except keyring.errors.KeyringError as e:
@@ -65,6 +80,7 @@ class KeychainProvider:
             env_key = f"{provider.upper()}_API_KEY"
             fallback = os.getenv(env_key)
             if fallback is not None:
+                self._cache[account] = (now, fallback)
                 self._audit("read", account, "env_fallback", "success")
                 logger.warning(
                     "[SECURITY] Using ENV fallback for %s via %s. "
@@ -88,6 +104,8 @@ class KeychainProvider:
         account = self._keyring_account(provider)
         try:
             keyring.set_password(self.service, account, secret)
+            now = time.time()
+            self._cache[account] = (now, secret)
             self._audit("set", account, "keyring", "success")
             logger.info("[AUDIT] Credential stored for %s", account)
         except keyring.errors.KeyringError as e:
@@ -101,6 +119,7 @@ class KeychainProvider:
             provider: Provider name (e.g. 'openrouter', 'groq').
         """
         account = self._keyring_account(provider)
+        self._cache.pop(account, None)
         try:
             keyring.delete_password(self.service, account)
             self._audit("delete", account, "keyring", "success")

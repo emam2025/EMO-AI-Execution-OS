@@ -48,202 +48,224 @@ telegram_bot = None
 async def lifespan(app: FastAPI):
     global telegram_bot
 
-    # Initialize database
-    await db.initialize()
-    logger.info("Database initialized")
+    async def _init_db():
+        await db.initialize()
+        logger.info("Database initialized")
 
-    # Seed default agents (v1.1 Phase 3)
-    try:
-        await db.seed_default_agents()
-        logger.info("Default agents seeded")
-    except Exception as e:
-        logger.warning(f"Agent seeding skipped: {e}")
-
-    # Seed default enterprise org + super_admin (v1.1 Phase 5)
-    try:
-        await db.seed_default_enterprise()
-        logger.info("Default enterprise seeded")
-    except Exception as e:
-        logger.warning(f"Enterprise seeding skipped: {e}")
-
-    # Initialize ProviderGateway (Phase P — Policy Router)
-    try:
-        from core.gateway.provider_gateway import ProviderGateway
-        from core.gateway.models import ProviderType, ProviderPolicy, ProviderConfig, UsageQuota
-
-        policies = {
-            ProviderType.OPENAI: ProviderPolicy(provider=ProviderType.OPENAI, allowed_models=["gpt-4", "gpt-3.5-turbo"], max_requests_per_minute=60),
-            ProviderType.ANTHROPIC: ProviderPolicy(provider=ProviderType.ANTHROPIC, allowed_models=["claude-3"], max_requests_per_minute=30),
-            ProviderType.GEMINI: ProviderPolicy(provider=ProviderType.GEMINI, allowed_models=["gemini-pro"], max_requests_per_minute=60),
-            ProviderType.LOCAL: ProviderPolicy(provider=ProviderType.LOCAL, allowed_models=["*"], max_requests_per_minute=9999),
-        }
-        configs = {
-            ProviderType.OPENAI: ProviderConfig(provider=ProviderType.OPENAI, api_key_env="OPENAI_API_KEY", timeout_seconds=30),
-            ProviderType.ANTHROPIC: ProviderConfig(provider=ProviderType.ANTHROPIC, api_key_env="ANTHROPIC_API_KEY", timeout_seconds=30),
-            ProviderType.GEMINI: ProviderConfig(provider=ProviderType.GEMINI, api_key_env="GEMINI_API_KEY", timeout_seconds=30),
-            ProviderType.LOCAL: ProviderConfig(provider=ProviderType.LOCAL, api_key_env="", base_url="http://localhost:11434", timeout_seconds=60),
-        }
-        quotas = {
-            ProviderType.OPENAI: UsageQuota(provider=ProviderType.OPENAI, requests_limit=1000, tokens_limit=1000000),
-            ProviderType.ANTHROPIC: UsageQuota(provider=ProviderType.ANTHROPIC, requests_limit=500, tokens_limit=500000),
-            ProviderType.GEMINI: UsageQuota(provider=ProviderType.GEMINI, requests_limit=1000, tokens_limit=1000000),
-            ProviderType.LOCAL: UsageQuota(provider=ProviderType.LOCAL, requests_limit=999999, tokens_limit=999999999),
-        }
-
-        gateway = ProviderGateway(policies=policies, configs=configs, quotas=quotas)
-        app.state.provider_gateway = gateway
-        logger.info("ProviderGateway initialized and activated")
-    except Exception as e:
-        logger.warning(f"ProviderGateway init skipped: {e}")
-        app.state.provider_gateway = None
-
-    # Initialize AI Code Intelligence Layer
-    try:
-        from core.ai_init import initialize_ai_layer
-        ai_config = initialize_ai_layer()
-        if ai_config:
-            logger.info("AI Code Intelligence Layer initialized")
-        else:
-            logger.warning("Failed to initialize AI Code Intelligence Layer")
-    except ImportError:
-        logger.warning("AI Code Intelligence Layer not available")
-    except Exception as e:
-        logger.error(f"Error initializing AI Code Intelligence Layer: {e}")
-
-    # Initialize AI component state for the AI API router
-    try:
-        from pathlib import Path as _Path
-        from core.graph_query import GraphQuery as _GQ
-        from core.graph_retrieval import GraphRetrievalEngine as _GRE
-        from core.ai_agent import CodeIntelligenceAgent as _Agent
-        from core.ai_context_engine import AIContextEngine as _Ctx
-        from core.hybrid_retriever import HybridRetriever as _HR
-        from core.metrics_store import MetricsStore as _Metrics
-        from core.execution_memory import ExecutionMemory as _Mem
-        from core.unified_runtime import UnifiedRuntime as _RT
-        from core.feedback_intel import FeedbackIntelligence as _Feedback
-        from core.replay import ReplayEngine as _Replay
-        from routers.ai import ai_state as _ai_state
-
-        _ai_index = str(_Path(".ai") / "index")
-        _gq = _GQ(str(_Path(_ai_index) / "repository.db"))
-        _ctx = _Ctx(_gq)
-        _gre = _GRE(_gq, ctx=_ctx)
-        _agent = _Agent(_gq, _gre)
-        _metrics = _Metrics(str(_Path(_ai_index) / "metrics.db"))
-        _mem = _Mem(str(_Path(_ai_index) / "execution_memory.db"))
-
-        # Execution feedback intelligence (was latent — now connected)
+    async def _seed_agents():
         try:
-            _feedback = _Feedback(db_path=_Path(_ai_index) / "feedback.db")
-        except Exception as ex:
-            logger.warning(f"Feedback intelligence init skipped: {ex}")
-            _feedback = None
-
-        # Semantic layer is optional
-        _hybrid: Optional[Any] = None
-        _ee: Optional[Any] = None
-        _ss: Optional[Any] = None
-        try:
-            from core.embedding_engine import EmbeddingEngine as _EE
-            from core.semantic_store import SemanticStore as _SS
-            from core.hybrid_retriever import WeightsAdvisor as _WA, RepoStats as _RS
-            from core.query_replay import QueryReplay as _QR
-            from core.adaptive_weights import AdaptiveWeightEngine as _AWE
-            from core.feedback_loop import RankingFeedbackLoop as _Loop
-
-            _ss_path = str(_Path(_ai_index) / "semantic.index")
-            _qr_path = str(_Path(_ai_index) / "query_logs.db")
-            _ee = _EE()
-            _ss = _SS(_ss_path)
-            _qr = _QR(_qr_path)
-            _loop = _Loop()
-            _awe = _AWE(_loop, metrics_store=_metrics)
-            _wa = _WA(_RS(size=100, total_symbols=10, languages=["python"]))
-            _hybrid = _HR(_gre, _ss, _ee, weights_advisor=_wa,
-                          query_replay=_qr, adaptive_engine=_awe,
-                          metrics_store=_metrics)
+            await db.seed_default_agents()
+            logger.info("Default agents seeded")
         except Exception as e:
-            logger.warning("Semantic layer not available: %s", e)
+            logger.warning(f"Agent seeding skipped: {e}")
 
-        from core.execution_cache import ExecutionCache as _Cache
-
+    async def _seed_enterprise():
         try:
-            _exec_cache = _Cache(
-                db_path=str(_Path(_ai_index) / "execution_cache.db"),
-                max_entries=2000, default_ttl_seconds=3600,
-            )
-        except Exception as cache_ex:
-            logger.warning(f"Cache init failed: {cache_ex}")
-            _exec_cache = None
+            await db.seed_default_enterprise()
+            logger.info("Default enterprise seeded")
+        except Exception as e:
+            logger.warning(f"Enterprise seeding skipped: {e}")
 
+    async def _init_gateway():
         try:
-            _rt = _RT(_gq, _gre, _agent, _ctx, hybrid=_hybrid, metrics=_metrics, memory=_mem,
-                      cache=_exec_cache, worker_pool_size=4, feedback_intel=_feedback)
-        except Exception as rt_ex:
-            logger.warning(f"UnifiedRuntime init failed: {rt_ex}")
-            _rt = None
+            from core.gateway.provider_gateway import ProviderGateway
+            from core.gateway.models import ProviderType, ProviderPolicy, ProviderConfig, UsageQuota
+
+            policies = {
+                ProviderType.OPENAI: ProviderPolicy(provider=ProviderType.OPENAI, allowed_models=["gpt-4", "gpt-3.5-turbo"], max_requests_per_minute=60),
+                ProviderType.ANTHROPIC: ProviderPolicy(provider=ProviderType.ANTHROPIC, allowed_models=["claude-3"], max_requests_per_minute=30),
+                ProviderType.GEMINI: ProviderPolicy(provider=ProviderType.GEMINI, allowed_models=["gemini-pro"], max_requests_per_minute=60),
+                ProviderType.LOCAL: ProviderPolicy(provider=ProviderType.LOCAL, allowed_models=["*"], max_requests_per_minute=9999),
+            }
+            configs = {
+                ProviderType.OPENAI: ProviderConfig(provider=ProviderType.OPENAI, api_key_env="OPENAI_API_KEY", timeout_seconds=30),
+                ProviderType.ANTHROPIC: ProviderConfig(provider=ProviderType.ANTHROPIC, api_key_env="ANTHROPIC_API_KEY", timeout_seconds=30),
+                ProviderType.GEMINI: ProviderConfig(provider=ProviderType.GEMINI, api_key_env="GEMINI_API_KEY", timeout_seconds=30),
+                ProviderType.LOCAL: ProviderConfig(provider=ProviderType.LOCAL, api_key_env="", base_url="http://localhost:11434", timeout_seconds=60),
+            }
+            quotas = {
+                ProviderType.OPENAI: UsageQuota(provider=ProviderType.OPENAI, requests_limit=1000, tokens_limit=1000000),
+                ProviderType.ANTHROPIC: UsageQuota(provider=ProviderType.ANTHROPIC, requests_limit=500, tokens_limit=500000),
+                ProviderType.GEMINI: UsageQuota(provider=ProviderType.GEMINI, requests_limit=1000, tokens_limit=1000000),
+                ProviderType.LOCAL: UsageQuota(provider=ProviderType.LOCAL, requests_limit=999999, tokens_limit=999999999),
+            }
+
+            gateway = ProviderGateway(policies=policies, configs=configs, quotas=quotas)
+            app.state.provider_gateway = gateway
+            logger.info("ProviderGateway initialized and activated")
+        except Exception as e:
+            logger.warning(f"ProviderGateway init skipped: {e}")
+            app.state.provider_gateway = None
+
+    async def _init_ai_state():
         try:
-            _replay = _Replay(_mem)
-        except Exception as replay_ex:
-            logger.warning(f"Replay init failed: {replay_ex}")
-            _replay = None
+            from pathlib import Path as _Path
+            from core.graph_query import GraphQuery as _GQ
+            from core.graph_retrieval import GraphRetrievalEngine as _GRE
+            from core.ai_agent import CodeIntelligenceAgent as _Agent
+            from core.ai_context_engine import AIContextEngine as _Ctx
+            from core.hybrid_retriever import HybridRetriever as _HR
+            from core.metrics_store import MetricsStore as _Metrics
+            from core.execution_memory import ExecutionMemory as _Mem
+            from core.unified_runtime import UnifiedRuntime as _RT
+            from core.feedback_intel import FeedbackIntelligence as _Feedback
+            from core.replay import ReplayEngine as _Replay
+            from routers.ai import ai_state as _ai_state
 
-        # Store in shared state
-        _ai_state.initialized = True
-        _ai_state.gq = _gq
-        _ai_state.gre = _gre
-        _ai_state.agent = _agent
-        _ai_state.ctx = _ctx
-        _ai_state.hybrid = _hybrid
-        _ai_state.runtime = _rt
-        _ai_state.memory = _mem
-        _ai_state.metrics = _metrics
-        _ai_state.replay = _replay
-        _ai_state.cache = _exec_cache
-        _ai_state.service_registry = None
+            _ai_index = str(_Path(".ai") / "index")
+            _gq = _GQ(str(_Path(_ai_index) / "repository.db"))
+            _ctx = _Ctx(_gq)
+            _gre = _GRE(_gq, ctx=_ctx)
+            _agent = _Agent(_gq, _gre)
+            _metrics = _Metrics(str(_Path(_ai_index) / "metrics.db"))
+            _mem = _Mem(str(_Path(_ai_index) / "execution_memory.db"))
 
-        logger.info("AI API Router: all components initialized")
-    except Exception as e:
-        logger.error("AI API Router initialization failed: %s\n%s", e, traceback.format_exc())
-        from routers.ai import ai_state as _ai_state
-        _ai_state.initialized = False
-        _ai_state.error = str(e)
+            try:
+                _feedback = _Feedback(db_path=_Path(_ai_index) / "feedback.db")
+            except Exception as ex:
+                logger.warning(f"Feedback intelligence init skipped: {ex}")
+                _feedback = None
 
-    # Create default admin user if auth is enabled and no users exist
-    auth_enabled = os.getenv("EMO_AUTH_ENABLED", "false").lower() == "true"
-    if auth_enabled:
-        existing_users = await db.get_users_count()
-        if existing_users == 0:
-            import bcrypt
-            admin_id = str(uuid.uuid4())
-            admin_username = os.getenv("EMO_AUTH_USERNAME", "admin")
-            admin_password = os.getenv("EMO_AUTH_PASSWORD")
-            if not admin_password:
-                raise RuntimeError(
-                    "EMO_AUTH_PASSWORD environment variable is required when auth is enabled"
+            _hybrid: Optional[Any] = None
+            _ee: Optional[Any] = None
+            _ss: Optional[Any] = None
+            try:
+                from core.embedding_engine import EmbeddingEngine as _EE
+                from core.semantic_store import SemanticStore as _SS
+                from core.hybrid_retriever import WeightsAdvisor as _WA, RepoStats as _RS
+                from core.query_replay import QueryReplay as _QR
+                from core.adaptive_weights import AdaptiveWeightEngine as _AWE
+                from core.feedback_loop import RankingFeedbackLoop as _Loop
+
+                _ss_path = str(_Path(_ai_index) / "semantic.index")
+                _qr_path = str(_Path(_ai_index) / "query_logs.db")
+                _ee = _EE()
+                _ss = _SS(_ss_path)
+                _qr = _QR(_qr_path)
+                _loop = _Loop()
+                _awe = _AWE(_loop, metrics_store=_metrics)
+                _wa = _WA(_RS(size=100, total_symbols=10, languages=["python"]))
+                _hybrid = _HR(_gre, _ss, _ee, weights_advisor=_wa,
+                              query_replay=_qr, adaptive_engine=_awe,
+                              metrics_store=_metrics)
+            except Exception as e:
+                logger.warning("Semantic layer not available: %s", e)
+
+            from core.execution_cache import ExecutionCache as _Cache
+
+            try:
+                _exec_cache = _Cache(
+                    db_path=str(_Path(_ai_index) / "execution_cache.db"),
+                    max_entries=2000, default_ttl_seconds=3600,
                 )
-            password_hash = bcrypt.hashpw(
-                admin_password.encode("utf-8"), bcrypt.gensalt()
-            ).decode("utf-8")
-            await db.create_user(admin_id, admin_username, password_hash)
-            logger.info(f"Default admin created: {admin_username}")
+            except Exception as cache_ex:
+                logger.warning(f"Cache init failed: {cache_ex}")
+                _exec_cache = None
 
-    # Initialize Telegram bot if enabled
-    telegram_enabled = os.getenv("TELEGRAM_ENABLED", "false").lower() == "true"
-    telegram_token = os.getenv("TELEGRAM_TOKEN", "")
-    if telegram_enabled and telegram_token:
-        try:
-            from telegram_bot import TelegramBot
-            brain = Brain()
-            telegram_bot = TelegramBot(token=telegram_token, brain=brain)
-            if telegram_bot.is_available:
-                telegram_bot.start()
-                logger.info("Telegram bot started successfully")
-            else:
-                logger.warning("python-telegram-bot not installed")
+            try:
+                _rt = _RT(_gq, _gre, _agent, _ctx, hybrid=_hybrid, metrics=_metrics, memory=_mem,
+                          cache=_exec_cache, worker_pool_size=4, feedback_intel=_feedback)
+            except Exception as rt_ex:
+                logger.warning(f"UnifiedRuntime init failed: {rt_ex}")
+                _rt = None
+            try:
+                _replay = _Replay(_mem)
+            except Exception as replay_ex:
+                logger.warning(f"Replay init failed: {replay_ex}")
+                _replay = None
+
+            _ai_state.initialized = True
+            _ai_state.gq = _gq
+            _ai_state.gre = _gre
+            _ai_state.agent = _agent
+            _ai_state.ctx = _ctx
+            _ai_state.hybrid = _hybrid
+            _ai_state.runtime = _rt
+            _ai_state.memory = _mem
+            _ai_state.metrics = _metrics
+            _ai_state.replay = _replay
+            _ai_state.cache = _exec_cache
+            _ai_state.service_registry = None
+
+            logger.info("AI API Router: all components initialized")
         except Exception as e:
-            logger.error(f"Failed to start Telegram bot: {e}")
+            logger.error("AI API Router initialization failed: %s\n%s", e, traceback.format_exc())
+            from routers.ai import ai_state as _ai_state
+            _ai_state.initialized = False
+            _ai_state.error = str(e)
+
+    async def _init_admin():
+        auth_enabled = os.getenv("EMO_AUTH_ENABLED", "false").lower() == "true"
+        if auth_enabled:
+            existing_users = await db.get_users_count()
+            if existing_users == 0:
+                import bcrypt
+                admin_id = str(uuid.uuid4())
+                admin_username = os.getenv("EMO_AUTH_USERNAME", "admin")
+                admin_password = os.getenv("EMO_AUTH_PASSWORD")
+                if not admin_password:
+                    raise RuntimeError(
+                        "EMO_AUTH_PASSWORD environment variable is required when auth is enabled"
+                    )
+                password_hash = bcrypt.hashpw(
+                    admin_password.encode("utf-8"), bcrypt.gensalt()
+                ).decode("utf-8")
+                await db.create_user(admin_id, admin_username, password_hash)
+                logger.info(f"Default admin created: {admin_username}")
+
+    async def _init_telegram():
+        telegram_enabled = os.getenv("TELEGRAM_ENABLED", "false").lower() == "true"
+        telegram_token = os.getenv("TELEGRAM_TOKEN", "")
+        if telegram_enabled and telegram_token:
+            try:
+                from telegram_bot import TelegramBot
+                brain = Brain()
+                telegram_bot = TelegramBot(token=telegram_token, brain=brain)
+                if telegram_bot.is_available:
+                    telegram_bot.start()
+                    logger.info("Telegram bot started successfully")
+                else:
+                    logger.warning("python-telegram-bot not installed")
+            except Exception as e:
+                logger.error(f"Failed to start Telegram bot: {e}")
+
+    async def _init_ai_layer():
+        try:
+            from core.ai_init import initialize_ai_layer
+            ai_config = await asyncio.to_thread(initialize_ai_layer)
+            if ai_config:
+                logger.info("AI Code Intelligence Layer initialized")
+            else:
+                logger.warning("Failed to initialize AI Code Intelligence Layer")
+        except ImportError:
+            logger.warning("AI Code Intelligence Layer not available")
+        except Exception as e:
+            logger.error(f"Error initializing AI Code Intelligence Layer: {e}")
+
+    # Run independent initialization steps in parallel
+    await asyncio.gather(
+        _init_db(),
+        _init_gateway(),
+        _init_ai_layer(),
+        return_exceptions=True,
+    )
+
+    # Sequential steps that depend on db
+    await asyncio.gather(
+        _seed_agents(),
+        _seed_enterprise(),
+        return_exceptions=True,
+    )
+
+    # AI state and admin depend on DB + gateway
+    await asyncio.gather(
+        _init_ai_state(),
+        _init_admin(),
+        return_exceptions=True,
+    )
+
+    # Telegram is fully independent
+    await _init_telegram()
 
     # Start background cleanup
     cleanup_task = asyncio.create_task(cleanup_old_tasks_loop(state.task_manager))
@@ -751,7 +773,7 @@ async def list_models(provider: str, key: str = ""):
 
 @app.get("/api/test-connection")
 async def test_connection(provider: str = "openrouter", key: str = "", model: str = ""):
-    """Test actual connection to a model provider with optional model."""
+    """Test actual connection to a model provider with optional model (async)."""
     api_key = key.strip() if key else None
     if not api_key:
         kp = KeychainProvider()
@@ -763,7 +785,7 @@ async def test_connection(provider: str = "openrouter", key: str = "", model: st
         import time
         start = time.time()
         b = Brain(provider=provider, api_key=api_key, model=model or None)
-        response = b.ask(user="Write the word OK and nothing else", max_tokens=10)
+        response = await b.ask_async(user="Write the word OK and nothing else", max_tokens=10)
         latency = int((time.time() - start) * 1000)
         is_ok = 'OK' in response.strip().upper()
         if is_ok:
