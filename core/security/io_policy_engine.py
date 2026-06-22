@@ -64,9 +64,27 @@ class IOPolicyEngine:
         """Check if a tool is allowed to access a network URL.
 
         Default Deny: domain must be in the allowlist.
+        Uses proper hostname matching to prevent substring bypass (e.g. evil-example.com matching example.com).
         """
+        from urllib.parse import urlparse
+        hostname = urlparse(url).hostname
+        if hostname is None:
+            self._publish_violation(
+                tool_id=tool_id,
+                requested_capability="network_outbound",
+                reason=(
+                    f"Network access denied: tool='{tool_id}' url='{url}'. "
+                    f"Could not parse hostname."
+                ),
+            )
+            return False
         for domain in self._allowed_domains:
-            if domain in url:
+            if domain.startswith("."):
+                if hostname.endswith(domain):
+                    return True
+            elif hostname == domain:
+                return True
+            elif hostname.endswith("." + domain):
                 return True
 
         self._publish_violation(

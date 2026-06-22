@@ -69,7 +69,7 @@ class CredentialManager:
         Returns:
             A ScopedCredential with a generated value.
         """
-        credential_id = uuid.uuid4().hex[:16]
+        credential_id = uuid.uuid4().hex
         value = self._generate_value(credential_id, execution_id)
         now = time.time()
         cred = ScopedCredential(

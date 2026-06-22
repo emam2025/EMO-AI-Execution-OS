@@ -34,7 +34,7 @@ class MockEventBus:
 
 
 def test_register_secret_with_scope():
-    """E.3.1: Secret registration stores ref and hashed value."""
+    """E.3.1: Secret registration stores ref and encrypted value."""
     runtime = SecretsRuntime()
     ref = SecretRef(
         secret_id="api_key_1",
@@ -67,7 +67,6 @@ def test_inject_secret_for_allowed_tool():
     injected = runtime.inject_for_tool(
         tool_id="web_fetch",
         requested_secrets=["api_key_1"],
-        raw_values={"api_key_1": "sk-test-12345"},
     )
 
     assert "api_key_1" in injected
@@ -87,7 +86,6 @@ def test_inject_secret_denied_for_unauthorized_tool():
     injected = runtime.inject_for_tool(
         tool_id="data_reader",
         requested_secrets=["api_key_1"],
-        raw_values={"api_key_1": "sk-test-12345"},
     )
 
     assert "api_key_1" not in injected
@@ -114,7 +112,6 @@ def test_secret_expiration_enforced():
     injected = runtime.inject_for_tool(
         tool_id="tool_a",
         requested_secrets=["short_lived"],
-        raw_values={"short_lived": "value_123"},
     )
     assert "short_lived" in injected
 
@@ -123,7 +120,6 @@ def test_secret_expiration_enforced():
     injected = runtime.inject_for_tool(
         tool_id="tool_a",
         requested_secrets=["short_lived"],
-        raw_values={"short_lived": "value_123"},
     )
     assert "short_lived" not in injected
 
@@ -139,7 +135,6 @@ def test_revoke_all_for_tool_clears_secrets():
     injected = runtime.inject_for_tool(
         tool_id="tool_a",
         requested_secrets=["key_1", "key_2"],
-        raw_values={"key_1": "val_1", "key_2": "val_2"},
     )
     assert len(injected) == 2
 
@@ -167,7 +162,6 @@ async def test_secret_access_publishes_audit_event():
     runtime.inject_for_tool(
         tool_id="web_fetch",
         requested_secrets=["api_key_1"],
-        raw_values={"api_key_1": "sk-test-12345"},
     )
     await asyncio.sleep(0.01)
 
