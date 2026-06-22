@@ -5,6 +5,9 @@ Provides:
   - Execution path highlighting (which nodes ran, which failed)
   - Critical path analysis
   - Node status overlay (pending, running, completed, failed)
+
+AD-004: DAGs exceeding DAG_VIZ_MAX_NODES get a truncated summary view
+instead of full node/edge detail.
 """
 
 from __future__ import annotations
@@ -16,6 +19,8 @@ from typing import Any, Dict, List, Optional
 from core.models.dag import DependencyGraph, PlanNode
 
 logger = logging.getLogger("emo_ai.observability.dag_viz")
+
+DAG_VIZ_MAX_NODES = 500
 
 
 class DAGVisualizer:
@@ -29,9 +34,36 @@ class DAGVisualizer:
     def graph_structure(dag: DependencyGraph) -> Dict[str, Any]:
         """Convert a DAG to a graph structure for visualization.
 
+        AD-004: DAGs with more than DAG_VIZ_MAX_NODES nodes return a
+        truncated summary with node_count, edge_count, and a limited
+        sample rather than the full node/edge list.
+
         Returns:
-            Dict with 'nodes' and 'edges' arrays.
+            Dict with 'nodes' and 'edges' arrays (or truncated summary).
         """
+        n_nodes = len(dag.nodes)
+        if n_nodes > DAG_VIZ_MAX_NODES:
+            logger.warning(
+                "DAG has %d nodes, truncating to first %d for visualization",
+                n_nodes, DAG_VIZ_MAX_NODES,
+            )
+            truncated = []
+            for node in list(dag.nodes)[:DAG_VIZ_MAX_NODES]:
+                truncated.append({
+                    "id": node.id,
+                    "label": node.label or node.id,
+                    "tool": node.tool,
+                    "type": node.node_type.value if hasattr(node, "node_type") else "task",
+                    "status": "pending",
+                })
+            return {
+                "nodes": truncated,
+                "edges": [],
+                "truncated": True,
+                "total_node_count": n_nodes,
+                "edge_count": sum(len(n.depends_on) for n in dag.nodes),
+            }
+
         nodes = []
         for node in dag.nodes:
             nodes.append({

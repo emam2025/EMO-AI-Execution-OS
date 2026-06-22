@@ -38,16 +38,16 @@ class AgentState(str, Enum):
     DEREGISTERED = "deregistered"
 
 
-TERMINAL_STATES = {AgentState.COMPLETED, AgentState.FAILED, AgentState.DEREGISTERED}
+TERMINAL_STATES = {AgentState.FAILED, AgentState.DEREGISTERED}
 
 VALID_TRANSITIONS: Dict[AgentState, set[AgentState]] = {
     AgentState.IDLE: {AgentState.PLANNING, AgentState.DEREGISTERED},
-    AgentState.PLANNING: {AgentState.EXECUTING, AgentState.REVIEWING, AgentState.FAILED, AgentState.DEREGISTERED},
+    AgentState.PLANNING: {AgentState.EXECUTING, AgentState.REVIEWING, AgentState.FAILED, AgentState.STALE, AgentState.DEREGISTERED},
     AgentState.EXECUTING: {AgentState.REVIEWING, AgentState.FAILED, AgentState.STALE, AgentState.DEREGISTERED},
     AgentState.REVIEWING: {AgentState.COMPLETED, AgentState.PLANNING, AgentState.FAILED, AgentState.DEREGISTERED},
     AgentState.COMPLETED: {AgentState.PLANNING, AgentState.DEREGISTERED},
     AgentState.FAILED: {AgentState.PLANNING, AgentState.DEREGISTERED},
-    AgentState.STALE: {AgentState.OFFLINE, AgentState.PLANNING, AgentState.DEREGISTERED},
+    AgentState.STALE: {AgentState.IDLE, AgentState.OFFLINE, AgentState.PLANNING, AgentState.DEREGISTERED},
     AgentState.OFFLINE: {AgentState.DEREGISTERED},
     AgentState.DEREGISTERED: set(),
 }
@@ -229,6 +229,7 @@ class AgentLifecycleManager:
         """Find agents with expired heartbeats.
 
         Stale → transitions to STALE or OFFLINE.
+        Falls through to STALE when OFFLINE transition is invalid.
         Returns list of stale agent IDs.
         """
         now = time.time()
@@ -241,7 +242,12 @@ class AgentLifecycleManager:
             elapsed = now - agent.last_heartbeat
 
             if elapsed > self.STALE_TIMEOUT and agent.state != AgentState.OFFLINE:
-                self.transition_state(agent_id, AgentState.OFFLINE)
+                if not self.transition_state(agent_id, AgentState.OFFLINE):
+                    if elapsed > self.HEARTBEAT_TIMEOUT and agent.state not in (AgentState.STALE, AgentState.OFFLINE):
+                        self.transition_state(agent_id, AgentState.STALE)
+                        stale_ids.append(agent_id)
+                        logger.warning("Agent %s is STALE (no heartbeat for %.0fs)", agent_id, elapsed)
+                        continue
                 stale_ids.append(agent_id)
                 logger.warning("Agent %s is OFFLINE (no heartbeat for %.0fs)", agent_id, elapsed)
 

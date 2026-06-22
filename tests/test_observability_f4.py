@@ -128,6 +128,52 @@ class TestDAGVisualizer:
         assert view["items"][0]["level"] == 0
         assert view["items"][1]["level"] == 1
 
+    def test_graph_structure_truncates_at_500_nodes(self):
+        class FakeNode:
+            def __init__(self, nid, deps):
+                self.id = nid
+                self.label = nid
+                self.tool = "test"
+                self.depends_on = deps
+                self.node_type = type("NT", (), {"value": "task"})()
+
+        class BigDAG:
+            nodes = [FakeNode(f"n{i}", []) for i in range(600)]
+            def get_node(self, nid):
+                for n in self.nodes:
+                    if n.id == nid:
+                        return n
+                return None
+
+        dag = BigDAG()
+        graph = DAGVisualizer.graph_structure(dag)
+        assert graph.get("truncated") is True
+        assert graph.get("total_node_count") == 600
+        assert len(graph["nodes"]) == 500
+        assert graph.get("edge_count") == 0
+
+    def test_graph_structure_normal_under_limit(self):
+        class FakeNode:
+            def __init__(self, nid, deps):
+                self.id = nid
+                self.label = nid
+                self.tool = "test"
+                self.depends_on = deps
+                self.node_type = type("NT", (), {"value": "task"})()
+
+        class SmallDAG:
+            nodes = [FakeNode(f"n{i}", []) for i in range(10)]
+            def get_node(self, nid):
+                for n in self.nodes:
+                    if n.id == nid:
+                        return n
+                return None
+
+        dag = SmallDAG()
+        graph = DAGVisualizer.graph_structure(dag)
+        assert graph.get("truncated") is None or graph.get("truncated") is False
+        assert len(graph["nodes"]) == 10
+
 
 # ── RuntimeDashboard Tests ──────────────────────────────────────
 
