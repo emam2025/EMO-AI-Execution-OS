@@ -1,6 +1,34 @@
-# EMO AI Execution OS
+<div align="center">
+  <pre>
+███████╗███╗   ███╗ ██████╗     █████╗ ██╗
+██╔════╝████╗ ████║██╔═══██╗   ██╔══██╗██║
+█████╗  ██╔████╔██║██║   ██║   ███████║██║
+██╔══╝  ██║╚██╔╝██║██║   ██║   ██╔══██║██║
+███████╗██║ ╚═╝ ██║╚██████╔╝██╗██║  ██║██║
+╚══════╝╚═╝     ╚═╝ ╚═════╝ ╚═╝╚═╝  ╚═╝╚═╝
+  </pre>
 
-Master Architecture, Reality Audit & Maintenance Reference
+  # EMO AI Execution OS
+
+  **Industrial AI Execution Operating System**
+
+  [![Version](https://img.shields.io/badge/version-1.0.0--RC18-blue)]()
+  [![Tests](https://img.shields.io/badge/tests-4126+-green)]()
+  [![Python](https://img.shields.io/badge/python-3.14-blue)]()
+  [![License](https://img.shields.io/badge/license-Proprietary-red)]()
+
+  ---
+
+  *Master Architecture, Reality Audit & Maintenance Reference*
+
+  ---
+
+  **© 2026 Eng. Emam AbdullAziz. All rights reserved.**
+
+  This repository and all its contents are the intellectual property of Engineer Emam AbdullAziz.  
+  Unauthorized reproduction, distribution, or use is strictly prohibited.
+
+</div>
 
 ## Purpose
 
