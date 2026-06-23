@@ -21,6 +21,7 @@ import time
 from typing import TYPE_CHECKING, Any, Optional
 
 from core.models.sandbox import SandboxContext, SandboxResult
+from core.runtime.sandbox.sandbox_errors import ExecutionTimeoutError, SandboxViolationError
 
 if TYPE_CHECKING:
     from core.interfaces.event_bus import IEventBus

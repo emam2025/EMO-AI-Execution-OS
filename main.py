@@ -163,8 +163,8 @@ async def lifespan(app: FastAPI):
                 _exec_cache = None
 
             try:
-                _rt = _RT(_gq, _gre, _agent, _ctx, hybrid=_hybrid, metrics=_metrics, memory=_mem,
-                          cache=_exec_cache, worker_pool_size=4, feedback_intel=_feedback)
+                _rt = _RT(_gq, _gre, _agent, _ctx, hybrid=_hybrid, memory=_mem,
+                          feedback_intel=_feedback)
             except Exception as rt_ex:
                 logger.warning(f"UnifiedRuntime init failed: {rt_ex}")
                 _rt = None
@@ -186,6 +186,19 @@ async def lifespan(app: FastAPI):
             _ai_state.replay = _replay
             _ai_state.cache = _exec_cache
             _ai_state.service_registry = None
+
+            from core.runtime.facade import EmoRuntimeFacade as _Facade
+            _ai_state.facade = _Facade(
+                unified_runtime=_rt,
+                execution_memory=_mem,
+                metrics_store=_metrics,
+                graph_query=_gq,
+                graph_retrieval=_gre,
+                hybrid_retriever=_hybrid,
+                replayer=_replay,
+                agent=_agent,
+                context_engine=_ctx,
+            )
 
             logger.info("AI API Router: all components initialized")
         except Exception as e:
@@ -458,6 +471,14 @@ try:
     logger.info("AI API router registered")
 except Exception as e:
     logger.error(f"Failed to register AI router: {e}")
+
+# Runtime API (Phase F1)
+try:
+    from routers.runtime_api import router as runtime_api_router
+    app.include_router(runtime_api_router)
+    logger.info("Runtime API router registered")
+except Exception as e:
+    logger.error(f"Failed to register Runtime API router: {e}")
 
 # E2E Pipeline API
 try:

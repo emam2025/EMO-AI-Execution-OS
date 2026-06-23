@@ -9,6 +9,11 @@ from core.control_plane.organization_manager import OrganizationManager, Organiz
 from core.control_plane.resource_manager import ResourceManager, Resource, ResourceType, ResourceStatus
 from core.control_plane.policy_manager import PolicyManager, Policy, PolicyType, PolicyStatus
 from core.control_plane.approval_manager import ApprovalManager, ApprovalRequest, ApprovalStatus
+from core.control_plane.brain import ControlPlaneBrain
+from core.control_plane.reconciler import Reconciler, Correction, DesiredState
+from core.control_plane.orchestrator import ExecutionOrchestrator, NodeScore
+from core.control_plane.health import HealthManager, HealthReport, TopologyEvent
+from core.control_plane.state import *  # noqa: F401, F403 — SystemStateBrain, WorkerInfo, etc.
 
 __all__ = [
     "TenantManager",
@@ -26,4 +31,19 @@ __all__ = [
     "ApprovalManager",
     "ApprovalRequest",
     "ApprovalStatus",
+    "ControlPlaneBrain",
+    "SystemStateBrain",
+    "WorkerInfo",
+    "ExecutionInfo",
+    "NodeInfo",
+    "FailureCluster",
+    "LoadMetrics",
+    "Reconciler",
+    "Correction",
+    "DesiredState",
+    "ExecutionOrchestrator",
+    "NodeScore",
+    "HealthManager",
+    "HealthReport",
+    "TopologyEvent",
 ]

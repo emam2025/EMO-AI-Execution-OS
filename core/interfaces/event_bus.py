@@ -12,6 +12,8 @@ from typing import TYPE_CHECKING, Awaitable, Callable, Protocol
 if TYPE_CHECKING:
     from core.models.event import EventTopic, ExecutionEvent
 
+# EventHandler: callable that accepts an ExecutionEvent
+EventHandler = Callable[["ExecutionEvent"], None]
 
 class IEventBus(Protocol):
     """Protocol for publish/subscribe event bus.

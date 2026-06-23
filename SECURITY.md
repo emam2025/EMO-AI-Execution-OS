@@ -18,7 +18,7 @@
 - NEVER commit .env files, API keys, or credentials
 - Use .env.example for documentation (empty values only)
 - Rotate keys immediately if exposed
-- Use secrets_runtime.py for runtime secret injection
+- Deleted — secrets_runtime.py removed (dead code, T-A15)
 
 ## Architectural Laws (LAW 1-27)
 

@@ -25,7 +25,6 @@ from typing import Any, Callable, Dict, List, Optional
 
 from core.control_plane import ControlPlaneBrain
 from core.interfaces.execution_engine import IExecutionEngine
-from core.runtime.control import ControlPlane
 from core.models.dag import DependencyGraph, PlanNode
 from core.runtime.control.worker_orchestrator import WorkerOrchestrator
 from core.runtime.isolation.isolation_runtime import IsolationRuntime
@@ -61,31 +60,30 @@ class RuntimeOS:
     def __init__(
         self,
         engine: Optional[IExecutionEngine] = None,
-        control_plane: Optional[ControlPlane] = None,
         control_brain: Optional[ControlPlaneBrain] = None,
+        orchestrator: Optional[WorkerOrchestrator] = None,
         isolation: Optional[IsolationRuntime] = None,
         mesh: Optional[ServiceMesh] = None,
         registry: Optional[ServiceRegistry] = None,
-        orchestrator: Optional[WorkerOrchestrator] = None,
         mesh_runtime: Optional[MeshExecutionRuntime] = None,
         codegraph: Optional[Any] = None,
     ):
         self._engine = engine
-        self._control = control_plane or ControlPlane()
         self._brain = control_brain or ControlPlaneBrain(
             correction_handler=self._handle_correction,
             codegraph=codegraph,
         )
+        self._orchestrator = orchestrator or WorkerOrchestrator()
         self._isolation = isolation
         self._mesh = mesh or ServiceMesh()
         self._registry = registry or ServiceRegistry()
-        self._orchestrator = orchestrator or WorkerOrchestrator()
         self._mesh_runtime = mesh_runtime or MeshExecutionRuntime(
             engine=engine,
             mesh=self._mesh,
         )
 
         self._executions: Dict[str, ExecutionRecord] = {}
+        self._phase = "booting"
         self._started = False
 
     # ── Lifecycle ──
@@ -95,7 +93,7 @@ class RuntimeOS:
         if self._started:
             return
         self._brain.start()
-        self._control.start()
+        self._phase = "active"
         self._started = True
         logger.info("RuntimeOS started")
 
@@ -104,9 +102,9 @@ class RuntimeOS:
         if not self._started:
             return
         self._brain.shutdown()
-        self._control.shutdown()
         if self._isolation:
             self._isolation.shutdown()
+        self._phase = "shutdown"
         self._started = False
         logger.info("RuntimeOS shutdown")
 
@@ -119,8 +117,9 @@ class RuntimeOS:
         return self._brain
 
     @property
-    def control(self) -> ControlPlane:
-        return self._control
+    def control(self) -> ControlPlaneBrain:
+        """Backward-compat: returns the same as .brain."""
+        return self._brain
 
     @property
     def isolation(self) -> Optional[IsolationRuntime]:
@@ -418,6 +417,5 @@ class RuntimeOS:
             "completed": completed,
             "failed": failed,
             "running": running,
-            "workers": self._orchestrator.active_count(),
-            "system_phase": self._control.state.phase.value,
+            "system_phase": self._phase,
         }

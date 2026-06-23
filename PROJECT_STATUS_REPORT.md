@@ -309,7 +309,7 @@ emo-ai/
 ### Sprint 2: R2 — Memory OS Pure (4-6 أسابيع)
 - [ ] بناء الـ 7 مكونات الناقصة (Project Memory, Knowledge Graph, إلخ)
 - [ ] بناء Memory Explorer UI مستقل (Desktop + Android)
-- [ ] 3341+ tests
+- [ ] 4068 tests
 - [ ] Tag: `r2-memory-os-v1.0.0`
 - [ ] إصدار `/releases/memory-os/` كمنتج منعزل
 
@@ -339,7 +339,7 @@ emo-ai/
 
 | المقياس | القيمة |
 |---------|--------|
-| إجمالي الاختبارات | 3341+ |
+| إجمالي الاختبارات | 4068 |
 | اختبارات Desktop | 130/130 ✅ |
 | اختبارات Gateway | 47/47 ✅ |
 | اختبارات Orchestration | 41/41 ✅ |

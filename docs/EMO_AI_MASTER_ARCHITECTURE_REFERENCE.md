@@ -104,7 +104,7 @@ EMO AI OS  v1.0.0-RC18
 │   ├── Identity               core/security/identity.py
 │   ├── RBAC                   core/security/rbac.py
 │   ├── Policy Engine          core/governance/guardrails_engine.py
-│   ├── Secrets Runtime        core/security/secrets_runtime.py
+│   ├── Secrets Runtime        DELETED (T-A15 — dead code)
 │   └── Audit / Compliance     core/governance/audit_trail.py, core/enterprise/compliance_reporter.py
 │
 └── Industrial Connectors
@@ -141,7 +141,7 @@ EMO AI OS  v1.0.0-RC18
 | Skills | ✅ Implemented | `core/memory/skill_graph_manager.py` |
 | Permissions | ✅ Implemented | `core/security/rbac.py`, `core/security/capabilities/` |
 | Memory | ✅ Implemented | `core/agents/` sector agents |
-| Coordination | ✅ Implemented | `core/interfaces/cognitive/swarm.py`, `core/runtime/cognitive/swarm_router.py` |
+| Coordination | ✅ Implemented | `core/interfaces/cognitive/swarm.py` |
 | **Tests** | ✅ Pass | `tests/test_agent_lifecycle.py`, `tests/test_swarm_trace_id_propagation_across_layers.py` |
 
 ### 4.3 Workflow OS
@@ -181,7 +181,7 @@ EMO AI OS  v1.0.0-RC18
 | Identity | ✅ Hardened | `core/security/identity.py` |
 | RBAC | ✅ Hardened | `core/security/rbac.py` |
 | Policy Engine | ✅ Implemented | `core/governance/guardrails_engine.py` |
-| Secrets Runtime | ✅ Implemented | `core/security/secrets_runtime.py` |
+| Secrets Runtime | 🗑️ Deleted (T-A15) | Dead code — no production importers |
 | Audit | ✅ Implemented | `core/governance/audit_trail.py` |
 | Compliance | ✅ Implemented | `core/enterprise/compliance_reporter.py` |
 | **Tests** | ✅ Pass | `tests/test_k1_runtime_truth_audit.py`, `tests/test_k2_hardening_patches.py` |
@@ -206,7 +206,7 @@ EMO AI OS  v1.0.0-RC18
 
 **Tests:** ✅ `tests/test_h1_computer_use_integration.py` (20/20) + `tests/computer/test_computer_runtime_foundation.py` (33/33) = **53 tests pass**.
 
-**Constraint:** Desktop Worker depends on `core/runtime/computer/stub_impl.py` — simulated desktop, not real. Needs real runtime for production.
+**Constraint (DELETED):** The stub_impl.py dependency was in the now-removed ComputerRuntimeFacade (dead code). DesktopWorker (`core/runtime/computer_use/desktop_worker.py`) is the live implementation without stub dependency.
 
 ### 5.2 Auto Tool Creation
 
@@ -235,7 +235,7 @@ EMO AI OS  v1.0.0-RC18
 | Capability | Evidence |
 |---|---|
 | Lifecycle Management | `core/agents/lifecycle_manager.py` |
-| Multi-Agent Coordination | `core/interfaces/cognitive/swarm.py`, `core/runtime/cognitive/swarm_router.py` |
+| Multi-Agent Coordination | `core/interfaces/cognitive/swarm.py` |
 | Governance Integration | `core/agents/policy_integration.py`, `core/agents/approval_integration.py` |
 | 4 Sector Agents | `core/agents/{manufacturing,energy,water,healthcare}/` |
 | Planner Agent | `core/orchestration/planner_agent.py` |
@@ -327,7 +327,7 @@ All industrial connectors are **read-only**. Write operations (e.g., actuator co
 |---|---|---|
 | R1 | Runtime Foundation | `core/execution_engine.py`, `core/worker_runtime.py` |
 | R2 | Memory OS | `core/memory/` (7 files) |
-| R4 | Cognitive OS | `core/runtime/cognitive/`, `core/interfaces/cognitive/` |
+| R4 | Cognitive OS | `core/interfaces/cognitive/` |
 | R5 | Multi Agent | `core/agents/lifecycle_manager.py`, `core/interfaces/cognitive/swarm.py` |
 | R7 | Governance | `core/governance/` (10 files) |
 | R8 | Industrial Preparation | `core/industrial/` (10 files) |
@@ -363,7 +363,7 @@ All industrial connectors are **read-only**. Write operations (e.g., actuator co
 |---|---|---|---|
 | AD-001 | Replay | No incremental replay — runs entire DAG | Open |
 | AD-002 | Memory | No external vector database (custom in-memory only) | Open |
-| AD-003 | Computer Use | Desktop runtime uses stub_impl — no real desktop control | Open |
+| AD-003 | Computer Use | stub_impl deleted — DesktopWorker uses live computer_use/desktop_worker.py | Resolved |
 | AD-004 | UI | No generative UI, no component registry, no visual builder | Open |
 | AD-005 | Infrastructure | No Kubernetes, no HA cluster, no disaster recovery | Open |
 | AD-006 | Replay Drift | ReplayDrift metric reported as 0.0 (placeholder) | Open |
@@ -421,7 +421,7 @@ Before any release:
 | **Security** | Identity | `core/security/identity.py` |
 | | RBAC | `core/security/rbac.py` |
 | | Policy Engine | `core/governance/guardrails_engine.py` |
-| | Secrets | `core/security/secrets_runtime.py` |
+| | Secrets | DELETED (T-A15 — dead code) |
 | **Runtime** | All Tests Pass | `pytest tests/` |
 | | Recovery Paths | `core/recovery/` |
 | | Rollback Plan | Railway rollback tested |
