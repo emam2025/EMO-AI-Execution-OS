@@ -265,6 +265,20 @@ def require_permission(resource: str, action: str, scope: str = "own"):
 # AUTH MIDDLEWARE (updated for AUTH_MODE)
 # ══════════════════════════════════════════════════════════════════════════════
 
+# ══════════════════════════════════════════════════════════════════════════════
+# RATE LIMITER
+# ══════════════════════════════════════════════════════════════════════════════
+
+try:
+    from core.rate_limiter import RateLimiter
+    _rate_limiter = RateLimiter(
+        max_requests=int(os.getenv("EMO_RATE_LIMIT_MAX", "100")),
+        window_seconds=int(os.getenv("EMO_RATE_LIMIT_WINDOW", "60")),
+    )
+except ImportError:
+    _rate_limiter = None
+
+
 async def auth_middleware(request: Request, call_next):
     """FastAPI middleware that enforces authentication based on AUTH_MODE.
 
@@ -289,6 +303,17 @@ async def auth_middleware(request: Request, call_next):
     ]
 
     path = request.url.path
+
+    # Rate limit by client IP (applies to ALL paths including public)
+    if _rate_limiter:
+        client_ip = request.client.host if request.client else "unknown"
+        allowed, count, limit = _rate_limiter.check(client_ip)
+        if not allowed:
+            return JSONResponse(
+                status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+                content={"detail": f"Rate limit exceeded ({count}/{limit})"},
+                headers={"Retry-After": str(_rate_limiter.window_seconds)},
+            )
 
     # Skip auth for public paths and static files
     if path in public_paths or path.startswith("/static/") or path.startswith("/api/stream"):
@@ -337,5 +362,17 @@ async def auth_middleware(request: Request, call_next):
             status_code=e.status_code,
             content={"detail": e.detail},
         )
+
+    # Rate limit by user_id (higher quota for authenticated users)
+    if _rate_limiter and hasattr(request.state, "user") and request.state.user:
+        uid = request.state.user.get("user_id")
+        if uid:
+            allowed, count, limit = _rate_limiter.check(f"user:{uid}")
+            if not allowed:
+                return JSONResponse(
+                    status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+                    content={"detail": f"User rate limit exceeded ({count}/{limit})"},
+                    headers={"Retry-After": str(_rate_limiter.window_seconds)},
+                )
 
     return await call_next(request)
