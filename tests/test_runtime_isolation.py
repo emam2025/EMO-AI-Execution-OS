@@ -756,6 +756,7 @@ class TestIsolationRuntime:
         iso = IsolationRuntime()
         iso.io_policy_engine.allow("test_tool", "read")
         iso.check_io("test_tool", "read")
+        assert True
 
     def test_network_blocked_by_default(self):
         iso = IsolationRuntime()

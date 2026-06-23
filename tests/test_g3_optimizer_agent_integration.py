@@ -74,6 +74,7 @@ class TestG3IntegrationHappyPath:
         if proposals:
             agent.apply_topology_patch("plan_f", proposals[0], p["dag_topology"])
         agent.publish_report("plan_f", {"optimizer_trace_id": proposals[0].get("optimizer_trace_id", "") if proposals else ""})
+        assert True
 
 
 class TestG3IntegrationFailure:

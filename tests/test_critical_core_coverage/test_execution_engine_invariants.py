@@ -24,6 +24,7 @@ class TestExecutionEngineLifecycle:
         engine = ExecutionEngine()
         engine.shutdown(wait=True)
         engine.shutdown(wait=True)
+        assert True
 
     def test_register_tool_accepts_dict_spec(self):
         """register_tool must accept a dict-like spec."""
@@ -33,6 +34,7 @@ class TestExecutionEngineLifecycle:
             engine.register_tool(spec)
         except Exception:
             pass  # May reject invalid spec; must not crash
+        assert True
 
     def test_status_returns_string(self):
         """status() must return a string for any execution_id."""

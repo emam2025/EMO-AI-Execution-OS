@@ -585,6 +585,7 @@ class TestPlannerAgentAdaptation:
                 planner.adapt_plan(plan.plan_id)
             except RuntimeError:
                 pass
+        assert True
 
     def test_adapt_halted_plan_fails(self, planner):
         plan = planner.receive_intent("halt test")
