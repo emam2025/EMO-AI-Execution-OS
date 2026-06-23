@@ -87,18 +87,18 @@ def build_planner_agent(
 
 
 def build_critic_agent(strict_critic_mode: bool = False) -> Any:
-    from core.runtime.orchestration.critic_agent import CriticAgent
+    from core.runtime.critic.critic_agent import CriticAgent
 
-    return CriticAgent(strict_mode=strict_critic_mode)
+    return CriticAgent(strict_critic_mode=strict_critic_mode)
 
 
 def build_optimizer_agent(strict_optimizer_mode: bool = False) -> Any:
-    from core.runtime.orchestration.optimizer_agent import OptimizerAgent
+    from core.runtime.optimizer.optimizer_agent import OptimizerAgent
 
-    return OptimizerAgent(strict_mode=strict_optimizer_mode)
+    return OptimizerAgent(strict_optimizer_mode=strict_optimizer_mode)
 
 
 def build_tool_synthesizer(strict_synthesis_mode: bool = False) -> Any:
-    from core.runtime.orchestration.tool_synthesizer import ToolSynthesizer
+    from core.runtime.tool_synthesis.tool_synthesizer import ToolSynthesizer
 
-    return ToolSynthesizer(strict_mode=strict_synthesis_mode)
+    return ToolSynthesizer(strict_synthesis_mode=strict_synthesis_mode)
