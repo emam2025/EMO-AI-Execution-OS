@@ -107,6 +107,14 @@ class Connection(ABC):
     async def fetchall(self, sql: str, parameters: tuple = ()) -> List[Dict]:
         ...
 
+    @staticmethod
+    @abstractmethod
+    def _translate(sql: str) -> str:
+        """Convert SQLite-isms to backend-native SQL.
+        Override in each subclass. Default: identity.
+        """
+        ...
+
 
 class DatabaseBackend(ABC):
     """Factory for database connections."""
@@ -145,8 +153,13 @@ class _SQLiteConnection(Connection):
         self._conn.row_factory = aiosqlite.Row
         return self
 
+    @staticmethod
+    def _translate(sql: str) -> str:
+        return sql
+
     async def execute(self, sql: str, parameters: tuple = ()):
-        c = await self._conn.execute(sql, parameters)
+        tsql = self._translate(sql)
+        c = await self._conn.execute(tsql, parameters)
         return _SQLiteCursor(c)
 
     async def executescript(self, script: str):
@@ -163,12 +176,14 @@ class _SQLiteConnection(Connection):
             await self._conn.close()
 
     async def fetchone(self, sql: str, parameters: tuple = ()) -> Optional[Dict]:
-        c = await self._conn.execute(sql, parameters)
+        tsql = self._translate(sql)
+        c = await self._conn.execute(tsql, parameters)
         row = await c.fetchone()
         return dict(row) if row else None
 
     async def fetchall(self, sql: str, parameters: tuple = ()) -> List[Dict]:
-        c = await self._conn.execute(sql, parameters)
+        tsql = self._translate(sql)
+        c = await self._conn.execute(tsql, parameters)
         rows = await c.fetchall()
         return [dict(r) for r in rows]
 
@@ -221,8 +236,12 @@ class _PGConnection(Connection):
         self._conn = await asyncpg.connect(self._url)
         return self
 
-    def _translate(self, sql: str) -> str:
-        return _translate_to_pg(sql)
+    @staticmethod
+    def _translate(sql: str) -> str:
+        sql = _translate_to_pg(sql)
+        sql = sql.replace("datetime('now')", "NOW()")
+        sql = sql.replace('datetime("now")', "NOW()")
+        return sql
 
     async def execute(self, sql: str, parameters: tuple = ()):
         tsql = self._translate(sql)
@@ -245,10 +264,7 @@ class _PGConnection(Connection):
         for stmt in statements:
             if not stmt:
                 continue
-            # Translate SQLite-specific syntax to PostgreSQL
             tsql = self._translate(stmt)
-            tsql = tsql.replace("datetime('now')", "NOW()")
-            tsql = tsql.replace('datetime("now")', "NOW()")
             await self._conn.execute(tsql)
 
     async def commit(self):
