@@ -25,7 +25,7 @@
 
   **© 2026 Eng. Emam AbdullAziz. All rights reserved.**
 
-  This repository and all its contents are the intellectual property of Engineer Emam AbdullAziz.  
+  This repository and all its contents are the intellectual property of Emam AbdullAziz.  
   Unauthorized reproduction, distribution, or use is strictly prohibited.
 
 </div>
