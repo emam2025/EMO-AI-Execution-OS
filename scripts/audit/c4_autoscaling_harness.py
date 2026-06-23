@@ -333,7 +333,7 @@ def task4_dependency_analysis() -> Dict[str, Any]:
     for name in components:
         try:
             if name == "ResourceScheduler":
-                from core.scheduler.resource_scheduler import ResourceScheduler
+                from core.runtime.resource_scheduler import ResourceScheduler
             elif name == "QuotaManager":
                 from core.runtime.resources.quota_manager import QuotaManager
             elif name == "ResourceEnforcer":

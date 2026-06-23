@@ -9,7 +9,7 @@ Ref: Canon LAW 10, LAW 13, LAW 23
 from unittest.mock import MagicMock
 
 from core.models.distributed_tracing import SpanRecord, SpanStatus, TraceContext, TraceSummary
-from core.runtime.tracing.distributed_tracer import DistributedTracer
+from core.runtime.observability.distributed_tracer import DistributedTracer
 
 
 def _build_tracer() -> DistributedTracer:

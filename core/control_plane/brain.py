@@ -25,11 +25,11 @@ from core.control_plane.orchestrator import ExecutionOrchestrator
 from core.control_plane.reconciler import Reconciler, Correction
 from core.control_plane.state.system_state import SystemStateBrain
 from core.codegraph.integration import CodeGraphRuntime
-from core.scheduler.resource_scheduler import (
+from core.runtime.resource_scheduler import (
+    Priority,
     ResourceRequirements,
     ResourceScheduler,
     SchedulingResult,
-    Priority,
 )
 from core.observability.trace import TraceStore, SpanStatus
 from core.observability.timeline import TimelineStore, EventType

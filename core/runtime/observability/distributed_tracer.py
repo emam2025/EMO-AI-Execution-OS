@@ -5,7 +5,9 @@ LAW 5: All trace operations are observable via EventStore.
 RULE 1: Deterministic reconstruction — same events → same trace.
 
 Wraps the existing TraceCollector with higher-level trace lifecycle
-and reconstruction from EventStore events.
+and reconstruction from EventStore events. Also supports HTTP-header
+context propagation and explicit span lifecycle for service-to-service
+tracing.
 
 Ref: Canon LAW 5, LAW 12, RULE 1
 """
@@ -18,6 +20,7 @@ import uuid
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional
 
+from core.models.distributed_tracing import TraceContext, TraceSummary
 from core.runtime.models.observability_models import SpanStatus, TraceSpan
 
 logger = logging.getLogger("emo_ai.observability.tracer")
@@ -73,6 +76,10 @@ class DistributedTracer:
     LAW 12: Every span is linked to a trace_id and parent_id.
     LAW 5: All spans are recorded for reconstruction.
     RULE 1: reconstruct_trace is deterministic on same event set.
+
+    Merged from core/runtime/tracing/distributed_tracer.py (span lifecycle + HTTP
+    context propagation) and observability/distributed_tracer.py
+    (EventBus/EventStore-based trace reconstruction).
     """
 
     def __init__(
@@ -85,18 +92,138 @@ class DistributedTracer:
         self._event_store = event_store
         self._event_bus = event_bus
         self._traces: Dict[str, Trace] = {}
+        self._active_spans: Dict[str, Dict[str, Any]] = {}
+        self._completed_spans: List[Any] = []
 
-    # ── create_trace ─────────────────────────────────────────
+    def start_trace(
+        self,
+        service_name: str,
+        operation_name: str,
+        baggage: Optional[Dict[str, str]] = None,
+    ) -> TraceContext:
+        """Start a new root trace with explicit span lifecycle."""
+        trace_id = f"trace-{uuid.uuid4().hex[:16]}"
+        span_id = f"span-{uuid.uuid4().hex[:12]}"
+        context = TraceContext(
+            trace_id=trace_id,
+            span_id=span_id,
+            parent_span_id=None,
+            service_name=service_name,
+            operation_name=operation_name,
+            baggage=baggage or {},
+        )
+        self._active_spans[span_id] = {
+            "trace_id": trace_id,
+            "start_time_ns": time.time_ns(),
+            "service_name": service_name,
+            "operation_name": operation_name,
+        }
+        return context
+
+    def start_child_span(
+        self,
+        parent_context: TraceContext,
+        service_name: str,
+        operation_name: str,
+    ) -> TraceContext:
+        """Start a child span under an existing trace."""
+        child_span_id = f"span-{uuid.uuid4().hex[:12]}"
+        child_context = TraceContext(
+            trace_id=parent_context.trace_id,
+            span_id=child_span_id,
+            parent_span_id=parent_context.span_id,
+            service_name=service_name,
+            operation_name=operation_name,
+            baggage=parent_context.baggage,
+        )
+        self._active_spans[child_span_id] = {
+            "trace_id": parent_context.trace_id,
+            "start_time_ns": time.time_ns(),
+            "service_name": service_name,
+            "operation_name": operation_name,
+        }
+        return child_context
+
+    def end_span(
+        self,
+        context: TraceContext,
+        status: SpanStatus = SpanStatus.OK,
+        attributes: Optional[Dict[str, Any]] = None,
+    ) -> Any:
+        """End an active span and record it."""
+        span_data = self._active_spans.pop(context.span_id, None)
+        if span_data is None:
+            raise ValueError(f"No active span found for {context.span_id}")
+
+        end_time_ns = time.time_ns()
+        from core.models.distributed_tracing import SpanRecord, SpanStatus as DtStatus
+
+        record = SpanRecord(
+            trace_id=context.trace_id,
+            span_id=context.span_id,
+            parent_span_id=context.parent_span_id,
+            service_name=context.service_name,
+            operation_name=context.operation_name,
+            start_time_ns=span_data["start_time_ns"],
+            end_time_ns=end_time_ns,
+            status=DtStatus(status.value),
+            attributes=attributes or {},
+        )
+        self._completed_spans.append(record)
+        return record
+
+    def get_trace_summary(self, trace_id: str) -> TraceSummary:
+        """Aggregate all completed spans for a trace into a summary."""
+        from core.models.distributed_tracing import SpanStatus as DtStatus
+
+        trace_spans = [s for s in self._completed_spans if s.trace_id == trace_id]
+        if not trace_spans:
+            return TraceSummary(trace_id=trace_id, total_spans=0, total_duration_ns=0, services_involved=[], error_count=0)
+
+        services = list({s.service_name for s in trace_spans})
+        error_count = sum(1 for s in trace_spans if s.status != DtStatus.OK)
+        total_duration = trace_spans[-1].end_time_ns - trace_spans[0].start_time_ns
+
+        return TraceSummary(
+            trace_id=trace_id,
+            total_spans=len(trace_spans),
+            total_duration_ns=total_duration,
+            services_involved=services,
+            error_count=error_count,
+            span_records=trace_spans,
+        )
+
+    def inject_context(self, context: TraceContext) -> Dict[str, str]:
+        """Inject trace context into HTTP headers."""
+        return {
+            "X-Trace-Id": context.trace_id,
+            "X-Span-Id": context.span_id,
+            "X-Parent-Span-Id": context.parent_span_id or "",
+            "X-Service-Name": context.service_name,
+        }
+
+    def extract_context(self, headers: Dict[str, str]) -> Optional[TraceContext]:
+        """Extract trace context from incoming HTTP headers."""
+        trace_id = headers.get("X-Trace-Id")
+        span_id = headers.get("X-Span-Id")
+        service_name = headers.get("X-Service-Name")
+        if not trace_id or not span_id or not service_name:
+            return None
+        parent_span_id = headers.get("X-Parent-Span-Id") or None
+        return TraceContext(
+            trace_id=trace_id,
+            span_id=span_id,
+            parent_span_id=parent_span_id,
+            service_name=service_name,
+            operation_name="extracted",
+        )
 
     def create_trace(
         self,
         execution_id: str,
         dag_id: str = "",
     ) -> str:
-        """Create a new trace root.
-
-        Returns trace_id linked to execution_id and DAG nodes.
-        """
+        """Create a new trace root linked to execution_id."""
         trace_id = uuid.uuid4().hex[:16]
         now_ns = time.monotonic_ns()
 
@@ -117,8 +244,6 @@ class DistributedTracer:
         logger.info("Trace created: %s (execution=%s)", trace_id, execution_id)
         return trace_id
 
-    # ── propagate_span ───────────────────────────────────────
-
     def propagate_span(
         self,
         service: str,
@@ -127,12 +252,7 @@ class DistributedTracer:
         trace_id: str = "",
         parent_span_id: str = "",
     ) -> str:
-        """Create and record a span for a service event.
-
-        Links to parent trace/span and records in EventStore.
-
-        Returns span_id.
-        """
+        """Create and record a span for a service event."""
         span_id = uuid.uuid4().hex[:12]
         now_ns = time.monotonic_ns()
 
@@ -176,15 +296,10 @@ class DistributedTracer:
         logger.debug("Span %s propagated for %s.%s", span_id, service, event_type)
         return span_id
 
-    # ── reconstruct_trace ────────────────────────────────────
-
     def reconstruct_trace(self, trace_id: str) -> List[Span]:
         """Reconstruct the full chronological timeline for a trace.
 
         RULE 1: Deterministic — same events produce same span list.
-        LAW 12: Every span is linked to trace_id.
-
-        Returns spans sorted by start_ns (child-first within same time).
         """
         stored = self._traces.get(trace_id)
         if stored is None:
@@ -195,8 +310,10 @@ class DistributedTracer:
         spans.sort(key=lambda s: (s.start_ns, s.span_id))
         return spans
 
+    def get_trace(self, trace_id: str) -> Optional[Trace]:
+        return self._traces.get(trace_id)
+
     def _reconstruct_from_events(self, trace_id: str) -> List[Span]:
-        """Rebuild trace spans from EventStore events."""
         if self._event_store is None:
             return []
 
@@ -222,9 +339,6 @@ class DistributedTracer:
             spans.append(span)
 
         return spans
-
-    def get_trace(self, trace_id: str) -> Optional[Trace]:
-        return self._traces.get(trace_id)
 
     @staticmethod
     def _infer_domain(service: str) -> str:

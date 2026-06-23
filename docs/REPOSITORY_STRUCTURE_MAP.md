@@ -65,7 +65,7 @@ Kernel Layer        │ core/canon/, core/interfaces/, core/models/, core/runtim
 | `core/security/` | Security primitives — keychain, RBAC, identity, capability guard, secrets runtime | Governance | core team | `core/interfaces/security.py`, `core/canon/` | `routers/`, `frontend/`, `core/industrial/`, `core/agents/` |
 | `core/industrial/` | Digital twins and industrial logic — OEE engine, sector data pipelines, twin manager | Industrial | core team | `core/models/`, `core/governance/`, `core/connectors/` | `frontend/`, `apps/`, `brain.py`, `agent.py` |
 | `core/connectors/` | External system connectors — energy, healthcare, manufacturing, water, communication | Industrial | core team | `core/interfaces/connectors.py`, `core/models/integration.py` | `routers/`, `frontend/`, `brain.py`, `agent.py` |
-| `core/observability/` | Telemetry, metrics, tracing, DAG visualization, topology viewer | Platform | core team | `core/interfaces/observability.py`, `core/runtime/tracing/` | `frontend/`, `apps/`, `core/industrial/` |
+| `core/observability/` | Telemetry, metrics, tracing, DAG visualization, topology viewer | Platform | core team | `core/interfaces/observability.py`, `core/runtime/observability/` | `frontend/`, `apps/`, `core/industrial/` |
 | `core/composition/` | DI composition root — dependency injection wiring | Platform | core team | All `core/` modules | Only place for DI wiring |
 | `core/recovery/` | System recovery, replay, resilience | Platform | core team | `core/interfaces/`, `core/runtime/` | `frontend/`, `apps/` |
 

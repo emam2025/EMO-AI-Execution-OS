@@ -104,7 +104,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `core/models/resource_scheduler.py`: AllocationStatus, ResourceRequest, ResourceAllocation, WorkerQuota — frozen dataclasses
 - `core/runtime/resource_scheduler/f3_resource_scheduler.py`: F3ResourceScheduler with schedule_execution/check_quotas/enforce_limits/get_available_capacity
 - `core/models/distributed_tracing.py`: SpanStatus, TraceContext, SpanRecord, TraceSummary — frozen dataclasses
-- `core/runtime/tracing/distributed_tracer.py`: DistributedTracer with start_trace/start_child_span/end_span/get_trace_summary/inject_context/extract_context
+- `core/runtime/observability/distributed_tracer.py`: DistributedTracer with start_trace/start_child_span/end_span/get_trace_summary/inject_context/extract_context
 - F1-F4: 6 tests each (24 total)
 
 **Phase D8 — Service Mesh Contracts (39 tests):**

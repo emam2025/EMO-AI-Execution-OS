@@ -23,7 +23,7 @@ from core.control_plane.health_supervisor import HealthSupervisor, RecoveryActio
 from core.control_plane.worker_drainer import WorkerDrainer
 from core.observability.timeline import EventType
 from core.runtime.mesh.mesh_execution_runtime import MeshExecutionRuntime
-from core.scheduler.resource_scheduler import ResourceRequirements
+from core.runtime.resource_scheduler import ResourceRequirements
 
 logger = logging.getLogger("emo_ai.control_plane.coordinator")
 

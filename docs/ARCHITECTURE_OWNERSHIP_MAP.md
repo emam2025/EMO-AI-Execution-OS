@@ -172,7 +172,7 @@
 | **المستفيدون** | جميع الطبقات العشر |
 | **التبعيات** | `core/models/`, `core/security/` |
 
-**ملفات Phases السابقة:** `core/runtime/unified_api.py` (F1), `core/runtime/control_plane/` (F2), `core/runtime/resource_scheduler/` (F3), `core/runtime/tracing/` (F4)
+**ملفات Phases السابقة:** `core/runtime/unified_api.py` (F1), `core/runtime/control_plane/` (F2), `core/runtime/resource_scheduler/` (F3), `core/runtime/observability/` (F4)
 
 ---
 
