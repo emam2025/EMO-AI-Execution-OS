@@ -38,3 +38,6 @@ pytest-asyncio>=0.23.0
 
 # Utilities
 psutil>=5.9.0
+
+# Optional: Vector DB production backend
+# qdrant-client>=1.9.0  # uncomment for QdrantVectorDB
