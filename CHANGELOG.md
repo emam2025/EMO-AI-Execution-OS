@@ -31,7 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - `main.py` — ProviderGateway initialization with full dependency injection
 - `VERSION` — updated to `1.0.0-RC18`
-- **Test Count**: 633 → 4126+ (current cumulative; 245 files, 4109 functions + 21 parametrized)
+- **Test Count**: 633 → 3341+ (current cumulative; 245 files, 4109 functions + 21 parametrized)
 
 ### Known Issues
 - Latency p95 ~900ms (Railway free tier — needs Pro upgrade)
@@ -494,7 +494,7 @@ are designed but not yet activated.
 ### Added
 - **Phase J3 — Production Readiness & Chaos Engineering** (`core/readiness/`): ChaosInjector (4 methods), LoadOrchestrator (4 methods), StabilityValidator (4 methods), CertificationGate (4 methods). Chaos SM (8 states/11 trans), Load SM (6 states/5 trans), Certification SM (10 states/9 trans). Recovery Guards G-C1/G-C2/G-C3 + Deterministic Load Guard G-D1. ReadinessTraceCorrelator for preparation_trace_id across all layers. 65 tests. 0 regressions.
 - **Phase FINAL — Release Certification** (`scripts/release/`): CertificationAggregator, BaselineFreezer, ReleaseValidator, CertificateEngine, ReleaseStateMachine (8 states/9 trans) with freeze guards G-R1–G-R5. RELEASE_CERTIFICATE.json with SHA-256 file fingerprints, test matrix, guard compliance matrix. SIGNING_MANIFEST.md with signed artifact hashes. ARCHIVE_LOG.txt.
-- **v4.7.0-prod-ready Release**: Full production readiness certification. 2616+ tests passing, 10 skipped, 3 pre-existing failures. Canon compliance 100% across 15 phases. Zero architecture drift. All critical guards enforced (G-C1–G-C3, G-D1, G-R1–G-R5, G-L1–G-L5, G-A1).
+- **v4.7.0-prod-ready Release**: Full production readiness certification. 2616+ passing (historical count), 10 skipped, 3 pre-existing failures. Canon compliance 100% across 15 phases. Zero architecture drift. All critical guards enforced (G-C1–G-C3, G-D1, G-R1–G-R5, G-L1–G-L5, G-A1).
 - **Production Deployment Guide** (`docs/PRODUCTION_DEPLOYMENT_GUIDE.md`): Step-by-step deployment with canary strategy, feature flags, rollback plan, and observability setup.
 - **Runtime Simplification (F2)**: CodeGraph proof shows removing 11 dead nodes reduces coupling by 66.00 and risk by 5.50. Refactor strategy updated to method-level inlining (not file deletion) to preserve live code in 9/10 modules.
 - **Contract Security (H3)**: Validated IContractValidator isolation (0 bypasses). Documented 3 permissive defaults by design. Registered 2 missing guardrails (payload size limit, unicode sanitization) as tracked architectural debt.

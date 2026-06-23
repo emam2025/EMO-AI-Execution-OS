@@ -1795,7 +1795,7 @@ Validated at `build()` time:
 - **J1 — Developer Experience (DONE ✅)**: SDK Client, CLI Runtime, Doc Generator, API Spec Publisher, Doc Pipeline, DevEx trace correlator — 6 components, 62 tests, 4 protocols.
 - **J2 — Enterprise Readiness (DONE ✅)**: Tenant Router, Usage Meter, Billing Engine, Compliance Auditor, Enterprise trace correlator — 7 components, 129 tests (52 enterprise + 77 existing), 5 Leakage Guards G-L1–G-L5, G-A1 Deterministic Audit Guard, 100% Canon compliance. v4.11.0-enterprise-ready — Multi-Tenant Isolation + Billing + GDPR/SOC2 Certified.
 - **J3 — Production Readiness & Chaos (DONE ✅)**: Chaos Injector, Load Orchestrator, Stability Validator, Certification Gate — 4 components, 65 tests, 3 Recovery Guards G-C1–G-C3, G-D1 Deterministic Load Guard, 3 state machines.
-- **v4.7.0-prod-ready Release (DONE ✅)**: Full release certification with RELEASE_CERTIFICATE.json, SIGNING_MANIFEST.md, 100% canon compliance across 15 phases, 2616+ tests passing, 0 regressions. Release SM with 5 freeze guards G-R1–G-R5.
+- **v4.7.0-prod-ready Release (DONE ✅)**: Full release certification with RELEASE_CERTIFICATE.json, SIGNING_MANIFEST.md, 100% canon compliance across 15 phases, 2616+ passing (historical count), 0 regressions. Release SM with 5 freeze guards G-R1–G-R5.
 
 #### Known Pre-Existing Issues (Non-Blocking)
 
@@ -2152,7 +2152,7 @@ ExecutionEngine → IsolationRuntime (BRIDGE)
 | **Governance** | RBAC (4 roles, 8 permissions) + Append-only Audit Trail (SHA-256 chain, HMAC) + Tenant Isolation (namespace scoped) |
 | **Desktop UI** | 7 live-bound routes + MemoryExplorer stub + CommandPalette (Ctrl+K) + FirstRunWizard (5 steps). All use design system (glass-panel, smooth-motion, timeline-node). |
 | **Canon Compliance** | All laws and rules — 100% compliant across all phases |
-| **Test Count** | 4126+ PASS (governance 16 + UI 140 = 156 new), 100 quarantined (pre-existing) |
+| **Test Count** | 3341+ PASS (governance 16 + UI 140 = 156 new), 100 quarantined (pre-existing) |
 | **Composition Root** | `strict_orchestration_mode` + `strict_memory_mode` enforces DI wiring |
 | **Tags** | `v4.15.0-delivery-ready`, `v1-runtime-stable`, `v0.1.0`–`v0.1.3`, `r1-runtime-os-v1.0.0` |
 

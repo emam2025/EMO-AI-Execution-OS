@@ -13,7 +13,7 @@
   **Industrial AI Execution Operating System**
 
   [![Version](https://img.shields.io/badge/version-1.0.0--RC18-blue)]()
-  [![Tests](https://img.shields.io/badge/tests-4126+-green)]()
+  [![Tests](https://img.shields.io/badge/tests-3341+-green)]()
   [![Python](https://img.shields.io/badge/python-3.14-blue)]()
   [![License](https://img.shields.io/badge/license-Proprietary-red)]()
 
@@ -205,7 +205,7 @@ Industrial sectors are implemented as extensions over a unified core:
 - **Current VERSION:** `v1.0.0-RC18` (see [VERSION](VERSION))
 - **Current tag:** `v1.0.0-RC18-BASELINE`
 - **Current deployment state:** Railway staging (Pilot Green)
-- **Current test status:** 4126+ tests, 100% pass rate
+- **Current test status:** 3341+ tests, 100% pass rate
 
 ## Official Reference Document
 
