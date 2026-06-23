@@ -297,6 +297,26 @@ class ResourceScheduler:  # ←→ IResourceScheduler
         self._priority_scheduler = PriorityScheduler()
         self._gpu_nodes: Set[str] = set()
 
+    @property
+    def active_assignments(self) -> Dict[str, AssignmentRecord]:
+        return dict(self._assignments)
+
+    @property
+    def quota(self) -> QuotaArbitrator:
+        return self._quota
+
+    @property
+    def fairness(self) -> FairnessEngine:
+        return self._fairness
+
+    @property
+    def topology(self) -> TopologyMapper:
+        return self._topology
+
+    @property
+    def starvation_handler(self) -> StarvationHandler:
+        return self._starvation
+
     # ── Legacy worker management (ControlPlaneBrain API) ───────
 
     def register_worker(self, worker_id: str, node_id: str,

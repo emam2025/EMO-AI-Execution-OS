@@ -55,7 +55,7 @@ The ultimate goal is an **Industrial AI Execution Operating System** capable of:
 | Understanding systems | ✅ Implemented (code analysis, connectors) | `core/codegraph/`, `core/connectors/` |
 | Analyzing data | ✅ Implemented (telemetry, OEE, digital twins) | `core/runtime/observability/`, `core/industrial/oee_engine.py` |
 | Planning actions | ✅ Implemented (Planner Agent, Adaptive Planner) | `core/orchestration/planner_agent.py`, `core/agents/adaptive_planner.py` |
-| Operating Agents | ✅ Implemented (lifecycle, multi-agent, swarm) | `core/agents/lifecycle_manager.py`, `core/interfaces/cognitive/swarm.py` |
+| Operating Agents | ✅ Implemented (lifecycle, multi-agent, swarm) | `core/agents/lifecycle_manager.py`, `core/runtime/multi_agent/swarm_coordinator.py` |
 | Creating tools | ⚠️ Partial (template-based, not LLM-driven) | `core/runtime/tool_synthesis/tool_synthesizer.py:35,94,314` |
 | Executing Workflows | ✅ Implemented (router, DAG, submission) | `routers/workflow.py`, `core/dag_optimizer.py`, `core/execution_core.py` |
 | Industrial system interaction | ✅ Implemented (read-only connectors) | `core/connectors/manufacturing/opcua_connector.py` |
@@ -79,7 +79,7 @@ EMO AI OS  v1.0.0-RC18
 │   ├── Planner Agent          core/orchestration/planner_agent.py
 │   ├── Critic Agent           core/runtime/critic/critic_agent.py
 │   ├── Optimizer Agent        core/orchestration/optimizer_agent.py
-│   └── Multi-Agent Swarm      core/interfaces/cognitive/swarm.py
+│   └── Multi-Agent Swarm      core/runtime/multi_agent/swarm_coordinator.py
 │
 ├── Agent Runtime
 │   ├── Lifecycle Manager      core/agents/lifecycle_manager.py
@@ -141,7 +141,7 @@ EMO AI OS  v1.0.0-RC18
 | Skills | ✅ Implemented | `core/memory/skill_graph_manager.py` |
 | Permissions | ✅ Implemented | `core/security/rbac.py`, `core/security/capabilities/` |
 | Memory | ✅ Implemented | `core/agents/` sector agents |
-| Coordination | ✅ Implemented | `core/interfaces/cognitive/swarm.py` |
+| Coordination | ✅ Implemented | `core/runtime/multi_agent/swarm_coordinator.py` |
 | **Tests** | ✅ Pass | `tests/test_agent_lifecycle.py`, `tests/test_swarm_trace_id_propagation_across_layers.py` |
 
 ### 4.3 Workflow OS
@@ -235,7 +235,7 @@ EMO AI OS  v1.0.0-RC18
 | Capability | Evidence |
 |---|---|
 | Lifecycle Management | `core/agents/lifecycle_manager.py` |
-| Multi-Agent Coordination | `core/interfaces/cognitive/swarm.py` |
+| Multi-Agent Coordination | `core/runtime/multi_agent/swarm_coordinator.py` |
 | Governance Integration | `core/agents/policy_integration.py`, `core/agents/approval_integration.py` |
 | 4 Sector Agents | `core/agents/{manufacturing,energy,water,healthcare}/` |
 | Planner Agent | `core/orchestration/planner_agent.py` |
@@ -327,8 +327,8 @@ All industrial connectors are **read-only**. Write operations (e.g., actuator co
 |---|---|---|
 | R1 | Runtime Foundation | `core/execution_engine.py`, `core/worker_runtime.py` |
 | R2 | Memory OS | `core/memory/` (7 files) |
-| R4 | Cognitive OS | `core/interfaces/cognitive/` |
-| R5 | Multi Agent | `core/agents/lifecycle_manager.py`, `core/interfaces/cognitive/swarm.py` |
+| R4 | Cognitive OS | `core/runtime/multi_agent/` |
+| R5 | Multi Agent | `core/agents/lifecycle_manager.py`, `core/runtime/multi_agent/swarm_coordinator.py` |
 | R7 | Governance | `core/governance/` (10 files) |
 | R8 | Industrial Preparation | `core/industrial/` (10 files) |
 | R11 | Autonomous Operations | `core/autonomy/`, `core/runtime/autonomy/` |

@@ -13,6 +13,9 @@ from enum import Enum
 from typing import Any, Dict, Optional
 from uuid import uuid4
 
+# SpanStatus is canonical from runtime models
+from core.runtime.models.observability_models import SpanStatus  # noqa: F401
+
 
 class MetricType(Enum):
     """Types of metrics collected."""
@@ -20,14 +23,6 @@ class MetricType(Enum):
     LATENCY = "latency"
     ERROR_RATE = "error_rate"
     THROUGHPUT = "throughput"
-
-
-class SpanStatus(Enum):
-    """Status of a distributed trace span."""
-
-    OK = "ok"
-    ERROR = "error"
-    UNSET = "unset"
 
 
 @dataclass(frozen=True)

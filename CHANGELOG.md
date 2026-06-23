@@ -5,6 +5,20 @@ All notable changes to EMO AI Orchestrator will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased] — 2026-06-24
+
+### Architecture Consolidation
+
+- **Tracing merge**: `core/runtime/tracing/distributed_tracer.py` → `core/runtime/observability/distributed_tracer.py` (164 LOC merged, deleted old file)
+- **Scheduler merge**: `core/scheduler/resource_scheduler.py` → `core/runtime/resource_scheduler/resource_scheduler.py` (505 LOC merged, 10 legacy API methods added for backward compat)
+- **SpanStatus unification**: All 4 SpanStatus enum definitions canonicalized into `core/runtime/models/observability_models.py` with all values (OK, ERROR, CANCELLED, UNKNOWN, TIMEOUT, UNSET, PENDING)
+- **Dead code removed**: `core/agents/{adaptive_planner,critic_agent,planner_agent}.py` (460 LOC), `core/composition/factories/` (410 LOC), 3 stale test files (484 LOC)
+- **Fixed 3 scheduler integration tests** (missing `active_assignments`/`quota`/`fairness`/`topology` properties)
+- **Clean span context conversion**: removed old `DtStatus` aliasing workaround, `end_span` now passes `status` directly
+- **Imports updated**: `brain.py`, `coordinator.py`, `c4_autoscaling_harness.py`, 2 test files
+- **Doc cross-references updated**: `CHANGELOG.md`, `ARCHITECTURE_OWNERSHIP_MAP.md`, `REPOSITORY_STRUCTURE_MAP.md`
+- **Net change**: 26 files, +607 insertions, -2,074 deletions
+
 ## [1.0.0-RC18] — 2026-06-21
 
 ### Added

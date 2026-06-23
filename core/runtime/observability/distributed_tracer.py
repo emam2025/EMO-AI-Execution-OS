@@ -156,7 +156,7 @@ class DistributedTracer:
             raise ValueError(f"No active span found for {context.span_id}")
 
         end_time_ns = time.time_ns()
-        from core.models.distributed_tracing import SpanRecord, SpanStatus as DtStatus
+        from core.models.distributed_tracing import SpanRecord
 
         record = SpanRecord(
             trace_id=context.trace_id,
@@ -166,7 +166,7 @@ class DistributedTracer:
             operation_name=context.operation_name,
             start_time_ns=span_data["start_time_ns"],
             end_time_ns=end_time_ns,
-            status=DtStatus(status.value),
+            status=status,
             attributes=attributes or {},
         )
         self._completed_spans.append(record)
@@ -174,14 +174,12 @@ class DistributedTracer:
 
     def get_trace_summary(self, trace_id: str) -> TraceSummary:
         """Aggregate all completed spans for a trace into a summary."""
-        from core.models.distributed_tracing import SpanStatus as DtStatus
-
         trace_spans = [s for s in self._completed_spans if s.trace_id == trace_id]
         if not trace_spans:
             return TraceSummary(trace_id=trace_id, total_spans=0, total_duration_ns=0, services_involved=[], error_count=0)
 
         services = list({s.service_name for s in trace_spans})
-        error_count = sum(1 for s in trace_spans if s.status != DtStatus.OK)
+        error_count = sum(1 for s in trace_spans if s.status != SpanStatus.OK)
         total_duration = trace_spans[-1].end_time_ns - trace_spans[0].start_time_ns
 
         return TraceSummary(
