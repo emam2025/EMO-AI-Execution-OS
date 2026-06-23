@@ -1,5 +1,6 @@
 """Tests for WorkerRuntime — emo-worker daemon."""
 import sys, os, json, time, threading
+from typing import Any, Dict
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 import warnings
