@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import time
 import pytest
-from core.scheduler.resource_scheduler import (
+from core.runtime.resource_scheduler import (
     ResourceScheduler,
     ResourceRequirements,
     SchedulingResult,
@@ -305,7 +305,7 @@ class TestResourceScheduler:
     def test_set_user_weight(self):
         rs = ResourceScheduler()
         rs.set_user_weight("u1", 2.0)
-        assert rs._fairness._weights["u1"] == 2.0
+        assert rs._fairness_model._weights["u1"] == 2.0
 
     def test_empty_cluster_summary(self):
         rs = ResourceScheduler()

@@ -10,17 +10,12 @@ import logging
 import time
 import uuid
 from dataclasses import dataclass, field
-from enum import Enum
 from typing import Any, Dict, List, Optional
 
+# SpanStatus is canonical from runtime models
+from core.runtime.models.observability_models import SpanStatus  # noqa: F401
+
 logger = logging.getLogger("emo_ai.observability.trace")
-
-
-class SpanStatus(Enum):
-    OK = "ok"
-    ERROR = "error"
-    PENDING = "pending"
-    CANCELLED = "cancelled"
 
 
 @dataclass

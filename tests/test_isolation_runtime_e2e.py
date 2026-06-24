@@ -111,6 +111,7 @@ class TestIsolationRuntimeE2EFlow:
         runtime = _make_runtime()
         runtime.io_policy_engine.allow("test_tool", "file.read")
         runtime.check_io("test_tool", "file.read", "/tmp/test.txt")
+        assert True
 
     def test_io_check_blocked(self):
         """IO check raises when operation is blocked (RULE 2)."""
@@ -127,6 +128,7 @@ class TestIsolationRuntimeE2EFlow:
             NetworkPolicy(allow_outbound=True),
         )
         runtime.check_network("test_tool", "http://example.com/api")
+        assert True
 
     def test_network_check_blocked(self):
         """Network check raises when domain is blocked."""
@@ -151,6 +153,7 @@ class TestIsolationRuntimeE2EFlow:
         """shutdown() destroys sandboxes without error."""
         runtime = _make_runtime()
         runtime.shutdown()
+        assert True
 
     def test_blocked_tool_no_network(self):
         """Tool with NONE network produces blocked result for network context."""

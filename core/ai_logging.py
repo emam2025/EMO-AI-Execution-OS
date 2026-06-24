@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Optional
 
 # Import the main logging config to reuse formatters and handlers
-from .logging_config import setup_logging, get_logger, log_audit, ColoredFormatter
+from .logging_config import ColoredFormatter
 
 # AI-specific log directory
 AI_LOG_DIR = Path(os.getenv("EMO_AI_LOG_DIR", ".ai/logs"))

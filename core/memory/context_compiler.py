@@ -3,6 +3,11 @@
 LAW 14: Same (trace_id, tenant_id, max_tokens) → same context (deterministic SHA-256).
 LAW 15: Never leaks cross-tenant context; scope_verified flag enforced.
 RULE 3: Replay-safe — context reconstruction is idempotent.
+
+Note: This is the Phase-L async memory ContextCompiler (compress_trace_to_context).
+A separate pre-Phase-L sync ContextCompiler lives at core/context_compiler.py
+(build_llm_context / build_symbol_context / build_file_context).
+The two serve distinct layers and cannot be merged.
 """
 
 from __future__ import annotations

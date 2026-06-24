@@ -20,7 +20,6 @@ from core.memory.models import (  # LAW-6
     MemoryEntry,
     PruningPolicy,
     PruneTrigger,
-    PruneDecision,
     ForgettingPolicy,
     RetrievalMode,
 )

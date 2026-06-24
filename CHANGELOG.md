@@ -5,6 +5,25 @@ All notable changes to EMO AI Orchestrator will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased] — 2026-06-24
+
+### Architecture Consolidation
+
+- **Tracing merge**: `core/runtime/tracing/distributed_tracer.py` → `core/runtime/observability/distributed_tracer.py` (164 LOC merged, deleted old file)
+- **Scheduler merge**: `core/scheduler/resource_scheduler.py` → `core/runtime/resource_scheduler/resource_scheduler.py` (505 LOC merged, 10 legacy API methods added for backward compat)
+- **SpanStatus unification**: All 4 SpanStatus enum definitions canonicalized into `core/runtime/models/observability_models.py` with all values (OK, ERROR, CANCELLED, UNKNOWN, TIMEOUT, UNSET, PENDING)
+- **Dead code removed**: `core/agents/{adaptive_planner,critic_agent,planner_agent}.py` (460 LOC), `core/composition/factories/` (410 LOC), 3 stale test files (484 LOC)
+- **Fixed 3 scheduler integration tests** (missing `active_assignments`/`quota`/`fairness`/`topology` properties)
+- **Clean span context conversion**: removed old `DtStatus` aliasing workaround, `end_span` now passes `status` directly
+- **Imports updated**: `brain.py`, `coordinator.py`, `c4_autoscaling_harness.py`, 2 test files
+- **Doc cross-references updated**: `CHANGELOG.md`, `ARCHITECTURE_OWNERSHIP_MAP.md`, `REPOSITORY_STRUCTURE_MAP.md`
+- **Net change**: 26 files, +607 insertions, -2,074 deletions
+
+### R2 Memory OS Components
+
+- **Project Memory (T-30)**: New `core/memory/project_memory.py` — per-project memory namespace built on `MemoryHierarchy`'s PROJECT layer. CRUD operations (store/retrieve/delete), text search with payload matching, project stats and listing, TTL support, cognitive trace propagation via `CognitiveTraceCorrelator`. 75 tests across 11 classes. Exports `ProjectMemory`, `ProjectMemoryEntry`, `ProjectSummary`.
+- **MemoryLayer extended**: Added `PROJECT = "project"` to `MemoryLayer` enum in `core/memory/models.py`
+
 ## [1.0.0-RC18] — 2026-06-21
 
 ### Added
@@ -31,7 +50,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - `main.py` — ProviderGateway initialization with full dependency injection
 - `VERSION` — updated to `1.0.0-RC18`
-- **Test Count**: 633 → 4126+ (current cumulative; 245 files, 4109 functions + 21 parametrized)
+- **Test Count**: 633 → 3341+ (current cumulative; 245 files, 4109 functions + 21 parametrized)
 
 ### Known Issues
 - Latency p95 ~900ms (Railway free tier — needs Pro upgrade)
@@ -104,7 +123,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `core/models/resource_scheduler.py`: AllocationStatus, ResourceRequest, ResourceAllocation, WorkerQuota — frozen dataclasses
 - `core/runtime/resource_scheduler/f3_resource_scheduler.py`: F3ResourceScheduler with schedule_execution/check_quotas/enforce_limits/get_available_capacity
 - `core/models/distributed_tracing.py`: SpanStatus, TraceContext, SpanRecord, TraceSummary — frozen dataclasses
-- `core/runtime/tracing/distributed_tracer.py`: DistributedTracer with start_trace/start_child_span/end_span/get_trace_summary/inject_context/extract_context
+- `core/runtime/observability/distributed_tracer.py`: DistributedTracer with start_trace/start_child_span/end_span/get_trace_summary/inject_context/extract_context
 - F1-F4: 6 tests each (24 total)
 
 **Phase D8 — Service Mesh Contracts (39 tests):**
@@ -261,29 +280,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [r2-memory-os-v1.0.0] — 2026-05-30
 
+> **⚠️ Historical Note (2026-06-24)**: The entries below describe a planned R2 Memory OS
+> release that was tagged and archived but whose source files (enterprise_spaces.py,
+> governance.py, semantic_index.py, graph_store.py, compression_engine.py, etc.)
+> were never present in the `develop` branch's `core/memory/` directory. The actual
+> R2 Memory OS implementation began with T-30 (Project Memory) on 2026-06-24.
+> See the [Unreleased] section for the current implementation status.
+
 ### R2 Enterprise Memory OS — Spaces, Governance & Explorer (CLOSED & ARCHIVED)
 
-- **ProjectMemorySpace / AgentMemorySpace / CrossSessionRecall** (`core/memory/enterprise_spaces.py`): Tenant-scoped memory spaces with store/recall/query/cross_session_recall.
-- **MemoryGovernanceEngine / AuditLog / RetentionPolicy** (`core/memory/governance.py`): SHA-256 audit chain, retention enforcement, integrity verification.
-- **Semantic Index / Knowledge Graph** (`core/memory/`): Embedding, semantic_index, graph_store, graph_queries, entity_extractor.
-- **Compression / Retrieval Pipeline** (`core/memory/`): compression_engine, context_selector, relevance_filter, retrieval_ranker, token_optimizer, storage_adapter.
-- **Desktop Explorer UI** (`desktop/emo-memory-explorer/`): 18 files — 5 screens (Dashboard, ProjectBrowser, AgentTrace, RetentionSettings, AuditLog), Zustand store, API layer, test file.
+- **ProjectMemorySpace / AgentMemorySpace / CrossSessionRecall** (planned: `core/memory/enterprise_spaces.py`): Tenant-scoped memory spaces with store/recall/query/cross_session_recall.
+- **MemoryGovernanceEngine / AuditLog / RetentionPolicy** (planned: `core/memory/governance.py`): SHA-256 audit chain, retention enforcement, integrity verification.
+- **Semantic Index / Knowledge Graph** (planned: `core/memory/`): Embedding, semantic_index, graph_store, graph_queries, entity_extractor.
+- **Compression / Retrieval Pipeline** (planned: `core/memory/`): compression_engine, context_selector, relevance_filter, retrieval_ranker, token_optimizer, storage_adapter.
+- **Desktop Explorer UI** (planned: `desktop/emo-memory-explorer/`): 18 files — 5 screens (Dashboard, ProjectBrowser, AgentTrace, RetentionSettings, AuditLog), Zustand store, API layer, test file.
 - **Test Suite**: 181/181 PASS (memory isolation: 10, enterprise isolation: 10, governance/retention: 11, semantic: 2 files, graph: 2 files, optimization: 1 file, router: 1, models: 1, storage: 1, token: 1).
 - **Zero R1 imports** — fully isolated in `/releases/memory_os/`.
 - **Archive**: `emo-memory-os-r2-release.tar.gz` (64 KB, 71 files SHA-256 signed).
 - **Tags**: `r2-memory-os-v1.0.0`.
-
-### Added
-- **Enterprise Memory Spaces**: `core/memory/enterprise_spaces.py` — ProjectMemorySpace, AgentMemorySpace, CrossSessionRecall with tenant_id enforcement.
-- **Memory Governance**: `core/memory/governance.py` — MemoryGovernanceEngine (retention enforcement), AuditLog (SHA-256 chain with HMAC), RetentionPolicy (TTL/max_entries config).
-- **Semantic Layer**: `core/memory/embedding.py`, `core/memory/semantic_index.py` — vector embedding and semantic search.
-- **Knowledge Graph**: `core/memory/graph_store.py`, `core/memory/graph_queries.py`, `core/memory/entity_extractor.py` — entity extraction and relationship graph.
-- **Retrieval Pipeline**: `core/memory/compression_engine.py`, `core/memory/context_selector.py`, `core/memory/relevance_filter.py`, `core/memory/retrieval_ranker.py`, `core/memory/token_optimizer.py`, `core/memory/storage_adapter.py`.
-- **Desktop Explorer**: `desktop/emo-memory-explorer/` — 18 files (5 route screens, store, API, tests).
-- **Tests**: 16 test files (181 tests) — across all sub-phases R2A through R2E.
-- **Documentation**: `docs/R2_CLOSURE_REPORT.md`, `docs/R2_MEMORY_ARCHITECTURE_MANIFEST.md`, 4 sub-phase reports.
-- **Certificates**: 5 sub-phase certificates (R2A–R2E).
-- **Manifests**: `artifacts/RELEASE_MANIFEST_R2.json`, `artifacts/SIGNING_MANIFEST_R2.json`.
 
 ## [r5-big-emo-v1.0.0] — 2026-05-30
 
@@ -494,7 +508,7 @@ are designed but not yet activated.
 ### Added
 - **Phase J3 — Production Readiness & Chaos Engineering** (`core/readiness/`): ChaosInjector (4 methods), LoadOrchestrator (4 methods), StabilityValidator (4 methods), CertificationGate (4 methods). Chaos SM (8 states/11 trans), Load SM (6 states/5 trans), Certification SM (10 states/9 trans). Recovery Guards G-C1/G-C2/G-C3 + Deterministic Load Guard G-D1. ReadinessTraceCorrelator for preparation_trace_id across all layers. 65 tests. 0 regressions.
 - **Phase FINAL — Release Certification** (`scripts/release/`): CertificationAggregator, BaselineFreezer, ReleaseValidator, CertificateEngine, ReleaseStateMachine (8 states/9 trans) with freeze guards G-R1–G-R5. RELEASE_CERTIFICATE.json with SHA-256 file fingerprints, test matrix, guard compliance matrix. SIGNING_MANIFEST.md with signed artifact hashes. ARCHIVE_LOG.txt.
-- **v4.7.0-prod-ready Release**: Full production readiness certification. 2616+ tests passing, 10 skipped, 3 pre-existing failures. Canon compliance 100% across 15 phases. Zero architecture drift. All critical guards enforced (G-C1–G-C3, G-D1, G-R1–G-R5, G-L1–G-L5, G-A1).
+- **v4.7.0-prod-ready Release**: Full production readiness certification. 2616+ passing (historical count), 10 skipped, 3 pre-existing failures. Canon compliance 100% across 15 phases. Zero architecture drift. All critical guards enforced (G-C1–G-C3, G-D1, G-R1–G-R5, G-L1–G-L5, G-A1).
 - **Production Deployment Guide** (`docs/PRODUCTION_DEPLOYMENT_GUIDE.md`): Step-by-step deployment with canary strategy, feature flags, rollback plan, and observability setup.
 - **Runtime Simplification (F2)**: CodeGraph proof shows removing 11 dead nodes reduces coupling by 66.00 and risk by 5.50. Refactor strategy updated to method-level inlining (not file deletion) to preserve live code in 9/10 modules.
 - **Contract Security (H3)**: Validated IContractValidator isolation (0 bypasses). Documented 3 permissive defaults by design. Registered 2 missing guardrails (payload size limit, unicode sanitization) as tracked architectural debt.

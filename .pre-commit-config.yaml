@@ -1,0 +1,20 @@
+repos:
+  - repo: local
+    hooks:
+      - id: no-not-implemented
+        name: No NotImplementedError in core/
+        entry: bash -c 'if grep -rn "raise NotImplementedError" core/ --include="*.py"; then echo "ERROR: Use ABC + @abstractmethod"; exit 1; fi'
+        language: system
+        pass_filenames: false
+
+      - id: verify-test-count
+        name: Verify test count in docs
+        entry: python3 scripts/verify_test_count.py
+        language: system
+        pass_filenames: false
+
+      - id: bandit-quick
+        name: Bandit security scan (quick)
+        entry: bandit -r core/ -q
+        language: system
+        pass_filenames: false

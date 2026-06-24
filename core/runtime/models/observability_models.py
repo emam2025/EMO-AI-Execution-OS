@@ -21,11 +21,14 @@ from typing import Dict, List, Optional, Tuple
 # ════════════════════════════════════════════════════════════════════
 
 
-class SpanStatus(str, Enum):  # LAW-12
+class SpanStatus(str, Enum):  # LAW-12 — canonical enum used across all layers
     OK = "ok"
     ERROR = "error"
     CANCELLED = "cancelled"
     UNKNOWN = "unknown"
+    TIMEOUT = "timeout"
+    UNSET = "unset"
+    PENDING = "pending"
 
 
 class Severity(str, Enum):  # LAW-5

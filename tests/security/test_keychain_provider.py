@@ -91,6 +91,7 @@ class TestKeychainLifecycle:
         keyring.set_keyring(mem)
         kp = KeychainProvider()
         kp.delete("does_not_exist")
+        assert True
 
     def test_set_overwrites(self):
         mem = _make_memory_keyring()

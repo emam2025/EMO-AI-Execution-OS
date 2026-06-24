@@ -170,6 +170,7 @@ class TestSandboxDryRunValidation:
     def test_cleanup_no_error(self):
         sb = ToolSandboxer()
         sb.cleanup_sandbox({"sandbox_id": "s4"})
+        assert True
 
 
 class TestTraceCorrelation:

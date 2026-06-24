@@ -2,8 +2,8 @@
 
 Exports all isolation-layer components:
   - IsolationRuntime:      The integration bridge (Capability → IO → Sandbox)
-  - CapabilityGuard:       Pre-execution capability validation
-  - IOPolicyEngine:        IO allow/deny policy engine
+  - CapabilityGuard:       Pre-execution capability validation (registry-based)
+  - IOPolicyEngine:        IO allow/deny policy engine (per-tool grid)
   - SandboxExecutor:       Kill-safe subprocess execution
 
 Ref: Phase E.1.3 — IsolationRuntime Integration Layer

@@ -139,7 +139,7 @@ emo-desktop/src-tauri/
 
 | # | الخطر | التفاصيل |
 |---|-------|---------|
-| 🔴 S1 | **HIGH** — Python vault يستخدم XOR "تشفير" | `core/runtime/secrets/vault.py` يستخدم XOR obfuscation موثق كـ "NOT production-grade" |
+| 🔴 S1 | **DELETED** (T-A15) | `core/runtime/secrets/` — تم حذف المجلد بالكامل (dead code) |
 | 🔴 S2 | **HIGH** — لا توقيع ثنائي | macOS codesign, Windows authenticode, GPG signing كلها غير موجودة |
 | 🔴 S3 | **HIGH** — SQLite غير مشفر | `emo_ai.db` بدون تشفير — يحتوي audit logs وبيانات حساسة |
 | 🟡 S4 | **MEDIUM** — `.env` في مجلد العمل | API keys لـ 6 خدمات + JWT secret مكشوفة |

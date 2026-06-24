@@ -41,13 +41,6 @@ Ref: Canon RULE 1 (No Direct Execution)
 
 from typing import Any, Dict, Optional
 
-from core.composition.factories import (
-    enterprise_factory,
-    intelligence_factory,
-    observability_factory,
-    runtime_factory,
-)
-
 from core.canon import CanonValidator
 from core.codegraph.bridge import CodeGraphEventSubscriber
 from core.codegraph.drift import CodeGraphDriftDetector, DriftDetector, DriftStore
@@ -230,24 +223,10 @@ class CompositionRoot:
         self._alert_router: Any = None
         self._strict_trace_mode = strict_trace_mode
         self._planner_agent = planner_agent
-        self._dag_synthesizer: Any = None
-        self._critic_feedback_loop: Any = None
-        self._swarm_coordinator: Any = None
-        self._trace_correlator: Any = None
         self._strict_planning_mode = strict_planning_mode
         self._critic_agent = critic_agent
-        self._failure_diagnoser: Any = None
-        self._correction_engine: Any = None
-        self._runtime_reviewer: Any = None
-        self._diagnosis_state_machine: Any = None
-        self._critic_trace_correlator: Any = None
         self._strict_critic_mode = strict_critic_mode
         self._optimizer_agent = optimizer_agent
-        self._dag_topology_optimizer: Any = None
-        self._cost_optimizer: Any = None
-        self._resource_balancer: Any = None
-        self._optimization_state_machine: Any = None
-        self._optimizer_trace_correlator: Any = None
         self._strict_optimizer_mode = strict_optimizer_mode
         self._tool_synthesizer = tool_synthesizer
         self._tool_validator: Any = None
@@ -764,160 +743,6 @@ class CompositionRoot:
     def _build_alert_router(self) -> Any:
         from core.runtime.observability.alert_router import AlertRouter
         return AlertRouter()
-
-    # ── Phase G1 — Planner Agent ────────────────────────────────
-
-    @property
-    def planner_agent(self) -> Any:
-        """Return the PlannerAgent instance (Phase G1).
-
-        LAW 13: Constructed by CompositionRoot (singleton factory).
-        RULE 3: Adaptation requires ≥2 critic signals OR ≥0.8 confidence.
-        strict_planning_mode: When True, enables guard enforcement.
-        """
-        if self._planner_agent is None:
-            self._planner_agent = self._build_planner_agent()
-        return self._planner_agent
-
-    @property
-    def trace_correlator(self) -> Any:
-        """Return the TraceCorrelator instance (Phase G1).
-
-        LAW 12: Every plan transaction is traceable via correlation_id.
-        Propagates plan_trace_id across all layers.
-        """
-        if self._trace_correlator is None:
-            self._trace_correlator = self._build_trace_correlator()
-        return self._trace_correlator
-
-    def _build_critic_feedback_loop(self) -> Any:
-        from core.runtime.orchestration.critic_feedback_loop import (
-            CriticFeedbackLoop,
-        )
-        return CriticFeedbackLoop(max_critic_signals=5)
-
-    def _build_dag_synthesizer(self) -> Any:
-        from core.runtime.orchestration.dag_synthesizer import DAGSynthesizer
-        return DAGSynthesizer()
-
-    def _build_swarm_coordinator(self) -> Any:
-        from core.runtime.orchestration.swarm_coordinator import SwarmCoordinator
-        return SwarmCoordinator()
-
-    def _build_trace_correlator(self) -> Any:
-        from core.runtime.orchestration.trace_correlator import TraceCorrelator
-        return TraceCorrelator()
-
-    def _build_planner_agent(self) -> Any:
-        from core.runtime.orchestration.planner_agent import PlannerAgent
-        from core.runtime.orchestration.planning_state_machine import (
-            PlanningStateMachine,
-        )
-
-        if self._swarm_coordinator is None:
-            self._swarm_coordinator = self._build_swarm_coordinator()
-        if self._critic_feedback_loop is None:
-            self._critic_feedback_loop = self._build_critic_feedback_loop()
-        if self._trace_correlator is None:
-            self._trace_correlator = self._build_trace_correlator()
-
-        return PlannerAgent(
-            swarm_coordinator=self._swarm_coordinator,
-            critic_feedback_loop=self._critic_feedback_loop,
-            trace_correlator=self._trace_correlator,
-            state_machine=PlanningStateMachine(),
-        )
-
-    # ── Phase G2 — Critic Agent ─────────────────────────────────
-
-    @property
-    def critic_agent(self) -> Any:
-        """Return the CriticAgent instance (Phase G2).
-
-        LAW 8: Every assessment is published for governance audit.
-        LAW 12: Every diagnosis carries a critic_trace_id.
-        RULE 3: propose_correction guarded by ≥1 signal, ≥0.75 confidence, rollback_safe.
-        strict_critic_mode: When True, enables guard enforcement.
-        """
-        if self._critic_agent is None:
-            self._critic_agent = self._build_critic_agent()
-        return self._critic_agent
-
-    def _build_critic_agent(self) -> Any:
-        from core.runtime.critic.critic_agent import CriticAgent
-        from core.runtime.critic.failure_diagnoser import FailureDiagnoser
-        from core.runtime.critic.plan_correction_engine import PlanCorrectionEngine
-        from core.runtime.critic.runtime_reviewer import RuntimeReviewer
-        from core.runtime.critic.diagnosis_state_machine import DiagnosisStateMachine
-        from core.runtime.critic.trace_correlator import CriticTraceCorrelator
-
-        if self._failure_diagnoser is None:
-            self._failure_diagnoser = FailureDiagnoser()
-        if self._correction_engine is None:
-            self._correction_engine = PlanCorrectionEngine()
-        if self._runtime_reviewer is None:
-            self._runtime_reviewer = RuntimeReviewer()
-        if self._diagnosis_state_machine is None:
-            self._diagnosis_state_machine = DiagnosisStateMachine()
-        if self._critic_trace_correlator is None:
-            self._critic_trace_correlator = CriticTraceCorrelator()
-
-        return CriticAgent(
-            failure_diagnoser=self._failure_diagnoser,
-            correction_engine=self._correction_engine,
-            runtime_reviewer=self._runtime_reviewer,
-            state_machine=self._diagnosis_state_machine,
-            trace_correlator=self._critic_trace_correlator,
-            event_bus=self._event_bus,
-            strict_critic_mode=self._strict_critic_mode,
-        )
-
-    # ── Phase G3 — Optimizer Agent ──────────────────────────────
-
-    @property
-    def optimizer_agent(self) -> Any:
-        """Return the OptimizerAgent instance (Phase G3).
-
-        LAW 14: Topology patches preserve DAG integrity.
-        LAW 15: All optimisations respect cost budgets.
-        LAW 16: Worker reassignment is fair.
-        RULE 3: Safe Patch Guards enforce all preconditions.
-        strict_optimizer_mode: When True, enables guard enforcement.
-        """
-        if self._optimizer_agent is None:
-            self._optimizer_agent = self._build_optimizer_agent()
-        return self._optimizer_agent
-
-    def _build_optimizer_agent(self) -> Any:
-        from core.runtime.optimizer.optimizer_agent import OptimizerAgent
-        from core.runtime.optimizer.dag_topology_optimizer import DAGTopologyOptimizer
-        from core.runtime.optimizer.cost_optimizer import CostOptimizer
-        from core.runtime.optimizer.resource_balancer import ResourceBalancer
-        from core.runtime.optimizer.optimization_state_machine import (
-            OptimizationStateMachine,
-        )
-        from core.runtime.optimizer.trace_correlator import OptimizerTraceCorrelator
-
-        if self._dag_topology_optimizer is None:
-            self._dag_topology_optimizer = DAGTopologyOptimizer()
-        if self._cost_optimizer is None:
-            self._cost_optimizer = CostOptimizer()
-        if self._resource_balancer is None:
-            self._resource_balancer = ResourceBalancer()
-        if self._optimization_state_machine is None:
-            self._optimization_state_machine = OptimizationStateMachine()
-        if self._optimizer_trace_correlator is None:
-            self._optimizer_trace_correlator = OptimizerTraceCorrelator()
-
-        return OptimizerAgent(
-            topology_optimizer=self._dag_topology_optimizer,
-            cost_optimizer=self._cost_optimizer,
-            resource_balancer=self._resource_balancer,
-            state_machine=self._optimization_state_machine,
-            trace_correlator=self._optimizer_trace_correlator,
-            event_bus=self._event_bus,
-            strict_optimizer_mode=self._strict_optimizer_mode,
-        )
 
     # ── Phase G4 — Tool Synthesis Agent ─────────────────────────
 
@@ -2109,20 +1934,6 @@ class CompositionRoot:
     def _build_orchestration_trace_correlator(self) -> Any:
         from core.orchestration.trace_correlator import OrchestrationTraceCorrelator
         return OrchestrationTraceCorrelator()
-
-    def build_orchestration_layer(self) -> None:
-        """Construct all Phase G orchestration components.
-
-        LAW 1: Deterministic planning.
-        LAW 9: Governance independence.
-        LAW 11: Tenant isolation.
-        RULE 1: No cross-layer imports.
-        """
-        self.planner_agent
-        self.critic_agent
-        self.optimizer_agent
-        self.orchestration_state_machine
-        self.orchestration_trace_correlator
 
     def enforce_readonly_core_modules(self) -> None:  # EXEC-DIRECTIVE-PILOT-001
         """Enforce read-only access to core modules during pilot.

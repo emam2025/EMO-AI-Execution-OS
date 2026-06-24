@@ -9,12 +9,13 @@ Ref: EXEC-DIRECTIVE-PHASE2-KEYCHAIN-001
 
 import importlib
 import os
+from pathlib import Path
 from unittest.mock import patch
 
 import keyring
 import pytest
 
-from core.security.keychain_provider import SERVICE_NAME
+from core.security.keychain_provider import SERVICE_NAME, KeychainProvider
 
 
 # ═══════════════════════════════════════════════════════════════════
@@ -40,15 +41,21 @@ def _make_memory_keyring():
 
 def _reload_brain():
     """Reload brain so module-level _keychain picks up patched os.environ."""
+    KeychainProvider._cache.clear()
     import brain as brain_mod
     importlib.reload(brain_mod)
     return brain_mod
 
 
+_original_exists = Path.exists
+
 @pytest.fixture(autouse=True)
-def _reset_keyring():
+def _reset_keyring(monkeypatch):
+    KeychainProvider._cache.clear()
     keyring.set_keyring(keyring.backends.fail.Keyring())
+    monkeypatch.setattr(Path, "exists", lambda p: False if ".emo_settings" in str(p) else _original_exists(p))
     yield
+    KeychainProvider._cache.clear()
     keyring.set_keyring(keyring.backends.fail.Keyring())
 
 
@@ -61,7 +68,7 @@ class TestBrainKeychainIntegration:
 
     def test_brain_uses_keychain_for_openrouter(self):
         mem = _make_memory_keyring()
-        mem.set_password(SERVICE_NAME, "openrouter", "sk-or-keychain-key")
+        mem.set_password(SERVICE_NAME, "provider_openrouter", "sk-or-keychain-key")
         keyring.set_keyring(mem)
 
         with patch.dict(os.environ, {
@@ -76,7 +83,7 @@ class TestBrainKeychainIntegration:
 
     def test_brain_uses_keychain_for_groq(self):
         mem = _make_memory_keyring()
-        mem.set_password(SERVICE_NAME, "groq", "gsk-keychain-key")
+        mem.set_password(SERVICE_NAME, "provider_groq", "gsk-keychain-key")
         keyring.set_keyring(mem)
 
         with patch.dict(os.environ, {
@@ -91,7 +98,7 @@ class TestBrainKeychainIntegration:
 
     def test_brain_uses_keychain_for_gemini(self):
         mem = _make_memory_keyring()
-        mem.set_password(SERVICE_NAME, "gemini", "gm-keychain-key")
+        mem.set_password(SERVICE_NAME, "provider_gemini", "gm-keychain-key")
         keyring.set_keyring(mem)
 
         with patch.dict(os.environ, {

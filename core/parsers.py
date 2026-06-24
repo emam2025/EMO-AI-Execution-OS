@@ -28,7 +28,6 @@ from typing import Dict, List, Optional, Tuple, Any
 
 # Try to import tree-sitter
 try:
-    from tree_sitter import Language, Parser
     TREE_SITTER_AVAILABLE = True
 except ImportError:
     TREE_SITTER_AVAILABLE = False

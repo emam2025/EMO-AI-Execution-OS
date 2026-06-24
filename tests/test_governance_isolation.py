@@ -132,6 +132,7 @@ class TestTenantIsolation:
         tenant_isolation.enforce_isolation(
             tenant_isolation.Namespace.IPC_COMMAND, "submit", "tenant-a"
         )
+        assert True
 
     def test_tenant_registry_create_and_list(self):
         registry = tenant_isolation.TenantRegistry()

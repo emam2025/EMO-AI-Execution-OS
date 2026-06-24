@@ -32,7 +32,7 @@ from core.replay.engine import ReplayEngine
 from core.runtime.mesh import MeshExecutionRuntime, ServiceMesh
 from core.runtime.mesh.remote import MeshNode
 from core.runtime.os import RuntimeOS
-from core.scheduler.resource_scheduler import ResourceScheduler
+from core.runtime.resource_scheduler import ResourceScheduler
 from core.runtime.mesh.service_registry import ServiceRegistry
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))

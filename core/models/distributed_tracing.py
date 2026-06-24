@@ -8,17 +8,10 @@ Ref: Canon LAW 10, LAW 23
 """
 
 from dataclasses import dataclass, field
-from enum import Enum
 from typing import Any, Dict, List, Optional
 
-
-class SpanStatus(Enum):
-    """Trace span completion status."""
-
-    OK = "ok"
-    ERROR = "error"
-    TIMEOUT = "timeout"
-    CANCELLED = "cancelled"
+# SpanStatus is canonical from runtime models (imported here for backward compat)
+from core.runtime.models.observability_models import SpanStatus  # noqa: F401
 
 
 @dataclass(frozen=True)

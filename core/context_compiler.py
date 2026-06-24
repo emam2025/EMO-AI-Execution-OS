@@ -11,6 +11,12 @@ Architecture:
 
 This is the evolution from "retrieval = independent module" to
 "retrieval = part of DAG plan / context = executable node".
+
+Note: This is the pre-Phase-L DAG-tool ContextCompiler.
+Phase L introduced a separate async Memory ContextCompiler
+at core/memory/context_compiler.py with a different API
+(compress_trace_to_context / inject_runtime_intelligence /
+validate_boundary_safety). The two serve distinct layers.
 """
 
 from __future__ import annotations

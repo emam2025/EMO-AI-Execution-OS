@@ -13,6 +13,7 @@ Ref: artifacts/design/g1/04_integration_blueprint.md §2
 from __future__ import annotations
 
 import logging
+from abc import ABC, abstractmethod
 from typing import Any, Dict, Optional
 
 from core.runtime.models.planning_models import ExecutionPlan
@@ -20,7 +21,35 @@ from core.runtime.models.planning_models import ExecutionPlan
 logger = logging.getLogger("emo_ai.orchestration.correlator")
 
 
-class TraceCorrelator:  # LAW-12
+class BaseTraceCorrelator(ABC):
+    """Abstract base for all layer-specific trace correlators.
+
+    Each subsystem (DevEx, Enterprise, Cognitive, Infra, etc.)
+    extends this to provide its own trace/correlation strategy.
+    """
+
+    @abstractmethod
+    def record_correlation(
+        self,
+        plan_id: str,
+        layer: str,
+        correlation_id: str,
+    ) -> None:
+        ...
+
+    @abstractmethod
+    def trace_chain(
+        self,
+        plan_id: str,
+    ) -> Dict[str, str]:
+        ...
+
+    @abstractmethod
+    def reset(self) -> None:
+        ...
+
+
+class TraceCorrelator(BaseTraceCorrelator):  # LAW-12
     """Manages correlation_id propagation across layers.
 
     Each layer's correlation is derived from the plan_trace_id and
