@@ -19,6 +19,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Doc cross-references updated**: `CHANGELOG.md`, `ARCHITECTURE_OWNERSHIP_MAP.md`, `REPOSITORY_STRUCTURE_MAP.md`
 - **Net change**: 26 files, +607 insertions, -2,074 deletions
 
+### R2 Memory OS Components
+
+- **Project Memory (T-30)**: New `core/memory/project_memory.py` — per-project memory namespace built on `MemoryHierarchy`'s PROJECT layer. CRUD operations (store/retrieve/delete), text search with payload matching, project stats and listing, TTL support, cognitive trace propagation via `CognitiveTraceCorrelator`. 75 tests across 11 classes. Exports `ProjectMemory`, `ProjectMemoryEntry`, `ProjectSummary`.
+- **MemoryLayer extended**: Added `PROJECT = "project"` to `MemoryLayer` enum in `core/memory/models.py`
+
 ## [1.0.0-RC18] — 2026-06-21
 
 ### Added
