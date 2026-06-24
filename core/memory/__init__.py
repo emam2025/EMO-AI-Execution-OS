@@ -17,6 +17,7 @@ from core.memory.context_compiler import ContextCompiler
 from core.memory.skill_graph_manager import SkillGraphManager
 from core.memory.memory_state_machine import MemoryStateMachine, MemoryState, MemoryTransition
 from core.memory.trace_correlator import CognitiveTraceCorrelator
+from core.memory.project_memory import ProjectMemory, ProjectMemoryEntry, ProjectSummary
 
 __all__ = [
     "MemoryHierarchy",
@@ -26,4 +27,7 @@ __all__ = [
     "MemoryState",
     "MemoryTransition",
     "CognitiveTraceCorrelator",
+    "ProjectMemory",
+    "ProjectMemoryEntry",
+    "ProjectSummary",
 ]
