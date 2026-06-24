@@ -1,5 +1,6 @@
 """ERP connector stub — enterprise module placeholder."""
 import logging
+from enum import Enum
 
 logger = logging.getLogger("emo_ai.enterprise.erp_connector")
 
