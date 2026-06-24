@@ -1,166 +1,261 @@
-# EMO AI — خريطة مسار المشروع (Project Roadmap)
+# EMO AI Execution OS — Roadmap
 
-## Tags
-```
-v4.15.0-delivery-ready  ← Final Release (Runtime Core)
-v1-runtime-stable       ← R1 Closure (Source Snapshot)
-v0.1.0-product-alpha    ← Phase P1 (IPC Contract + Tauri Skeleton)
-v0.1.1-product-alpha    ← Phase P2 (OS Keychain + Credential Vault)
-v0.1.2-product-alpha    ← Phase P3 (Gateway Routing + Telemetry)
-r3-skill-os-foundation-v1.0.0  ← R3 Foundation (Skill OS Protocols)
-r3-skill-os-impl-v1.0.0       ← R3 Implementation (Skill OS Core)
-r4-cognitive-os-foundation-v1.0.0  ← R4 Foundation (Cognitive OS Protocols)
-r4-cognitive-os-v1.0.0  ← R4 Closure (Cognitive OS — Planning, Reflection, Self-Evaluation)
-r5-big-emo-v1.0.0       ← R5 Closure (Big EMO — SelfBuilder, SelfHealer, MultiAgentSociety)
-```
+> **Version:** 1.0.0-RC18
+> **Last Updated:** 2026-06-24
+> **Status:** Active Development
 
 ---
 
-## ✅ المراحل المنجزة
+## Vision
 
-### R3 — Skill OS ✅ CLOSED & ARCHIVED
-- SkillExtractor (trace→SkillDraft extraction with sandbox validation)
-- SkillLibrary (versioned store, query, get_history)
-- SkillEvolutionManager (promote/deprecate tier lifecycle)
-- R2 Bridge (read-only memory bridge, zero mutation)
-- 70/70 tests · 21 files SHA-256 signed
-- `emo-skill-os-r3-release.tar.gz` archived
-- Fully isolated under `/releases/skill_os/`
+Build an **Industrial AI Execution Operating System** that outperforms existing agent frameworks, workflow tools, and industrial platforms by combining:
 
-### R2 — Enterprise Memory OS ✅ CLOSED & ARCHIVED
-- ProjectMemorySpace, AgentMemorySpace, CrossSessionRecall
-- MemoryGovernanceEngine, AuditLog (SHA-256 chain), RetentionPolicy
-- Semantic Index, Knowledge Graph, Compression Engine, Retrieval Pipeline
-- Desktop Explorer UI (5 screens, 18 files)
-- 181/181 tests · 71 files SHA-256 signed
-- `emo-memory-os-r2-release.tar.gz` archived
-- Fully isolated under `/releases/memory_os/`
-
-### R5 — Big EMO AI OS ✅ CLOSED & ARCHIVED
-- SelfBuilderEngine (intent→tool proposal, sandbox validation, risk scoring)
-- SelfHealerEngine (anomaly detection, severity-gated correction, recovery audit)
-- MultiAgentSocietyManager (task negotiation, swarm coordination, tenant boundaries)
-- R2/R3/R4 Read-Only Bridges (zero mutation, zero imports from R1-R4)
-- 103/103 tests · 23 files SHA-256 signed
-- `emo-big-emo-r5-release.tar.gz` archived
-- Fully isolated under `/releases/big_emo/`
-
-### R4 — Cognitive OS ✅ CLOSED & ARCHIVED
-- StrategicPlanner (DAG decomposition, feasibility evaluation)
-- ReflectionEngine (failure analysis, corrective strategy generation)
-- SelfEvaluator (plan integrity validation, risk scoring, cap at 0.95)
-- R2/R3 Read-Only Bridges (zero mutation, zero imports from R2/R3)
-- 91/91 tests · 22 files SHA-256 signed
-- `emo-cognitive-os-r4-release.tar.gz` archived
-- Fully isolated under `/releases/cognitive-os/`
-
-### Phase L — Cognitive Memory ✅
-- MemoryHierarchy, ContextCompiler, SkillGraphManager
-- MemoryStateMachine (6 states, 7 transitions, G-M1–G-M6)
-- CognitiveTraceCorrelator (SHA-256 propagation)
-- 25/25 tests · 126k ops/sec · 0% cross-tenant leakage
-
-### Phase G — Cognitive Orchestration ✅
-- PlannerAgent (DAG synthesis, oscillation prevention)
-- CriticAgent (plan evaluation, scope verification)
-- OptimizerAgent (Decimal cost optimization)
-- OrchestrationStateMachine (8 states, 9 transitions, G-P1–G-P8)
-- 41/41 tests
-
-### Final Prep (Security / Performance / DevEx / Quarantine) ✅
-- SecurityHeadersMiddleware (CSP, HSTS, X-Frame-Options)
-- EMO_JWT_SECRET enforcement, `admin123456` removed
-- pip-audit: 0 vulnerabilities
-- `sustained_load_runner.py` (10 tenants × 500 req/min × 15min)
-- CLI + SDK spec + Runtime API reference
-- 100 quarantined failures (5 categories, auto-skip)
-- 20/20 validation tests
-
-### Final Release — v4.15.0-delivery-ready ✅
-- Git tag, tar.gz archive (791K)
-- CHANGELOG.md, DEVELOPER.md, ROADMAP.md updated
-- SIGNING_MANIFEST.md (9 files SHA-256)
-- FINAL_RELEASE_REPORT.md
-
-### R1 Closure — v1-runtime-stable ✅
-- `/releases/emo-runtime-os/` — 1142 source files
-- Deployment: docker-compose, k8s, deploy-checklist
-- RELEASE_MANIFEST_R1.json (6 quality gates)
-- SIGNING_MANIFEST_R1.json (1562 files SHA-256)
-- Archive: emo-runtime-os-v1-release.tar.gz (4.5M)
-
-### Phase P1 — IPC Contract & Tauri Skeleton ✅
-- `emo-desktop/` — 24 files
-- 7 IPC commands, Future Compatibility (6 rules)
-- 8 UI routes (Dashboard, AgentStudio, ProjectCenter, RuntimeMonitor, TraceExplorer, Settings, ModelGateway, MemoryExplorer)
-- Telemetry types, Zustand store, RuntimeClient (Fetch + WebSocket)
-- Tauri IPC command stubs (start/stop/status/stream/trace/register/test/routing)
-- 3 contracts: event_stream, gateway_spec, credential_protocol
-- 25 tests (vitest, zero runtime dependency)
-
-### Phase P2 — OS Keychain & Secure Provider Vault ✅
-- `ICredentialProvider` interface, `OsKeyringProvider` (macOS/Windows/Linux)
-- BLOCK fallback policy (no plaintext file fallback)
-- `injectProviderKey()` — stdin / env_isolated, 5s auto-clear
-- Provider UI: ProviderCard, KeyInputMask, ConnectionTestIndicator
-- IPC v1.1.0: register_provider, test_provider_connection, get_gateway_routing_status
-- 15 tests (keychain-only, ephemeral clear, no leak, rotation/revocation)
-
-### Phase 3.4 — Execution Boundary Isolation ✅
-- Decomposed `ExecutionRuntime` → 5 bounded services (scheduler, state_store, dispatcher, retry_handler, lease_manager)
-- `ExecutionCore` remains pure (zero IO)
-- Backward-compatible defaults for all services
-- 60/60 tests · 358 full suite PASS · zero regressions
-
-### Phase P3 — Model Gateway Routing & Telemetry Integration ✅ ← Current
-- `GatewayRouter` — weight/latency/cost-based optimal selection
-- `FailoverEngine` — automatic chain failover with idempotency (≤500ms)
-- `RateLimitGuard` — per-provider RPM enforcement + cooldown
-- `TelemetryAggregator` — cost/latency aggregation → Zustand every 500ms
-- IPC v1.2.0: submit_request, notify_failover, get_routing_status
-- gateway_routing_contract.md — transition matrix, security bounds, audit log
-- 47/47 gateway tests · 90/90 full suite · zero core mutations
-- 8 quality gates PASSED
+- AI Runtime Execution
+- Agent Intelligence
+- Workflow Orchestration
+- Memory Systems
+- Governance & Security
+- Industrial Integration
+- Autonomous Operations
 
 ---
 
-## 🔜 المراحل القادمة
+## Release Tracks
 
 ```
-P4  — UX Platform Polish       (توحيد المظهر، تحسين تجربة المستخدم)
-P5  — Installation Wizard      (معالج تثبيت سطح المكتب)
-P6  — Runtime Event Model      (IEventBus + execution event stream)
-P7  — Enterprise OS Portal     (لوحة تحكم متعددة المستأجرين)
-P8  — AI Safety & Guardrails   (حدود أمان للذكاء الاصطناعي)
-P9  — Multi-Modal Pipeline     (صورة/صوت/نص عبر Model Gateway)
-P10 — Production Hardening     (تصلب الإنتاج + مراقبة مستمرة)
+R1 ─── Runtime OS       ← 🟢 75% Complete
+R2 ─── Memory OS        ← 🟡 35% Complete (T-30 Project Memory done)
+R3 ─── Skill OS         ← 🔴 0% (Planned)
+R4 ─── Cognitive OS     ← 🟡 20% (Planned)
+R5 ─── Big EMO AI OS    ← 🔴 0% (Planned)
 ```
 
 ---
 
-## 📐 القوانين الثابتة (Immutable Rules)
+## Phase 1: Foundation Consolidation ✅ COMPLETED
 
-| القانون | القاعدة |
-|---------|---------|
-| LAW 5 | Zero core mutations — كل التطوير في `emo-desktop/` فقط |
-| LAW 9 | لا مفاتيح افتراضية/اختبارية في الإنتاج |
-| LAW 11 | لا تخزين بيانات اعتماد في ملفات أو Env غير مشفر |
-| RULE 3 | لا اتصال مباشر بمزودي AI — عبر IPC → emo-runtime-service دائمًا |
-| STOP | أي خرق للقوانين أعلاه = إيقاف فوري + تقرير STOP-REPORT |
+> **Duration:** June 2026
+> **Status:** 100% Complete
+
+### Completed Tasks (44+)
+
+- ✅ T-01: Documentation unification
+- ✅ T-02: Fix NotImplementedError (5 sites)
+- ✅ T-03: PostgreSQL backend activation
+- ✅ T-04: Vector DB abstraction (Qdrant)
+- ✅ T-05: Dead code cleanup
+- ✅ T-06: Rate limiter addition
+- ✅ T-10: CI/CD source-of-truth gates
+- ✅ T-11: NameError fix in test_worker_runtime
+- ✅ T-14: qdrant-client optional dependency
+- ✅ T-A1: Production entry point fix (main.py facade)
+- ✅ T-A2: Shadowed methods removal (CompositionRoot -189 LOC)
+- ✅ T-A3: Dead agent lifecycle removal
+- ✅ T-A5: Dead computer dir removal (748 LOC)
+- ✅ T-A6: Docs drift fix (stub_impl claim)
+- ✅ T-A7: TraceCorrelator base class + dead re-export removal
+- ✅ T-A8: Control Plane split-brain fix
+- ✅ T-A12: Vector DB merge with SemanticStore
+- ✅ T-A13: BaseSectorTwin ABC (-160 LOC duplication)
+- ✅ T-A14: Workflow OS package creation
+- ✅ T-A15: Dead secrets removal (680 LOC)
+- ✅ Tracing merge → observability/
+- ✅ Scheduler merge → runtime/resource_scheduler/
+- ✅ AD-001 to AD-004 architectural debts resolved
+- ✅ Security audit (V-1 to V-6, W-5, W-12)
+- ✅ Pilot latency reduction
+
+### Results
+
+- ~6,000 LOC dead code removed (net)
+- Tests: 3,330 → 4,106 (+776)
+- Collection errors: 37 → 0
+- NotImplementedError: 5 → 0
+- Architecture drift: 16 findings → 0
 
 ---
 
-## 📊 إحصائيات المشروع
+## Phase 2: Critical Gaps Closure 🔄 IN PROGRESS
 
-- **Tags**: 12 (r5-big-emo-v1.0.0, r4-cognitive-os-v1.0.0, r4-cognitive-os-foundation-v1.0.0, r3-skill-os-impl-v1.0.0, r3-skill-os-foundation-v1.0.0, v4.15.0-delivery-ready, v1-runtime-stable, v0.1.0, v0.1.1, v0.1.2, v0.1.3, r2-memory-os-v1.0.0)
-- **اختبارات Desktop**: 90/90 PASS (14 files)
-- **اختبارات Runtime**: 3341+ PASS (358 full suite, 100 quarantined)
-- **Memory OS Tests**: 181/181 PASS (16 files)
-- **Skill OS Tests**: 70/70 PASS (6 files)
-- **Cognitive OS Tests**: 91/91 PASS (6 files)
-- **Big EMO Tests**: 103/103 PASS (6 files)
-- **Shipped**: 13 مراحل كاملة (L, G, Final Prep, Final Release, R1, R2 Memory, R3 Skill, R4 Cognitive, R5 Big EMO, P1, P2, P3, 3.4)
+> **Duration:** Months 1-3 (July - September 2026)
+> **Status:** 10% Complete (T-30 done)
+
+### Sprint 2.1: R2 Memory OS Complete (4-6 weeks)
+
+| Task | Component | Status |
+|------|-----------|--------|
+| T-30 | Project Memory | ✅ Done (75 tests) |
+| T-31 | Agent Memory | ⏳ Next |
+| T-32 | Long-Term Memory | ⏳ Planned |
+| T-33 | Knowledge Graph | ⏳ Planned |
+| T-34 | Memory Compression | ⏳ Planned |
+| T-35 | Semantic Indexing | ⏳ Planned |
+| T-36 | Context Reconstruction | ⏳ Planned |
+| T-37 | Vector DB Production Integration | ⏳ Planned |
+| T-38 | Memory Explorer UI | ⏳ Planned |
+| T-39 | Memory OS E2E Tests | ⏳ Planned |
+
+### Sprint 2.2: R16 Write Support (4-6 weeks)
+
+| Task | Description |
+|------|-------------|
+| T-40 | Write command abstraction |
+| T-41 | Approval Gate for write operations |
+| T-42 | Water Modbus write support |
+| T-43 | Water SCADA write support |
+| T-44 | Manufacturing OPC-UA write support |
+| T-45 | Energy SCADA write support |
+| T-46 | Healthcare FHIR write support |
+| T-47 | Bi-directional Digital Twin |
+| T-48 | Write audit trail |
+| T-49 | Write E2E scenarios (4 sectors) |
+
+### Sprint 2.3: Real Computer Use (3 weeks)
+
+| Task | Description |
+|------|-------------|
+| T-50 | macOS pyautogui integration |
+| T-51 | Windows win32gui integration |
+| T-52 | Linux xdotool integration |
+| T-53 | Vision Grounding with real OCR |
+| T-54 | Session journal persistence |
+| T-55 | Computer Use E2E tests |
+
+### Sprint 2.4: K8s/HA/DR (3 weeks)
+
+| Task | Description |
+|------|-------------|
+| T-60 | Kubernetes manifests |
+| T-61 | Helm chart |
+| T-62 | HA cluster setup |
+| T-63 | Disaster Recovery |
+| T-64 | Health checks + readiness probes |
+| T-65 | Auto-scaling (HPA) |
+| T-66 | Railway → cloud migration |
 
 ---
 
-*Last updated: 2026-05-30 — r5-big-emo-v1.0.0*
+## Phase 3: Competitive Advantage (Months 4-6)
+
+> **Duration:** October - December 2026
+
+### Sprint 3.1: Generative UI (6 weeks)
+- T-70 to T-75: Component Registry, AI Screen Generator, Visual Builder
+
+### Sprint 3.2: LLM-Driven Tool Synthesis (6 weeks)
+- T-80 to T-85: LLM code generation, sandboxed execution, tool marketplace
+
+### Sprint 3.3: Strategic Planning (6 weeks)
+- T-90 to T-96: Strategic Planner, Goal Decomposition, Reflection Loops
+
+### Sprint 3.4: Multi-Model Routing (3 weeks)
+- T-100 to T-105: Dynamic routing, cost optimization, quantization
+
+---
+
+## Phase 4: Industrial Supremacy (Months 7-12)
+
+> **Duration:** January - June 2027
+
+### Sprint 4.1: IEC 62443 + SOC2 Certification (3 months)
+### Sprint 4.2: Real-time Control Loop (6 weeks)
+### Sprint 4.3: Predictive Maintenance with ML (6 weeks)
+### Sprint 4.4: Digital Twin Bi-directional (4 weeks)
+
+---
+
+## Phase 5: Mega Factory Automation (Months 10-14)
+
+> **Duration:** March - July 2027
+
+### Sprint 5.1: DCS Integration Suite (6 weeks)
+- T-221 to T-230: Honeywell, Siemens, Emerson, ABB, Yokogawa connectors
+
+### Sprint 5.2: Factory Automation Suite (8 weeks)
+- T-200 Series: Closed-loop control, multi-shift autonomous operation
+
+### Sprint 5.3: Laboratory Integration Suite (4 weeks)
+- T-231 to T-238: LIMS connectors, gas chromatograph, ASTM/ISO compliance
+
+---
+
+## Phase 6: Enterprise Integration (Months 15-18)
+
+> **Duration:** August - November 2027
+
+### Sprint 6.1: ERP Integration Suite (6 weeks)
+- T-251 to T-259: SAP, Oracle, Microsoft Dynamics connectors
+
+### Sprint 6.2: Enterprise Operations Suite (6 weeks)
+- T-241 to T-249: Document processing, email automation, RPA
+
+### Sprint 6.3: Operational Assistant Suite (4 weeks)
+- T-211 to T-215: Voice control, mobile app, proactive alerts
+
+---
+
+## Phase 7: Launch & Excellence (Months 19-24)
+
+> **Duration:** December 2027 - May 2028
+
+### Sprint 7.1: Enterprise Pilot (8 weeks)
+- 3 enterprise pilot customers
+- On-premise deployment
+- Training + documentation
+
+### Sprint 7.2: Public Launch (8 weeks)
+- v2.0.0 release
+- Marketing site
+- Documentation portal
+- Community building
+
+### Sprint 7.3: Scale (8 weeks)
+- 10+ enterprise customers
+- Multi-region deployment
+- 24/7 support
+
+---
+
+## Current Metrics
+
+| Metric | Value |
+|--------|-------|
+| Version | 1.0.0-RC18 |
+| Tests | 4,106 |
+| Collection Errors | 0 |
+| Python Files (core/) | 513 |
+| LOC (core/) | ~86,800 |
+| Industrial Sectors | 4 |
+| Architecture Layers | 10 |
+| Architecture Grade | A- |
+
+---
+
+## Competitive Positioning
+
+### Niches Where EMO AI Excels
+
+1. **Critical Industrial Environments** — manufacturing, energy, water, healthcare
+2. **Distributed Systems** — mesh runtime + distributed execution
+3. **Strict Governance** — Default Deny + Human-in-the-Loop + audit trail
+4. **Enterprise Memory** — hierarchical + semantic + skill graph
+5. **Sector-Specialized Agents** — sector agents + safety gates
+
+### vs. Competitors
+
+| Competitor | EMO AI Advantage |
+|------------|------------------|
+| LangChain | Better governance, industrial focus, memory |
+| AutoGen | Better security, multi-tenancy, audit |
+| CrewAI | Enterprise-grade, sector agents, safety |
+| n8n | AI-native, autonomous, deeper integration |
+| Notion AI | Execution platform, not just assistant |
+| Siemens MindSphere | Open source, vendor-agnostic, AI-first |
+
+---
+
+## References
+
+- [Development Plan](EMO_AI_DEVELOPMENT_PLAN.md) — Detailed task specifications
+- [Master Architecture Reference](docs/EMO_AI_MASTER_ARCHITECTURE_REFERENCE.md)
+- [Changelog](CHANGELOG.md) — Version history

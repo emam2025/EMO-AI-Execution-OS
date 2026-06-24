@@ -1,344 +1,399 @@
-# 🤝 دليل المساهمة في EMO AI
+# Contributing to EMO AI Execution OS
 
-مرحباً بك في دليل المساهمة في EMO AI. يرجى قراءة هذا الدليل بالكامل قبل البدء في أي مساهمة.
+> **Version:** 1.0.0-RC18
+> **Last Updated:** 2026-06-24
 
----
-
-## 📋 قبل البدء
-
-قبل البدء في المساهمة، تأكد من فهمك للبنية المعمارية للمشروع:
-
-- 📖 اقرأ [DEVELOPER.md](DEVELOPER.md) — الدليل التقني الشامل
-- 🏗️ اقرأ [ARCHITECTURE_DESIGN.md](docs/architecture/) — التصميم المعماري
-- 📐 اقرأ [SOURCE_OF_TRUTH.md](docs/SOURCE_OF_TRUTH.md) — ترتيب الثقة وسياسة التوثيق
-- 🗺️ اقرأ [REPOSITORY_STRUCTURE_MAP.md](docs/REPOSITORY_STRUCTURE_MAP.md) — خريطة هيكل المستودع
-- ⚖️ فهم **Architecture Canon** (LAW 1-27) — القواعد المعمارية الصارمة
-
-> ⚠️ **تحذير صارم**: عدم فهم القواعد المعمارية قد يؤدي إلى رفض Pull Request الخاص بك.
+Thank you for your interest in contributing to EMO AI Execution OS. This document outlines the process and standards for contributions.
 
 ---
 
-## 🚀 إعداد بيئة التطوير
+## Getting Started
 
-### المتطلبات الأساسية
+### Prerequisites
 
-- Python 3.14+
-- pip (أحدث إصدار)
-- git
+- Python 3.12+
+- Git
+- Basic understanding of the [Canon Laws](DEVELOPER.md#canon-laws-law-1-27)
+- Familiarity with the [Architecture Layers](DEVELOPER.md#architecture-layers)
 
-### خطوات الإعداد
+### Setup
 
 ```bash
-# 1. استنساخ المشروع (Fork أولاً)
-git clone https://github.com/YOUR-USERNAME/emo-ai.git
-cd emo-ai
+# Fork and clone
+git clone https://github.com/your-username/EMO-AI-Execution-OS.git
+cd EMO-AI-Execution-OS
 
-# 2. إنشاء بيئة افتراضية
-python3 -m venv venv
-source venv/bin/activate  # macOS/Linux
-# أو
-venv\Scripts\activate  # Windows
+# Create virtual environment
+python3 -m venv .venv
+source .venv/bin/activate
 
-# 3. تثبيت المتطلبات
+# Install dependencies
 pip install -r requirements.txt
 
-# 4. إعداد المتغيرات البيئية
+# Configure environment
 cp .env.example .env
-# عدّل .env بمفاتيحك الخاصة
-
-# 5. تشغيل الاختبارات للتأكد من صحة البيئة
-python -m pytest tests/ -v
+# Edit .env with your settings
 ```
 
 ---
 
-## 📝 معايير الكود
+## Development Workflow
 
-### نمط الكتابة (Code Style)
+### 1. Create a Branch
 
-- **PEP 8**: اتبع معايير Python الرسمية
-- **Type Hints**: استخدم type annotations لجميع الدوال
-- **Docstrings**: استخدم Google Style Docstrings
+```bash
+git checkout develop
+git pull origin develop
+git checkout -b feat/your-feature-name
+```
+
+**Branch naming:**
+- `feat/<scope>-<description>` — New features
+- `fix/<scope>-<description>` — Bug fixes
+- `chore/<scope>-<description>` — Maintenance
+- `docs/<scope>-<description>` — Documentation
+- `refactor/<scope>-<description>` — Refactoring
+- `test/<scope>-<description>` — Tests
+
+### 2. Make Changes
+
+Follow the [Canon Laws](DEVELOPER.md#canon-laws-law-1-27) and [Development Rules](DEVELOPER.md#development-rules).
+
+**Key requirements:**
+- Every component belongs to a defined layer
+- All new features require tests
+- No `NotImplementedError` in `core/` (use ABC + `@abstractmethod`)
+- No hardcoded secrets
+- No global mutable state (LAW 11)
+- No business logic in models (LAW 10)
+
+### 3. Write Tests
 
 ```python
-def example_function(param1: str, param2: int) -> bool:
-    """وصف مختصر للدالة.
+# tests/test_your_feature.py
+import pytest
+from core.your_module import YourClass
 
-    Args:
-        param1: وصف param1.
-        param2: وصف param2.
 
-    Returns:
-        bool: وصف القيمة المُعادة.
+class TestYourFeature:
+    def test_basic_functionality(self):
+        """Test the happy path."""
+        obj = YourClass()
+        result = obj.do_something()
+        assert result is not None
+        assert result.status == "expected"
 
-    Raises:
-        ValueError: إذا كان param1 فارغاً.
-    """
-    pass
+    def test_edge_case(self):
+        """Test edge cases."""
+        obj = YourClass()
+        result = obj.do_something(extreme_input=True)
+        assert result.handled_correctly
+
+    def test_error_handling(self):
+        """Test error scenarios."""
+        obj = YourClass()
+        with pytest.raises(ValueError):
+            obj.do_something(invalid=True)
 ```
 
-### قواعد صارمة
-
-- ❌ **لا circular imports** — استخدم TYPE_CHECKING للاستيراد الدائري
-- ❌ **لا hardcoded secrets** — استخدم متغيرات البيئة
-- ✅ **Test coverage ≥ 80%** — كل كود جديد يحتاج اختبارات
-- ✅ **لا تعديل core/runtime/** بدون مراجعة مسبقة
-
----
-
-## 🏗️ القواعد المعمارية (CRITICAL)
-
-> ⚠️ **هذه القواعد إلزامية.** أي انتهاك يعني رفض الـ PR فوراً.
-
-### LAW 1: ExecutionEngine Isolation
-
-```python
-# ✅ الصحيح
-from core.execution_governor import ExecutionGovernor
-
-# ❌ الخطأ
-from core.runtime.execution_engine import ExecutionEngine  # FORBIDDEN
-```
-
-### LAW 13: CompositionRoot Only
-
-```python
-# ✅ الصحيح
-def create_service() -> MyService:
-    return MyService(dep1, dep2)
-
-# ❌ الخطأ
-service = MyService()  # FORBIDDEN outside CompositionRoot
-```
-
-### LAW 14-16: CodeGraph Boundaries
-
-- لا تعديل `core/interfaces/` مباشرة بدون اطلاع المشرف
-- لا إضافة imports من `core.runtime.*` في `core/interfaces/*`
-
-### LAW 20-22: Failure Propagation
-
-- كل service يجب أن يكون له `health_check()` method
-- لا تarkan exceptions من `health_check()`
-
-### LAW 23-27: Service Ownership
-
-- كل خدمة مسؤولة فقط عن نطاقها
-- لا cross-service calls مباشرة
-
-### القواعد الإضافية
-
-- ** LAW 10**: لا تعتمد على أن Workers موثوقين
-- **LAW 28**: لا تعتمد على تشغيل cron jobs
-- **LAW 35-37**: لا محتوى عربي في core/
-
-> 📖 راجع [DEVELOPER.md](DEVELOPER.md) للتفاصيل الكاملة لكل قانون.
-
----
-
-## 🧪 الاختبارات
-
-### تشغيل الاختبارات
+### 4. Run Tests
 
 ```bash
-# تشغيل جميع الاختبارات
-python -m pytest tests/ -v
+# Your feature tests
+pytest tests/test_your_feature.py -v
 
-# تشغيل اختبارات محددة
-python -m pytest tests/test_workflow_v2.py -v
+# Full suite (ensure no regression)
+pytest tests/ -q --tb=no
 
-# مع تقرير التغطية
-python -m pytest tests/ --cov=core --cov-report=html
-
-# فتح تقرير التغطية
-open htmlcov/index.html
+# Collect only (verify count)
+pytest tests/ --collect-only -q | tail -1
 ```
 
-### التحقق من عدم انتهاك العزل (إلزامي)
+### 5. Verify Canon Compliance
 
 ```bash
-# تشغيل emo-guard للتحقق من القواعد المعمارية
-python -m core.tools.emo_guard --ci
+# No NotImplementedError in core/
+grep -rn "raise NotImplementedError" core/ --include="*.py" | wc -l
+# Expected: 0
 
-# أو
-emo-guard --update-snapshot
+# No hardcoded secrets
+grep -rnE "(password|secret|api_key)\s*=\s*['\"][^'\"]{8,}['\"]" core/
+# Expected: (empty)
+
+# Test count consistency
+python3 scripts/verify_test_count.py
+# Expected: exit 0
 ```
 
-### معايير القبول للاختبارات
+### 6. Commit Changes
 
-- ✅ جميع الاختبارات الحالية تبقى PASS
-- ✅ لا اختبارات جديدة تفشل
-- ✅ Test coverage ≥ 80% للكود الجديد
-- ✅ لا وجود لـ `print()` في اختبارات الإنتاج
-
----
-
-## 📤 عملية الـ Pull Request
-
-### 1. Fork و Clone
+Follow [Conventional Commits](https://www.conventionalcommits.org/):
 
 ```bash
-# Fork المشروع من GitHub
-# ثم clone
-git clone https://github.com/YOUR-USERNAME/emo-ai.git
-cd emo-ai
-```
-
-### 2. إنشاء فرع جديد
-
-```bash
-# تأكد من أنك على main
-git checkout main
-
-# أنشئ فرع جديد
-git checkout -b feature/your-feature-name
-
-# أو
-git checkout -b fix/bug-description
-```
-
-### 3. كتابة الكود والاختبارات
-
-```python
-# مثال: إضافة feature جديد
-
-# 1. أضف الكود في المكان المناسب
-# 2. أضف اختبارات جديدة
-# 3. تأكد من أن جميع الاختبارات تمر
-```
-
-### 4. التحقق قبل الـ Commit
-
-```bash
-# تشغيل جميع الاختبارات
-python -m pytest tests/ -v
-
-# التحقق من القواعد المعمارية
-python -m core.tools.emo_guard --ci
-
-# التحقق من التغطية
-python -m pytest tests/ --cov=core --cov-report=term-missing
-```
-
-### 5. الـ Commit
-
-```bash
-# أضف الملفات
 git add .
+git commit -m "feat(memory): implement Agent Memory with 75 tests (T-31)
 
-# اكتب رسالة وصفية
-git commit -m "feat: add health check endpoint for scheduler
+- Add AgentMemory class wrapping MemoryHierarchy on AGENT layer
+- CRUD: store, retrieve, search, delete
+- Integration with SkillGraphManager
+- 75 tests across 11 test classes
 
-- Add health_check() method to ExecutionScheduler
-- Returns dict with status, uptime, active_tasks, queue_depth
-- Never raises exceptions (wrapped in try/except)
-- Add unit tests for health_check
-
-Refs: #123"
+Task: T-31"
 ```
 
-### 6. الـ Push و فتح PR
+### 7. Push and Open PR
 
 ```bash
-# Push للفرع
-git push origin feature/your-feature-name
-
-# فتح Pull Request من GitHub
-# - العنوان وصفي
-# - الوصف يوضح ماذا فعلت ولماذا
-# - ربط Issue إذا وجد
+git push origin feat/your-feature-name
 ```
 
-### 7. مراجعة الـ PR
-
-- ⏳ انتظر مراجعة المشرف
-- 🔧 عالج أي ملاحظات
-- ✅ تأكد من مرور جميع الاختبارات في CI
+Open a Pull Request on GitHub with:
+- Clear title following Conventional Commits
+- Description of changes
+- Test output verification
+- Link to relevant task/issue
 
 ---
 
-## 🚫 ما لا يجب فعله
+## Pull Request Guidelines
 
-### ❌ ممنوعات صارمة
+### PR Template
 
-| الفعل | السبب | البديل |
-|-------|-------|--------|
-| Cross-layer imports | انتهاك LAW 1 | استخدم interfaces |
-| تعديل `core/runtime/*` | Core Freeze | راجج المشرف |
-| حذف اختبارات | تراجع التغطية | أعد كتابتها |
-| Hardcoded secrets | ثغرة أمنية | استخدم .env |
-| `print()` في الإنتاج | تسريب بيانات | استخدم `logging` |
-| تعديل `core/interfaces/*` | انتهاك LAW 14-16 | راجج المشرف |
-| إضافة `from core.runtime.*` في interfaces | انتهاك LAW 14-16 | استخدم TYPE_CHECKING |
+```markdown
+## Description
 
-### ❌ لا تفعل
+Brief description of what this PR does.
+
+## Type of Change
+
+- [ ] New feature (non-breaking change which adds functionality)
+- [ ] Bug fix (non-breaking change which fixes an issue)
+- [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
+- [ ] Documentation update
+- [ ] Refactoring (no functional changes)
+
+## Task
+
+Reference: T-XX (if applicable)
+
+## Changes
+
+- Change 1
+- Change 2
+
+## Verification
+
+```bash
+# Test count
+$ pytest tests/ --collect-only -q | tail -1
+XXXX tests collected
+
+# Your feature tests
+$ pytest tests/test_your_feature.py -v
+XX passed
+
+# No regression
+$ pytest tests/ -q --tb=no | tail -1
+XXXX passed, 0 failed
+
+# Canon compliance
+$ grep -rn "raise NotImplementedError" core/ --include="*.py" | wc -l
+0
+```
+
+## Checklist
+
+- [ ] Code follows Canon Laws (LAW 1-27)
+- [ ] Tests added for all changes
+- [ ] All tests pass (0 failures)
+- [ ] No NotImplementedError in core/
+- [ ] No hardcoded secrets
+- [ ] Documentation updated (CHANGELOG, relevant docs)
+- [ ] Commit message follows Conventional Commits
+- [ ] Branch is up to date with develop
+```
+
+---
+
+## Code Standards
+
+### Python
+
+- Follow PEP 8
+- Use type hints everywhere
+- Docstrings for all public functions/classes
+- Maximum line length: 100 characters
+
+### Example
 
 ```python
-# ❌ لا تفعل هذا
-from core.runtime.services.scheduler import ExecutionScheduler
+from typing import Optional, List, Dict, Any
+from dataclasses import dataclass
 
-# ❌ لا تفعل هذا
-API_KEY = "sk-1234567890"
 
-# ❌ لا تفعل هذا
-print(f"Debug: {variable}")
+@dataclass(frozen=True)
+class ProjectMemoryEntry:
+    """A single memory entry in the project namespace.
+    
+    Attributes:
+        project_id: The project this memory belongs to
+        key: Unique key within the project
+        payload: The memory content
+        ttl_seconds: Time to live (None = no expiry)
+    """
+    project_id: str
+    key: str
+    payload: Dict[str, Any]
+    ttl_seconds: Optional[int] = None
 
-# ❌ لا تفعل هذا
-def test_something():
-    assert True  # اختبار فارغ
+
+class ProjectMemory:
+    """Per-project memory namespace with TTL, isolation, and audit.
+    
+    Wraps MemoryHierarchy on the PROJECT layer to provide project-scoped
+    memory operations with tenant isolation.
+    """
+    
+    def __init__(self, memory_hierarchy: MemoryHierarchy) -> None:
+        self._hierarchy = memory_hierarchy
+    
+    def store(
+        self,
+        project_id: str,
+        key: str,
+        payload: Dict[str, Any],
+        ttl_seconds: Optional[int] = None
+    ) -> str:
+        """Store a memory entry.
+        
+        Args:
+            project_id: Project namespace
+            key: Unique key within project
+            payload: Memory content
+            ttl_seconds: Optional TTL
+            
+        Returns:
+            Memory ID
+        """
+        # Implementation
+        pass
 ```
 
-### ✅ افعل هذا بدلاً منه
+---
+
+## Testing Standards
+
+### Test Coverage
+
+- All new features require tests
+- Minimum 70% line coverage for new code
+- Critical paths require E2E tests
+- Security features require dedicated security tests
+
+### Test Naming
 
 ```python
-# ✅ استخدم TYPE_CHECKING
-from typing import TYPE_CHECKING
-if TYPE_CHECKING:
-    from core.runtime.services.scheduler import ExecutionScheduler
-
-# ✅ استخدم متغيرات البيئة
-import os
-API_KEY = os.getenv("API_KEY")
-
-# ✅ استخدم logging
-import logging
-logger = logging.getLogger(__name__)
-logger.debug("Debug: %s", variable)
-
-# ✅ اكتب اختبارات حقيقية
-def test_something():
-    result = my_function()
-    assert result == expected_value
+class TestProjectMemory:
+    def test_store_creates_entry(self):
+        """Test that store creates a memory entry."""
+        pass
+    
+    def test_retrieve_returns_stored_entry(self):
+        """Test that retrieve returns the stored entry."""
+        pass
+    
+    def test_retrieve_returns_none_for_missing_key(self):
+        """Test that retrieve returns None for missing key."""
+        pass
+    
+    def test_delete_removes_entry(self):
+        """Test that delete removes the entry."""
+        pass
 ```
 
----
+### Test Categories
 
-## 📞 التواصل
-
-### قنوات التواصل
-
-- 🐛 **GitHub Issues**: للأخطاء والمطالبات
-- 💬 **GitHub Discussions**: للأسئلة العامة
-- 📧 **Email**: للتواصل المباشر
-
-###_reporting Security Issues
-
-> ⚠️ **لا تفتح Issue عامة لثغرات أمنية.**
-
-أرسل بريد إلكتروني إلى: security@emo-ai.dev
+| Category | Location | Purpose |
+|----------|----------|---------|
+| Unit | `tests/test_*.py` | Test individual components |
+| Integration | `tests/test_*_integration.py` | Test component interactions |
+| E2E | `tests/test_*_e2e.py` | Test full workflows |
+| Security | `tests/security/` | Security-specific tests |
+| Chaos | `tests/chaos/` | Chaos engineering |
+| Load | `tests/load/` | Performance tests |
 
 ---
 
-## 🏆 تقدير المساهمين
+## Architecture Decisions
 
-جميع المساهمين سيظهرون في قائمة المساهمين في README.md.
+### When to Create a New Layer
+
+New layers are rare and require:
+1. Discussion with architecture team
+2. Canon Law update
+3. Documentation in Master Architecture Reference
+
+### When to Refactor
+
+Refactor when:
+- Code duplication exceeds 100 LOC
+- Component doesn't fit existing layer
+- Canon Law violation detected
+- Dead code accumulates
+
+### When to Add Technical Debt
+
+Document in `docs/ACCEPTED_ARCHITECTURAL_DEBT.md` when:
+- Quick fix needed for pilot
+- Full solution requires major refactor
+- Risk of blocking delivery
 
 ---
 
-## 📄 الترخيص
+## Security Considerations
 
-بالمشاركة في هذا المشروع، أنت توافق على أن عملك سيكون مرخضاً تحت [MIT License](LICENSE).
+### Before Submitting
+
+- [ ] No hardcoded secrets
+- [ ] No sensitive data in logs
+- [ ] Authentication required for all endpoints
+- [ ] Authorization checked for all operations
+- [ ] Input validation on all user inputs
+- [ ] SQL injection prevention (use parameterized queries)
+- [ ] XSS prevention (sanitize outputs)
+
+### Security Review
+
+All changes to `core/security/` or `core/governance/` require:
+1. Additional review by security maintainer
+2. Security test coverage
+3. Update to security documentation if needed
 
 ---
 
-**شكراً لمساهمتك في EMO AI! 🚀**
+## Getting Help
+
+### Resources
+
+- [Developer Guide](DEVELOPER.md) — Canon Laws, architecture
+- [Architecture Reference](docs/EMO_AI_MASTER_ARCHITECTURE_REFERENCE.md)
+- [Development Plan](EMO_AI_DEVELOPMENT_PLAN.md) — Task tracking
+- [Changelog](CHANGELOG.md) — Recent changes
+
+### Communication
+
+- GitHub Issues — Bug reports, feature requests
+- GitHub Discussions — Questions, general discussion
+- Pull Request comments — Code-specific discussions
+
+---
+
+## Recognition
+
+Contributors will be recognized in:
+- CHANGELOG.md for significant contributions
+- README.md contributors section (if applicable)
+
+---
+
+Thank you for contributing to EMO AI Execution OS!

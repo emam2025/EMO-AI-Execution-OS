@@ -1,47 +1,47 @@
 # Pilot Execution Plan — Emo-AI
 
-> **الفرع:** `release/v1-production-candidate` (مجمّد)
-> **الإصدار:** v1.0.0-RC18
-> **المرحلة:** Pilot Expansion — قبل Phase H
-> **عدد المستخدمين:** ≤3 (Operator Pilot Users)
+> **Branch:** `release/v1-production-candidate` (frozen)
+> **Version:** v1.0.0-RC18
+> **Phase:** Pilot Expansion — before Phase H
+> **Number of users:** ≤3 (Operator Pilot Users)
 
 ---
 
 ## 1. Pilot Overview
 
-### 1.1 الهدف
-إثبات جاهزية النظام للتشغيل في بيئة صناعية حقيقية (أو شبه حقيقية) عبر قطاعات الطاقة، التصنيع، المياه، والرعاية الصحية. النجاح يعني: استقرار، أداء، أمان، وثوقية — مما يفتح الباب لـ Phase H (Computer Use Runtime).
+### 1.1 Objective
+Prove the system's readiness for operation in a real (or near-real) industrial environment across the energy, manufacturing, water, and healthcare sectors. Success means: stability, performance, security, and reliability — opening the door to Phase H (Computer Use Runtime).
 
-### 1.2 المدة المقترحة
-| المرحلة | المدة | الوصف |
+### 1.2 Proposed Duration
+| Phase | Duration | Description |
 |---------|-------|-------|
-| الإعداد (Staging) | أسبوع 1 | نشر البيئة، تشغيل البيانات الاختبارية |
-| التشغيل (Active Pilot) | أسبوعان 2-3 | تنفيذ السيناريوهات، جمع المقاييس |
-| التقييم (Evaluation) | أسبوع 4 | تحليل النتائج، قرار Post-Pilot |
+| Setup (Staging) | Week 1 | Environment deployment, running test data |
+| Operation (Active Pilot) | Weeks 2-3 | Executing scenarios, collecting metrics |
+| Evaluation | Week 4 | Analyzing results, Post-Pilot decision |
 
-### 1.3 المبادئ الحاكمة
-1. **العزل التام** — كل قطاع يعمل في مساحة منفصلة (workspace)
-2. **Default Deny** — لا وصول عبر القطاعات بدون سياسة صريحة
-3. **Human-in-the-Loop** — جميع الإجراءات الحرجة تتطلب موافقة بشرية
-4. **الشفافية** — كل قرار يُنشر على EventBus ويسجّل في audit trail
-5. **لا تغييرات وظيفية** — Pilot للقياس فقط، لا تطوير
+### 1.3 Governing Principles
+1. **Full isolation** — each sector operates in a separate workspace
+2. **Default Deny** — no cross-sector access without an explicit policy
+3. **Human-in-the-Loop** — all critical actions require human approval
+4. **Transparency** — every decision is published on EventBus and recorded in the audit trail
+5. **No functional changes** — Pilot is for measurement only, no development
 
 ---
 
-## 2. تعريف بيئة التشغيل
+## 2. Operating Environment Definition
 
-### 2.1 البيئة
+### 2.1 Environment
 
-| المكوّن | المنصة | المواصفات |
+| Component | Platform | Specs |
 |---------|--------|-----------|
 | Backend API | Railway / Render / Fly.io | 1 vCPU, 1GB RAM, 10GB SSD |
-| Frontend UI | Vercel (مستقل) | Static export, Serverless |
-| قاعدة البيانات | SQLite (تقيّد بـ PC-001) ← PostgreSQL لاحقاً | ملف `data/emo_ai.db` |
-| Event Store | SQLiteEventStore | يحذّر عند 8k events/sec |
-| Worker Pool | ثابت — 4 workers (قابل للتوسيع يدوياً حتى 256) |
-| Auth | JWT (2h expiry, refresh rotation) — Rate Limiter غير مفعّل حالياً |
+| Frontend UI | Vercel (standalone) | Static export, Serverless |
+| Database | SQLite (bound by PC-001) ← PostgreSQL later | File `data/emo_ai.db` |
+| Event Store | SQLiteEventStore | warns at 8k events/sec |
+| Worker Pool | fixed — 4 workers (manually scalable up to 256) |
+| Auth | JWT (2h expiry, refresh rotation) — Rate Limiter not currently enabled |
 
-### 2.2 المتغيرات البيئية المطلوبة
+### 2.2 Required Environment Variables
 
 ```
 EMO_JWT_SECRET=<32+ char secret>
@@ -52,273 +52,273 @@ EMO_PILOT_MODE=true
 EMO_METRICS_INTERVAL=60
 ```
 
-### 2.3 العزل
+### 2.3 Isolation
 
-| الطبقة | آلية العزل |
+| Layer | Isolation Mechanism |
 |--------|-----------|
-| **Workspace** | `_verify_workspace_access()` في كل endpoint |
-| **مستخدم** | JWT مع tenant_id + user_id |
-| **قطاع** | كل قطاع (Energy, Manufacturing, Water, Healthcare) في workspace مستقل |
-| **بيانات** | لا تسريب بيانات بين القطاعات — Default Deny |
+| **Workspace** | `_verify_workspace_access()` on every endpoint |
+| **User** | JWT with tenant_id + user_id |
+| **Sector** | Each sector (Energy, Manufacturing, Water, Healthcare) in an independent workspace |
+| **Data** | No data leakage between sectors — Default Deny |
 
 ---
 
-## 3. السيناريوهات — القطاعات الأربعة
+## 3. Scenarios — The Four Sectors
 
-### 3.1 Manufacturing — التصنيع
+### 3.1 Manufacturing
 
-| السيناريو | الوصف | مصدر البيانات |
+| Scenario | Description | Data Source |
 |-----------|-------|---------------|
-| CNC Overheat | محاكاة ارتفاع حرارة ماكينة CNC ← كشف ← إيقاف خط ← موافقة مشغل | `LineSupervisorAgent` |
-| OEE Monitoring | حساب OEE دوري، كشف انخفاض الأداء، إنذار | `OEECalculator`, `OEEMonitorAgent` |
-| Predictive Maintenance | كشف اهتزازات غير طبيعية، التنبؤ بالأعطال | `PredictiveMaintenanceAgent` |
-| Quality Control | فحص جودة تلقائي، طلب إبطاء الخط عند عيوب متكررة | `QualityInspectorClosedLoop` |
+| CNC Overheat | Simulate CNC machine temperature rise → detection → line stop → operator approval | `LineSupervisorAgent` |
+| OEE Monitoring | Periodic OEE calculation, performance drop detection, alert | `OEECalculator`, `OEEMonitorAgent` |
+| Predictive Maintenance | Detect abnormal vibrations, predict failures | `PredictiveMaintenanceAgent` |
+| Quality Control | Automated quality inspection, request line slowdown on recurring defects | `QualityInspectorClosedLoop` |
 
-**مقاييس النجاح:**
-- زمن كشف overheat: < 5 ثوانٍ
-- دقة OEE: ±2%
-- معدل الإنذار الكاذب (Predictive): < 10%
-- وقت الموافقة البشرية: < 30 ثانية
+**Success metrics:**
+- Overheat detection time: < 5 seconds
+- OEE accuracy: ±2%
+- False alarm rate (Predictive): < 10%
+- Human approval time: < 30 seconds
 
 ---
 
-### 3.2 Energy — الطاقة
+### 3.2 Energy
 
-| السيناريو | الوصف | مصدر البيانات |
+| Scenario | Description | Data Source |
 |-----------|-------|---------------|
-| Load Balancing | محاكاة توزيع الأحمال بين مولدات الطاقة | `EnergyAgent` |
-| Grid Anomaly | كشف شذوذ في شبكة الكهرباء، عزل القطاع المتأثر | `EnergySafetyPolicies` |
-| Consumption Forecast | توقعات استهلاك الطاقة استناداً إلى البيانات التاريخية | `KnowledgeGraph` + Embedding |
+| Load Balancing | Simulate load distribution across power generators | `EnergyAgent` |
+| Grid Anomaly | Detect power grid anomalies, isolate the affected sector | `EnergySafetyPolicies` |
+| Consumption Forecast | Energy consumption forecasts based on historical data | `KnowledgeGraph` + Embedding |
 
-**مقاييس النجاح:**
-- زمن كشف الشذوذ: < 10 ثوانٍ
-- دقة التوقعات: > 85%
-- زمن عزل القطاع: < 15 ثانية
+**Success metrics:**
+- Anomaly detection time: < 10 seconds
+- Forecast accuracy: > 85%
+- Sector isolation time: < 15 seconds
 
 ---
 
-### 3.3 Water — المياه
+### 3.3 Water
 
-| السيناريو | الوصف | مصدر البيانات |
+| Scenario | Description | Data Source |
 |-----------|-------|---------------|
-| Leak Detection | كشف تسرب في شبكة المياه ← تحديد الموقع ← عزل | `WaterAgent` |
-| Quality Monitoring | مراقبة جودة المياه (pH, TDS, chlorine) ← إنذار عند التجاوز | `WaterPolicies` |
-| Pressure Management | ضبط ضغط الشبكة تلقائياً وفقاً للاستهلاك | `WaterAgent` + Digital Twin |
+| Leak Detection | Detect water network leak → locate → isolate | `WaterAgent` |
+| Quality Monitoring | Monitor water quality (pH, TDS, chlorine) → alert on exceedance | `WaterPolicies` |
+| Pressure Management | Automatically adjust network pressure based on consumption | `WaterAgent` + Digital Twin |
 
-**مقاييس النجاح:**
-- زمن كشف التسرب: < 10 ثوانٍ
-- دقة تحديد موقع التسرب: ±5 أمتار
-- وقت الاستجابة لتغير الضغط: < 20 ثانية
+**Success metrics:**
+- Leak detection time: < 10 seconds
+- Leak location accuracy: ±5 meters
+- Pressure change response time: < 20 seconds
 
 ---
 
-### 3.4 Healthcare — الرعاية الصحية
+### 3.4 Healthcare
 
-| السيناريو | الوصف | مصدر البيانات |
+| Scenario | Description | Data Source |
 |-----------|-------|---------------|
-| Patient Monitoring | مراقبة العلامات الحيوية، كشف التدهور ← تنبيه الفريق الطبي | `HealthcareAgent` |
-| Drug Interaction | التحقق من تفاعلات الأدوية عند إضافة دواء جديد | `HealthcarePolicies` |
-| Resource Allocation | تخصيص الموارد (أسرة، أجهزة تنفس) حسب الأولوية | `HealthcareAgent` + Governance |
+| Patient Monitoring | Monitor vital signs, detect deterioration → alert medical team | `HealthcareAgent` |
+| Drug Interaction | Check drug interactions when adding a new medication | `HealthcarePolicies` |
+| Resource Allocation | Allocate resources (beds, ventilators) by priority | `HealthcareAgent` + Governance |
 
-**مقاييس النجاح:**
-- زمن كشف التدهور: < 30 ثانية
-- دقة كشف تفاعل الأدوية: > 99%
-- زمن تخصيص الموارد: < 10 ثوانٍ
+**Success metrics:**
+- Deterioration detection time: < 30 seconds
+- Drug interaction detection accuracy: > 99%
+- Resource allocation time: < 10 seconds
 
 ---
 
-## 4. حدود النجاح والفشل
+## 4. Success and Failure Boundaries
 
-### 4.1 شروط النجاح (Pass Criteria)
+### 4.1 Pass Criteria
 
-| المعيار | الحد الأدنى | الوزن |
+| Criterion | Minimum | Weight |
 |---------|-------------|-------|
-| **جميع السيناريوهات الأربعة** نُفذت بنجاح ≥ 90% | 90% نجاح | حاسم |
-| **الـ Latency** < 100ms (p95) | 100ms | حاسم |
-| **Policy Denial Rate** < 5% | 5% | حاسم |
-| **Audit Trail Completeness** = 100% | 100% | حاسم |
-| **Workflow Success Rate** ≥ 95% | 95% | مهم |
-| **Provider Response Time** < 500ms | 500ms | مهم |
-| **Zero Security Incidents** | 0 اختراق | حاسم |
-| **Zero Data Leakage** | 0 تسريب | حاسم |
+| **All four scenarios** executed successfully ≥ 90% | 90% success | Critical |
+| **Latency** < 100ms (p95) | 100ms | Critical |
+| **Policy Denial Rate** < 5% | 5% | Critical |
+| **Audit Trail Completeness** = 100% | 100% | Critical |
+| **Workflow Success Rate** ≥ 95% | 95% | Important |
+| **Provider Response Time** < 500ms | 500ms | Important |
+| **Zero Security Incidents** | 0 breaches | Critical |
+| **Zero Data Leakage** | 0 leaks | Critical |
 
-### 4.2 شروط الفشل (Fail Criteria)
+### 4.2 Fail Criteria
 
-| المعيار | الحد | النتيجة |
+| Criterion | Limit | Outcome |
 |---------|------|---------|
-| **أي اختراق أمني** | ≥ 1 | **FAIL فوري — إيقاف Pilot** |
-| **أي تسريب بيانات** | ≥ 1 | **FAIL فوري — إيقاف Pilot** |
-| **توقف الخدمة الكامل (Downtime)** | > 30 دقيقة | **FAIL — إعادة تقييم** |
-| **Policy Denial Rate** | > 15% | **FAIL — مراجعة السياسات** |
-| **فشل قطاعين أو أكثر** | ≥ 2 قطاع | **FAIL — إعادة تقييم** |
+| **Any security breach** | ≥ 1 | **Immediate FAIL — stop Pilot** |
+| **Any data leak** | ≥ 1 | **Immediate FAIL — stop Pilot** |
+| **Full service downtime** | > 30 minutes | **FAIL — re-evaluation** |
+| **Policy Denial Rate** | > 15% | **FAIL — policy review** |
+| **Two or more sector failures** | ≥ 2 sectors | **FAIL — re-evaluation** |
 
-### 4.3 قرار Post-Pilot
+### 4.3 Post-Pilot Decision
 
-| النتيجة | القرار |
+| Outcome | Decision |
 |---------|--------|
-| ✅ **نجاح كامل** — جميع Pass Criteria محققة، ولا Fail Criteria | انتقل إلى **Phase H** |
-| ⚠️ **نجاح جزئي** — Pass Criteria ≥ 80%، ولا Fail Criteria | **Hardening فقط** — معالجة الفجوات، لا توسع |
-| ❌ **فشل** — أي Fail Criteria | **إيقاف** — تحليل الجذور، العودة إلى التطوير |
+| ✅ **Full success** — all Pass Criteria met, no Fail Criteria | Proceed to **Phase H** |
+| ⚠️ **Partial success** — Pass Criteria ≥ 80%, no Fail Criteria | **Hardening only** — address gaps, no expansion |
+| ❌ **Failure** — any Fail Criteria | **Stop** — root cause analysis, return to development |
 
 ---
 
-## 5. المقاييس (Metrics) & Acceptance Gates
+## 5. Metrics & Acceptance Gates
 
-### 5.1 Latency — زمن الاستجابة
+### 5.1 Latency — Response Time
 
-| النوع | الهدف (p95) | طريقة القياس |
+| Type | Target (p95) | Measurement Method |
 |-------|-------------|-------------|
 | API Request | < 100ms | Prometheus + `/metrics` endpoint |
 | Agent Decision | < 200ms | Distributed Tracing (Trace Explorer) |
-| Workflow Execution | < 5s (لكل DAG) | Audit Trail Timestamps |
+| Workflow Execution | < 5s (per DAG) | Audit Trail Timestamps |
 
-**Acceptance Gate:** 100ms p95 عبر جميع الـ API endpoints. إذا تجاوز → Hardening.
+**Acceptance Gate:** 100ms p95 across all API endpoints. If exceeded → Hardening.
 
-### 5.2 Policy Denial Rate — نسبة رفض السياسات
+### 5.2 Policy Denial Rate
 
-| النوع | الهدف | طريقة القياس |
+| Type | Target | Measurement Method |
 |-------|-------|-------------|
-| ALLOW/DENY Ratio | DENY < 5% من ALL | ProviderGateway Logs |
-| False Denials | < 1% | مراجعة يدوية أسبوعية |
+| ALLOW/DENY Ratio | DENY < 5% of ALL | ProviderGateway Logs |
+| False Denials | < 1% | Weekly manual review |
 
-**Acceptance Gate:** DENY < 5%. إذا تجاوز → مراجعة قواعد ProviderGateway.
+**Acceptance Gate:** DENY < 5%. If exceeded → review ProviderGateway rules.
 
-### 5.3 Audit Trail Completeness — اكتمال مسار التدقيق
+### 5.3 Audit Trail Completeness
 
-| النوع | الهدف | طريقة القياس |
+| Type | Target | Measurement Method |
 |-------|-------|-------------|
-| Event Coverage | 100% | مقارنة EventBus publications مع Audit Trail |
+| Event Coverage | 100% | Compare EventBus publications with Audit Trail |
 | Trace Completeness | 100% | Distributed Tracing — Trace Explorer |
 
-**Acceptance Gate:** 100%. أي حدث غير مسجّل = اختراق لـ LAW 5 → **FAIL فوري**.
+**Acceptance Gate:** 100%. Any unrecorded event = breach of LAW 5 → **immediate FAIL**.
 
-### 5.4 Workflow Success Rate — معدل نجاح سير العمل
+### 5.4 Workflow Success Rate
 
-| النوع | الهدف | طريقة القياس |
+| Type | Target | Measurement Method |
 |-------|-------|-------------|
 | DAG Completion | ≥ 95% | Audit Trail — COMPLETED vs FAILED |
 | Auto-Recovery Rate | ≥ 80% | RollbackEngine logs |
 
-**Acceptance Gate:** 95%. أقل من ذلك → تحليل أسباب الفشل.
+**Acceptance Gate:** 95%. Below that → analyze failure causes.
 
-### 5.5 Provider Response Time — زمن استجابة المزوّد
+### 5.5 Provider Response Time
 
-| النوع | الهدف | طريقة القياس |
+| Type | Target | Measurement Method |
 |-------|-------|-------------|
 | Provider Gateway Decision | < 500ms | ProviderGateway Metrics |
 | Connector I/O | < 200ms | Connector Logs |
 
-**Acceptance Gate:** 500ms. إذا تجاوز → تحقق من ازدحام ProviderGateway.
+**Acceptance Gate:** 500ms. If exceeded → check ProviderGateway congestion.
 
 ---
 
-## 6. Staging Deployment — النشر
+## 6. Staging Deployment
 
-### 6.1 المنصة المختارة
+### 6.1 Selected Platform
 
-| الخيار | المميزات | العيوب |
+| Option | Pros | Cons |
 |--------|---------|--------|
-| **Railway** | ⭐ بسيط، Git-connected, متكامل مع Docker | موارد محدودة في الخطة المجانية |
-| Render | Docker support, cron jobs, معروف | إعدادات شبكة أكثر تعقيداً |
-| Fly.io | أقرب إلى Edge، أداء عالٍ | منحنى تعلم أعلى |
+| **Railway** | ⭐ Simple, Git-connected, integrated with Docker | Limited resources on the free plan |
+| Render | Docker support, cron jobs, well-known | More complex network settings |
+| Fly.io | Closer to Edge, high performance | Higher learning curve |
 
-**التوصية:** **Railway** — لأقصى بساطة مع المشروع الحالي (`Dockerfile` + `docker-compose.yml` جاهزان).
+**Recommendation:** **Railway** — for maximum simplicity with the current project (`Dockerfile` + `docker-compose.yml` are ready).
 
-### 6.2 خطوات النشر
+### 6.2 Deployment Steps
 
 ```bash
-# 1. تسجيل الدخول
+# 1. Login
 railway login
 
-# 2. ربط المشروع
+# 2. Link the project
 railway init
 
-# 3. تعيين المتغيرات
+# 3. Set variables
 railway variables set EMO_JWT_SECRET=$(openssl rand -base64 48)
 railway variables set EMO_AUTH_MODE=migration
 railway variables set EMO_PILOT_MODE=true
 railway variables set EMO_LOG_LEVEL=INFO
 
-# 4. رفع الخدمة
+# 4. Deploy the service
 railway up --service backend
 
-# 5. رفع الواجهة (Vercel — مستقل)
+# 5. Deploy the frontend (Vercel — standalone)
 cd apps/web
 vercel --prod
 vercel env add NEXT_PUBLIC_API_BASE_URL
 ```
 
-### 6.3 العزل
+### 6.3 Isolation
 
-| المستوى | الإجراء |
+| Level | Action |
 |---------|--------|
-| **Workspace Isolation** | 4 workspaces (energy, manufacturing, water, healthcare) — كل منها بـ `_verify_workspace_access()` |
-| **Network Isolation** | Backend على Railway، Frontend على Vercel — لا اتصال مباشر |
-| **Data Isolation** | قاعدة بيانات SQLite منفصلة لكل workspace (قابلة للترقية إلى PostgreSQL) |
-| **Auth Isolation** | JWT لكل مستخدم — صلاحيات مقيدة بـ workspace |
+| **Workspace Isolation** | 4 workspaces (energy, manufacturing, water, healthcare) — each with `_verify_workspace_access()` |
+| **Network Isolation** | Backend on Railway, Frontend on Vercel — no direct connection |
+| **Data Isolation** | Separate SQLite database per workspace (upgradable to PostgreSQL) |
+| **Auth Isolation** | JWT per user — permissions restricted by workspace |
 
-### 6.4 بيانات الاختبار
+### 6.4 Test Data
 
-| المصدر | النوع | الحجم |
+| Source | Type | Size |
 |--------|------|-------|
-| بيانات تاريخية | مقاييس OEE, طاقة, مياه, رعاية صحية | ~1000 سجل لكل قطاع |
-| بيانات محاكاة | أحداث عشوائية (overheat, تسرب, شذوذ) | 10 أحداث/دقيقة |
-| بيانات تشغيلية | طلبات موافقة، قرارات ALLOW/DENY | ~100 حدث/ساعة |
+| Historical data | OEE metrics, energy, water, healthcare | ~1000 records per sector |
+| Simulation data | Random events (overheat, leak, anomaly) | 10 events/minute |
+| Operational data | Approval requests, ALLOW/DENY decisions | ~100 events/hour |
 
 ---
 
 ## 7. Pilot Runbooks
 
-### 7.1 التشغيل
+### 7.1 Operation
 
 #### Daily Startup
 
 ```bash
-# 1. التحقق من صحة الخدمة
+# 1. Verify service health
 curl -f http://<backend-url>/health
 
-# 2. التحقق من حالة الـ Workers
+# 2. Check Workers status
 railway logs --service backend | grep "worker"
 
-# 3. التحقق من EventBus
+# 3. Check EventBus
 railway logs --service backend | grep "EventBus started"
 
-# 4. التحقق من قاعدة البيانات
+# 4. Check the database
 railway logs --service backend | grep "Database connected"
 ```
 
 #### Sector Activation
 
 ```bash
-# تنشيط قطاع Manufacturing
+# Activate the Manufacturing sector
 curl -X POST http://<backend-url>/api/workspace/manufacturing/activate \
   -H "Authorization: Bearer <token>"
 
-# تنشيط قطاع Energy
+# Activate the Energy sector
 curl -X POST http://<backend-url>/api/workspace/energy/activate \
   -H "Authorization: Bearer <token>"
 ```
 
 #### User Onboarding
-اتبع `docs/PILOT_ONBOARDING.md` — يغطي خطوات إنشاء المستخدم، تشغيل الأجنت، ومراقبة Dashboard.
+Follow `docs/PILOT_ONBOARDING.md` — covers user creation steps, running agents, and monitoring the Dashboard.
 
 ---
 
-### 7.2 المراقبة
+### 7.2 Monitoring
 
-#### فترات المراجعة
+#### Review Intervals
 
-| المقياس | الفترة | المسؤول |
+| Metric | Interval | Owner |
 |---------|--------|---------|
-| Latency (p95) | كل 5 دقائق | تلقائي — Prometheus |
-| Policy Denial Rate | كل ساعة | تلقائي + تقرير |
-| Audit Trail Completeness | كل 6 ساعات | تلقائي + تقرير |
-| Workflow Success Rate | يومياً | تلقائي |
-| Provider Response Time | كل 5 دقائق | تلقائي |
-| مراجعة أمنية | يومياً | يدوي |
-| مراجعة شاملة | أسبوعياً | يدوي — تقرير رسمي |
+| Latency (p95) | every 5 minutes | automated — Prometheus |
+| Policy Denial Rate | hourly | automated + report |
+| Audit Trail Completeness | every 6 hours | automated + report |
+| Workflow Success Rate | daily | automated |
+| Provider Response Time | every 5 minutes | automated |
+| Security review | daily | manual |
+| Comprehensive review | weekly | manual — formal report |
 
-#### لوحة المراقبة (Dashboard)
+#### Monitoring Dashboard
 
 ```
 http://<backend-url>/dashboard
@@ -328,131 +328,131 @@ http://<backend-url>/dashboard
 └── Operator Action Log
 ```
 
-#### Indicators الحمراء (استدعاء فوري)
+#### Red Indicators (immediate escalation)
 
-| المؤشر | الإجراء |
+| Indicator | Action |
 |---------|---------|
-| Latency > 500ms | تحقق من ازدحام workers, scale up |
-| DENY > 15% | مراجعة ProviderGateway rules |
-| أي Security Violation | إيقاف Pilot فوراً |
-| Downtime > 5 دقائق | توجيه traffic إلى backup |
-| Audit Gap (حدث غير مسجّل) | تحقيق فوري |
+| Latency > 500ms | check worker congestion, scale up |
+| DENY > 15% | review ProviderGateway rules |
+| Any Security Violation | stop Pilot immediately |
+| Downtime > 5 minutes | redirect traffic to backup |
+| Audit Gap (unrecorded event) | immediate investigation |
 
 ---
 
 ### 7.3 Rollback
 
-#### متى نعمل Rollback؟
+#### When to roll back?
 
-| الحالة | القرار |
+| Condition | Decision |
 |--------|--------|
-| Latency > 1000ms لمدة 5 دقائق | Rollback فوري |
-| Policy Denial Rate > 25% | Rollback فوري |
-| أي اختراق | Rollback فوري |
-| فشل قطاعين | Rollback (إعادة تشغيل) |
-| خطأ في البيانات (Data corruption) | Rollback فوري |
+| Latency > 1000ms for 5 minutes | immediate rollback |
+| Policy Denial Rate > 25% | immediate rollback |
+| Any breach | immediate rollback |
+| Two sectors failing | rollback (restart) |
+| Data corruption | immediate rollback |
 
-#### خطوات Rollback
+#### Rollback Steps
 
 ```bash
-# 1. إيقاف الخدمة الحالية
+# 1. Stop the current service
 railway down --service backend
 
-# 2. استعادة النسخة السابقة (RC17.5)
+# 2. Restore the previous version (RC17.5)
 railway up --service backend --from v1.0.0-RC17.5
 
-# 3. استعادة قاعدة البيانات من backup
+# 3. Restore the database from backup
 cp ./backups/pre-pilot.db ./data/emo_ai.db
 
-# 4. التحقق من الصحة
+# 4. Health check
 curl -f http://<backend-url>/health
 
-# 5. إشعار المستخدمين
+# 5. Notify users
 echo "Rollback completed at $(date). Reason: <reason>" >> ./pilot/rollback.log
 ```
 
-#### النسخ الاحتياطي (Backup)
+#### Backup
 
-| العنصر | التكرار | الموقع |
+| Item | Frequency | Location |
 |--------|---------|--------|
-| قاعدة البيانات | كل 6 ساعات | `./backups/emo_ai_<timestamp>.db` |
-| Event Store | يومياً | `./backups/events_<date>.jsonl` |
-| Audit Logs | مستمر | `./audit/` |
-| Docker Images | عند كل إصدار | GitHub Container Registry |
+| Database | every 6 hours | `./backups/emo_ai_<timestamp>.db` |
+| Event Store | daily | `./backups/events_<date>.jsonl` |
+| Audit Logs | continuous | `./audit/` |
+| Docker Images | on every release | GitHub Container Registry |
 
 ---
 
 ### 7.4 Incident Handling
 
-#### تصنيف الحوادث
+#### Incident Classification
 
-| المستوى | الوصف | وقت الاستجابة | وقت الحل |
+| Level | Description | Response Time | Resolution Time |
 |---------|-------|--------------|---------|
-| **P0** | توقف الخدمة بالكامل، اختراق، تسريب بيانات | فوري | < 30 دقيقة |
-| **P1** | فشل قطاع رئيسي، بطء شديد | < 15 دقيقة | < ساعتين |
-| **P2** | فشل قطاع ثانوي، أخطاء متقطعة | < ساعة | < 8 ساعات |
-| **P3** | إنذارات غير حرجة، أخطاء تجميلية | < 24 ساعة | < أسبوع |
+| **P0** | Full service outage, breach, data leak | immediate | < 30 minutes |
+| **P1** | Major sector failure, severe slowdown | < 15 minutes | < 2 hours |
+| **P2** | Minor sector failure, intermittent errors | < 1 hour | < 8 hours |
+| **P3** | Non-critical alerts, cosmetic errors | < 24 hours | < 1 week |
 
-#### سير معالجة P0
+#### P0 Handling Workflow
 
 ```
-1. كشف الحادث ← تلقائي أو يدوي
-2. إشعار الفريق ← قناة مخصصة (Slack/Telegram/Pager)
-3. تقييم ← P0, P1, P2, P3
-4. احتواء ← Rollback / عزل القطاع / إيقاف الخدمة
-5. تحليل السبب الجذري (RCA) ← توثيق
-6. حل ← تطبيق patch أو استعادة النسخة
-7. مراجعة ← هل يحتاج الـ Post-Pilot قرار تغيير؟
-8. توثيق في INCIDENT_LOG.md
+1. Incident detection ← automated or manual
+2. Notify the team ← dedicated channel (Slack/Telegram/Pager)
+3. Assessment ← P0, P1, P2, P3
+4. Containment ← Rollback / sector isolation / service stop
+5. Root Cause Analysis (RCA) ← documentation
+6. Resolution ← apply patch or restore version
+7. Review ← does the Post-Pilot decision need to change?
+8. Document in INCIDENT_LOG.md
 ```
 
-#### قالب الإبلاغ عن الحادث
+#### Incident Report Template
 
 ```markdown
 # Incident Report — <ID>
 
-##基本信息
-- **التاريخ:** YYYY-MM-DD HH:mm
-- **المستوى:** P0/P1/P2/P3
-- **المصدر:** Manufacturing / Energy / Water / Healthcare / System
-- **المؤثرون:** القطاعات المتأثرة
-- **الموجود:** الشخص المستجيب
+## Basic Information
+- **Date:** YYYY-MM-DD HH:mm
+- **Level:** P0/P1/P2/P3
+- **Source:** Manufacturing / Energy / Water / Healthcare / System
+- **Affected:** affected sectors
+- **Responder:** the responding person
 
-## الوصف
-<وصف الحادث>
+## Description
+<incident description>
 
-## السبب الجذري
-<ما حدث ولماذا>
+## Root Cause
+<what happened and why>
 
-## الإجراء المتخذ
-<Rollback / Patch / عزل>
+## Action Taken
+<Rollback / Patch / isolation>
 
-## النتيجة
-<هل تم الحل؟>
+## Outcome
+<was it resolved?>
 
-## الدروس المستفادة
-<ما سنفعله differently>
+## Lessons Learned
+<what we will do differently>
 ```
 
 ---
 
 ## 8. Post-Pilot Decision
 
-### 8.1 معايير القرار
+### 8.1 Decision Criteria
 
-| الحالة | المعايير | القرار |
+| Status | Criteria | Decision |
 |--------|---------|--------|
-| ✅ **Green — نجاح كامل** | جميع Pass Criteria ≥ 100% | **Phase H** يبدأ |
-| 🟡 **Yellow — نجاح جزئي** | Pass Criteria ≥ 80%، 0 Fail Criteria | **Hardening** — معالجة الفجوات ثم Phase H |
-| 🔴 **Red — فشل** | أي Fail Criteria | **إيقاف** — العودة إلى التطوير |
+| ✅ **Green — full success** | all Pass Criteria ≥ 100% | **Phase H** begins |
+| 🟡 **Yellow — partial success** | Pass Criteria ≥ 80%, 0 Fail Criteria | **Hardening** — address gaps then Phase H |
+| 🔴 **Red — failure** | any Fail Criteria | **Stop** — return to development |
 
-### 8.2 تقرير Post-Pilot
+### 8.2 Post-Pilot Report
 
 ```markdown
-# Post-Pilot Evaluation Report — <التاريخ>
+# Post-Pilot Evaluation Report — <date>
 
 ## Pass Criteria
-| المقياس | الهدف | النتيجة | ✅/❌ |
+| Metric | Target | Result | ✅/❌ |
 |---------|-------|---------|------|
 | Latency (p95) | < 100ms | ×ms | |
 | Policy Denial Rate | < 5% | ×% | |
@@ -462,39 +462,39 @@ echo "Rollback completed at $(date). Reason: <reason>" >> ./pilot/rollback.log
 | Sector Coverage | 4/4 | ×/4 | |
 
 ## Fail Criteria
-| المقياس | الحد | النتيجة | ✅/❌ |
+| Metric | Limit | Result | ✅/❌ |
 |---------|------|---------|------|
 | Security Incidents | 0 | × | |
 | Data Leakage | 0 | × | |
 | Downtime | > 30 min | × min | |
 | Policy Denial Rate | > 15% | ×% | |
 
-## القرار
-[ ] Phase H — جاهز للتوسع
-[ ] Hardening — معالجة الفجوات
-[ ] إيقاف — العودة للتطوير
+## Decision
+[ ] Phase H — ready to expand
+[ ] Hardening — address gaps
+[ ] Stop — return to development
 
-## التوقيع
-<مدير المشروع>
+## Signature
+<project manager>
 ```
 
 ---
 
-## 9. الملخص التنفيذي
+## 9. Executive Summary
 
 ```
 Pilot Expansion — Emo-AI v1.0.0-RC18
-├── البيئة: Railway + Vercel (معزولان)
-├── القطاعات: الطاقة، التصنيع، المياه، الرعاية الصحية
-├── المدة: 4 أسابيع (إعداد + تشغيل + تقييم)
-├── المقاييس: 5 رئيسية (Latency, Policy, Audit, Workflow, Provider)
-├── حدود النجاح: ≥ 90% لكل سيناريو، 0 اختراق
-├── قرار ما بعد Pilot: Phase H / Hardening / إيقاف
-└── المبادئ: العزل، Default Deny، Human-in-the-Loop، الشفافية
+├── Environment: Railway + Vercel (isolated)
+├── Sectors: Energy, Manufacturing, Water, Healthcare
+├── Duration: 4 weeks (setup + operation + evaluation)
+├── Metrics: 5 main (Latency, Policy, Audit, Workflow, Provider)
+├── Success boundaries: ≥ 90% per scenario, 0 breaches
+├── Post-Pilot decision: Phase H / Hardening / Stop
+└── Principles: Isolation, Default Deny, Human-in-the-Loop, Transparency
 ```
 
 ---
 
-> **الخلاصة:** Pilot Execution Plan يحدد البيئة، السيناريوهات، المقاييس، حدود النجاح/الفشل، runbooks التشغيل والمراقبة والـ rollback والحوادث، وآلية اتخاذ القرار بعد Pilot. الخطة جاهزة للتنفيذ فور الموافقة.
+> **Conclusion:** The Pilot Execution Plan defines the environment, scenarios, metrics, success/failure boundaries, runbooks for operation, monitoring, rollback, and incidents, and the decision-making mechanism after the Pilot. The plan is ready for execution upon approval.
 
-> **ملاحظة:** هذا المستند هو خطة تنفيذ — ليس دليلاً تقنياً. للتوجيه التقني، راجع `README_DEPLOY.md` و `docs/PILOT_ONBOARDING.md`.
+> **Note:** This document is an execution plan — not a technical guide. For technical guidance, refer to `README_DEPLOY.md` and `docs/PILOT_ONBOARDING.md`.

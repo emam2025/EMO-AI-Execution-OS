@@ -1,86 +1,185 @@
 <div align="center">
-  <pre>
-███████╗███╗   ███╗ ██████╗     █████╗ ██╗
-██╔════╝████╗ ████║██╔═══██╗   ██╔══██╗██║
-█████╗  ██╔████╔██║██║   ██║   ███████║██║
-██╔══╝  ██║╚██╔╝██║██║   ██║   ██╔══██║██║
-███████╗██║ ╚═╝ ██║╚██████╔╝██╗██║  ██║██║
-╚══════╝╚═╝     ╚═╝ ╚═════╝ ╚═╝╚═╝  ╚═╝╚═╝
-  </pre>
 
-  # EMO AI Execution OS
+# EMO AI Execution OS
 
-  **Industrial AI Execution Operating System**
+### Industrial AI Execution Operating System
 
-  [![Version](https://img.shields.io/badge/version-1.0.0--RC18-blue)]()
-  [![Tests](https://img.shields.io/badge/tests-4068-green)]()
-  [![Python](https://img.shields.io/badge/python-3.14-blue)]()
-  [![License](https://img.shields.io/badge/license-Proprietary-red)]()
+[![Version](https://img.shields.io/badge/version-1.0.0--RC18-blue)]()
+[![Tests](https://img.shields.io/badge/tests-4,106-green)]()
+[![Python](https://img.shields.io/badge/python-3.12+-blue)]()
+[![License](https://img.shields.io/badge/license-Proprietary-red)]()
+[![Status](https://img.shields.io/badge/status-Pilot--Baseline-yellow)]()
 
-  ---
-
-  *Master Architecture, Reality Audit & Maintenance Reference*
-
-  ---
-
-  **© 2026 Eng. Emam AbdullAziz. All rights reserved.**
-
-  This repository and all its contents are the intellectual property of Engineer Emam AbdullAziz.  
-  Unauthorized reproduction, distribution, or use is strictly prohibited.
+**A unified AI execution platform for industrial-scale automation, governance, and autonomous operations.**
 
 </div>
 
-## Purpose
+---
 
-This repository contains the official engineering reference and source-of-truth documentation for EMO AI Execution OS.
+## Overview
 
-The purpose of this repository is to preserve the complete architectural history, current implementation reality, ownership boundaries, maintenance rules, and future evolution path of the system.
+EMO AI Execution OS is an **Industrial AI Execution Operating System** — not a chatbot, not an agent framework, not a workflow tool. It is a unified platform that combines:
 
-EMO AI is designed as an:
+- **AI Runtime Execution** — DAG-based task execution with retry, recovery, and replay
+- **Agent Intelligence** — Multi-agent lifecycle, cognitive orchestration, sector-specific agents
+- **Workflow Orchestration** — DAG optimization, validation, and execution
+- **Memory Systems** — Hierarchical memory with semantic retrieval and skill graphs
+- **Governance** — Identity, RBAC, audit trails, compliance, safety gates
+- **Security** — Default Deny, Human-in-the-Loop, Fernet encryption, rate limiting
+- **Industrial Integration** — OPC-UA, SCADA, Modbus, FHIR, Digital Twins
+- **Autonomous Operations** — Approval gates, controlled autonomy levels
 
-**Industrial AI Execution Operating System**
+## Architecture
 
-not as:
+The system is organized into 10 owned layers:
 
-- Chatbot
-- AI Assistant
-- Agent Framework
-- Workflow Automation Tool
+```
+EMO AI Execution OS
+│
+├── Kernel Layer          Execution Runtime, State Machine, Scheduler, Recovery, Replay, Events
+├── Intelligence Layer    Agent OS, Planner, Critic, Optimizer, Multi-Agent Swarm
+├── Automation Layer      Workflow OS, Tool Runtime, Tool Synthesis, Computer Use
+├── Memory Layer          Hierarchy, Semantic Retrieval, Skill Graph, Context Management
+├── Governance Layer      Identity, RBAC, Policy Engine, Audit, Compliance
+├── Security Layer        Capability Guard, IO Policy, Secrets Runtime, Rate Limiting
+├── Platform Layer        Control Plane, Resource Scheduler, Observability
+├── Industrial Layer      Digital Twins, OPC-UA, Modbus, SCADA, Industry Packs
+├── Cognitive Layer       Strategic Planning, Reflection Loops, Adaptive Policies
+└── Enterprise Layer      Multi-tenancy, Billing, Trace Correlation, Compliance Reporting
+```
 
-but as a unified platform combining:
+## Industrial Sectors
 
-- AI Runtime Execution
-- Agent Intelligence
-- Workflow Orchestration
-- Memory Systems
-- Governance
-- Security
-- Industrial Integration
-- Autonomous Operations
+EMO AI implements sector-specific extensions over a unified core:
 
-## Repository Objectives
+| Sector | Connectors | Digital Twin | Status |
+|--------|-----------|--------------|--------|
+| Manufacturing | OPC-UA | OEE Engine | Foundation Complete |
+| Energy | SCADA, MQTT | EnergyTwin | Foundation Complete |
+| Water | SCADA, Modbus | WaterTwin | Foundation Complete |
+| Healthcare | FHIR, Medical MQTT | HealthcareTwin | Foundation Complete |
 
-This repository serves as the official reference for:
+## Key Features
 
-- Developers
-- System Architects
-- Maintainers
-- Auditors
-- Future contributors
+### Execution & Runtime
+- DAG-based execution engine with 5 bounded services
+- Distributed mesh runtime with service registry
+- Replay engine with deterministic recovery
+- Resource scheduler with fairness + starvation prevention
 
-It provides:
+### Intelligence & Agents
+- Planner / Critic / Optimizer cognitive agents
+- Multi-agent swarm coordination
+- Sector-specific agents (manufacturing, energy, water, healthcare)
+- Approval gates for safety-critical operations
 
-- Architecture ownership map
-- Current capability audit
-- Implementation reality verification
-- Phase completion status
-- Technical limitations
-- Maintenance procedures
-- Future roadmap
+### Memory & Knowledge
+- Hierarchical memory (WORKING / SHORT_TERM / LONG_TERM / ARCHIVAL)
+- Project Memory with tenant isolation
+- Semantic retrieval with Vector DB (Qdrant) support
+- Skill graph management
 
-## Source of Truth Policy
+### Governance & Security
+- Default Deny capability model
+- RBAC with role hierarchy
+- Audit trail with SHA-256 chain + HMAC signing
+- Fernet authenticated encryption (AES-128-CBC + HMAC-SHA256)
+- Rate limiting on auth endpoints
+- IEC 62443 / SOC2 readiness (in progress)
 
-All documentation must follow this priority order:
+### Industrial Integration
+- Read-only connectors (write support in development)
+- Digital twins with state management + simulation
+- Sector-specific safety gates (WHO/EPA/IEC compliance)
+- Human approval workflow for all critical operations
+
+## Quick Start
+
+### Prerequisites
+
+- Python 3.12+
+- pip / venv
+- (Optional) Docker for containerized deployment
+- (Optional) PostgreSQL for production (SQLite by default)
+- (Optional) Qdrant for vector DB production backend
+
+### Installation
+
+```bash
+# Clone
+git clone https://github.com/emam2025/EMO-AI-Execution-OS.git
+cd EMO-AI-Execution-OS
+
+# Create virtual environment
+python3 -m venv .venv
+source .venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Configure environment
+cp .env.example .env
+# Edit .env with your settings (JWT secret, API keys, etc.)
+
+# Run
+uvicorn main:app --reload --port 8000
+```
+
+### Running Tests
+
+```bash
+# Full test suite
+pytest tests/ -q
+
+# Collect only (count)
+pytest tests/ --collect-only -q | tail -1
+```
+
+## Project Status
+
+| Metric | Value |
+|--------|-------|
+| Version | 1.0.0-RC18 |
+| Tests | 4,106 |
+| Collection Errors | 0 |
+| Python Files (core/) | 513 |
+| LOC (core/) | ~86,800 |
+| Industrial Sectors | 4 |
+| Architecture Layers | 10 |
+
+## Documentation
+
+### Primary References
+- [Master Architecture Reference](docs/EMO_AI_MASTER_ARCHITECTURE_REFERENCE.md) — Canonical engineering reference
+- [Development Plan](EMO_AI_DEVELOPMENT_PLAN.md) — Roadmap and task tracking
+- [Architecture Ownership Map](docs/ARCHITECTURE_OWNERSHIP_MAP.md) — Layer ownership
+- [Changelog](CHANGELOG.md) — Version history
+
+### Guides
+- [Developer Guide](DEVELOPER.md) — Canon Laws, development rules
+- [Contributing](CONTRIBUTING.md) — How to contribute
+- [Security Policy](SECURITY.md) — Security principles
+- [Installation Guide](docs/INSTALL_GUIDE.md) — Detailed setup
+
+### Audit & Compliance
+- [Security Audit Log](docs/audit/RC18_SECURITY_AUDIT_LOG.md) — V-1 to V-6 fixes
+- [Pilot Latency Log](docs/audit/RC18_PILOT_LATENCY_LOG.md) — Performance audit
+- [Accepted Architectural Debt](docs/ACCEPTED_ARCHITECTURAL_DEBT.md) — AD-001 to AD-012
+
+## Development
+
+### Canon Laws
+
+The project enforces 27 architectural laws (LAW 1-27). Key principles:
+
+- **LAW 10**: No business logic in models
+- **LAW 13**: Dependencies injected via constructor
+- **LAW 18**: Trace analysis determinism
+- **LAW 23-27**: Service mesh ownership and isolation
+
+### Source of Truth Policy
+
+All documentation must follow this priority:
 
 1. Current repository source code
 2. Automated tests
@@ -88,129 +187,59 @@ All documentation must follow this priority order:
 4. Deployment reports
 5. Previous architecture documents
 
-Historical documents are treated as references only and must not override repository reality.
+### Branch Strategy
 
-## Core Principle
+- `main` — Production-ready releases
+- `develop` — Active development
+- `feat/*` — Feature branches
+- `fix/*` — Bug fixes
+- `chore/*` — Maintenance
 
-- No capability is considered implemented unless supported by:
-  - Source code evidence
-  - Test evidence
-  - Runtime verification
-- No future architecture item should be marked as completed.
-- No partial capability should be represented as production ready.
-- No direct core changes — every feature mapped to layer.
-- Tests required.
-- Architecture review required.
+## Roadmap
 
-## Architecture Scope
+### Completed (Phase 1: Consolidation)
+- ✅ 35+ tasks completed (T-01 to T-14, T-A1 to T-A15)
+- ✅ ~6,000 LOC dead code removed
+- ✅ Production entry point fixed
+- ✅ PostgreSQL backend activated
+- ✅ Vector DB abstraction (Qdrant)
+- ✅ Rate limiting added
+- ✅ CI/CD source-of-truth gates
 
-The system is organized into the following layers:
+### In Progress (Phase 2: Critical Gaps)
+- 🔄 R2 Memory OS (T-30 Project Memory done, 9 components remaining)
+- ⏳ R16 Write Support (industrial actuator commands)
+- ⏳ Computer Use real implementation
+- ⏳ K8s/HA/DR deployment
 
-```
-EMO AI Execution OS
+### Planned (Phase 3-6)
+- Generative UI (outperform Notion)
+- LLM-driven Tool Synthesis (outperform n8n)
+- Strategic Planning (R4 Cognitive OS)
+- DCS Integration (Honeywell, Siemens, Emerson, ABB, Yokogawa)
+- ERP Integration (SAP, Oracle, Microsoft Dynamics)
+- Laboratory Integration (LIMS, gas analysis)
+- Full Factory Automation
+- Operational AI Assistant
 
-Kernel Layer
-  Execution Runtime
-  State Machine
-  Scheduler
-  Recovery
-  Replay
-  Event System
+See [Development Plan](EMO_AI_DEVELOPMENT_PLAN.md) for complete roadmap.
 
-Intelligence Layer
-  Agent OS
-  Cognitive Engine
-  Planner
-  Critic
-  Optimizer
-  Multi-Agent Runtime
+## License
 
-Automation Layer
-  Workflow OS
-  Tool Runtime
-  Tool Synthesis
-  Computer Use
+**© 2026 Eng. Emam AbdullAziz. All rights reserved.**
 
-Memory Layer
-  Memory Hierarchy
-  Semantic Retrieval
-  Knowledge Storage
-  Context Management
+This repository and all its contents are the intellectual property of Engineer Emam AbdullAziz. Unauthorized reproduction, distribution, or use is strictly prohibited.
 
-Governance Layer
-  Identity
-  RBAC
-  Policy Engine
-  Audit
-  Compliance
+## Contact
 
-Platform Layer
-  Control Plane
-  Resource Scheduler
-  Observability
+- **Author**: Eng. Emam AbdullAziz
+- **Repository**: [github.com/emam2025/EMO-AI-Execution-OS](https://github.com/emam2025/EMO-AI-Execution-OS)
+- **Issues**: [GitHub Issues](https://github.com/emam2025/EMO-AI-Execution-OS/issues)
 
-Industrial Layer
-  Digital Twin
-  OPC-UA
-  Modbus
-  SCADA
-  Industry Packs
-```
+---
 
-## Repository Documentation Standard
+<div align="center">
 
-Every major component must document:
+**Built for industrial-scale AI execution with governance-first principles.**
 
-- Purpose
-- Ownership layer
-- Interfaces
-- Dependencies
-- Tests
-- Security impact
-- Maintenance rules
-
-## Long-Term Vision
-
-The final target is:
-
-```
-EMO Core
-+ Industry Pack
-+ Connectors
-+ Digital Twin
-= Industrial AI Operating System
-```
-
-Industrial sectors are implemented as extensions over a unified core:
-
-- Manufacturing
-- Energy
-- Oil & Gas
-- Water
-- Healthcare
-- Logistics
-- Smart Infrastructure
-
-## Development Rules
-
-- No direct modification of core runtime without audit.
-- No duplicate implementations of existing capabilities.
-- Every new feature must belong to an existing architecture layer.
-- Security and governance are mandatory for execution features.
-- Human approval is required for critical industrial actions.
-- Autonomous operation levels must remain controlled.
-
-## Current Release Baseline
-
-- **Current VERSION:** `v1.0.0-RC18` (see [VERSION](VERSION))
-- **Current tag:** `v1.0.0-RC18-BASELINE`
-- **Current deployment state:** Railway staging (Pilot Green)
-- **Current test status:** 4068 tests, 100% pass rate
-
-## Official Reference Document
-
-The primary engineering reference is:
-
-[`docs/EMO_AI_MASTER_ARCHITECTURE_REFERENCE.md`](docs/EMO_AI_MASTER_ARCHITECTURE_REFERENCE.md)
-
-This file is the canonical engineering reference.
+</div>
