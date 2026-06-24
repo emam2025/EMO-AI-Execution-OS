@@ -26,6 +26,7 @@ class MemoryLayer(str, enum.Enum):
     PROCEDURAL = "procedural"
     SEMANTIC = "semantic"
     PROJECT = "project"
+    AGENT = "agent"
 
 
 class PruningPolicy(str, enum.Enum):

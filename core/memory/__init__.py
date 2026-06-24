@@ -18,6 +18,7 @@ from core.memory.skill_graph_manager import SkillGraphManager
 from core.memory.memory_state_machine import MemoryStateMachine, MemoryState, MemoryTransition
 from core.memory.trace_correlator import CognitiveTraceCorrelator
 from core.memory.project_memory import ProjectMemory, ProjectMemoryEntry, ProjectSummary
+from core.memory.agent_memory import AgentMemory, AgentMemoryEntry, AgentSkillSummary, AgentSummary
 
 __all__ = [
     "MemoryHierarchy",
@@ -30,4 +31,8 @@ __all__ = [
     "ProjectMemory",
     "ProjectMemoryEntry",
     "ProjectSummary",
+    "AgentMemory",
+    "AgentMemoryEntry",
+    "AgentSkillSummary",
+    "AgentSummary",
 ]
