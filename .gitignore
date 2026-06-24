@@ -1,6 +1,4 @@
-# === AI-SAFE WORKSPACE STRUCTURE ===
-# AI tools (OpenCode, Cursor, Copilot, Claude Code) read the filesystem directly,
-# NOT through git. These ignores protect against file tree crashes and watcher overload.
+# === BUILD ARTIFACTS (heaviest — 10K+ files each) ===
 
 # === BUILD ARTIFACTS (heaviest — 10K+ files each) ===
 target/

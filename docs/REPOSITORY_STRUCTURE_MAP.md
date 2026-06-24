@@ -39,7 +39,6 @@ Kernel Layer        │ core/canon/, core/interfaces/, core/models/, core/runtim
 | `releases/` | Archived release snapshots and certificates | Non-core (Release) | core team | — | Must not be imported by production |
 | `artifacts/` | Build outputs, validation data, certifications | Non-core (Artifacts) | core team | — | Must not be imported by production |
 | `.github/` | CI/CD, issue templates, PR template, CODEOWNERS | Non-core (CI/CD) | core team | GitHub Actions | — |
-| `.opencode/` | OpenCode AI agents and skills | Non-core (Dev) | core team | OpenCode | — |
 | `.githooks/` | Pre-commit hooks | Non-core (Git) | core team | Shell | — |
 | `.ai/` | AI code intelligence data (cache, embeddings, graphs) | Intelligence (AI Data) | core team | `core/ai_agent.py` | Data only — not committed |
 | `simulation_lab/` | Reserved for industrial simulation testing | Non-core (Sim) | core team | — | — |
@@ -88,7 +87,7 @@ Kernel Layer        │ core/canon/, core/interfaces/, core/models/, core/runtim
 | `pytest.ini` | Pytest configuration | Non-core (Testing) | pytest |
 | `VERSION` | Current version: `1.0.0-RC18` | Non-core (Version) | — |
 | `requirements.txt` | Python dependencies | Non-core (Deps) | pip |
-| `opencode.jsonc` | OpenCode configuration | Non-core (Dev) | OpenCode |
+
 
 ---
 

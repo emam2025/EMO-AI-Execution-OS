@@ -32,7 +32,6 @@
 /tests/ @emam2025
 
 # Configuration
-/opencode.jsonc @emam2025
 /pytest.ini @emam2025
 /setup.py @emam2025
 /requirements.txt @emam2025
