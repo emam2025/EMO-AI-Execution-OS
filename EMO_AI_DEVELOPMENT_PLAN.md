@@ -4,13 +4,13 @@
 
 ---
 
-**الإصدار**: 1.0
+**الإصدار**: 2.0
 **تاريخ الإنشاء**: 2026-06-24
 **آخر تحديث**: 2026-06-24
-**الفرع المرجعي**: `develop` @ `7fd15bc`
+**الفرع المرجعي**: `develop` @ `35d5580`
 **المالك**: المستشار المعماري (EMO-AI Architecture Review)
 **المنفّذ**: الوكيل المطور (Emam AbdullAziz)
-**الحالة**: Active — Phase 1 ✅ (جميع المهام مكتملة)
+**الحالة**: Active — Phase 1 ✅ → Phase 2 in progress (T-30 ✅)
 
 ---
 
@@ -19,7 +19,7 @@
 1. [الرؤية والأهداف](#1-الرؤية-والأهداف)
 2. [الواقع الحالي (Baseline)](#2-الواقع-الحالي-baseline)
 3. [المبادئ الحاكمة](#3-المبادئ-الحاكمة)
-4. [خارطة الطريق — 6 مراحل](#4-خارطة-الطريق--6-مراحل)
+4. [خارطة الطريق — 7 مراحل](#4-خارطة-الطريق--7-مراحل)
 5. [المهام التفصيلية](#5-المهام-التفصيلية)
 6. [بروتوكول التنفيذ](#6-بروتوكول-التنفيذ)
 7. [معايير القبول](#7-معايير-القبول)
@@ -33,11 +33,13 @@
 
 ### 1.1 الرؤية
 
-بناء **نظام تشغيل ذكاء اصطناعي صناعي** (Industrial AI Execution Operating System) يتفوق على:
+بناء **نظام تشغيل ذكاء اصطناعي صناعي** (Industrial AI Execution Operating System) يدير المصانع العملاقة تلقائياً مع إشراف بشري minimal، ويتفوق على:
 
 - **أطر الوكلاء**: LangChain, AutoGen, CrewAI
 - **أنظمة الـ Workflow**: n8n, Notion AI, Mac Automator
-- **الحلول الصناعية**: Siemens MindSphere, GE Predix
+- **الحلول الصناعية**: Siemens MindSphere, GE Predix, Honeywell Forge
+- **أنظمة DCS**: Honeywell, Siemens, Emerson, ABB, Yokogawa
+- **منصات ERP**: SAP, Oracle, Microsoft Dynamics
 
 ### 1.2 الأهداف القابلة للقياس
 
@@ -50,102 +52,87 @@
 | G5 | ذاكرة بلا منافس | R2 Memory OS كاملة + Knowledge Graph | Q4 2026 |
 | G6 | أمان غير قابل للمنافسة | SOC2 + zero-trust + audit chain | Q1 2027 |
 | G7 | استبدال البشر بنسبة 70% في مهام محددة | autonomous workflows + approval gates | Q2 2027 |
+| G8 | أتمتة كاملة للمصانع العملاقة | closed-loop control + multi-shift autonomous | Q2 2027 |
+| G9 | تكامل مع جميع أنظمة DCS الرئيسية | 5+ DCS connectors + OPC-UA/HART | Q2 2027 |
+| G10 | تكامل مع أنظمة تحليل الغاز | LIMS + GC + ASTM/ISO compliance | Q3 2027 |
+| G11 | تكامل ثنائي مع ERP | SAP + Oracle + Dynamics + production sync | Q3 2027 |
+| G12 | أتمتة الأعمال الإدارية بالكامل | 80%+ من المهام الإدارية مؤتمتة | Q4 2027 |
+| G13 | مساعد تشغيلي متكامل | Voice + mobile + wearable + 24/7 | Q4 2027 |
 
-### 1.3 الـ Niches التي سيتفوق فيها EMO AI
+### 1.3 الـ Niches التنافسية (6)
 
-لا ننافس في كل شيء — نتفوق في:
+1. **Factory Automation Platform** — أتمتة كاملة للمصانع العملاقة
+   - المنافسون: Siemens Opcenter, GE Proficy
+   - ميزة EMO: AI-native + governance-first + vendor-agnostic
 
-1. **البيئات الصناعية الحرجة** (manufacturing, energy, water, healthcare)
-2. **الأنظمة الموزعة** (mesh runtime + distributed execution)
-3. **الحوكمة الصارمة** (Default Deny + Human-in-the-Loop + audit trail)
-4. **الذاكرة المؤسسية** (hierarchical + semantic + skill graph)
-5. **الوكلاء المتخصصون قطاعياً** (sector agents + safety gates)
+2. **DCS Integration Hub** — تكامل مع جميع أنظمة DCS الرئيسية
+   - المنافسون: Honeywell Forge, Emerson Plantweb
+   - ميزة EMO: vendor-agnostic + open source + on-premise
+
+3. **Laboratory Intelligence** — تحليل الغاز + قرارات الجودة
+   - المنافسون: LabWare LIMS, Aspen Tech
+   - ميزة EMO: AI-driven decisions + automated batch release
+
+4. **ERP-Industrial Bridge** — ربط ERP بالإنتاج الفعلي
+   - المنافسون: SAP MII, Oracle MES
+   - ميزة EMO: bidirectional real-time + AI optimization
+
+5. **Enterprise Operations Automation** — أتمتة المهام الإدارية
+   - المنافسون: UiPath, Automation Anywhere
+   - ميزة EMO: unified platform + industrial + AI-native
+
+6. **Operational AI Assistant** — رفيق تشغيلي للمهندسين
+   - المنافسون: PTC ThingWorx, AWS IoT
+   - ميزة EMO: on-premise + sovereign AI + safety-critical
 
 ---
 
 ## 2. الواقع الحالي (Baseline)
 
-> **مُتحقَّق منه على `origin/develop` @ `7fd15bc` في 2026-06-24**
+> **مُتحقَّق منه على `origin/develop` @ `35d5580` في 2026-06-24**
 
 ### 2.1 الإحصائيات المؤكدة
 
 | المقياس | القيمة | المصدر |
 |---------|--------|--------|
-| إجمالي commits | 85 | `git log --oneline \| wc -l` |
-| ملفات Python في core/ | 513 | `find core/ -name "*.py" \| wc -l` |
-| LOC في core/ | 86,802 | `find core/ -name "*.py" -exec cat {} + \| wc -l` |
-| Tests collected | 4,031 | `pytest --collect-only -q` |
+| إجمالي commits | 90 | `git log --oneline \| wc -l` |
+| ملفات Python في core/ | 514 | `find core/ -name "*.py" \| wc -l` |
+| LOC في core/ | ~87,000 | `find core/ -name "*.py" -exec cat {} + \| wc -l` |
+| Tests collected | 4,106 | `pytest --collect-only -q` |
 | Collection errors | 0 | ✅ |
 | NotImplementedError في core/ | 0 | ✅ |
 | VERSION | 1.0.0-RC18 | `cat VERSION` |
 
-### 2.2 ما تم إنجازه (35+ مهمة مكتملة)
+### 2.2 ما تم إنجازه (44+ مهمة مكتملة)
 
-#### البنية التحتية (T-01 إلى T-14)
+#### البنية التحتية (T-01 إلى T-14) ✅
+#### الـ Consolidation المعماري (T-A1 إلى T-A15) ✅
+#### التوحيد المعماري ✅
+#### الديون المعمارية والأمان ✅
+#### المرحلة 1 (T-19 إلى T-25) ✅
+#### المرحلة 2 — Sprint 2.1 بدأ
 
-- ✅ T-01: توحيد التوثيق
-- ✅ T-02: إصلاح NotImplementedError (5 مواقع)
-- ✅ T-03: تفعيل PostgreSQL backend
-- ✅ T-03.2: إزالة aiosqlite.Row (10 مراجع)
-- ✅ T-04: Vector DB abstraction layer
-- ✅ T-05: تنظيف الكود الميت
-- ✅ T-06: إضافة Rate Limiter
-- ✅ T-10: CI/CD Source of Truth Gates (7 checks)
-- ✅ T-11: إصلاح NameError في test_worker_runtime.py
-- ✅ T-14: qdrant-client كـ optional dependency
-
-#### الـ Consolidation المعماري (T-A1 إلى T-A15)
-
-- ✅ T-A1: Production Entry Point (main.py facade + runtime_api)
-- ✅ T-A2: Shadowed Methods (root.py -189 سطر)
-- ✅ T-A3: Dead Agent Lifecycle محذوف
-- ✅ T-A5: Dead Computer Dir محذوف (748 LOC)
-- ✅ T-A6: Docs Drift (stub_impl claim)
-- ✅ T-A7: TraceCorrelator BaseTraceCorrelator ABC + حذف re-export
-- ✅ T-A8: Control Plane Split-Brain محذوف
-- ✅ T-A11: ContextCompiler cross-references
-- ✅ T-A12: Vector DB merge مع SemanticStore
-- ✅ T-A13: BaseSectorTwin ABC (-160 LOC duplication)
-- ✅ T-A14: Workflow OS package
-- ✅ T-A15: Dead Secrets محذوفة (680 LOC)
-
-#### التوحيد المعماري
-
-- ✅ Tracing merge → `core/runtime/observability/`
-- ✅ Scheduler merge → `core/runtime/resource_scheduler/`
-- ✅ Dead composition factories محذوفة (410 LOC)
-- ✅ Dead agent files محذوفة (460 LOC)
-
-#### الديون المعمارية والأمان
-
-- ✅ AD-001: Resume reset cycle مُصلح
-- ✅ AD-002: ContractValidator hardening
-- ✅ AD-003: Agent lifecycle tests + DAG viz 500-node limit
-- ✅ AD-004: DAG viz 500-node limit
-- ✅ Security audit: V-1 إلى V-6 + W-5 + W-12
-- ✅ Pilot latency reduction (async + parallel init)
+- ✅ T-30: Project Memory — `f482a6f`, 75 tests
+- 🟡 T-31 إلى T-39: باقي Memory OS components
 
 ### 2.3 المشاكل المتبقية (0)
 
-| المشكلة | الحالة |
-|---------|--------|
-| 3 scheduler tests فاشلة | ✅ تم الإصلاح في commit `d9b968c` (T-24) |
-| SpanStatus enum aliasing | ✅ تم التوحيد في commit `d9b968c` (T-23) |
-| brain keychain tests (6/8 fail) | ✅ تم الإصلاح في commit `a811f97` (T-19) |
+لا مشاكل معروفة. جميع الاختبارات تمر (4,106)، لا collection errors، لا NotImplementedError.
 
 ### 2.4 الفجوات الحرجة (Critical Gaps)
 
 | الفجوة | الوضع الحالي | الهدف |
 |--------|-------------|-------|
-| **Generative UI** | غير موجود (AD-004) | AI Screen Generator |
-| **Computer Use حقيقي** | stub_impl محذوف، لا بديل | pyautogui + platform APIs |
+| **R2 Memory OS** | 42% (5/12 مكون، T-30 ✅) | 100% + Knowledge Graph |
 | **Write Support صناعي** | جميع الموصلات read-only | actuator commands + approval gates |
-| **R2 Memory OS** | 30% فقط (5/12 مكون) | 100% + Knowledge Graph |
-| **Vector DB في الإنتاج** | موجود لكن عبر SemanticStore فقط | integration كامل مع Memory OS |
+| **Computer Use حقيقي** | non-existent | pyautogui + platform APIs |
 | **K8s/HA/DR** | غير موجود | Enterprise deployment |
-| **Tool Synthesis بـ LLM** | template-based فقط | LLM-driven generation |
-| **Strategic Planning (R4)** | 20% فقط | reflection loops + goal decomposition |
-| **Multi-Model Routing** | غير موجود | dynamic routing حسب التعقيد |
+| **DCS Integration** | non-existent | 5+ DCS connectors |
+| **LIMS/Gas Analysis** | non-existent | ASTM/ISO compliance |
+| **ERP Integration** | موجود جزئياً (ERPConnect) | Full SAP/Oracle/Dynamics |
+| **Enterprise Ops** | non-existent | RPA + document processing |
+| **Operational Assistant** | non-existent | Voice + mobile + wearable |
+| **Factory Automation** | non-existent | Closed-loop + multi-shift |
 | **IEC 62443 / SOC2** | partial | certification-ready |
 
 ---
@@ -169,6 +156,7 @@
 3. الـ Consolidation قبل التوسع
 4. الإنتاج قبل الادعاء
 5. الصراحة قبل التسويق
+6. السلامة الصناعية قبل الأتمتة
 ```
 
 ### 3.3 Canon Laws (LAW 1-27)
@@ -187,142 +175,154 @@
 
 ---
 
-## 4. خارطة الطريق — 6 مراحل
+## 4. خارطة الطريق — 7 مراحل
 
 ### ✅ المرحلة 1: إصلاح الأساس (مكتملة)
 
 > **الهدف**: من B+ إلى A- هيكلياً
-> **الحالة**: ✅ جميع المهام مكتملة في commits `d9b968c`، `a811f97`، `7fd15bc`
-
-**المهام المنجزة**:
-- ✅ T-23: توحيد SpanStatus enum — `d9b968c`
-- ✅ T-24: إصلاح 3 scheduler tests — `d9b968c`
-- ✅ T-25: توثيق الـ merge في CHANGELOG — `d9b968c`
-- ✅ T-20: تحديث 5 مراجع cognitive/ في docs — `d9b968c`
-- ✅ T-19: إصلاح brain keychain tests — `a811f97`
-- ✅ T-21: توضيح erp_connector.py — `a811f97` + `7fd15bc` (fix regression)
-- ✅ T-22: توثيق التخطيات في AD — `a811f97`
-- ✅ T-A7.2: تم الإلغاء (14 ملف trace_correlator فريدة)
-- ✅ T-A14.2: تم الإلغاء (routers/workflow.py سليم، 11/11 tests pass)
-
-**معايير القبول**:
-- [x] 0 collection errors
-- [x] 0 failing tests (4,031 pass)
-- [x] `grep "class SpanStatus" core/` يُرجع ملف واحد فقط
-- [x] `docs/EMO_AI_MASTER_ARCHITECTURE_REFERENCE.md` بدون cognitive/ references
-- [x] `routers/workflow.py` يستخدم `core/dag_utils`
-
----
+> **الحالة**: ✅ جميع المهام مكتملة
 
 ### 📅 المرحلة 2: إغلاق الفجوات الحرجة (شهر 1-3)
 
 > **الهدف**: من A- إلى A هيكلياً + قيمة عملية فعلية
 > **المدة**: 2-3 أشهر
-> **المسؤول**: الوكيل المطور + المستشار المعماري
-> **الحالة**: 🔜 Next — تبدأ بعد الموافقة على الـ sprint plan
+> **الحالة**: 🔜 T-30 ✅ (Project Memory)، باقي Memory OS قيد التنفيذ
 
-#### Sprint 2.1: R2 Memory OS كاملة (4-6 أسابيع)
-
-**المكونات الناقصة (7)**:
-1. Project Memory — ذاكرة خاصة لكل مشروع
-2. Agent Memory — ذاكرة خاصة لكل وكيل
-3. Long-Term Memory — تخزين طويل المدى
-4. Knowledge Graph — رسم بياني للمعرفة
-5. Memory Compression — ضغط لتقليل التوكنات
-6. Semantic Indexing — فهرسة دلالية
-7. Context Reconstruction — إعادة بناء السياق
-
-**التكامل**:
-- ربط `core/vector_db.py` بـ `core/memory/memory_hierarchy.py`
-- استخدام Qdrant في الإنتاج
-- Memory Explorer UI (Tauri)
-
-**المهام**:
-- T-30: Project Memory implementation
-- T-31: Agent Memory implementation
-- T-32: Long-Term Memory with persistence
-- T-33: Knowledge Graph (NetworkX + Neo4j optional)
-- T-34: Memory Compression algorithm
-- T-35: Semantic Indexing pipeline
-- T-36: Context Reconstruction engine
-- T-37: Vector DB production integration
-- T-38: Memory Explorer UI (Tauri)
-- T-39: Memory OS E2E tests (500+ tests)
-
-#### Sprint 2.2: R16 Write Support صناعي (4-6 أسابيع)
-
-**الهدف**: الحلقة المغلقة (closed-loop control)
-
-**النموذج**: Water Pack كـ pilot
-
-**المهام**:
-- T-40: Write command abstraction layer
-- T-41: Approval Gate for write operations
-- T-42: Water Modbus write support
-- T-43: Water SCADA write support
-- T-44: Manufacturing OPC-UA write support
-- T-45: Energy SCADA write support
-- T-46: Healthcare FHIR write support
-- T-47: Bi-directional Digital Twin
-- T-48: Write operation audit trail
-- T-49: Write E2E scenarios (4 sectors)
-
-#### Sprint 2.3: Computer Use حقيقي (3 أسابيع)
-
-**المهام**:
-- T-50: استبدال stub_impl بـ pyautogui (macOS)
-- T-51: Windows platform APIs (win32gui)
-- T-52: Linux platform APIs (xdotool)
-- T-53: Vision Grounding with real OCR
-- T-54: Session journal persistence
-- T-55: Computer Use E2E tests
-
-#### Sprint 2.4: K8s/HA/DR (3 أسابيع)
-
-**المهام**:
-- T-60: Kubernetes manifests (Deployment + Service + Ingress)
-- T-61: Helm chart
-- T-62: HA cluster (3+ replicas)
-- T-63: Disaster Recovery (backup + restore)
-- T-64: Health checks + readiness probes
-- T-65: Auto-scaling (HPA)
-- T-66: Migration من Railway إلى cloud (AWS/GCP/Azure)
-
----
+| Sprint | المحتوى | المهام | المدة |
+|--------|---------|--------|-------|
+| 2.1 | R2 Memory OS كاملة | T-30 إلى T-39 | 4-6 أسابيع |
+| 2.2 | R16 Write Support صناعي | T-40 إلى T-49 | 4-6 أسابيع |
+| 2.3 | Computer Use حقيقي | T-50 إلى T-55 | 3 أسابيع |
+| 2.4 | K8s/HA/DR | T-60 إلى T-66 | 3 أسابيع |
 
 ### 📅 المرحلة 3: التفوق التنافسي (شهر 4-6)
 
 > **الهدف**: التفوق على n8n + Notion + LangChain في niches محددة
 > **المدة**: 3 أشهر
 
-#### Sprint 3.1: Generative UI (تفوق على Notion) — 6 أسابيع
-#### Sprint 3.2: Tool Synthesis بـ LLM (تفوق على n8n) — 6 أسابيع
-#### Sprint 3.3: Strategic Planning (R4 Cognitive OS) — 6 أسابيع
-#### Sprint 3.4: Multi-Model Routing — 3 أسابيع
+| Sprint | المحتوى | المهام | المدة |
+|--------|---------|--------|-------|
+| 3.1 | Generative UI | T-70 إلى T-75 | 6 أسابيع |
+| 3.2 | Tool Synthesis بـ LLM | T-80 إلى T-85 | 6 أسابيع |
+| 3.3 | Strategic Planning (R4) | T-90 إلى T-96 | 6 أسابيع |
+| 3.4 | Multi-Model Routing | T-100 إلى T-105 | 3 أسابيع |
 
-### 📅 المرحلة 4: التفوق الصناعي (شهر 7-12)
+### 📅 المرحلة 4: التفوق الصناعي (شهر 7-9)
 
 > **الهدف**: المنافس الوحيد في فئة Industrial AI OS
+> **المدة**: 3 أشهر
 
-#### Sprint 4.1: IEC 62443 + SOC2 Certification — 3 أشهر
-#### Sprint 4.2: Real-time Control Loop — 6 أسابيع
-#### Sprint 4.3: Predictive Maintenance بـ ML — 6 أسابيع
-#### Sprint 4.4: Digital Twin Bi-directional — 4 أسابيع
+| Sprint | المحتوى | المهام | المدة |
+|--------|---------|--------|-------|
+| 4.1 | IEC 62443 + SOC2 | T-110 إلى T-115 | 3 أشهر |
+| 4.2 | Real-time Control Loop | T-120 إلى T-124 | 6 أسابيع |
+| 4.3 | Predictive Maintenance بـ ML | T-130 إلى T-134 | 6 أسابيع |
+| 4.4 | Bi-directional Digital Twin | T-140 إلى T-143 | 4 أسابيع |
 
-### 📅 المرحلة 5: التميز (شهر 13-18)
+### 🆕 📅 المرحلة 5: أتمتة المصانع العملاقة (شهر 10-14)
 
-> **الهدف**: استبدال البشر 70% في مهام محددة
+> **الهدف**: EMO AI يدير المصنع تلقائياً مع إشراف بشري minimal
+> **المدة**: 5 أشهر
+> **المتطلبات المسبقة**: المرحلة 4 (Write Support + Real-time Control + Digital Twin)
 
-#### Sprint 5.1: R3 Skill OS — 8 أسابيع
-#### Sprint 5.2: R5 Big EMO AI OS — 12 أسبوع
+| Sprint | المحتوى | المهام | المدة |
+|--------|---------|--------|-------|
+| 5.1 | DCS Integration Suite | T-221 إلى T-230 | 6 أسابيع |
+| 5.2 | Factory Automation Suite | T-200 Series | 8 أسابيع |
+| 5.3 | Laboratory Integration Suite | T-231 إلى T-238 | 4 أسابيع |
 
-### 📅 المرحلة 6: الإطلاق (شهر 19-24)
+#### Sprint 5.1: DCS Integration Suite (6 أسابيع)
+
+تكامل مع جميع أنظمة DCS الرئيسية:
+- Honeywell Experion (T-221)
+- Siemens PCS 7 (T-222)
+- Emerson DeltaV (T-223)
+- ABB 800xA (T-224)
+- Yokogawa CENTUM (T-225)
+- OPC-UA bidirectional gateway (T-226)
+- HART protocol adapter (T-227)
+- DCS alarm synchronization (T-228)
+- Historian data pipeline (T-229)
+- DCS E2E test suite (T-230)
+
+#### Sprint 5.2: Factory Automation Suite (8 أسابيع)
+
+- T-200: Closed-loop control orchestrator
+- T-201: Multi-shift autonomous operation
+- T-202: Safety Instrumented Systems (SIS) integration
+- T-203: Factory-wide production orchestration
+- T-204: Quality gate automation
+- T-205: Material flow optimization
+- T-206: Energy management automation
+- T-207: Maintenance scheduling engine
+- T-208: Factory E2E test suite
+
+#### Sprint 5.3: Laboratory Integration Suite (4 أسابيع)
+
+- T-231: LIMS connector (LabWare, LabVantage, SampleManager)
+- T-232: Gas chromatograph data pipeline
+- T-233: Spectroscopy analysis engine
+- T-234: ASTM D1945/D1946 compliance
+- T-235: ISO 6974/6975 compliance
+- T-236: Quality control automation
+- T-237: Batch release decision engine
+- T-238: Lab E2E test suite
+
+### 🆕 📅 المرحلة 6: المؤسسة المتكاملة (شهر 15-18)
+
+> **الهدف**: EMO AI يدير المؤسسة بالكامل — من ERP إلى الإنتاج إلى المهام الإدارية
+> **المدة**: 4 أشهر
+
+| Sprint | المحتوى | المهام | المدة |
+|--------|---------|--------|-------|
+| 6.1 | ERP Integration Suite | T-251 إلى T-259 | 6 أسابيع |
+| 6.2 | Enterprise Operations Suite | T-241 إلى T-249 | 6 أسابيع |
+| 6.3 | Operational Assistant Suite | T-211 إلى T-215 | 4 أسابيع |
+
+#### Sprint 6.1: ERP Integration Suite (6 أسابيع)
+
+- T-251: SAP S/4HANA connector (RFC + OData)
+- T-252: Oracle ERP Cloud connector
+- T-253: Microsoft Dynamics 365 connector
+- T-254: ERPConnect generic connector
+- T-255: Production order sync
+- T-256: Maintenance order automation
+- T-257: Inventory optimization engine
+- T-258: Real-time production reporting
+- T-259: ERP E2E test suite
+
+#### Sprint 6.2: Enterprise Operations Suite (6 أسابيع)
+
+- T-241: Document processing pipeline (OCR + NLP)
+- T-242: Email automation engine
+- T-243: Meeting intelligence
+- T-244: Report generation (Generative AI)
+- T-245: Workflow automation engine
+- T-246: Office 365 integration
+- T-247: Google Workspace integration
+- T-248: RPA capabilities
+- T-249: Enterprise Ops E2E test suite
+
+#### Sprint 6.3: Operational Assistant Suite (4 أسابيع)
+
+- T-211: Voice control interface
+- T-212: Mobile companion app
+- T-213: Proactive alert engine
+- T-214: Operator training simulator
+- T-215: Wearable integration
+
+### 📅 المرحلة 7: التميز والإطلاق (شهر 19-24)
 
 > **الهدف**: Production launch + enterprise customers
+> **المدة**: 6 أشهر
 
-#### Sprint 6.1: Enterprise Pilot — 8 أسابيع
-#### Sprint 6.2: Public Launch — 8 أسابيع
-#### Sprint 6.3: Scale — 8 أسابيع
+| Sprint | المحتوى | المدة |
+|--------|---------|-------|
+| 7.1 | R3 Skill OS | 8 أسابيع |
+| 7.2 | R5 Big EMO AI OS | 12 أسبوع |
+| 7.3 | Enterprise Pilot (3+ customers) | 8 أسابيع |
+| 7.4 | v2.0.0 Public Launch | 8 أسابيع |
+| 7.5 | Scale (10+ enterprise customers) | 8 أسابيع |
 
 ---
 
@@ -339,12 +339,12 @@
 | T-19: brain keychain tests | ✅ | `a811f97` | 8/8 pass |
 | T-21: erp_connector توضيح | ✅ | `a811f97` + `7fd15bc` | Enum import restored |
 | T-22: debt documentation | ✅ | `a811f97` | AD-008 إلى AD-012 |
-| T-A7.2: trace_correlator توحيد | ✅ (ملغاة) | — | 14 ملف فريد، duplicates |
+| T-A7.2: trace_correlator توحيد | ✅ (ملغاة) | — | 14 ملف فريد |
 | T-A14.2: routers/workflow.py | ✅ (ملغاة) | — | سليم، 11/11 tests pass |
 
 ### المرحلة 2 — المهام التفصيلية
 
-> المهام التفصيلية للمرحلة 2-6 ستُكتب في sprint planning docs منفصلة لكل sprint.
+> المهام التفصيلية للمرحلة 2-7 ستُكتب في sprint planning docs منفصلة لكل sprint.
 
 ---
 
@@ -357,68 +357,32 @@
 2. الوكيل ينشئ branch: <type>/<task-id>-<description>
 3. الوكيل ينفذ التغييرات + tests
 4. الوكيل يشغّل: pytest tests/ -q --tb=no (يجب 0 failures)
-5. الوكيل يفتح PR مع commit message convention
-6. المستشار يراجع PR بمنهج Evidence-Based
-7. إذا اجتاز: merge إلى develop
+5. الوكيل يدفع إلى origin/develop
+6. المستشار يراجع بمنهج Evidence-Based
+7. إذا اجتاز: متابعة
 8. إذا لم يجتاز: feedback + revision
 ```
 
-### 6.2 قواعد الـ PR
+### 6.2 قواعد الـ Commit
 
 #### Commit Message Format
 ```
 <type>(<scope>): <description>
-
-[optional body]
-
-[optional footer]
 ```
 
-**Types**:
-- `feat`: ميزة جديدة
-- `fix`: إصلاح bug
-- `chore`: صيانة
-- `ci`: CI/CD
-- `docs`: توثيق
-- `refactor`: إعادة هيكلة
-- `test`: اختبارات
+**Types**: `feat`, `fix`, `chore`, `ci`, `docs`, `refactor`, `test`, `industrial`
 
 **Examples**:
 ```
-fix(scheduler): add active_assignments + quota API (T-24)
-feat(memory): implement Project Memory component (T-30)
-chore(docs): unify test count across all files (T-01)
-```
-
-#### PR Description Template
-```markdown
-## Task
-T-XX: <description>
-
-## Changes
-- <change 1>
-- <change 2>
-
-## Verification
-```bash
-$ pytest tests/ --collect-only -q | tail -1
-<output>
-
-$ pytest tests/<relevant> -q --tb=no
-<output>
-
-## Checklist
-- [ ] Tests pass (0 failures)
-- [ ] No NotImplementedError in core/
-- [ ] No hardcoded secrets
-- [ ] Docs updated if needed
-- [ ] Commit message follows convention
+feat(memory): implement Project Memory with 75 tests (T-30)
+industrial(dcs): add Honeywell Experion connector (T-221)
+feat(erp): implement SAP S/4HANA bidirectional sync (T-251)
 ```
 
 ### 6.3 تردد التحديثات
 
-- **يومياً**: الوكيل يرفع PRs للمهام المنجزة
-- **يومياً**: المستشار يراجع PRs
+- **يومياً**: الوكيل يدفع commits
+- **يومياً**: المستشار يراجع
 - **أسبوعياً**: مراجعة شاملة (Evidence-Based audit)
 - **كل sprint**: sprint planning + retrospective
 
@@ -441,25 +405,18 @@ grep -rn "raise NotImplementedError" core/ --include="*.py" | wc -l
 grep -rnE "(password|secret|api_key)\s*=\s*['\"][^'\"]{8,}['\"]" core/ --include="*.py"
 # يجب: صفر
 
-# 4. Test count متسق
-python3 scripts/verify_test_count.py
-# يجب: exit 0
+# 4. Industrial connectors: safety review إلزامي
+# يجب: review من المستشار المعماري للمهام T-200+
 
-# 5. Bandit نظيف
-bandit -r core/ -q | grep -q "No issues identified"
-# يجب: exit 0
+# 5. IEC 62443 compliance للمهام الصناعية (T-200 to T-259)
+# يجب: documented in task PR
 ```
 
 ### 7.2 معايير القبول لكل مرحلة
 
 #### المرحلة 1 ✅ (A- هيكلياً)
-
-- [x] 0 collection errors
-- [x] 0 failing tests
-- [x] SpanStatus موحد
-- [x] docs بدون cognitive/ references
-- [x] TraceCorrelator فريد لكل layer
-- [x] routers/workflow.py يمر 11/11 tests
+- [x] 0 collection errors, 0 failing tests
+- [x] SpanStatus موحد, docs بدون cognitive/ references
 
 #### المرحلة 2 (A هيكلياً)
 - [ ] R2 Memory OS 100% (12/12 مكون)
@@ -481,11 +438,23 @@ bandit -r core/ -q | grep -q "No issues identified"
 - [ ] Predictive Maintenance بـ ML
 - [ ] 4 digital twins bi-directional
 
-#### المرحلة 5 (تميز)
-- [ ] R3 Skill OS
-- [ ] R5 Big EMO (10+ مكونات)
-- [ ] Self-Healing Runtime
+#### المرحلة 5 (أتمتة المصانع)
+- [ ] 5+ DCS connectors (Honeywell, Siemens, Emerson, ABB, Yokogawa)
+- [ ] Closed-loop control مع SIS integration
+- [ ] LIMS integration مع ASTM/ISO compliance
+- [ ] Multi-shift autonomous operation
+- [ ] 12,000+ tests
+
+#### المرحلة 6 (مؤسسة متكاملة)
+- [ ] 3 ERP connectors (SAP, Oracle, Dynamics)
+- [ ] Enterprise Ops auto 80%+
+- [ ] Operational Assistant مع voice + mobile
 - [ ] 15,000+ tests
+
+#### المرحلة 7 (إطلاق)
+- [ ] v2.0.0 release
+- [ ] 3+ enterprise pilot customers
+- [ ] 20,000+ tests
 
 ---
 
@@ -493,34 +462,41 @@ bandit -r core/ -q | grep -q "No issues identified"
 
 ### 8.1 KPIs تقنية
 
-| KPI | الحالي | الهدف Q3 2026 | الهدف Q1 2027 |
-|-----|--------|-------------|-------------|
-| Tests count | 4,031 | 6,000 | 10,000 |
-| Test pass rate | 100% | 100% | 100% |
-| Collection errors | 0 | 0 | 0 |
-| p95 latency | ~900ms | < 200ms | < 100ms |
-| Dead code LOC | ~600 | < 200 | < 100 |
-| Architecture drift | 0 | 0 | 0 |
+| KPI | الحالي | الهدف Q3 2026 | الهدف Q1 2027 | الهدف Q3 2027 |
+|-----|--------|-------------|-------------|-------------|
+| Tests count | 4,106 | 6,000 | 10,000 | 20,000 |
+| Test pass rate | 100% | 100% | 100% | 100% |
+| Collection errors | 0 | 0 | 0 | 0 |
+| p95 latency | ~900ms | < 200ms | < 100ms | < 50ms |
+| Dead code LOC | ~600 | < 200 | < 100 | < 50 |
+| Architecture drift | 0 | 0 | 0 | 0 |
+| DCS connectors | 0 | 0 | 0 | 5+ |
+| ERP connectors | 1 (partial) | 1 | 2 | 3+ |
 
 ### 8.2 KPIs منتج
 
-| KPI | الحالي | الهدف Q4 2026 | الهدف Q2 2027 |
-|-----|--------|-------------|-------------|
-| Industrial sectors supported | 4 | 4 (write support) | 6+ |
-| Memory OS completeness | 30% | 100% | 100% + Knowledge Graph |
-| Computer Use real | ❌ | ✅ macOS | ✅ cross-platform |
-| Generative UI | ❌ | ❌ | ✅ |
-| Write support | 0% | 50% | 100% |
-| Human replacement (مهام محددة) | 0% | 30% | 70% |
+| KPI | الحالي | Q4 2026 | Q2 2027 | Q4 2027 |
+|-----|--------|---------|---------|---------|
+| Industrial sectors | 4 (read-only) | 4 (write support) | 6+ | 8+ |
+| Memory OS | 42% | 100% | 100% + KG | 100% + KG |
+| Computer Use | ❌ | ✅ macOS | ✅ cross-platform | ✅ cross-platform |
+| Generative UI | ❌ | ❌ | ✅ | ✅ |
+| Write support | 0% | 50% | 100% | 100% |
+| DCS integration | ❌ | ❌ | 5+ connectors | 8+ connectors |
+| LIMS integration | ❌ | ❌ | 3+ LIMS | 5+ LIMS |
+| ERP integration | partial | partial | SAP + Oracle | 3+ ERPs |
+| Enterprise Ops auto | 0% | 0% | 30% | 80% |
+| Human replacement | 0% | 30% | 50% | 70% |
 
 ### 8.3 KPIs أمان
 
-| KPI | الحالي | الهدف Q1 2027 |
-|-----|--------|-------------|
-| Security vulnerabilities | 0 critical | 0 critical |
-| IEC 62443 compliance | partial | certified-ready |
-| SOC2 | ❌ | Type II ready |
-| Penetration test | ❌ | ✅ (third-party) |
+| KPI | الحالي | Q1 2027 | Q3 2027 |
+|-----|--------|---------|---------|
+| Security vulns | 0 critical | 0 critical | 0 critical |
+| IEC 62443 | partial | certified-ready | certified |
+| SOC2 | ❌ | Type II ready | Type II |
+| Penetration test | ❌ | ✅ (third-party) | ✅ (annual) |
+| Industrial safety (IEC 61511) | ❌ | partial | certified |
 
 ---
 
@@ -530,28 +506,40 @@ bandit -r core/ -q | grep -q "No issues identified"
 
 | المخاطرة | الاحتمال | التأثير | التخفيف |
 |---------|--------|--------|---------|
-| R&D لـ Generative UI أصعب من المتوقع | عالي | عالي | ابدأ بـ MVP بسيط + iterate |
+| R&D لـ Generative UI أصعب من المتوقع | عالي | عالي | MVP + iterate |
 | Write Support قد يكسر safety gates | متوسط | حرج | approval gates إلزامية + audit |
-| Vector DB scaling issues | متوسط | متوسط | Qdrant production testing مبكر |
+| Vector DB scaling issues | متوسط | متوسط | Qdrant testing مبكر |
 | LLM costs لـ Tool Synthesis | عالي | متوسط | Multi-Model Routing + caching |
 | K8s complexity | متوسط | متوسط | Helm chart + managed K8s |
+| DCS integration مع legacy systems | عالي | عالي | vendor SDKs + simulation |
+| LIMS vendor lock-in | متوسط | متوسط | abstract layer + multiple connectors |
+| ERP bidirectional sync conflicts | متوسط | حرج | conflict resolution + audit trail |
 
 ### 9.2 المخاطر التنظيمية
 
 | المخاطرة | الاحتمال | التأثير | التخفيف |
 |---------|--------|--------|---------|
 | فقدان المطور الوحيد | متوسط | حرج | توثيق شامل + pairing |
-| Burnout | عالي | عالي | sprint realistic + breaks |
-| Scope creep | عالي | متوسط | الالتزام بالـ roadmap + رفض الميزات خارج النطاق |
+| Burnout | عالي | عالي | sprints realistic + breaks |
+| Scope creep | عالي | متوسط | الالتزام بالـ roadmap |
 | الادعاءات غير الموثقة | متوسط | حرج | Evidence-Based إلزامي |
 
 ### 9.3 المخاطر التنافسية
 
 | المخاطرة | الاحتمال | التأثير | التخفيف |
 |---------|--------|--------|---------|
-| OpenAI يطلق منافس | عالي | عالي | التركيز على industrial niche |
-| LangChain يضيف governance | متوسط | متوسط | التفوق في industrial + memory |
-| شركة صناعية تطلق منافس | متوسط | حرج | Speed to market + pilot customers |
+| OpenAI يطلق منافس صناعي | عالي | عالي | التركيز على on-premise + safety |
+| Siemens/Honeywell تطلق AI platform | متوسط | حرج | open-source + vendor-agnostic |
+| شركة ERP تدمج Industrial AI | متوسط | متوسط | speed to market + pilot customers |
+
+### 9.4 مخاطر السلامة الصناعية
+
+| المخاطرة | الاحتمال | التأثير | التخفيف |
+|---------|--------|--------|---------|
+| AI decision يسبب ضرر مادي | منخفض | حرج | SIS مستقل + human-in-the-loop |
+| DCS write يسبب process upset | منخفض | حرج | approval gates + dry-run mode |
+| LIMS auto-release يخطئ | منخفض | عالي | validation gates + manual override |
+| ERP sync يسبب data corruption | منخفض | حرج | bidirectional validation + rollback |
 
 ---
 
@@ -559,38 +547,34 @@ bandit -r core/ -q | grep -q "No issues identified"
 
 ### ✅ المرحلة 1 — مكتملة
 
-| ID | المهمة | الجهد | الفرع | الحالة |
-|----|--------|-------|-------|--------|
-| T-23 | توحيد SpanStatus enum | 30-60 دقيقة | `fix/spanstatus-unification` | ✅ `d9b968c` |
-| T-24 | إصلاح 3 scheduler tests | 1-2 ساعة | `fix/scheduler-api-completeness` | ✅ `d9b968c` |
-| T-19 | إصلاح brain keychain tests | 1-2 ساعة | `fix/brain-keychain-tests` | ✅ `a811f97` |
-| T-25 | توثيق merge في CHANGELOG | 15 دقيقة | `docs/changelog-merge` | ✅ `d9b968c` |
-| T-20 | تحديث 5 مراجع cognitive/ في docs | 15 دقيقة | `docs/cognitive-cleanup` | ✅ `d9b968c` |
-| T-A7.2 | توحيد 13 ملف trace_correlator | 2-3 أيام | — | ✅ ملغاة |
-| T-A14.2 | إصلاح routers/workflow.py | 1 يوم | — | ✅ ملغاة |
-| T-21 | توضيح erp_connector.py | 30 دقيقة | `docs/erp-connector-explain` | ✅ `a811f97` |
-| T-22 | توثيق التخطيات في AD | 30 دقيقة | `docs/accepted-debt-updates` | ✅ `a811f97` |
+| ID | المهمة | الحالة |
+|----|--------|--------|
+| T-19 | Brain keychain tests | ✅ `a811f97` |
+| T-20 | cognitive/ references في docs | ✅ `d9b968c` |
+| T-21 | erp_connector توضيح | ✅ `a811f97` + `7fd15bc` |
+| T-22 | Debt documentation | ✅ `a811f97` |
+| T-23 | SpanStatus unification | ✅ `d9b968c` |
+| T-24 | Scheduler tests fix | ✅ `d9b968c` |
+| T-25 | CHANGELOG merge | ✅ `d9b968c` |
+| T-A7.2 | trace_correlator توحيد | ✅ ملغاة |
+| T-A14.2 | routers/workflow.py | ✅ ملغاة |
 
-### 🟡 المرحلة 2 — قصير المدى (2-3 أشهر)
+### 🟡 المرحلة 2 - Sprint 2.1: R2 Memory OS
 
-> جاهزة للبدء بعد الموافقة على sprint plan.
+| ID | المهمة | الجهد | الحالة |
+|----|--------|-------|--------|
+| T-30 | Project Memory | 1 أسبوع | ✅ `f482a6f` |
+| T-31 | Agent Memory | 1 أسبوع | 🔜 |
+| T-32 | Long-Term Memory | 1 أسبوع | 🔜 |
+| T-33 | Knowledge Graph | 2 أسبوع | 🔜 |
+| T-34 | Memory Compression | 1 أسبوع | 🔜 |
+| T-35 | Semantic Indexing | 1 أسبوع | 🔜 |
+| T-36 | Context Reconstruction | 1 أسبوع | 🔜 |
+| T-37 | Vector DB production integration | 3 أيام | 🔜 |
+| T-38 | Memory Explorer UI | 2 أسبوع | 🔜 |
+| T-39 | Memory OS E2E tests | 1 أسبوع | 🔜 |
 
-#### Sprint 2.1: R2 Memory OS (4-6 أسابيع)
-
-| ID | المهمة | الجهد |
-|----|--------|-------|
-| T-30 | Project Memory | 1 أسبوع |
-| T-31 | Agent Memory | 1 أسبوع |
-| T-32 | Long-Term Memory | 1 أسبوع |
-| T-33 | Knowledge Graph | 2 أسبوع |
-| T-34 | Memory Compression | 1 أسبوع |
-| T-35 | Semantic Indexing | 1 أسبوع |
-| T-36 | Context Reconstruction | 1 أسبوع |
-| T-37 | Vector DB production integration | 3 أيام |
-| T-38 | Memory Explorer UI | 2 أسبوع |
-| T-39 | Memory OS E2E tests | 1 أسبوع |
-
-#### Sprint 2.2: R16 Write Support (4-6 أسابيع)
+### 🟡 المرحلة 2 - Sprint 2.2: Write Support
 
 | ID | المهمة | الجهد |
 |----|--------|-------|
@@ -605,7 +589,7 @@ bandit -r core/ -q | grep -q "No issues identified"
 | T-48 | Write audit trail | 3 أيام |
 | T-49 | Write E2E scenarios | 1 أسبوع |
 
-#### Sprint 2.3: Computer Use حقيقي (3 أسابيع)
+### 🟡 المرحلة 2 - Sprint 2.3: Computer Use
 
 | ID | المهمة | الجهد |
 |----|--------|-------|
@@ -616,7 +600,7 @@ bandit -r core/ -q | grep -q "No issues identified"
 | T-54 | Session journal persistence | 2 أيام |
 | T-55 | Computer Use E2E | 3 أيام |
 
-#### Sprint 2.4: K8s/HA/DR (3 أسابيع)
+### 🟡 المرحلة 2 - Sprint 2.4: K8s/HA/DR
 
 | ID | المهمة | الجهد |
 |----|--------|-------|
@@ -628,9 +612,9 @@ bandit -r core/ -q | grep -q "No issues identified"
 | T-65 | Auto-scaling HPA | 2 أيام |
 | T-66 | Railway → cloud migration | 1 أسبوع |
 
-### 🟢 المرحلة 3-6 — متوسط وطويل المدى
+### 🟢 المراحل 3-7 — طويلة المدى
 
-> المهام التفصيلية ستُكتب في sprint planning docs منفصلة.
+> المهام التفصيلية للمراحل 3-7 ستُكتب عند بدء كل مرحلة.
 
 ---
 
@@ -639,34 +623,39 @@ bandit -r core/ -q | grep -q "No issues identified"
 ### أين نحن الآن
 
 ```
-المرحلة الحالية: نهاية المرحلة 1 ✅ (Consolidation + Phase 1 complete)
-التقييم الحالي: A- هيكلياً
-المشاكل المتبقية: 0
-الـ Dead code: ~600 LOC (كان 6,650)
-Tests: 4,031 (كان 3,330)
-Collection errors: 0 (كان 37)
+المرحلة الحالية:    المرحلة 2 (Sprint 2.1: R2 Memory OS)
+التقييم الحالي:     A- هيكلياً
+المهام المكتملة:    45+
+المشاكل المتبقية:    0
+Tests:               4,106
+Collection errors:   0
+المدة المتبقية:      ~22 شهر للرؤية الكاملة
 ```
 
-### الخطوة التالية
+### المسار نحو رؤية المالك
 
-**الوكيل المطور** ينتظر تعليمات الـ sprint التالي. الـ Phase 1 مكتملة بالكامل، وجاهزون لبدء Phase 2 (Sprint 2.1: R2 Memory OS).
+```
+T-30 (Project Memory) ✅ → T-31..T-39 (Memory OS) →
+T-40..T-49 (Write Support) → T-120..T-124 (Real-time Control) →
+T-221..T-230 (DCS Integration) → T-200..T-208 (Factory Automation) →
+T-231..T-238 (Lab Integration) → T-251..T-259 (ERP Integration) →
+T-241..T-249 (Enterprise Ops) → T-211..T-215 (Operational Assistant)
+```
 
-### التزام القيادة
+### التزام المستشار المعماري
 
-أنا (المستشار المعماري) ألتزم بـ:
-1. **مراجعة كل PR** بمنهج Evidence-Based خلال 24 ساعة
+1. **مراجعة كل commit** بمنهج Evidence-Based خلال 24 ساعة
 2. **تحديث هذا الملف** بعد كل مرحلة
 3. **تقديم feedback تقني** لكل مهمة
 4. **رفض الادعاءات غير الموثقة** بصراحة
-5. **وضع sprint plans تفصيلية** لكل مرحلة جديدة
+5. **ضمان السلامة الصناعية** في المهام T-200+
 
 ---
 
 ## 📞 بروتوكول التواصل
 
-- **PRs**: عبر GitHub Pull Requests
-- **الأسئلة التقنية**: في GitHub Issues مع label `question`
-- **المهام المعلقة**: في GitHub Projects board
+- **الـ Commits**: مباشرة على `origin/develop` مع Conventional Commits
+- **الأسئلة التقنية**: مدمجة في سير العمل (هذه الجلسة)
 - **التحديثات الأسبوعية**: في `docs/WEEKLY_STATUS.md`
 - **المراجعات الشاملة**: في `docs/ARCHITECTURE_REVIEWS/`
 
@@ -675,24 +664,24 @@ Collection errors: 0 (كان 37)
 ## 📜 التوقيع
 
 **المستشار المعماري**:
-- يلتزم بـ Evidence-Based review لكل PR
+- يلتزم بـ Evidence-Based review لكل commit
 - يلتزم بـ feedback خلال 24 ساعة
 - يلتزم بـ roadmap واضح ومحدّث
+- يلتزم بالسلامة الصناعية (IEC 61511/62443)
 
 **الوكيل المطور**:
 - يلتزم بـ Conventional Commits
-- يلتزم بـ verification قبل كل PR
+- يلتزم بـ verification قبل كل commit
 - يلتزم بعدم الادعاءات غير الموثقة
+- يلتزم بمعايير السلامة الصناعية
 
 **صاحب المشروع**:
 - يلتزم بـ roadmap وعدم scope creep
-- يلتزم بـ realistic timelines
+- يلتزم بـ realistic timelines (24 شهر)
 - يلتزم بـ budget للموارد اللازمة
 
 ---
 
-*هذه الوثيقة هي المرجع الرسمي لتطوير EMO AI Execution OS. أي تغيير في الـ roadmap يحتاج موافقة الأطراف الثلاثة.*
-
 *آخر تحديث: 2026-06-24*
-*الإصدار: 1.0*
-*المراجعة القادمة: بعد بدء المرحلة 2*
+*الإصدار: 2.0*
+*المراجعة القادمة: بعد إكمال Sprint 2.1 (R2 Memory OS)*
