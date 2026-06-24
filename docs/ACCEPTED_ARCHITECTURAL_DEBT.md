@@ -32,4 +32,14 @@ Ref: DEVELOPER.md §15.22, §16 (Architecture Canon)
 
 ---
 
-*Generated at: 2026-05-24 — Final Production Freeze*
+## Completed in 2026-06-24 Session
+
+| ID | Area | Debt Description | Resolution |
+|----|------|------------------|-----------|
+| AD-008 | Tracing duplication | `core/runtime/tracing/distributed_tracer.py` duplicated in `observability/distributed_tracer.py` | **MERGED** — observability version kept, tracing/ deleted, SpanStatus enum canonicalized across 4 files |
+| AD-009 | Scheduler duplication | `core/scheduler/resource_scheduler.py` duplicated as `core/runtime/resource_scheduler/` | **MERGED** — runtime version kept, legacy API methods added, 10 properties restored, 3 tests fixed |
+| AD-010 | Keychain test pollution | `KeychainProvider._cache` class-level attribute caused cross-test pollution; `.emo_settings.json` interfered with test isolation | **RESOLVED** — cache cleared in fixture, settings file mocked via monkeypatch, 8/8 tests pass |
+| AD-011 | Stale doc references | 6 `cognitive/` path references in `EMO_AI_MASTER_ARCHITECTURE_REFERENCE.md` pointed to deleted files | **UPDATED** — changed to `core/runtime/multi_agent/` |
+| AD-012 | ERP connector dead import | `from enum import Enum` dangling at end of `erp_connector.py` | **REMOVED** — 72-line file cleaned |
+
+*Generated at: 2026-06-24 — Post-Architecture-Audit Session*

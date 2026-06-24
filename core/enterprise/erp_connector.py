@@ -17,9 +17,6 @@ class ERPConnector:
         return {"status": "stub", "synced": 0}
 
 
-from enum import Enum
-
-
 class ERPAccessLevel(Enum):
     """Access levels for ERP integration."""
     READ = "read"
