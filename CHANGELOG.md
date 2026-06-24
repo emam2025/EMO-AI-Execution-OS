@@ -280,29 +280,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [r2-memory-os-v1.0.0] — 2026-05-30
 
+> **⚠️ Historical Note (2026-06-24)**: The entries below describe a planned R2 Memory OS
+> release that was tagged and archived but whose source files (enterprise_spaces.py,
+> governance.py, semantic_index.py, graph_store.py, compression_engine.py, etc.)
+> were never present in the `develop` branch's `core/memory/` directory. The actual
+> R2 Memory OS implementation began with T-30 (Project Memory) on 2026-06-24.
+> See the [Unreleased] section for the current implementation status.
+
 ### R2 Enterprise Memory OS — Spaces, Governance & Explorer (CLOSED & ARCHIVED)
 
-- **ProjectMemorySpace / AgentMemorySpace / CrossSessionRecall** (`core/memory/enterprise_spaces.py`): Tenant-scoped memory spaces with store/recall/query/cross_session_recall.
-- **MemoryGovernanceEngine / AuditLog / RetentionPolicy** (`core/memory/governance.py`): SHA-256 audit chain, retention enforcement, integrity verification.
-- **Semantic Index / Knowledge Graph** (`core/memory/`): Embedding, semantic_index, graph_store, graph_queries, entity_extractor.
-- **Compression / Retrieval Pipeline** (`core/memory/`): compression_engine, context_selector, relevance_filter, retrieval_ranker, token_optimizer, storage_adapter.
-- **Desktop Explorer UI** (`desktop/emo-memory-explorer/`): 18 files — 5 screens (Dashboard, ProjectBrowser, AgentTrace, RetentionSettings, AuditLog), Zustand store, API layer, test file.
+- **ProjectMemorySpace / AgentMemorySpace / CrossSessionRecall** (planned: `core/memory/enterprise_spaces.py`): Tenant-scoped memory spaces with store/recall/query/cross_session_recall.
+- **MemoryGovernanceEngine / AuditLog / RetentionPolicy** (planned: `core/memory/governance.py`): SHA-256 audit chain, retention enforcement, integrity verification.
+- **Semantic Index / Knowledge Graph** (planned: `core/memory/`): Embedding, semantic_index, graph_store, graph_queries, entity_extractor.
+- **Compression / Retrieval Pipeline** (planned: `core/memory/`): compression_engine, context_selector, relevance_filter, retrieval_ranker, token_optimizer, storage_adapter.
+- **Desktop Explorer UI** (planned: `desktop/emo-memory-explorer/`): 18 files — 5 screens (Dashboard, ProjectBrowser, AgentTrace, RetentionSettings, AuditLog), Zustand store, API layer, test file.
 - **Test Suite**: 181/181 PASS (memory isolation: 10, enterprise isolation: 10, governance/retention: 11, semantic: 2 files, graph: 2 files, optimization: 1 file, router: 1, models: 1, storage: 1, token: 1).
 - **Zero R1 imports** — fully isolated in `/releases/memory_os/`.
 - **Archive**: `emo-memory-os-r2-release.tar.gz` (64 KB, 71 files SHA-256 signed).
 - **Tags**: `r2-memory-os-v1.0.0`.
-
-### Added
-- **Enterprise Memory Spaces**: `core/memory/enterprise_spaces.py` — ProjectMemorySpace, AgentMemorySpace, CrossSessionRecall with tenant_id enforcement.
-- **Memory Governance**: `core/memory/governance.py` — MemoryGovernanceEngine (retention enforcement), AuditLog (SHA-256 chain with HMAC), RetentionPolicy (TTL/max_entries config).
-- **Semantic Layer**: `core/memory/embedding.py`, `core/memory/semantic_index.py` — vector embedding and semantic search.
-- **Knowledge Graph**: `core/memory/graph_store.py`, `core/memory/graph_queries.py`, `core/memory/entity_extractor.py` — entity extraction and relationship graph.
-- **Retrieval Pipeline**: `core/memory/compression_engine.py`, `core/memory/context_selector.py`, `core/memory/relevance_filter.py`, `core/memory/retrieval_ranker.py`, `core/memory/token_optimizer.py`, `core/memory/storage_adapter.py`.
-- **Desktop Explorer**: `desktop/emo-memory-explorer/` — 18 files (5 route screens, store, API, tests).
-- **Tests**: 16 test files (181 tests) — across all sub-phases R2A through R2E.
-- **Documentation**: `docs/R2_CLOSURE_REPORT.md`, `docs/R2_MEMORY_ARCHITECTURE_MANIFEST.md`, 4 sub-phase reports.
-- **Certificates**: 5 sub-phase certificates (R2A–R2E).
-- **Manifests**: `artifacts/RELEASE_MANIFEST_R2.json`, `artifacts/SIGNING_MANIFEST_R2.json`.
 
 ## [r5-big-emo-v1.0.0] — 2026-05-30
 
