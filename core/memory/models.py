@@ -27,6 +27,7 @@ class MemoryLayer(str, enum.Enum):
     SEMANTIC = "semantic"
     PROJECT = "project"
     AGENT = "agent"
+    LONG_TERM = "long_term"
 
 
 class PruningPolicy(str, enum.Enum):

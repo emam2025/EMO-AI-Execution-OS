@@ -25,6 +25,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **MemoryLayer extended**: Added `PROJECT = "project"` to `MemoryLayer` enum in `core/memory/models.py`
 - **Agent Memory (T-31)**: New `core/memory/agent_memory.py` — per-agent memory namespace built on `MemoryHierarchy`'s AGENT layer. CRUD operations per agent, text search with skill filtering, agent isolation via tenant_id, TTL support, skill integration via `SkillGraphManager` (optional), cognitive trace propagation. 82 tests across 14 classes. Exports `AgentMemory`, `AgentMemoryEntry`, `AgentSkillSummary`, `AgentSummary`.
 - **MemoryLayer extended**: Added `AGENT = "agent"` to `MemoryLayer` enum in `core/memory/models.py`
+- **Long-Term Memory (T-32)**: New `core/memory/long_term_memory.py` — persistent memory namespace backed by database (SQLite/PostgreSQL via `core/db_backend.py`). Data survives process restarts. CRUD operations per agent, text search with tag filtering, semantic search via optional VectorDB integration, TTL support with expiry cleanup, cognitive trace propagation. 80+ tests across 15 classes including critical `TestPersistence` (store → close → reopen → retrieve). Exports `LongTermMemory`, `LongTermMemoryEntry`.
+- **MemoryLayer extended**: Added `LONG_TERM = "long_term"` to `MemoryLayer` enum in `core/memory/models.py`
 
 ## [1.0.0-RC18] — 2026-06-21
 

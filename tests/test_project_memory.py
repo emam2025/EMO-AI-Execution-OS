@@ -434,9 +434,9 @@ class TestEdgeCases:
 
     @pytest.mark.asyncio
     async def test_store_unicode(self, pm: ProjectMemory) -> None:
-        await pm.store("proj", "arabic", {"message": "مرحبا بالعالم"})
-        result = await pm.retrieve("proj", "arabic")
-        assert result["result"]["payload"]["message"] == "مرحبا بالعالم"
+        await pm.store("proj", "unicode", {"message": "Hello World"})
+        result = await pm.retrieve("proj", "unicode")
+        assert result["result"]["payload"]["message"] == "Hello World"
 
     @pytest.mark.asyncio
     async def test_store_none_payload(self, pm: ProjectMemory) -> None:

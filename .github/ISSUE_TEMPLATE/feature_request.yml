@@ -1,63 +1,63 @@
 name: Feature Request
-description: اقتراح ميزة جديدة
+description: Suggest a new feature
 title: "[FEATURE] "
 labels: ["enhancement", "feature-request", "beta"]
 body:
   - type: textarea
     id: title
     attributes:
-      label: عنوان الميزة
-      description: عنوان مختصر للميزة المطلوبة
-      placeholder: "مثل: إضافة وضع الليلي"
+      label: Feature Title
+      description: Short title for the requested feature
+      placeholder: "e.g.: Add dark mode"
     validations:
       required: true
 
   - type: textarea
     id: description
     attributes:
-      label: وصف الميزة
-      description: وصف تفصيلي للميزة المطلوبة
-      placeholder: اشرح الميزة بالتفصيل...
+      label: Feature Description
+      description: Detailed description of the requested feature
+      placeholder: Explain the feature in detail...
     validations:
       required: true
 
   - type: textarea
     id: usecase
     attributes:
-      label: الحالة الاستخدامية
-      description: كيف سيتم استخدام هذه الميزة ولماذا نحتاجها؟
+      label: Use Case
+      description: How will this feature be used and why do we need it?
       placeholder: |
-        سأستخدم هذه الميزة عندما...
-        لأن...
+        I will use this feature when...
+        Because...
     validations:
       required: true
 
   - type: dropdown
     id: priority
     attributes:
-      label: الأولوية
-      description: مدى أهمية هذه الميزة لك
+      label: Priority
+      description: How important is this feature to you
       options:
-        - Must have - ضرورية للعمل
-        - Nice to have - تحسين كبير
-        - Low priority - تحسين بسيط
+        - Must have - Essential for work
+        - Nice to have - Significant improvement
+        - Low priority - Minor improvement
     validations:
       required: true
 
   - type: textarea
     id: alternative
     attributes:
-      label: البدائل الممكنة
-      description: هل لديك بديل حالياً لتحقيق نفس الهدف؟
-      placeholder: حالياً أستخدم...
+      label: Possible Alternatives
+      description: Do you have an alternative solution to achieve the same goal?
+      placeholder: Currently I use...
     validations:
       required: false
 
   - type: textarea
     id: context
     attributes:
-      label: سياق إضافي
-      description: معلومات إضافية عن الميزة
-      placeholder: أي تفاصيل أخرى...
+      label: Additional Context
+      description: Additional information about the feature
+      placeholder: Any other details...
     validations:
       required: false

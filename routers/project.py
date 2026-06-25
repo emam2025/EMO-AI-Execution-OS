@@ -21,7 +21,7 @@ class ProjectUpdate(BaseModel):
 
 
 class SessionCreate(BaseModel):
-    name: str = "جلسة جديدة"
+    name: str = "New Session"
 
 
 from project_tools import WORKSPACE_ROOT, EMO_AI_PROJECT_DIR

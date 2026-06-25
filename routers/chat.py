@@ -190,8 +190,8 @@ async def process_task(
 
         # Detect if user is asking about project contents
         project_keywords = [
-            "محتوي", "محتوى", "محتويات", "مكونات", "هيكل", "files", "contents", "structure",
-            "تحليل", "اكتشف", "problems", "issues", "project analysis", "اخبرني"
+            "files", "contents", "structure",
+            "problems", "issues", "project analysis"
         ]
         is_project_query = any(kw in message.lower() for kw in project_keywords)
 
@@ -302,7 +302,7 @@ File Content:
         agent = get_state().agents["planner"]
 
         # Simple classification: if code-related → coder, else → planner
-        code_keywords = ["كود", "code", "دالة", "function", "class", "برمج", "script"]
+        code_keywords = ["code", "function", "class", "script"]
         if any(kw in message.lower() for kw in code_keywords):
             agent = get_state().agents.get("coder", agent)
 

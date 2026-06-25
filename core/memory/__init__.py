@@ -19,6 +19,7 @@ from core.memory.memory_state_machine import MemoryStateMachine, MemoryState, Me
 from core.memory.trace_correlator import CognitiveTraceCorrelator
 from core.memory.project_memory import ProjectMemory, ProjectMemoryEntry, ProjectSummary
 from core.memory.agent_memory import AgentMemory, AgentMemoryEntry, AgentSkillSummary, AgentSummary
+from core.memory.long_term_memory import LongTermMemory, LongTermMemoryEntry
 
 __all__ = [
     "MemoryHierarchy",
@@ -35,4 +36,6 @@ __all__ = [
     "AgentMemoryEntry",
     "AgentSkillSummary",
     "AgentSummary",
+    "LongTermMemory",
+    "LongTermMemoryEntry",
 ]

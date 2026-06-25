@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS projects (
 CREATE TABLE IF NOT EXISTS project_sessions (
     id            TEXT PRIMARY KEY,
     project_id    TEXT REFERENCES projects(id) ON DELETE CASCADE,
-    name          TEXT NOT NULL DEFAULT 'جلسة جديدة',
+    name          TEXT NOT NULL DEFAULT 'New Session',
     is_active     INTEGER NOT NULL DEFAULT 0,
     is_archived   INTEGER NOT NULL DEFAULT 0,
     created_at    TEXT NOT NULL DEFAULT (datetime('now')),
@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS conversations (
     project_id    TEXT REFERENCES projects(id),
     session_id    TEXT REFERENCES project_sessions(id),
     user_id       TEXT REFERENCES users(id),
-    name          TEXT NOT NULL DEFAULT 'محادثة جديدة',
+    name          TEXT NOT NULL DEFAULT 'New Conversation',
     is_active     INTEGER NOT NULL DEFAULT 0,
     is_archived   INTEGER NOT NULL DEFAULT 0,
     created_at    TEXT NOT NULL DEFAULT (datetime('now')),
@@ -2123,7 +2123,7 @@ class Database:
         self,
         session_id: str,
         project_id: str,
-        name: str = "جلسة جديدة",
+        name: str = "New Session",
     ) -> Dict:
         now = datetime.utcnow().isoformat()
         async with self._connect() as db:
@@ -2196,7 +2196,7 @@ class Database:
     async def create_conversation(
         self,
         conv_id: str,
-        name: str = "محادثة جديدة",
+        name: str = "New Conversation",
         user_id: Optional[str] = None,
     ) -> Dict:
         now = datetime.utcnow().isoformat()

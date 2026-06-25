@@ -1,110 +1,110 @@
 name: Bug Report
-description: الإبلاغ عن خطأ
+description: Report a bug
 title: "[BUG] "
 labels: ["bug", "beta", "needs-triage"]
 body:
   - type: textarea
     id: title
     attributes:
-      label: عنوان المشكلة
-      description: عنوان مختصر للمشكلة
-      placeholder: "مثل: خطأ في تسجيل الدخول"
+      label: Issue Title
+      description: Short title for the issue
+      placeholder: "e.g.: Login error"
     validations:
       required: true
 
   - type: textarea
     id: description
     attributes:
-      label: وصف المشكلة
-      description: وصف تفصيلي للمشكلة
-      placeholder: اشرح المشكلة بالتفصيل...
+      label: Issue Description
+      description: Detailed description of the issue
+      placeholder: Explain the issue in detail...
     validations:
       required: true
 
   - type: textarea
     id: steps
     attributes:
-      label: خطوات إعادة الإنتاج
-      description: خطوات واضحة لإعادة إنتاج المشكلة
+      label: Steps to Reproduce
+      description: Clear steps to reproduce the issue
       placeholder: |
-        1. اذهب إلى '...'
-        2. انقر على '...'
-        3. شاهد الخطأ
+        1. Go to '...'
+        2. Click on '...'
+        3. See the error
     validations:
       required: true
 
   - type: textarea
     id: expected
     attributes:
-      label: السلوك المتوقع
-      description: ما الذي كنت تتوقع حدوثه؟
-      placeholder: كنت أتوقع أن...
+      label: Expected Behavior
+      description: What did you expect to happen?
+      placeholder: I expected that...
     validations:
       required: true
 
   - type: textarea
     id: actual
     attributes:
-      label: السلوك الفعلي
-      description: ما الذي حدث فعلياً؟
-      placeholder: حدث بدلاً من ذلك...
+      label: Actual Behavior
+      description: What actually happened?
+      placeholder: Instead, this happened...
     validations:
       required: true
 
   - type: dropdown
     id: severity
     attributes:
-      label: الخطورة
-      description: مدى خطورة المشكلة
+      label: Severity
+      description: How severe is the issue
       options:
-        - Critical - النظام ي crash أو فقدان بيانات
-        - High - ميزة رئيسية لا تعمل
-        - Medium - خطأ بسيط، يوجد حل بديل
-        - Low - تجميلي أو تحسين
+        - Critical - System crash or data loss
+        - High - Major feature broken
+        - Medium - Minor issue, workaround exists
+        - Low - Cosmetic or enhancement
     validations:
       required: true
 
   - type: input
     id: os
     attributes:
-      label: نظام التشغيل
-      description: النظام المستخدم
-      placeholder: "مثل: Windows 11, macOS 14, Ubuntu 22.04"
+      label: Operating System
+      description: The operating system used
+      placeholder: "e.g.: Windows 11, macOS 14, Ubuntu 22.04"
     validations:
       required: true
 
   - type: input
     id: browser
     attributes:
-      label: المتصفح
-      description: المتصفح المستخدم
-      placeholder: "مثل: Chrome 120, Firefox 121, Safari 17"
+      label: Browser
+      description: The browser used
+      placeholder: "e.g.: Chrome 120, Firefox 121, Safari 17"
     validations:
       required: true
 
   - type: input
     id: version
     attributes:
-      label: إصدار التطبيق
-      description: إصدار EMO AI
-      placeholder: "مثل: 1.0.0-beta.1"
+      label: Application Version
+      description: EMO AI version
+      placeholder: "e.g.: 1.0.0-beta.1"
     validations:
       required: true
 
   - type: textarea
     id: screenshots
     attributes:
-      label: لقطات شاشة
-      description: أضف لقطات شاشة إذا أمكن
-      placeholder: اسحب وأفلت الصور هنا...
+      label: Screenshots
+      description: Add screenshots if possible
+      placeholder: Drag and drop images here...
     validations:
       required: false
 
   - type: textarea
     id: context
     attributes:
-      label: سياق إضافي
-      description: معلومات إضافية قد تساعد في حل المشكلة
-      placeholder: أي تفاصيل أخرى...
+      label: Additional Context
+      description: Additional information that may help resolve the issue
+      placeholder: Any other details...
     validations:
       required: false

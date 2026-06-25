@@ -634,7 +634,7 @@
               <div><div class="text-sm font-semibold">Language</div><div class="text-xs" style="color:var(--emo-text-muted);">Interface language</div></div>
               <select class="px-3 py-1.5 rounded-lg text-sm" id="settingsLang" onchange="setLang(this.value)" style="background:rgba(255,255,255,0.04);border:1px solid var(--emo-border-light);outline:none;">
                 <option value="en">English</option>
-                <option value="ar">العربية</option>
+                <option value="en">English</option>
               </select>
             </div>
             <div class="flex items-center justify-between">
@@ -1794,7 +1794,7 @@ async function activateProject(id) {
   }
   async function confirmCreateSession() {
     if(!activeProjectId) { showToast('Create a project first', 'error'); return; }
-    const name = document.getElementById('newSessionName').value.trim() || 'جلسة جديدة';
+    const name = document.getElementById('newSessionName').value.trim() || 'New Session';
     try {
       const res = await fetch(`/api/projects/${activeProjectId}/sessions`, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name})});
       const data = await res.json();
