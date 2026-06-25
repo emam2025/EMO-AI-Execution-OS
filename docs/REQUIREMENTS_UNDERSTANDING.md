@@ -1,342 +1,342 @@
-# وثيقة فهم المتطلبات — EMO AI Orchestrator
+# Requirements Understanding Document — EMO AI Orchestrator
 
-| البند          | القيمة                                        |
-|----------------|-----------------------------------------------|
-| **التاريخ**    | 2026-05-17                                    |
-| **المؤلف**     | وكيل opencode (AI Software Engineer)          |
-| **الحالة**     | مُحدَّث — قرارات صاحب القرار مُضمَّنة     |
-| **الإصدار**    | 1.1.0-UPDATED                               |
-| **المشروع**    | EMO AI Orchestrator                           |
-
----
-
-## 1. ملخص المشروع
-
-EMO AI Orchestrator هو نظام تنسيق ذكي متعدد الوكلاء (Multi-Agent Intelligence Orchestration System) يعمل كطبقة وسيطة بين المستخدم ونماذج الذكاء الاصطناعي المختلفة. النظام يُدير وكلاء متعددين (Planner, Coder, Writer, Researcher) ويوجّه المهام تلقائياً، مع واجهة ويب تفاعلية وتكامل مع Telegram وأدوات DevOps ومنصات سحابية (Supabase, Firebase, GitHub).
-
-**حالة الكود الحالي:** المشروع موجود بنسخة v4.0.0 مع هيكل FastAPI، لكن المكونات الأساسية (Brain, Agent, Memory, Tools Registry) هي **stubs/mock** — أي أنها لا تتصل فعلياً بنماذج LLM ولا تنفذ أدوات حقيقية.
+| Item                 | Value                                        |
+|----------------------|----------------------------------------------|
+| **Date**             | 2026-05-17                                   |
+| **Author**           | opencode agent (AI Software Engineer)        |
+| **Status**           | Updated — Stakeholder decisions included     |
+| **Version**          | 1.1.0-UPDATED                                |
+| **Project**          | EMO AI Orchestrator                          |
 
 ---
 
-## 2. الاحتياجات الوظيفية (Functional Requirements)
+## 1. Project Summary
 
-### FR-01: إدارة المحادثات (Chat & Conversations)
-| البند | الوصف | الأولوية |
-|-------|-------|----------|
-| FR-01.01 | إرسال رسالة نصية واستقبال رد عبر API `/api/chat` | Must |
-| FR-01.02 | إنشاء/تفعيل/حذف المحادثات | Must |
-| FR-01.03 | حفظ سجل المحادثات محلياً (JSON) | Must |
-| FR-01.04 | دعم رفع الملفات (صور، مستندات) | Should |
-| FR-01.05 | بث مباشر للتقدم عبر Server-Sent Events (SSE) | Must |
+EMO AI Orchestrator is a Multi-Agent Intelligence Orchestration System that acts as an intermediary layer between the user and various artificial intelligence models. The system manages multiple agents (Planner, Coder, Writer, Researcher) and routes tasks automatically, with an interactive web interface and integration with Telegram, DevOps tools, and cloud platforms (Supabase, Firebase, GitHub).
 
-### FR-02: نظام الوكلاء المتعددين (Multi-Agent System)
-| البند | الوصف | الأولوية |
-|-------|-------|----------|
-| FR-02.01 | وكيل Planner: تخطيط وتوزيع المهام | Must |
-| FR-02.02 | وكيل Coder: توليد وتصحيح الأكواد | Must |
-| FR-02.03 | وكيل Writer: كتابة المستندات والمحتوى | Should |
-| FR-02.04 | وكيل Researcher: بحث وتحقق من الحقائق | Should |
-| FR-02.05 | توجيه تلقائي للمهمة للوكيل المناسب | Must |
-| FR-02.06 | دعم إضافة وكلاء مخصصين | Could |
-
-### FR-03: التكامل مع نماذج LLM
-| البند | الوصف | الأولوية |
-|-------|-------|----------|
-| FR-03.01 | دعم OpenRouter كمزود أساسي (API) | Must |
-| FR-03.02 | دعم Groq كمزود بديل (API) | Must |
-| FR-03.03 | دعم Gemini كمزود بديل (API) | Should |
-| FR-03.04 | اختيار النموذج ديناميكياً من الإعدادات | Must |
-| FR-03.05 | اختبار الاتصال بالنموذج | Must |
-| FR-03.06 | دعم مزودين مخصصين (Custom Providers) | Could |
-| FR-03.07 | دعم النماذج المحلية عبر Ollama | Must |
-| FR-03.08 | التبديل السلس بين API و Ollama | Must |
-
-### FR-04: نظام الأدوات (Tools System)
-| البند | الوصف | الأولوية |
-|-------|-------|----------|
-| FR-04.01 | تسجيل الأدوات في Registry مصنّفة | Must |
-| FR-04.02 | أدوات DevOps: Vercel Deploy, Docker Build/Run, Env Manager | Must |
-| FR-04.03 | أدوات Project Intelligence: AutoDebugger, CodeReviewer, ProjectMonitor, Scaffold, Analyzer, DependencyManager, Refactor, DeploymentBuilder | Must |
-| FR-04.04 | أدوات GitHub: CreateRepo, Clone, Push, Pull, ReadFile, WriteFile, CreateBranch | Should |
-| FR-04.05 | أدوات Supabase: CreateProject, CreateTable, InsertData, Query, Auth, Storage | Should |
-| FR-04.06 | أدوات Firebase: Init, Auth, Firestore Read/Write, Deploy | Should |
-| FR-04.07 | أدوات نظام: shell, files | Must |
-
-### FR-05: إدارة المهام (Task Management)
-| البند | الوصف | الأولوية |
-|-------|-------|----------|
-| FR-05.01 | إنشاء مهمة وتتبع حالتها (pending → running → complete/error) | Must |
-| FR-05.02 | استعلام عن حالة المهمة | Must |
-| FR-05.03 | بث تقدم المهمة عبر SSE | Must |
-| FR-05.04 | تنظيف المهام القديمة تلقائياً | Should |
-
-### FR-06: الذاكرة والسياق (Memory & Context)
-| البند | الوصف | الأولوية |
-|-------|-------|----------|
-| FR-06.01 | بناء سياق المحادثة مع حد أقصى للرسائل والطول | Must |
-| FR-06.02 | حفظ واسترجاع المحادثات السابقة | Must |
-| FR-06.03 | ذاكرة طويلة المدى (Long-term Memory) | Could |
-| FR-06.04 | تنظيف النصوص الصاخبة قبل الإرسال للـ LLM | Must |
-
-### FR-07: الواجهة الأمامية (Web UI)
-| البند | الوصف | الأولوية |
-|-------|-------|----------|
-| FR-07.01 | واجهة دردشة تفاعلية بتصميم Glass Morphism | Must |
-| FR-07.02 | دعم اللغتين العربية والإنجليزية (RTL/LTR) | Must |
-| FR-07.03 | دعم الوضع الداكن والفاتح | Must |
-| FR-07.04 | لوحة إعدادات (مفاتيح API، المزود، النموذج) | Must |
-| FR-07.05 | عرض سجل التنفيذ والمهام | Must |
-| FR-07.06 | عرض مكتبة الأدوات والبحث فيها | Should |
-| FR-07.07 | عرض حالة الوكلاء (Online/Busy/Idle) | Should |
-| FR-07.08 | Desktop View مع Vision Agent | Won't (MVP) |
-
-### FR-08: تكامل Telegram
-| البند | الوصف | الأولوية |
-|-------|-------|----------|
-| FR-08.01 | بوت Telegram يستقبل ويرسل رسائل | Must |
-| FR-08.02 | تفويض المستخدمين عبر /start | Must |
-| FR-08.03 | أوامر: /chat, /status, /help | Must |
-| FR-08.04 | إشعارات تلقائية عند اكتمال المهام | Should |
-
-### FR-09: تطبيق System Tray / Monitor
-| البند | الوصف | الأولوية |
-|-------|-------|----------|
-| FR-09.01 | مراقبة حالة الخادم (macOS عبر rumps) | Should |
-| FR-09.02 | إعادة تشغيل الخادم | Should |
-| FR-09.03 | إشعارات الحالة | Could |
-| FR-09.04 | بديل cross-platform لـ Windows (pystray) | Should |
-| FR-09.05 | Android: إشعارات عبر Telegram Bot | Should |
-
-### FR-10: الأمان والمصادقة
-| البند | الوصف | الأولوية |
-|-------|-------|----------|
-| FR-10.01 | مصادقة أساسية (username/password hash) | Must |
-| FR-10.02 | حماية مفاتيح API (عدم عرضها في الواجهة) | Must |
-| FR-10.03 | نظام صلاحيات للأدوات الخطرة | Should |
-| FR-10.04 | تشفير البيانات الحساسة في ملفات الإعدادات | Should |
+**Current Code State:** The project exists in version v4.0.0 with a FastAPI structure, but the core components (Brain, Agent, Memory, Tools Registry) are **stubs/mock** — meaning they do not actually connect to LLM models or execute real tools.
 
 ---
 
-## 3. الاحتياجات غير الوظيفية (Non-Functional Requirements)
+## 2. Functional Requirements
 
-| البند | الوصف | المعيار القابل للقياس |
-|-------|-------|----------------------|
-| NFR-01 | الأداء | زمن استجابة API ≤ 300ms تحت 100 طلب متزامن |
-| NFR-02 | التوفر | وقت تشغيل ≥ 99.5% شهرياً |
-| NFR-03 | التوسع | دعم حتى 1000 مستخدم متزامن في الإصدار الثاني |
-| NFR-04 | الأمان | لا مفاتيح API مكشوفة في الكود؛ استخدام .env |
-| NFR-04b | الامتثال | GDPR/SOC2: تشفير بيانات، حق المسح، consent, audit logs |
-| NFR-07 | التوافق | Python 3.11+؛ macOS, Windows, Android (web-responsive) |
-| NFR-09 | الخصوصية | بيانات مشفرة، حق المسح، consent management (GDPR) |
-| NFR-10 | المراقبة | سجل تنفيذ مرئي + إشعارات |
+### FR-01: Chat & Conversations
+| Item | Description | Priority |
+|------|-------------|----------|
+| FR-01.01 | Send a text message and receive a reply via API `/api/chat` | Must |
+| FR-01.02 | Create/Activate/Delete conversations | Must |
+| FR-01.03 | Save conversation history locally (JSON) | Must |
+| FR-01.04 | Support file uploads (images, documents) | Should |
+| FR-01.05 | Live progress streaming via Server-Sent Events (SSE) | Must |
+
+### FR-02: Multi-Agent System
+| Item | Description | Priority |
+|------|-------------|----------|
+| FR-02.01 | Planner Agent: Task planning and distribution | Must |
+| FR-02.02 | Coder Agent: Code generation and correction | Must |
+| FR-02.03 | Writer Agent: Document and content writing | Should |
+| FR-02.04 | Researcher Agent: Research and fact-checking | Should |
+| FR-02.05 | Automatic task routing to the appropriate agent | Must |
+| FR-02.06 | Support for custom agents | Could |
+
+### FR-03: LLM Model Integration
+| Item | Description | Priority |
+|------|-------------|----------|
+| FR-03.01 | Support OpenRouter as primary provider (API) | Must |
+| FR-03.02 | Support Groq as alternative provider (API) | Must |
+| FR-03.03 | Support Gemini as alternative provider (API) | Should |
+| FR-03.04 | Dynamic model selection from settings | Must |
+| FR-03.05 | Test connection to model | Must |
+| FR-03.06 | Support Custom Providers | Could |
+| FR-03.07 | Support local models via Ollama | Must |
+| FR-03.08 | Seamless switching between API and Ollama | Must |
+
+### FR-04: Tools System
+| Item | Description | Priority |
+|------|-------------|----------|
+| FR-04.01 | Register tools in categorized Registry | Must |
+| FR-04.02 | DevOps tools: Vercel Deploy, Docker Build/Run, Env Manager | Must |
+| FR-04.03 | Project Intelligence tools: AutoDebugger, CodeReviewer, ProjectMonitor, Scaffold, Analyzer, DependencyManager, Refactor, DeploymentBuilder | Must |
+| FR-04.04 | GitHub tools: CreateRepo, Clone, Push, Pull, ReadFile, WriteFile, CreateBranch | Should |
+| FR-04.05 | Supabase tools: CreateProject, CreateTable, InsertData, Query, Auth, Storage | Should |
+| FR-04.06 | Firebase tools: Init, Auth, Firestore Read/Write, Deploy | Should |
+| FR-04.07 | System tools: shell, files | Must |
+
+### FR-05: Task Management
+| Item | Description | Priority |
+|------|-------------|----------|
+| FR-05.01 | Create task and track its status (pending → running → complete/error) | Must |
+| FR-05.02 | Query task status | Must |
+| FR-05.03 | Stream task progress via SSE | Must |
+| FR-05.04 | Automatic cleanup of old tasks | Should |
+
+### FR-06: Memory & Context
+| Item | Description | Priority |
+|------|-------------|----------|
+| FR-06.01 | Build conversation context with maximum message and length limits | Must |
+| FR-06.02 | Save and retrieve past conversations | Must |
+| FR-06.03 | Long-term Memory | Could |
+| FR-06.04 | Clean noisy text before sending to LLM | Must |
+
+### FR-07: Web UI
+| Item | Description | Priority |
+|------|-------------|----------|
+| FR-07.01 | Interactive chat interface with Glass Morphism design | Must |
+| FR-07.02 | Support Arabic and English (RTL/LTR) | Must |
+| FR-07.03 | Support dark and light mode | Must |
+| FR-07.04 | Settings panel (API keys, provider, model) | Must |
+| FR-07.05 | View execution log and tasks | Must |
+| FR-07.06 | View and search tools library | Should |
+| FR-07.07 | Display agent status (Online/Busy/Idle) | Should |
+| FR-07.08 | Desktop View with Vision Agent | Won't (MVP) |
+
+### FR-08: Telegram Integration
+| Item | Description | Priority |
+|------|-------------|----------|
+| FR-08.01 | Telegram bot receives and sends messages | Must |
+| FR-08.02 | Authorize users via /start | Must |
+| FR-08.03 | Commands: /chat, /status, /help | Must |
+| FR-08.04 | Automatic notifications on task completion | Should |
+
+### FR-09: System Tray / Monitor
+| Item | Description | Priority |
+|------|-------------|----------|
+| FR-09.01 | Monitor server status (macOS via rumps) | Should |
+| FR-09.02 | Restart server | Should |
+| FR-09.03 | Status notifications | Could |
+| FR-09.04 | Cross-platform alternative for Windows (pystray) | Should |
+| FR-09.05 | Android: Notifications via Telegram Bot | Should |
+
+### FR-10: Security & Authentication
+| Item | Description | Priority |
+|------|-------------|----------|
+| FR-10.01 | Basic authentication (username/password hash) | Must |
+| FR-10.02 | Protect API keys (do not display in UI) | Must |
+| FR-10.03 | Permission system for dangerous tools | Should |
+| FR-10.04 | Encrypt sensitive data in settings files | Should |
 
 ---
 
-## 4. تحليل الوجود الحالي مقابل المطلوب
+## 3. Non-Functional Requirements
 
-### ما هو موجود ويعمل:
-| المكون | الحالة | الملاحظات |
-|--------|--------|-----------|
-| FastAPI Server | ✅ يعمل | main.py + routers/chat.py |
-| واجهة الويب | ✅ موجودة | templates/index.html (تصميم احترافي) |
-| i18n (عربي/إنجليزي) | ✅ موجود | i18n.py |
-| إدارة المهام (TaskManager) | ⚠️ جزئي | يعمل محلياً لكن بدون SSE حقيقي |
-| بناء السياق (ContextBuilder) | ✅ يعمل | مع حدود رسائل وطول |
-| أدوات DevOps | ✅ موجودة | devops_tools.py |
-| أدوات Project Intelligence | ✅ موجودة | project_tools.py (1409 سطر) |
-| أدوات GitHub | ✅ موجودة | github_tools.py |
-| أدوات Supabase | ✅ موجودة | supabase_tools.py |
-| أدوات Firebase | ✅ موجودة | firebase_tools.py |
-| Telegram Bot | ✅ موجود | telegram_bot.py |
-| System Tray | ✅ موجود | tray.py (macOS) |
-| إعدادات | ✅ موجودة | .emo_settings.json |
-
-### ما هو موجود لكن **لا يعمل فعلياً** (Stubs/Mock):
-| المكون | المشكلة | التأثير |
-|--------|---------|---------|
-| Brain | يرجع نص المستخدم كما هو بدون LLM | النظام لا يولّد ردود ذكية |
-| Agent | يستدعي Brain.mock فقط | الوكلاء لا ينفذون مهام حقيقية |
-| Memory | قائمة فارغة بدون تنفيذ | لا ذاكرة طويلة المدى |
-| Tools Registry | تصنيفات فقط بدون ربط حقيقي | الأدوات غير متصلة بالوكلاء |
-| SSE Stream | غير مُنفّذ في chat.py | البث المباشر لا يعمل |
-| المصادقة | auth_enabled=false | لا حماية للواجهة |
-
-### ما هو **مفقود تماماً**:
-| المكون | الوصف |
-|--------|-------|
-| ملف `.env` | مفاتيح API مخزنة في `.emo_settings.json` بشكل نصي — خطر أمني |
-| Dockerfile | لا يوجد ملف Docker للنشر |
-| CI/CD Pipeline | لا GitHub Actions أو أي pipeline |
-| اختبارات | لا ملفات اختبار |
-| توثيق API | لا OpenAPI/Swagger مخصص |
-| قاعدة بيانات | كل شيء في-memory أو JSON محلي |
+| Item | Description | Measurable Criterion |
+|------|-------------|---------------------|
+| NFR-01 | Performance | API response time ≤ 300ms under 100 concurrent requests |
+| NFR-02 | Availability | Uptime ≥ 99.5% monthly |
+| NFR-03 | Scalability | Support up to 1000 concurrent users in second release |
+| NFR-04 | Security | No API keys exposed in code; use .env |
+| NFR-04b | Compliance | GDPR/SOC2: data encryption, right to erasure, consent, audit logs |
+| NFR-07 | Compatibility | Python 3.11+; macOS, Windows, Android (web-responsive) |
+| NFR-09 | Privacy | Encrypted data, right to erasure, consent management (GDPR) |
+| NFR-10 | Monitoring | Visible execution log + notifications |
 
 ---
 
-## 5. الافتراضات الصريحة (Explicit Assumptions)
+## 4. Current vs Required Analysis
 
-| # | الافتراض | وسيلة التحقق |
-|---|----------|-------------|
-| A-01 | المشروع يستهدف macOS + Windows + Android | ✅ مؤكَّد من صاحب القرار |
-| A-02 | OpenRouter هو المزود الأساسي لـ LLM | موجود في الإعدادات |
-| A-03 | المستخدم النهائي هو مطور برمجيات يحتاج أدوات DevOps | استنتاج من الأدوات الموجودة |
-| A-04 | النظام يعمل محلياً (Local-first) في مرحلة MVP | استنتاج من البنية الحالية |
-| A-05 | Python 3.14 هو الإصدار المستخدم | موجود في venv/__pycache__ |
-| A-06 | المشروع مفتوح المصدر ومتاح للجميع | ✅ مؤكَّد من صاحب القرار |
-| A-07 | النماذج تعمل بـ API أو محلياً (Ollama) | ✅ مؤكَّد من صاحب القرار |
-| A-08 | مفاتيح API مسؤولية المستخدم (مجاني/مدفوع) | ✅ مؤكَّد من صاحب القرار |
-| A-09 | لا قاعدة بيانات مفضلة — SQLite افتراضياً | ✅ مؤكَّد من صاحب القرار |
-| A-07 | عدد المستخدمين المتوقع في MVP: 1-10 | **معلومة مفقودة** — يحتاج تأكيد |
-| A-08 | الميزانية الشهرية للـ API Keys: غير محددة | **معلومة مفقودة** — يحتاج تأكيد |
+### What Exists and Works:
+| Component | Status | Notes |
+|-----------|--------|-------|
+| FastAPI Server | ✅ Working | main.py + routers/chat.py |
+| Web UI | ✅ Exists | templates/index.html (professional design) |
+| i18n (Arabic/English) | ✅ Exists | i18n.py |
+| Task Management (TaskManager) | ⚠️ Partial | Works locally but without real SSE |
+| Context Building (ContextBuilder) | ✅ Working | With message and length limits |
+| DevOps Tools | ✅ Exists | devops_tools.py |
+| Project Intelligence Tools | ✅ Exists | project_tools.py (1409 lines) |
+| GitHub Tools | ✅ Exists | github_tools.py |
+| Supabase Tools | ✅ Exists | supabase_tools.py |
+| Firebase Tools | ✅ Exists | firebase_tools.py |
+| Telegram Bot | ✅ Exists | telegram_bot.py |
+| System Tray | ✅ Exists | tray.py (macOS) |
+| Settings | ✅ Exists | .emo_settings.json |
+
+### What Exists But **Does Not Actually Work** (Stubs/Mock):
+| Component | Problem | Impact |
+|-----------|---------|--------|
+| Brain | Returns user text as-is without LLM | System does not generate intelligent responses |
+| Agent | Only calls Brain.mock | Agents do not execute real tasks |
+| Memory | Empty list with no implementation | No long-term memory |
+| Tools Registry | Classifications only without real binding | Tools not connected to agents |
+| SSE Stream | Not implemented in chat.py | Live streaming does not work |
+| Authentication | auth_enabled=false | No interface protection |
+
+### What is **Completely Missing**:
+| Component | Description |
+|-----------|-------------|
+| `.env` file | API keys stored in `.emo_settings.json` as plain text — security risk |
+| Dockerfile | No Docker file for deployment |
+| CI/CD Pipeline | No GitHub Actions or any pipeline |
+| Tests | No test files |
+| API Documentation | No custom OpenAPI/Swagger |
+| Database | Everything in-memory or local JSON |
 
 ---
 
-## 6. القيود (Constraints)
+## 5. Explicit Assumptions
 
-| # | القيد | التأثير |
-|---|-------|---------|
-| C-01 | مفاتيح API موجودة في ملف JSON غير مشفر | خطر أمني عالي — يجب نقلها لـ .env |
-| C-02 | لا قاعدة بيانات حقيقية | محدودية في التوسع والمشاركة — SQLite كحل أولي |
-| C-03 | processing في threads عادية (not async) | محدودية في التعامل المتزامن |
-| C-04 | لا نظام اختبارات | صعوبة ضمان الجودة |
-| C-05 | لا Docker | صعوبة النشر في بيئات متعددة |
-| C-06 | tray.py يعمل على macOS فقط (rumps) | يجب استبداله بـ cross-platform (system-tray أو web-based) |
-| C-07 | Android يحتاج واجهة متجاوبة أو تطبيق | web-responsive كحل MVP أولي |
-| C-08 | GDPR/SOC2 يتطلب تشفير + حق المسح + consent | يضيف تعقيد أمني وقانوني |
+| # | Assumption | Verification Method |
+|---|------------|---------------------|
+| A-01 | Project targets macOS + Windows + Android | ✅ Confirmed by stakeholder |
+| A-02 | OpenRouter is the primary LLM provider | Present in settings |
+| A-03 | End user is a software developer needing DevOps tools | Inferred from existing tools |
+| A-04 | System runs locally (Local-first) in MVP stage | Inferred from current architecture |
+| A-05 | Python 3.14 is the version used | Present in venv/__pycache__ |
+| A-06 | Project is open source and available to all | ✅ Confirmed by stakeholder |
+| A-07 | Models run via API or locally (Ollama) | ✅ Confirmed by stakeholder |
+| A-08 | API keys are user responsibility (free/paid) | ✅ Confirmed by stakeholder |
+| A-09 | No preferred database — SQLite by default | ✅ Confirmed by stakeholder |
+| A-07 | Expected users in MVP: 1-10 | **Missing information** — needs confirmation |
+| A-08 | Monthly budget for API Keys: unspecified | **Missing information** — needs confirmation |
 
 ---
 
-## 7. أولويات المزايا (MoSCoW)
+## 6. Constraints
 
-### Must Have (لا يعمل MVP بدونها):
-1. ربط Brain بنموذج LLM حقيقي (OpenRouter/Groq API)
-2. دعم النماذج المحلية عبر Ollama
-3. تنفيذ SSE للبث المباشر
-4. تفعيل المصادقة الأساسية
-5. نقل مفاتيح API إلى `.env`
-6. تنفيذ Task Manager مع SSE
-7. ربط الأدوات بالوكلاء فعلياً
-8. Dockerfile للنشر
-9. ترخيص مفتوح المصدر (MIT/Apache 2.0)
-10. دعم المنصات: macOS + Windows + Android (web-responsive)
-11. Telegram Bot متكامل
-12. الالتزام بـ GDPR/SOC2 (تشفير بيانات، حق المسح، consent)
+| # | Constraint | Impact |
+|---|------------|--------|
+| C-01 | API keys in unencrypted JSON file | High security risk — must move to .env |
+| C-02 | No real database | Limited scalability and sharing — SQLite as interim solution |
+| C-03 | Processing in regular threads (not async) | Limited concurrency handling |
+| C-04 | No test system | Quality assurance difficulty |
+| C-05 | No Docker | Difficulty deploying in multiple environments |
+| C-06 | tray.py works on macOS only (rumps) | Must be replaced with cross-platform (system-tray or web-based) |
+| C-07 | Android needs responsive interface or app | web-responsive as initial MVP solution |
+| C-08 | GDPR/SOC2 requires encryption + right to erasure + consent | Adds security and legal complexity |
 
-### Should Have (مهم لكن يمكن تأجيله لأسبوع):
-1. Telegram Bot متكامل
-2. نظام صلاحيات للأدوات
-3. اختبارات وحدة أساسية
+---
+
+## 7. Feature Priorities (MoSCoW)
+
+### Must Have (MVP cannot work without):
+1. Connect Brain to real LLM model (OpenRouter/Groq API)
+2. Support local models via Ollama
+3. Implement SSE for live streaming
+4. Enable basic authentication
+5. Move API keys to `.env`
+6. Implement Task Manager with SSE
+7. Actually connect tools to agents
+8. Dockerfile for deployment
+9. Open source license (MIT/Apache 2.0)
+10. Platform support: macOS + Windows + Android (web-responsive)
+11. Integrated Telegram Bot
+12. GDPR/SOC2 compliance (data encryption, right to erasure, consent)
+
+### Should Have (Important but can be deferred a week):
+1. Integrated Telegram Bot
+2. Tool permission system
+3. Basic unit tests
 4. GitHub Actions CI/CD
-5. مراقبة وتحسين الأداء
+5. Performance monitoring and optimization
 
-### Could Have (تحسينات إضافية):
-1. ذاكرة طويلة المدى (Vector DB)
-2. دعم مزودين مخصصين
+### Could Have (Additional enhancements):
+1. Long-term memory (Vector DB)
+2. Custom provider support
 3. Vision Agent
-4. نظام إشعارات متقدم
-5. وكلاء مخصصون
+4. Advanced notification system
+5. Custom agents
 
-### Won't Have (في MVP):
-1. Desktop View كامل
-2. نظام multi-tenant
-3. لوحة تحكم إدارية
-4. دعم WebSocket مزدوج الاتجاه
-5. نظام billing/usage tracking
-
----
-
-## 8. المعلومات المفقودة (Missing Information) — تحتاج تأكيد صاحب القرار
-
-| # | المعلومة | الأثر | القيمة الافتراضية | الحالة |
-|---|----------|-------|-------------------|--------|
-| M-01 | هل المشروع مفتوح المصدر أم خاص؟ | يحدد الترخيص ومستوى التوثيق | **مفتوح المصدر — متاح للجميع** | ✅ مُؤكَّد |
-| M-02 | عدد المستخدمين المستهدف في MVP | يحدد متطلبات التوسع | **3 مستخدمين في المرحلة الأولى** | ✅ مُؤكَّد |
-| M-03 | الميزانية الشهرية لـ API Keys | يحدد اختيار النماذج | **حسب المستخدم — مجاني أو مدفوع** | ✅ مُؤكَّد |
-| M-04 | المنصات المستهدفة | يحدد tray.py والبديل | **macOS + Windows + Android** | ✅ مُؤكَّد |
-| M-05 | هل هناك قاعدة بيانات مفضلة؟ | يحدد اختيار DB | **لا توجد تفضيل — SQLite افتراضياً** | ✅ مُؤكَّد |
-| M-06 | هل Telegram Bot مطلوب في MVP؟ | يحدد الأولوية | **بالتأكيد — Must** | ✅ مُؤكَّد |
-| M-07 | ما النماذج المحددة المطلوبة؟ | يحدد الإعدادات | **Ollama للمحلي + OpenRouter/Groq/Gemini للـ API** | ✅ مُؤكَّد |
-| M-08 | هل هناك متطلبات امتثال (GDPR, SOC2)؟ | يحدد متطلبات الأمان | **نعم — يجب الالتزام** | ✅ مُؤكَّد |
-| M-09 | مَن هو صاحب القرار النهائي؟ | يحدد سلسلة الموافقة | ✅ **أنت (صاحب القرار)** | ✅ مُؤكَّد |
-| M-10 | هل هناك deadline محدد لإطلاق MVP؟ | يحدد الجدول الزمني | **محدّد بالتاسك (Task-driven)** | ✅ مُؤكَّد |
+### Won't Have (In MVP):
+1. Full Desktop View
+2. Multi-tenant system
+3. Admin dashboard
+4. Bidirectional WebSocket support
+5. Billing/usage tracking system
 
 ---
 
-## 9. مخاطر أولية مع التخفيف
+## 8. Missing Information — Needs Stakeholder Confirmation
 
-| # | الخطر | الاحتمال | التأثير | التخفيف |
-|---|-------|----------|---------|---------|
-| R-01 | تسرب مفاتيح API (موجودة حالياً في JSON) | عالي | حرج | نقل فوري لـ .env + إضافة .env لـ .gitignore |
-| R-02 | عدم استقرار نماذج LLM الخارجية | متوسط | عالي | دعم مزودين متعددين + fallback + Ollama محلي |
-| R-03 | الأداء تحت الحمل | متوسط | متوسط | اختبارات تحميل + تحسين async |
-| R-04 | تعقيد الكود الحالي (1409 سطر في ملف واحد) | عالي | متوسط | إعادة هيكلة تدريجية |
-| R-05 | عدم توافق Python 3.14 مع بعض المكتبات | منخفض | متوسط | اختبار التوافق مبكراً |
-| R-06 | فقدان بيانات المحادثات (JSON محلي) | متوسط | عالي | إضافة SQLite كقاعدة بيانات |
-| R-07 | عدم التوافق مع GDPR/SOC2 | متوسط | حرج | تشفير البيانات + حق المسح + consent management + audit logs |
-| R-08 | تعقيد دعم 3 منصات (macOS/Windows/Android) | عالي | عالي | web-responsive كحل MVP أولي + Electron للديسكتوب لاحقاً |
+| # | Information | Impact | Default Value | Status |
+|---|-------------|--------|---------------|--------|
+| M-01 | Is the project open source or private? | Determines license and documentation level | **Open source — available to all** | ✅ Confirmed |
+| M-02 | Number of target users in MVP | Determines scalability requirements | **3 users in initial phase** | ✅ Confirmed |
+| M-03 | Monthly budget for API Keys | Determines model selection | **User dependent — free or paid** | ✅ Confirmed |
+| M-04 | Target platforms | Determines tray.py and alternative | **macOS + Windows + Android** | ✅ Confirmed |
+| M-05 | Is there a preferred database? | Determines DB choice | **No preference — SQLite by default** | ✅ Confirmed |
+| M-06 | Is Telegram Bot required in MVP? | Determines priority | **Absolutely — Must** | ✅ Confirmed |
+| M-07 | Which specific models are required? | Determines settings | **Ollama for local + OpenRouter/Groq/Gemini for API** | ✅ Confirmed |
+| M-08 | Are there compliance requirements (GDPR, SOC2)? | Determines security requirements | **Yes — must comply** | ✅ Confirmed |
+| M-09 | Who is the final decision maker? | Determines approval chain | ✅ **You (the stakeholder)** | ✅ Confirmed |
+| M-10 | Is there a specific deadline for MVP launch? | Determines timeline | **Task-driven** | ✅ Confirmed |
 
 ---
 
-## 10. معايير القبول (Acceptance Criteria) — نماذج
+## 9. Initial Risks with Mitigation
 
-### AC-01: توجيه الطلبات لنموذج ML
+| # | Risk | Probability | Impact | Mitigation |
+|---|------|-------------|--------|------------|
+| R-01 | API key leakage (currently in JSON) | High | Critical | Immediate move to .env + add .env to .gitignore |
+| R-02 | External LLM model instability | Medium | High | Support multiple providers + fallback + local Ollama |
+| R-03 | Performance under load | Medium | Medium | Load tests + async optimization |
+| R-04 | Current code complexity (1409 lines in one file) | High | Medium | Gradual restructuring |
+| R-05 | Python 3.14 incompatibility with some libraries | Low | Medium | Early compatibility testing |
+| R-06 | Loss of conversation data (local JSON) | Medium | High | Add SQLite as database |
+| R-07 | GDPR/SOC2 non-compliance | Medium | Critical | Data encryption + right to erasure + consent management + audit logs |
+| R-08 | Complexity of supporting 3 platforms (macOS/Windows/Android) | High | High | web-responsive as initial MVP solution + Electron for desktop later |
+
+---
+
+## 10. Acceptance Criteria — Templates
+
+### AC-01: Request Routing to ML Model
 ```json
 {
-  "feature": "توجيه الطلبات إلى نموذج ML مناسب",
+  "feature": "Route requests to appropriate ML model",
   "priority": "Must",
   "acceptance_criteria": [
-    "توجيه متطلبات نصية إلى نموذج 'NLP-v1' عندما حجم الطلب < 1k tokens",
-    "زمن التوجيه ≤ 50ms",
-    "في حالة فشل المزود الأساسي، التبديل للمزود البديل خلال 200ms"
+    "Route text requests to 'NLP-v1' model when request size < 1k tokens",
+    "Routing time ≤ 50ms",
+    "On primary provider failure, switch to alternative provider within 200ms"
   ]
 }
 ```
 
-### AC-02: بث مباشر للتقدم
+### AC-02: Live Progress Streaming
 ```json
 {
-  "feature": "بث مباشر لتقدم المهمة عبر SSE",
+  "feature": "Live task progress streaming via SSE",
   "priority": "Must",
   "acceptance_criteria": [
-    "العميل يستقبل أحداث 'step_start', 'step_complete', 'result', 'error'",
-    "زمن التأخير بين الحدث والاستلام ≤ 100ms",
-    "إعادة الاتصال التلقائي عند فقدان الاتصال خلال 3 ثوانٍ"
+    "Client receives 'step_start', 'step_complete', 'result', 'error' events",
+    "Latency between event and receipt ≤ 100ms",
+    "Auto-reconnection on connection loss within 3 seconds"
   ]
 }
 ```
 
-### AC-03: المصادقة
+### AC-03: Authentication
 ```json
 {
-  "feature": "مصادقة المستخدم للواجهة",
+  "feature": "User interface authentication",
   "priority": "Must",
   "acceptance_criteria": [
-    "طلب تسجيل دخول مع username + password",
-    "إرجاع token صالح لمدة 24 ساعة",
-    "رفض الطلبات بدون token برسالة 401",
-    "تشفير password بـ bcrypt أو معادل"
+    "Login request with username + password",
+    "Return token valid for 24 hours",
+    "Reject requests without token with 401 response",
+    "Encrypt password with bcrypt or equivalent"
   ]
 }
 ```
 
 ---
 
-## 11. مؤشرات الأداء (KPIs) للمرحلة الأولى
+## 11. KPIs for Initial Phase
 
-| المؤشر | الهدف | طريقة القياس |
-|--------|-------|-------------|
-| زمن تطوير MVP | ≤ 8 أسابيع | تتبع Git commits |
-| معدل نجاح الاختبارات الحرجة | ≥ 95% | pytest output |
-| زمن استجابة API المتوسط | ≤ 300ms (100 concurrent) | Apache Bench / k6 |
-| تغطية اختبارات الوحدة | ≥ 60% | pytest-cov |
-| عدد الأخطاء الحرجة في الإنتاج | 0 | Sentry/logs |
-| رضا المستخدم (subjective) | ≥ 4/5 | استبيان |
+| Indicator | Target | Measurement Method |
+|-----------|--------|--------------------|
+| MVP development time | ≤ 8 weeks | Git commit tracking |
+| Critical test pass rate | ≥ 95% | pytest output |
+| Average API response time | ≤ 300ms (100 concurrent) | Apache Bench / k6 |
+| Unit test coverage | ≥ 60% | pytest-cov |
+| Number of critical production errors | 0 | Sentry/logs |
+| User satisfaction (subjective) | ≥ 4/5 | Survey |
 
 ---
 
-## 12. مخرجات JSON — الميزات الأساسية والواجهات
+## 12. JSON Output — Core Features and Interfaces
 
-### 12.1 الميزات الأساسية (JSON)
+### 12.1 Core Features (JSON)
 
 ```json
 {
@@ -346,48 +346,48 @@ EMO AI Orchestrator هو نظام تنسيق ذكي متعدد الوكلاء (M
   "features": [
     {
       "id": "FR-01",
-      "name": "إدارة المحادثات",
+      "name": "Chat & Conversations",
       "priority": "Must",
       "status": "partial",
       "endpoints": ["POST /api/chat", "GET /api/conversations", "POST /api/conversations", "POST /api/conversations/{id}/activate"]
     },
     {
       "id": "FR-02",
-      "name": "نظام الوكلاء المتعددين",
+      "name": "Multi-Agent System",
       "priority": "Must",
       "status": "stub",
       "agents": ["planner", "coder", "writer", "researcher"]
     },
     {
       "id": "FR-03",
-      "name": "التكامل مع نماذج LLM",
+      "name": "LLM Model Integration",
       "priority": "Must",
       "status": "stub",
       "providers": ["openrouter", "groq", "gemini"]
     },
     {
       "id": "FR-04",
-      "name": "نظام الأدوات",
+      "name": "Tools System",
       "priority": "Must",
       "status": "exists-not-connected",
       "categories": ["DevOps", "Project Intelligence", "GitHub", "Supabase", "Firebase", "System"]
     },
     {
       "id": "FR-05",
-      "name": "إدارة المهام",
+      "name": "Task Management",
       "priority": "Must",
       "status": "partial",
       "states": ["pending", "running", "complete", "error"]
     },
     {
       "id": "FR-06",
-      "name": "الذاكرة والسياق",
+      "name": "Memory & Context",
       "priority": "Must",
       "status": "partial"
     },
     {
       "id": "FR-07",
-      "name": "الواجهة الأمامية",
+      "name": "Web UI",
       "priority": "Must",
       "status": "exists",
       "languages": ["en", "ar"],
@@ -395,7 +395,7 @@ EMO AI Orchestrator هو نظام تنسيق ذكي متعدد الوكلاء (M
     },
     {
       "id": "FR-10",
-      "name": "الأمان والمصادقة",
+      "name": "Security & Authentication",
       "priority": "Must",
       "status": "disabled"
     }
@@ -403,7 +403,7 @@ EMO AI Orchestrator هو نظام تنسيق ذكي متعدد الوكلاء (M
 }
 ```
 
-### 12.2 واجهات API الأساسية (JSON)
+### 12.2 Core API Interfaces (JSON)
 
 ```json
 {
@@ -411,7 +411,7 @@ EMO AI Orchestrator هو نظام تنسيق ذكي متعدد الوكلاء (M
   "base_url": "http://localhost:8080",
   "endpoints": {
     "GET /": {
-      "description": "حالة الخادم",
+      "description": "Server status",
       "response": {
         "name": "string",
         "version": "string",
@@ -419,21 +419,21 @@ EMO AI Orchestrator هو نظام تنسيق ذكي متعدد الوكلاء (M
       }
     },
     "POST /api/chat": {
-      "description": "إرسال رسالة وبدء مهمة",
+      "description": "Send a message and start a task",
       "input": {
-        "message": {"type": "string", "required": true, "description": "نص الرسالة"},
-        "conversation_id": {"type": "string", "required": false, "description": "معرف المحادثة"},
+        "message": {"type": "string", "required": true, "description": "Message text"},
+        "conversation_id": {"type": "string", "required": false, "description": "Conversation ID"},
         "file_name": {"type": "string", "required": false},
         "file_type": {"type": "string", "required": false},
         "base64": {"type": "string", "required": false}
       },
       "response": {
-        "task_id": {"type": "string", "description": "معرف المهمة"},
+        "task_id": {"type": "string", "description": "Task ID"},
         "status": {"type": "string", "enum": ["started"]}
       }
     },
     "GET /api/stream/{task_id}": {
-      "description": "بث مباشر لتقدم المهمة (SSE)",
+      "description": "Live task progress streaming (SSE)",
       "events": [
         {"type": "step_start", "data": {"step": "string", "agent": "string", "tool": "string"}},
         {"type": "step_complete", "data": {"step": "string", "result": "string"}},
@@ -442,31 +442,31 @@ EMO AI Orchestrator هو نظام تنسيق ذكي متعدد الوكلاء (M
       ]
     },
     "GET /api/tasks": {
-      "description": "قائمة المهام",
+      "description": "Task list",
       "query_params": {"limit": {"type": "integer", "default": 10}},
       "response": {
         "tasks": [{"id": "string", "status": "string", "message": "string", "created_at": "string"}]
       }
     },
     "GET /api/conversations": {
-      "description": "قائمة المحادثات",
+      "description": "Conversation list",
       "response": {
         "conversations": [{"id": "string", "name": "string", "message_count": "integer"}],
         "active": "string"
       }
     },
     "POST /api/conversations": {
-      "description": "إنشاء محادثة جديدة",
+      "description": "Create a new conversation",
       "input": {"name": {"type": "string", "required": true}},
       "response": {"id": "string", "name": "string"}
     },
     "POST /api/settings": {
-      "description": "تحديث إعداد",
+      "description": "Update a setting",
       "input": {"key": {"type": "string"}, "value": {"type": "string"}},
       "response": {"status": "string", "enum": ["saved"]}
     },
     "GET /api/status": {
-      "description": "حالة الاتصال بالـ LLM",
+      "description": "LLM connection status",
       "response": {
         "connected": "boolean",
         "provider": "string",
@@ -475,13 +475,13 @@ EMO AI Orchestrator هو نظام تنسيق ذكي متعدد الوكلاء (M
       }
     },
     "GET /api/history": {
-      "description": "سجل محادثة نشطة",
+      "description": "Active conversation history",
       "response": {
         "messages": [{"role": "string", "content": "string", "file_data": "object?"}]
       }
     },
     "GET /api/global_stream": {
-      "description": "بث عام للأحداث (SSE)",
+      "description": "Global event stream (SSE)",
       "events": [
         {"type": "task_update", "data": {"task_id": "string", "status": "string"}},
         {"type": "play_sound", "data": {"message": "string"}}
@@ -491,7 +491,7 @@ EMO AI Orchestrator هو نظام تنسيق ذكي متعدد الوكلاء (M
 }
 ```
 
-### 12.3 نموذج البيانات (JSON)
+### 12.3 Data Model (JSON)
 
 ```json
 {
@@ -552,12 +552,12 @@ EMO AI Orchestrator هو نظام تنسيق ذكي متعدد الوكلاء (M
 
 ---
 
-## 13. خطوات التنفيذ خلال 24 ساعة (قابلة للتنفيذ فوراً)
+## 13. Implementation Steps Within 24 Hours (Immediately Actionable)
 
-### الخطوة 1: تأمين مفاتيح API (فوري — 30 دقيقة)
+### Step 1: Secure API Keys (Immediate — 30 minutes)
 
 ```bash
-# 1. إنشاء ملف .env
+# 1. Create .env file
 cat > /Users/AI\ Workspace/Emo-AI/.env << 'EOF'
 OPENROUTER_API_KEY=sk-or-placeholder-rotated
 GROQ_API_KEY=gsk-placeholder-rotated
@@ -571,24 +571,24 @@ FIREBASE_API_KEY=
 FIREBASE_PROJECT_ID=
 EOF
 
-# 2. التأكد من أن .env في .gitignore
+# 2. Ensure .env is in .gitignore
 echo ".env" >> /Users/AI\ Workspace/Emo-AI/.gitignore
 
-# 3. إزالة المفاتيح من .emo_settings.json (استبدالها بـ "")
-# يتم يدوياً أو عبر سكربت
+# 3. Remove keys from .emo_settings.json (replace with "")
+# Done manually or via script
 ```
 
-### الخطوة 2: تثبيت المتطلبات وتشغيل الخادم (30 دقيقة)
+### Step 2: Install Requirements and Run Server (30 minutes)
 
 ```bash
 cd /Users/AI\ Workspace/Emo-AI
-source venv/bin/activate  # أو: python3 -m venv venv && source venv/bin/activate
+source venv/bin/activate  # Or: python3 -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
 python main.py
-# التحقق: curl http://localhost:8080/
+# Verify: curl http://localhost:8080/
 ```
 
-### الخطوة 3: إنشاء ملف تكوين المشروع (JSON)
+### Step 3: Create Project Configuration File (JSON)
 
 ```bash
 cat > /Users/AI\ Workspace/Emo-AI/emo_config.json << 'EOF'
@@ -607,63 +607,63 @@ cat > /Users/AI\ Workspace/Emo-AI/emo_config.json << 'EOF'
 EOF
 ```
 
-### الخطوة 4: إنشاء سجل التتبع (Tracking Log)
+### Step 4: Create Tracking Log
 
 ```bash
 cat > /Users/AI\ Workspace/Emo-AI/docs/PROGRESS.md << 'EOF'
-# سجل التقدم — EMO AI Orchestrator
+# Progress Log — EMO AI Orchestrator
 
-## الأسبوع 1 (2026-05-17 إلى 2026-05-24)
-- [x] وثيقة فهم المتطلبات (v1.0-DRAFT)
-- [ ] تأمين مفاتيح API
-- [ ] ربط Brain بـ OpenRouter API
-- [ ] تنفيذ SSE stream
-- [ ] تفعيل المصادقة الأساسية
+## Week 1 (2026-05-17 to 2026-05-24)
+- [x] Requirements Understanding Document (v1.0-DRAFT)
+- [ ] Secure API keys
+- [ ] Connect Brain to OpenRouter API
+- [ ] Implement SSE stream
+- [ ] Enable basic authentication
 
-## القرارات المطلوبة من صاحب القرار:
-1. M-01: هل المشروع مفتوح المصدر أم خاص؟
-2. M-02: عدد المستخدمين المستهدف؟
-3. M-03: الميزانية الشهرية لـ API Keys؟
-4. M-09: مَن صاحب القرار النهائي؟
-5. M-10: هل هناك deadline محدد؟
+## Decisions Required from Stakeholder:
+1. M-01: Is the project open source or private?
+2. M-02: Number of target users?
+3. M-03: Monthly budget for API Keys?
+4. M-09: Who is the final decision maker?
+5. M-10: Is there a specific deadline?
 EOF
 ```
 
 ---
 
-## 14. خلاصة التوصيات
+## 14. Recommendations Summary
 
-### قرارات صاحب القرار المُؤكَّدة (10/10 — كاملة):
-| القرار | الحالة |
-|--------|--------|
-| M-01: مفتوح المصدر | ✅ مؤكَّد |
-| M-02: 3 مستخدمين في المرحلة الأولى | ✅ مؤكَّد |
-| M-03: مفاتيح API حسب المستخدم (مجاني/مدفوع) | ✅ مؤكَّد |
-| M-04: macOS + Windows + Android | ✅ مؤكَّد |
-| M-05: لا قاعدة بيانات مفضلة — SQLite افتراضياً | ✅ مؤكَّد |
-| M-06: Telegram Bot مطلوب بالتأكيد | ✅ مؤكَّد |
-| M-07: Ollama للمحلي + API للسحابي | ✅ مؤكَّد |
-| M-08: نعم — متطلبات امتثال GDPR/SOC2 | ✅ مؤكَّد |
-| M-09: صاحب القرار = أنت | ✅ مؤكَّد |
-| M-10: deadline محدد بالتاسك | ✅ مؤكَّد |
+### Confirmed Stakeholder Decisions (10/10 — Complete):
+| Decision | Status |
+|----------|--------|
+| M-01: Open source | ✅ Confirmed |
+| M-02: 3 users in initial phase | ✅ Confirmed |
+| M-03: API keys user dependent (free/paid) | ✅ Confirmed |
+| M-04: macOS + Windows + Android | ✅ Confirmed |
+| M-05: No preferred database — SQLite by default | ✅ Confirmed |
+| M-06: Telegram Bot definitely required | ✅ Confirmed |
+| M-07: Ollama for local + API for cloud | ✅ Confirmed |
+| M-08: Yes — GDPR/SOC2 compliance requirements | ✅ Confirmed |
+| M-09: Stakeholder = you | ✅ Confirmed |
+| M-10: Task-driven deadline | ✅ Confirmed |
 
-| # | التوصية | الأولوية | الجهد |
-|---|---------|----------|-------|
-| 1 | نقل مفاتيح API من `.emo_settings.json` إلى `.env` | حرجة | 30 دقيقة |
-| 2 | ربط `brain.py` بـ OpenRouter API الحقيقي | حرجة | 2-3 ساعات |
-| 3 | تنفيذ SSE stream في `routers/chat.py` | حرجة | 3-4 ساعات |
-| 4 | تفعيل المصادقة الأساسية | عالية | 4-6 ساعات |
-| 5 | إنشاء Dockerfile | عالية | 2 ساعة |
-| 6 | إضافة اختبارات وحدة أساسية | عالية | 1 يوم |
-| 7 | ربط الأدوات بالوكلاء فعلياً | متوسطة | 2-3 أيام |
-| 8 | إضافة SQLite كقاعدة بيانات | متوسطة | 1-2 يوم |
-| 9 | إنشاء CI/CD pipeline | متوسطة | 1 يوم |
-| 10 | إعادة هيكلة `project_tools.py` | منخفضة | 2-3 أيام |
+| # | Recommendation | Priority | Effort |
+|---|---------------|----------|--------|
+| 1 | Move API keys from `.emo_settings.json` to `.env` | Critical | 30 minutes |
+| 2 | Connect `brain.py` to real OpenRouter API | Critical | 2-3 hours |
+| 3 | Implement SSE stream in `routers/chat.py` | Critical | 3-4 hours |
+| 4 | Enable basic authentication | High | 4-6 hours |
+| 5 | Create Dockerfile | High | 2 hours |
+| 6 | Add basic unit tests | High | 1 day |
+| 7 | Actually connect tools to agents | Medium | 2-3 days |
+| 8 | Add SQLite as database | Medium | 1-2 days |
+| 9 | Create CI/CD pipeline | Medium | 1 day |
+| 10 | Restructure `project_tools.py` | Low | 2-3 days |
 
 ---
 
-**نهاية الوثيقة — الإصدار 1.0.0-DRAFT**
+**End of Document — Version 1.0.0-DRAFT**
 
-*هذه الوثيقة مسودة وتحتاج مراجعة وموافقة صاحب القرار قبل الانتقال لمرحلة الاستكشاف والتصميم.*
+*This document is a draft and requires review and approval from the stakeholder before moving to the exploration and design phase.*
 
-*للموافقة أو التعديل: راجع قسم "المعلومات المفقودة" (الجدول 8) وقدّم إجابات واضحة.*
+*For approval or modification: Review the "Missing Information" section (Table 8) and provide clear answers.*

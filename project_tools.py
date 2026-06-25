@@ -272,7 +272,7 @@ CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
 </head>
 <body>
   <h1>Emo AI Project</h1>
-  <p>Created by Emo AI Agent</p>
+  <p>Created by Emam AbdullAziz</p>
 </body>
 </html>
 """,
@@ -315,7 +315,7 @@ if __name__ == '__main__':
     main()
 """,
             "requirements.txt": "# Add your dependencies here\n",
-            "README.md": "# Emo AI Project\n\nCreated by Emo AI Agent.\n",
+            "README.md": "# Emo AI Project\n\nCreated by Emam AbdullAziz.\n",
         },
         "install": ["pip", "install", "-r", "requirements.txt"],
         "description": "Basic Python project",

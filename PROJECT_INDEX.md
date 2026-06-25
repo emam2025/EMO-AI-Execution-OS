@@ -1,239 +1,239 @@
 # 📚 EMO AI — Project Index
 
-> فهرس شامل للمشروع — دليل سريع لأي مطور جديد
+> Comprehensive project index — Quick guide for any new developer
 
 ---
 
-## نظرة عامة
+## Overview
 
-| الخاصية | القيمة |
-|---------|--------|
-| **الاسم** | EMO AI Execution OS |
-| **الوصف** | نظام تشغيل ذكاء اصطناعي للتنفيذ الموزع |
-| **الإصدار الحالي** | v1.0.0 (RC16.6) |
-| **حالة المشروع** | Production-Ready |
-| **اللغة** | Python 3.14+ |
-| **الإطار** | FastAPI |
-| **الترخيص** | MIT |
+| Property | Value |
+|----------|-------|
+| **Name** | EMO AI Execution OS |
+| **Description** | AI operating system for distributed execution |
+| **Current Version** | v1.0.0 (RC16.6) |
+| **Project Status** | Production-Ready |
+| **Language** | Python 3.14+ |
+| **Framework** | FastAPI |
+| **License** | MIT |
 
 ---
 
-## هيكل المشروع
+## Project Structure
 
 ```
 Emo-AI/
-├── 📄 main.py                    # نقطة الدخول الرئيسية
-├── 📄 brain.py                   # واجهة LLM (4 مزودين)
-├── 📄 agent.py                   # نظام الوكلاء
-├── 📄 requirements.txt           # المتطلبات
-├── 📄 Dockerfile                 # صورة Docker
-├── 📄 docker-compose.yml         # تكوين Docker
-├── 📄 .env.example               # قالب المتغيرات البيئية
-├── 📄 README.md                  # التوثيق الرئيسي
-├── 📄 CONTRIBUTING.md            # دليل المساهمة
-├── 📄 PROJECT_INDEX.md           # هذا الملف
-├── 📄 DEVELOPER.md               # الدليل التقني
-├── 📄 LICENSE                    # الترخيص
-├── 📄 VERSION                    # إصدار المشروع
+├── 📄 main.py                    # Main entry point
+├── 📄 brain.py                   # LLM interface (4 providers)
+├── 📄 agent.py                   # Agent system
+├── 📄 requirements.txt           # Requirements
+├── 📄 Dockerfile                 # Docker image
+├── 📄 docker-compose.yml         # Docker configuration
+├── 📄 .env.example               # Environment variables template
+├── 📄 README.md                  # Main documentation
+├── 📄 CONTRIBUTING.md            # Contribution guide
+├── 📄 PROJECT_INDEX.md           # This file
+├── 📄 DEVELOPER.md               # Technical guide
+├── 📄 LICENSE                    # License
+├── 📄 VERSION                    # Project version
 │
-├── 📁 core/                      # النواة الأساسية (417 ملف)
-├── 📁 routers/                   # طبقة API (14 ملف)
-├── 📁 tests/                     # الاختبارات (178 ملف)
-├── 📁 docs/                      # التوثيق (33 ملف)
-├── 📁 scripts/                   # السكريبتات (132 ملف)
-├── 📁 releases/                  # الإصدارات (1172 ملف)
-├── 📁 middleware/                 # طبقة الوسيط
-├── 📁 simulation_lab/            # مختبر المحاكاة
+├── 📁 core/                      # Core kernel (417 files)
+├── 📁 routers/                   # API layer (14 files)
+├── 📁 tests/                     # Tests (178 files)
+├── 📁 docs/                      # Documentation (33 files)
+├── 📁 scripts/                   # Scripts (132 files)
+├── 📁 releases/                  # Releases (1172 files)
+├── 📁 middleware/                 # Middleware layer
+├── 📁 simulation_lab/            # Simulation lab
 ├── 📁 .github/workflows/         # CI/CD
 └── 📁 helm/                      # Kubernetes Helm
 ```
 
 ---
 
-## الملفات الرئيسية
+## Main Files
 
-| الملف | الوصف | الأهمية |
-|-------|-------|---------|
-| `main.py` | نقطة الدخول — FastAPI app | ⭐⭐⭐ |
-| `brain.py` | واجهة LLM — 4 مزودين (OpenRouter, Groq, Gemini, Ollama) | ⭐⭐⭐ |
-| `agent.py` | نظام الوكلاء المتعددين | ⭐⭐⭐ |
-| `requirements.txt` | قائمة المتطلبات | ⭐⭐ |
-| `Dockerfile` | بناء صورة Docker | ⭐⭐ |
-| `.env.example` | قالب المتغيرات البيئية | ⭐⭐ |
-| `DEVELOPER.md` | الدليل التقني الشامل | ⭐⭐⭐ |
-| `VERSION` | إصدار المشروع الحالي | ⭐ |
+| File | Description | Importance |
+|------|-------------|------------|
+| `main.py` | Entry point — FastAPI app | ⭐⭐⭐ |
+| `brain.py` | LLM interface — 4 providers (OpenRouter, Groq, Gemini, Ollama) | ⭐⭐⭐ |
+| `agent.py` | Multi-agent system | ⭐⭐⭐ |
+| `requirements.txt` | Requirements list | ⭐⭐ |
+| `Dockerfile` | Docker image build | ⭐⭐ |
+| `.env.example` | Environment variables template | ⭐⭐ |
+| `DEVELOPER.md` | Comprehensive technical guide | ⭐⭐⭐ |
+| `VERSION` | Current project version | ⭐ |
 
 ---
 
-## core/ — النواة الأساسية
+## core/ — Core Kernel
 
-> **417 ملف Python** — 61 مجلد فرعي
+> **417 Python files** — 61 subdirectories
 
-### المجلدات الرئيسية
+### Main Directories
 
-| المجلد | عدد الملفات | الوصف |
-|--------|------------|-------|
-| `core/runtime/` | 201 | محرك التنفيذ和服务 |
-| `core/interfaces/` | 30 | الواجهات والبروتوكولات |
-| `core/codegraph/` | 25 | تحليل الكود |
-| `core/control_plane/` | 12 | طبقة التحكم |
-| `core/enterprise/` | 11 | الميزات المؤسسية |
-| `core/observability/` | 9 | المراقبة والتتبع |
-| `core/security/` | 8 | الأمان |
-| `core/readiness/` | 7 | الاستعداد للإنتاج |
-| `core/memory/` | 7 | الذاكرة |
-| `core/devex/` | 7 | تجربة المطور |
-| `core/composition/` | 7 | تجميع الخدمات |
-| `core/canon/` | 7 | القواعد المعمارية |
-| `core/orchestration/` | 6 | التنسيق |
-| `core/models/` | 4 | النماذج |
-| `core/infra/` | 4 | البنية التحتية |
+| Directory | File Count | Description |
+|-----------|-----------|-------------|
+| `core/runtime/` | 201 | Execution engine and services |
+| `core/interfaces/` | 30 | Interfaces and protocols |
+| `core/codegraph/` | 25 | Code analysis |
+| `core/control_plane/` | 12 | Control plane |
+| `core/enterprise/` | 11 | Enterprise features |
+| `core/observability/` | 9 | Monitoring and tracing |
+| `core/security/` | 8 | Security |
+| `core/readiness/` | 7 | Production readiness |
+| `core/memory/` | 7 | Memory |
+| `core/devex/` | 7 | Developer experience |
+| `core/composition/` | 7 | Service composition |
+| `core/canon/` | 7 | Architectural rules |
+| `core/orchestration/` | 6 | Orchestration |
+| `core/models/` | 4 | Models |
+| `core/infra/` | 4 | Infrastructure |
 
-### المجلدات الفرعية الأخرى
+### Other Subdirectories
 
 ```
 core/
-├── adapters/          # المحولات
-├── agent_teams/       # فرق الوكلاء
-├── agents/            # الوكلاء
-├── applications/      # التطبيقات
-├── autonomous_control/ # التحكم المستقل
-├── autonomy/          # الاستقلالية
-├── canvas/            # اللوحة
-├── chaos/             # الهندسة الفوضوية
-├── cli/               # واجهة سطر الأوامر
-├── cloud/             # السحابة
-├── cognition/         # الإدراك
-├── command_center/    # مركز الأوامر
-├── communication_hub/ # مركز الاتصال
-├── connector_cert/    # شهادة الموصلات
-├── connectors/        # الموصلات
-├── data_fabric/       # قماش البيانات
-├── db.py              # قاعدة البيانات
-├── deployment/        # النشر
+├── adapters/          # Adapters
+├── agent_teams/       # Agent teams
+├── agents/            # Agents
+├── applications/      # Applications
+├── autonomous_control/ # Autonomous control
+├── autonomy/          # Autonomy
+├── canvas/            # Canvas
+├── chaos/             # Chaos engineering
+├── cli/               # Command line interface
+├── cloud/             # Cloud
+├── cognition/         # Cognition
+├── command_center/    # Command center
+├── communication_hub/ # Communication hub
+├── connector_cert/    # Connector certification
+├── connectors/        # Connectors
+├── data_fabric/       # Data fabric
+├── db.py              # Database
+├── deployment/        # Deployment
 ├── devops/            # DevOps
-├── digital_twin_platform/ # التوأم الرقمي
-├── digital_twin_v2/   # التوأم الرقمي v2
-├── enterprise_memory/ # ذاكرة المؤسسة
-├── execution_governor/ # حاكم التنفيذ
-├── generative_ui/     # الواجهة التوليدية
-├── hardening/         # التقوية
-├── human_governance/  # الحوكمة الإنسانية
-├── human_twin/        # التوأم البشري
-├── industry_framework/ # إطار الصناعة
-├── industry_profiles/ # ملفات القطاعات
-├── knowledge_graph/   # رسم المعرفة
-├── knowledge_os/      # نظام المعرفة
-├── marketplace/       # سوق الإضافات
-├── projectos/         # نظام المشاريع
-├── recovery/          # الاسترداد
-├── release/           # الإصدار
-├── sandbox/           # صندوق الرمل
-├── security/          # الأمان
-├── skill_factory/     # مصنع المهارات
-├── threat_intel/      # استخبارات التهديدات
-├── ui_marketplace/    # سوق الواجهات
-├── ui_schema/         # مخطط الواجهة
-├── workflow_os/       # نظام سير العمل
-├── workflow_runtime_v2/ # بيئة سير العمل v2
-└── workspace_intelligence/ # ذكاء مساحة العمل
+├── digital_twin_platform/ # Digital twin platform
+├── digital_twin_v2/   # Digital twin v2
+├── enterprise_memory/ # Enterprise memory
+├── execution_governor/ # Execution governor
+├── generative_ui/     # Generative UI
+├── hardening/         # Hardening
+├── human_governance/  # Human governance
+├── human_twin/        # Human twin
+├── industry_framework/ # Industry framework
+├── industry_profiles/ # Sector profiles
+├── knowledge_graph/   # Knowledge graph
+├── knowledge_os/      # Knowledge OS
+├── marketplace/       # Marketplace
+├── projectos/         # Project OS
+├── recovery/          # Recovery
+├── release/           # Release
+├── sandbox/           # Sandbox
+├── security/          # Security
+├── skill_factory/     # Skill factory
+├── threat_intel/      # Threat intelligence
+├── ui_marketplace/    # UI marketplace
+├── ui_schema/         # UI schema
+├── workflow_os/       # Workflow OS
+├── workflow_runtime_v2/ # Workflow runtime v2
+└── workspace_intelligence/ # Workspace intelligence
 ```
 
 ---
 
-## routers/ — طبقة API
+## routers/ — API Layer
 
-> **14 ملف** — FastAPI Routers
+> **14 files** — FastAPI Routers
 
-| الملف | الوصف |
-|-------|-------|
-| `routers/auth.py` | المصادقة (signup, login, verify) |
-| `routers/runtime_api.py` | API التنفيذ |
-| `routers/project.py` | إدارة المشاريع |
-| `routers/settings.py` | الإعدادات |
-| `routers/chat.py` | الدردشة |
-| `routers/conversations.py` | المحادثات |
-| `routers/history.py` | السجل |
-| `routers/tasks.py` | المهام |
-| `routers/ai.py` | الذكاء الاصطناعي |
-| `routers/stream.py` | البث المباشر |
-| `routers/observability.py` | المراقبة |
-| `routers/e2e.py` | الاختبارات الشاملة |
+| File | Description |
+|------|-------------|
+| `routers/auth.py` | Authentication (signup, login, verify) |
+| `routers/runtime_api.py` | Execution API |
+| `routers/project.py` | Project management |
+| `routers/settings.py` | Settings |
+| `routers/chat.py` | Chat |
+| `routers/conversations.py` | Conversations |
+| `routers/history.py` | History |
+| `routers/tasks.py` | Tasks |
+| `routers/ai.py` | Artificial intelligence |
+| `routers/stream.py` | Live streaming |
+| `routers/observability.py` | Monitoring |
+| `routers/e2e.py` | End-to-end tests |
 
 ---
 
-## tests/ — الاختبارات
+## tests/ — Tests
 
-> **178 ملف** — اختبارات شاملة
+> **178 files** — Comprehensive tests
 
-### تصنيف الاختبارات
+### Test Categories
 
-| الفئة | عدد الملفات | الوصف |
-|--------|------------|-------|
-| `tests/test_*.py` | ~50 | اختبارات وحدات |
-| `tests/phase*.py` | ~80 | اختبارات المراحل |
-| `tests/red_team/` | ~5 | اختبارات الأمان |
-| `tests/test_security_*.py` | ~10 | اختبارات أمان حرجة |
-| `tests/test_workflow_*.py` | ~8 | اختبارات سير العمل |
+| Category | File Count | Description |
+|----------|-----------|-------------|
+| `tests/test_*.py` | ~50 | Unit tests |
+| `tests/phase*.py` | ~80 | Phase tests |
+| `tests/red_team/` | ~5 | Security tests |
+| `tests/test_security_*.py` | ~10 | Critical security tests |
+| `tests/test_workflow_*.py` | ~8 | Workflow tests |
 
-### تشغيل الاختبارات
+### Running Tests
 
 ```bash
-# جميع الاختبارات
+# All tests
 python -m pytest tests/ -v
 
-# اختبارات محددة
+# Specific tests
 python -m pytest tests/test_service_isolation.py -v
 
-# مع التغطية
+# With coverage
 python -m pytest tests/ --cov=core --cov-report=html
 ```
 
 ---
 
-## docs/ — التوثيق
+## docs/ — Documentation
 
-> **33 ملف** — توثيق شامل
+> **33 files** — Comprehensive documentation
 
-### الوثائق الرئيسية
+### Main Documents
 
-| الملف | الوصف |
-|-------|-------|
-| `docs/INDEX.md` | فهرس التوثيق |
-| `docs/DEVELOPER.md` | الدليل التقني |
-| `docs/architecture/` | التصميم المعماري |
-| `docs/api/` | مرجع API |
-| `docs/sdk/` | دليل المطور |
-| `docs/security/` | النموذج الأمني |
-| `docs/deployment/` | أدلة النشر |
-| `docs/testing.md` | سجل الاختبارات |
-
----
-
-## scripts/ — الأتمتة
-
-> **132 ملف** — سكريبتات مساعدة
-
-### تصنيف السكريبتات
-
-| الفئة | الوصف |
-|-------|-------|
-| `scripts/setup/` | إعداد البيئة |
-| `scripts/deploy/` | نشر المشروع |
-| `scripts/test/` | تشغيل الاختبارات |
-| `scripts/build/` | بناء المشروع |
-| `scripts/ci/` | أتمتة CI/CD |
+| File | Description |
+|------|-------------|
+| `docs/INDEX.md` | Documentation index |
+| `docs/DEVELOPER.md` | Technical guide |
+| `docs/architecture/` | Architectural design |
+| `docs/api/` | API Reference |
+| `docs/sdk/` | Developer guide |
+| `docs/security/` | Security model |
+| `docs/deployment/` | Deployment guides |
+| `docs/testing.md` | Test log |
 
 ---
 
-## releases/ — الإصدارات
+## scripts/ — Automation
 
-> **1172 ملف** — إصدارات المشروع
+> **132 files** — Helper scripts
 
-### الإصدارات الرئيسية
+### Script Categories
 
-| الإصدار | الحالة | الوصف |
-|---------|--------|-------|
+| Category | Description |
+|----------|-------------|
+| `scripts/setup/` | Environment setup |
+| `scripts/deploy/` | Project deployment |
+| `scripts/test/` | Running tests |
+| `scripts/build/` | Building project |
+| `scripts/ci/` | CI/CD automation |
+
+---
+
+## releases/ — Releases
+
+> **1172 files** — Project releases
+
+### Main Releases
+
+| Version | Status | Description |
+|---------|--------|-------------|
 | RC12 | ✅ COMPLETED | Foundation |
 | RC13 | ✅ COMPLETED | Cognitive Layer |
 | RC14 | ✅ COMPLETED | Workflow Intelligence |
@@ -244,66 +244,66 @@ python -m pytest tests/ --cov=core --cov-report=html
 
 ---
 
-## إحصائيات المشروع
+## Project Statistics
 
-| الإحصائية | القيمة |
-|-----------|--------|
-| **إجمالي ملفات Python** | 742 |
-| **إجمالي أسطر الكود** | 161,371 |
-| **ملفات core/** | 417 |
-| **ملفات routers/** | 14 |
-| **ملفات tests/** | 178 |
-| **ملفات docs/** | 33 |
-| **ملفات scripts/** | 132 |
-| **ملفات releases/** | 1,172 |
-| **عدد الاختبارات** | 1,667+ |
-| **نسبة النجاح** | 100% |
-| **عدد endpoints** | 290+ |
+| Statistic | Value |
+|-----------|-------|
+| **Total Python Files** | 742 |
+| **Total Lines of Code** | 161,371 |
+| **core/ files** | 417 |
+| **routers/ files** | 14 |
+| **tests/ files** | 178 |
+| **docs/ files** | 33 |
+| **scripts/ files** | 132 |
+| **releases/ files** | 1,172 |
+| **Test Count** | 1,667+ |
+| **Success Rate** | 100% |
+| **Endpoints** | 290+ |
 
 ---
 
-## روابط سريعة
+## Quick Links
 
-### الوثائق المهمة
+### Important Documents
 
-- 📖 [README.md](README.md) — نظرة عامة
-- 🔧 [DEVELOPER.md](DEVELOPER.md) — الدليل التقني
-- 🏗️ [docs/architecture/](docs/architecture/) — التصميم المعماري
-- 📡 [docs/api/](docs/api/) — مرجع API
-- 🔒 [docs/security/](docs/security/) — الأمان
-- 🚀 [docs/deployment/](docs/deployment/) — النشر
-- 🧪 [docs/testing.md](docs/testing.md) — الاختبارات
-- 🤝 [CONTRIBUTING.md](CONTRIBUTING.md) — دليل المساهمة
+- 📖 [README.md](README.md) — Overview
+- 🔧 [DEVELOPER.md](DEVELOPER.md) — Technical guide
+- 🏗️ [docs/architecture/](docs/architecture/) — Architectural design
+- 📡 [docs/api/](docs/api/) — API Reference
+- 🔒 [docs/security/](docs/security/) — Security
+- 🚀 [docs/deployment/](docs/deployment/) — Deployment
+- 🧪 [docs/testing.md](docs/testing.md) — Tests
+- 🤝 [CONTRIBUTING.md](CONTRIBUTING.md) — Contribution guide
 
-### السكريبتات المهمة
+### Important Scripts
 
 ```bash
-# إعداد البيئة
+# Environment setup
 python setup.py
 
-# تشغيل الخادم
+# Run server
 python main.py
 
-# اختبارات سريعة
+# Quick tests
 python -m pytest tests/test_service_isolation.py -v
 
-# التحقق من القواعد المعمارية
+# Verify architectural rules
 python -m core.tools.emo_guard --ci
 ```
 
-### أوامر شائعة
+### Common Commands
 
 ```bash
-# بناء Docker
+# Build Docker
 docker build -t emo-ai:latest .
 
-# تشغيل الحاوية
+# Run container
 docker run -p 8080:8080 --env-file .env emo-ai:latest
 
-# نشر Kubernetes
+# Deploy to Kubernetes
 helm install emo-ai ./helm/emo-ai
 ```
 
 ---
 
-**آخر تحديث**: 2026-06-12
+**Last Updated**: 2026-06-12

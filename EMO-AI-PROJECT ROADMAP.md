@@ -4,8 +4,8 @@
 **Last Updated:** 2026-06-15
 **Tests:** 633 passed / 0 failed
 
-ده Master Task List كامل — من أول إنشاء النظام حتى Production Delivery.
-مبني على كل اللي اتنفذ فعليًا عندكم:
+This is the complete Master Task List — from system creation to Production Delivery.
+Built on everything that has actually been implemented:
 
 CodeGraph v1 | Event Substrate | Canon Enforcement | Runtime Decomposition
 Distributed Runtime | Governance | Replay/Recovery | Drift Detection
@@ -17,32 +17,32 @@ Generative UI | Knowledge Fabric | Autonomous Operations | Security Consolidatio
 
 0.1 Repository Foundation ✅
 
- إنشاء repository structure ✅
- إعداد pyproject.toml ✅
- إعداد linting + formatting ✅
- إعداد testing infrastructure ✅ (1951 tests)
- إعداد CI workflow ✅ (.github/workflows/ci.yml)
- إعداد pre-commit hooks ✅ (.githooks/pre-commit)
- إعداد dependency management ✅
- إعداد semantic versioning ✅
+ Create repository structure ✅
+ Setup pyproject.toml ✅
+ Setup linting + formatting ✅
+ Setup testing infrastructure ✅ (1951 tests)
+ Setup CI workflow ✅ (.github/workflows/ci.yml)
+ Setup pre-commit hooks ✅ (.githooks/pre-commit)
+ Setup dependency management ✅
+ Setup semantic versioning ✅
 
 0.2 Core Engineering Standards ✅
 
- إنشاء DEVELOPER.md ✅
- إنشاء CHANGELOG.md ✅
- إنشاء ARCHITECTURE_AUDIT_REPORT.md ✅
- تعريف Architecture Canon ✅ (Laws 1–27)
- تعريف dependency rules ✅
- تعريف layering rules ✅
+ Create DEVELOPER.md ✅
+ Create CHANGELOG.md ✅
+ Create ARCHITECTURE_AUDIT_REPORT.md ✅
+ Define Architecture Canon ✅ (Laws 1–27)
+ Define dependency rules ✅
+ Define layering rules ✅
 
 0.3 Initial Runtime Skeleton ✅
 
- إنشاء core/ ✅ (124 directories)
- إنشاء core/interfaces/ ✅
- إنشاء core/models/ ✅
- إنشاء core/runtime/ ✅
- إنشاء core/governance/ ✅
- إنشاء core/distributed/ ✅
+ Create core/ ✅ (124 directories)
+ Create core/interfaces/ ✅
+ Create core/models/ ✅
+ Create core/runtime/ ✅
+ Create core/governance/ ✅
+ Create core/distributed/ ✅
 
 ---
 
@@ -157,15 +157,15 @@ C3 — Security Governance ✅
 D1 — Domain Model Extraction ✅
 
  core/models/ ✅ (dag.py — PlanNode, PlanEdge, DependencyGraph)
- نقل ✅
- منع business logic داخل models ✅
- تحديث imports ✅
- فصل semantics عن runtime ✅
+ Move ✅
+ Prevent business logic inside models ✅
+ Update imports ✅
+ Separate semantics from runtime ✅
 
 D2 — Interface Gateway Layer ✅
 
  core/interfaces/ ✅ (execution.py, systems.py, governance.py, etc.)
- منع imports المباشرة للـ implementations ✅
+ Prevent direct imports of implementations ✅
 
 D3 — Dependency Enforcement ✅
 
@@ -515,12 +515,12 @@ Enterprise Readiness ✅
 
 ### 🚀 FINAL TARGET
 
-النظام النهائي ليس:
+The final system is not:
 - Agent Framework
 - Workflow Engine
 - AI Assistant
 
-بل:
+Rather:
 - 🧠 Distributed AI Execution Operating System
 - Security-hardened (RC16.6.1: DecisionGateway → IdentityProvider → ConnectorBoundary → KeyManagement)
 - 1951 tests passing, zero regressions

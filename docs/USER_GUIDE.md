@@ -1,37 +1,37 @@
-# EMO AI — دليل المستخدم
+# EMO AI — User Guide
 ## User Guide v1.0
 
-### ما هو EMO AI؟
-EMO AI هو مساعدك الذكي لإدارة المهام والأتمتة. يمكنك إنشاء وكلاء (Agents) يعملون على مهام متعددة باستخدام نماذج ذكاء اصطناعي مختلفة.
+### What is EMO AI?
+EMO AI is your smart assistant for task management and automation. You can create agents that work on multiple tasks using different AI models.
 
-### البدء السريع
-1. **ثبّت التطبيق** → افتح EMO AI
-2. **اختر وضع التشغيل** → Local / Hybrid / Cloud
-3. **أضف مفتاح API** → الإعدادات → النماذج → Keychain
-4. **أنشئ مشروعاً** → وأنشئ أول وكيل (Agent)
-5. **شغّل مهمة** → اكتب طلبك
+### Quick Start
+1. **Install the application** → Open EMO AI
+2. **Choose operation mode** → Local / Hybrid / Cloud
+3. **Add API key** → Settings → Models → Keychain
+4. **Create a project** → and create your first agent
+5. **Run a task** → Write your request
 
-### الشاشات الرئيسية
+### Main Screens
 
-| الشاشة | الوظيفة |
+| Screen | Function |
 |---|---|
-| **Dashboard** | نظرة عامة: حالة النظام، الوكلاء النشطون، المهام الأخيرة |
-| **Agents** | إنشاء وإدارة وكلاء الذكاء الاصطناعي |
-| **Projects** | إدارة المشاريع والمهام |
-| **Models** | ربط نماذج الذكاء الاصطناعي (OpenAI، OpenRouter، Groq، Gemini، Ollama) |
-| **Knowledge** | مستودع المعرفة والتاريخ |
-| **Monitor** | مراقبة الأداء والنظام |
-| **Security** | إعدادات الحماية والصلاحيات |
-| **Settings** | إعدادات التطبيق والمفاتيح |
+| **Dashboard** | Overview: system status, active agents, recent tasks |
+| **Agents** | Create and manage AI agents |
+| **Projects** | Manage projects and tasks |
+| **Models** | Connect AI models (OpenAI, OpenRouter, Groq, Gemini, Ollama) |
+| **Knowledge** | Knowledge and history repository |
+| **Monitor** | Performance and system monitoring |
+| **Security** | Security and permissions settings |
+| **Settings** | Application and key settings |
 
-### أمان المفاتيح
-- جميع مفاتيح API تُخزّن في **Keychain النظام** (macOS Keychain / Windows Credential Manager / Linux Secret Service)
-- لا يتم تخزين المفاتيح في ملفات أو في Git
-- المفاتيح تُحقن في الذاكرة فقط أثناء التشغيل
+### Key Security
+- All API keys are stored in the **System Keychain** (macOS Keychain / Windows Credential Manager / Linux Secret Service)
+- Keys are not stored in files or in Git
+- Keys are injected into memory only during runtime
 
-### استكشاف الأخطاء
-| المشكلة | الحل |
+### Troubleshooting
+| Problem | Solution |
 |---|---|
-| التطبيق لا يتصل | تأكد من تشغيل الخدمة الخلفية (Settings → Connection) |
-| الموديل لا يستجيب | تأكد من إضافة مفتاح API صحيح في Settings → Models |
-| البطء في الاستجابة | استخدم mode محلي (Ollama) أو حسّن سرعة الإنترنت |
+| Application does not connect | Make sure the backend service is running (Settings → Connection) |
+| Model does not respond | Make sure a valid API key is added in Settings → Models |
+| Slow response | Use local mode (Ollama) or improve internet speed |

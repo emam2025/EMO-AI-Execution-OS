@@ -465,7 +465,7 @@ if UNICODE_FONT:
 else:
     pdf.set_font("Helvetica", "", 12)
 pdf.set_text_color(100, 100, 120)
-pdf.cell(0, 8, "المهندس إمام عبدالعزيز", align="C", new_x="LMARGIN", new_y="NEXT")
+pdf.cell(0, 8, "Eng. Emam Abdullaziz", align="C", new_x="LMARGIN", new_y="NEXT")
 pdf.ln(10)
 pdf.set_draw_color(139, 92, 246)
 pdf.line(60, pdf.get_y(), 150, pdf.get_y())

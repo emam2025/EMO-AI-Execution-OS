@@ -1,6 +1,6 @@
 # Database Migration: SQLite → PostgreSQL
 
-> دليل ترحيل قاعدة البيانات من SQLite المحلي إلى PostgreSQL السحابي
+> Database migration guide from local SQLite to cloud PostgreSQL
 
 ---
 

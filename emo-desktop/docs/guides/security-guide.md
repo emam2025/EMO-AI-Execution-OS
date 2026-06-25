@@ -133,29 +133,29 @@ If you find a security vulnerability, please email **security@emo-ai.dev**. Do n
 
 ---
 
-# دليل الأمان والخصوصية — EMO AI
+# EMO AI — Security & Privacy Guide
 
-> كيف تبقى بياناتك آمنة، أين تُخزّن مفاتيحك، وما لا نراه أبداً.
+> How your data stays safe, where your keys are stored, and what we never see.
 
 ---
 
-## تخزين المفاتيح — كيف يحمي EMO AI مفاتيح API الخاصة بك
+## Key Storage — How EMO AI Protects Your API Keys
 
-عند إدخال مفتاح API في EMO AI، فإنه **لا** يحفظه في ملف. بدلاً من ذلك، يُخزّنه في **سلسلة المفاتيح** بنظام التشغيل — نفس النظام الآمن الذي يستخدمه متصفحك لحفظ كلمات المرور.
+When you enter an API key in EMO AI, it does **not** save it to a file. Instead, it stores it in your computer's **operating system keychain** — the same secure system used by your browser to save passwords.
 
-| النظام | اسم سلسلة المفاتيح |
+| Platform | Keychain Name |
 |---|---|
-| **ماك** | Keychain Access (التطبيقات → الأدوات المساعدة) |
-| **ويندوز** | Credential Manager (لوحة التحكم → حسابات المستخدمين) |
-| **لينكس** | libsecret (GNOME Keyring / KDE Wallet) |
+| **macOS** | Keychain Access (Applications → Utilities) |
+| **Windows** | Credential Manager (Control Panel → User Accounts) |
+| **Linux** | libsecret (GNOME Keyring / KDE Wallet) |
 
-### لماذا هذا مهم
+### Why This Matters
 
-- **لا ملفات إعدادات.** مفاتيحك ليست في ملف `.json` أو `.env` قد يُشارك أو يُنسخ احتياطياً عن طريق الخطأ.
-- **مشفرة.** سلسلة المفاتيح تشفّر البيانات باستخدام أمان جهازك.
-- **خاصة بالتطبيق.** فقط EMO AI يمكنه قراءة مدخلاته.
-- **غير مرئية.** بمجرد إدخال المفتاح، لا يظهر مرة أخرى في التطبيق.
+- **No configuration files.** Your keys are never sitting in a `.json` or `.env` file that could be accidentally shared or backed up.
+- **Encrypted at rest.** Keychains encrypt data using your system's hardware security.
+- **App-specific.** Only EMO AI can read its own entries.
+- **No visible display.** Once entered, your key is never shown again in the app.
 
-### ماذا لو كانت سلسلة المفاتيح غير متاحة؟
+### What If the Keychain Is Unavailable?
 
-لن يعمل EMO AI إذا كانت سلسلة المفاتيح غير متاحة. لا يوجد حل بديل — مفاتيحك تتطلب حماية سلسلة المفاتيح.
+EMO AI **will not start** if the system keychain is unavailable. There is no fallback — your keys require the keychain's protection.

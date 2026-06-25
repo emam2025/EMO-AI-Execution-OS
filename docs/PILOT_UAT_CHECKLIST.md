@@ -1,55 +1,55 @@
-# Pilot UAT Checklist — اختبار القبول للمستخدمين
+# Pilot UAT Checklist — User Acceptance Testing
 
-## السيناريو: مستخدم جديد تماماً
-الهدف: تجربة التثبيت والتشغيل الأولى للمستخدم.
+## Scenario: Completely New User
+Goal: The user's first installation and operation experience.
 
-### 1. التثبيت (Install)
-| # | الخطوة | النتيجة المتوقعة | ✅ / ❌ |
+### 1. Installation (Install)
+| # | Step | Expected Result | ✅ / ❌ |
 |---|--------|-----------------|--------|
-| 1 | تحميل الملف من GitHub Releases | التحميل ينجح في < دقيقة | |
-| 2 | فتح DMG/تشغيل EXE/تشغيل AppImage | التطبيق يفتح بدون أخطاء | |
-| 3 | السحب إلى التطبيقات (macOS) | التطبيق يظهر في Launchpad | |
-| 4 | أمان النظام: لا تحذيرات أمان | أو رسالة "Unidentified Developer" مع خيار Open Anyway | |
-| 5 | إلغاء التثبيت | التطبيق يُحذف بالكامل | |
+| 1 | Download file from GitHub Releases | Download succeeds in < 1 minute | |
+| 2 | Open DMG/Run EXE/Run AppImage | Application opens without errors | |
+| 3 | Drag to Applications (macOS) | Application appears in Launchpad | |
+| 4 | System security: no security warnings | Or "Unidentified Developer" message with Open Anyway option | |
+| 5 | Uninstall | Application is deleted completely | |
 
-### 2. أول تشغيل (First Run)
-| # | الخطوة | النتيجة المتوقعة | ✅ / ❌ |
+### 2. First Run (First Run)
+| # | Step | Expected Result | ✅ / ❌ |
 |---|--------|-----------------|--------|
-| 1 | فتح التطبيق بعد التثبيت | First Run Wizard يظهر | |
-| 2 | اختيار Welcome → Next | الخطوة التالية تظهر | |
-| 3 | اختيار وضع AI (Local/Hybrid/Cloud) | الوضع يُحفظ | |
-| 4 | إضافة مفتاح API (Settings → Models) | Keychain يُخزن المفتاح | |
-| 5 | إنشاء مشروع | المشروع يظهر في Projects | |
-| 6 | Launch → Dashboard يظهر | معاينة Dashboard الصحيحة | |
+| 1 | Open application after installation | First Run Wizard appears | |
+| 2 | Choose Welcome → Next | Next step appears | |
+| 3 | Choose AI mode (Local/Hybrid/Cloud) | Mode is saved | |
+| 4 | Add API key (Settings → Models) | Keychain stores the key | |
+| 5 | Create project | Project appears in Projects | |
+| 6 | Launch → Dashboard appears | Correct Dashboard preview | |
 
-### 3. تشغيل Agent
-| # | الخطوة | النتيجة المتوقعة | ✅ / ❌ |
+### 3. Run Agent
+| # | Step | Expected Result | ✅ / ❌ |
 |---|--------|-----------------|--------|
-| 1 | الدخول إلى Agents | قائمة الوكلاء تظهر | |
-| 2 | إنشاء وكيل جديد (Agent) | الوكيل يُنشأ | |
-| 3 | إدخال طلب (مثال: "Say Hello") | الوكيل يستجيب | |
-| 4 | مشاهدة النتيجة | النتيجة تظهر في واجهة الـ UI | |
-| 5 | تجربة تيار (Streaming) | النص يظهر بشكل متواصل | |
+| 1 | Enter Agents | Agent list appears | |
+| 2 | Create new agent (Agent) | Agent is created | |
+| 3 | Enter request (example: "Say Hello") | Agent responds | |
+| 4 | View result | Result appears in the UI | |
+| 5 | Try streaming | Text appears continuously | |
 
-### 4. المراقبة والإدارة
-| # | الخطوة | النتيجة المتوقعة | ✅ / ❌ |
+### 4. Monitoring and Management
+| # | Step | Expected Result | ✅ / ❌ |
 |---|--------|-----------------|--------|
-| 1 | Dashboard → حالة النظام | System Status = Connected | |
-| 2 | Monitor → الأداء | المخططات البيانية تظهر | |
-| 3 | Projects → إنشاء مهمة | المهمة تُنشأ | |
-| 4 | Settings → Keychain | المفاتيح تظهر بشكل مخفي | |
+| 1 | Dashboard → System status | System Status = Connected | |
+| 2 | Monitor → Performance | Charts appear | |
+| 3 | Projects → Create task | Task is created | |
+| 4 | Settings → Keychain | Keys appear hidden | |
 
-### 5. المؤشرات (UAT Metrics)
-| المؤشر | الهدف | النتيجة |
+### 5. Indicators (UAT Metrics)
+| Indicator | Target | Result |
 |--------|------|--------|
-| وقت التثبيت | < دقيقتين | |
-| وقت أول تشغيل | < 5 دقائق | |
-| نجاح إنشاء Agent | > 90% | |
-| نجاح تنفيذ المهمة | > 90% | |
-| معدل التعطل (Crash) | < 1% | |
+| Installation time | < 2 minutes | |
+| First run time | < 5 minutes | |
+| Agent creation success | > 90% | |
+| Task execution success | > 90% | |
+| Crash rate | < 1% | |
 
-### 6. استطلاع الرأي (اختياري)
-1. هل واجهت أي صعوبة في التثبيت؟
-2. هل وجدت First Run Wizard مفيداً؟
-3. هل استجاب التطبيق بسرعة مرضية؟
-4. هل لديك اقتراحات للتطبيق؟
+### 6. Survey (Optional)
+1. Did you encounter any difficulty during installation?
+2. Did you find the First Run Wizard useful?
+3. Did the application respond at a satisfactory speed?
+4. Do you have suggestions for the application?

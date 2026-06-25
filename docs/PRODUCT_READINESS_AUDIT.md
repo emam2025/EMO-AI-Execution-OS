@@ -1,83 +1,83 @@
 # Product Readiness Audit — EXEC-DIRECTIVE-P0
 
-**التاريخ:** 2026-06-01
-**المشروع:** EMO AI
-**الهدف:** تدقيق شامل لحالة المنتج قبل أي تطوير جديد
+**Date:** 2026-06-01
+**Project:** EMO AI
+**Objective:** Comprehensive product readiness audit before any new development
 
 ---
 
-## ملخص تنفيذي
+## Executive Summary
 
-| المجال | النضج الحقيقي | الخطر |
-|--------|--------------|-------|
-| Rust Bridge (IPC) | 60% — 4/5 Commands موصولة، لكن الأساسي (run_agent) Placeholder | 🔴 BLOCKER |
-| Packaging Pipeline | 40% — سكريبتات موجودة ولكن خارج CI ولا توجد شهادات توقيع | 🔴 BLOCKER |
-| Security Deployment | 42/100 — لا توقيع ثنائي، XOR "تشفير"، DB غير مشفر | 🟡 عالي |
-| Industrial Readiness | 25% — Audit READY، الباقي FOUNDATION/PARTIAL | 🟡 متوسط |
+| Area | Actual Maturity | Risk |
+|------|-----------------|------|
+| Rust Bridge (IPC) | 60% — 4/5 Commands connected, but core (run_agent) is Placeholder | 🔴 BLOCKER |
+| Packaging Pipeline | 40% — Scripts exist but outside CI and no signing certificates | 🔴 BLOCKER |
+| Security Deployment | 42/100 — No binary signing, XOR "encryption", unencrypted DB | 🟡 High |
+| Industrial Readiness | 25% — Audit READY, rest FOUNDATION/PARTIAL | 🟡 Medium |
 
-**الاكتشاف الحاسم:** `run_agent` — الميزة الأساسية للمنتج — **لا تعمل**. أمر `invoke("run_agent")` موجود في الواجهة ومقبول من Rust، لكن Rust Command يتجاهل المهمة (`let _ = task;`) ويعيد نتيجة وهمية. لا توجد استدعاءات HTTP للنواة الفعلية.
+**Critical Discovery:** `run_agent` — the core product feature — **does not work**. The `invoke("run_agent")` call exists in the frontend and is accepted by Rust, but the Rust Command ignores the task (`let _ = task;`) and returns a fake result. No HTTP calls to the actual core.
 
 ---
 
 ## 1. Rust Bridge Audit
 
-### الهيكل الحالي
+### Current Structure
 ```
 emo-desktop/src-tauri/
 ├── src/
-│   ├── main.rs          (يدعو emo_desktop::run())
+│   ├── main.rs          (calls emo_desktop::run())
 │   ├── lib.rs           (Builder + 5 Commands)
-│   └── commands.rs      (جميع Commands)
+│   └── commands.rs      (All Commands)
 ├── tauri.conf.json
 ├── Cargo.toml
 └── icons/
 ```
 
-### Rust Commands المسجلة
+### Registered Rust Commands
 
-| Command | الحالة | ما يفعله |
-|---------|--------|---------|
-| `start_runtime` | ✅ CONNECTED | يشغل Python binary (Nuitka/PyInstaller) كـ child process على port 8080 |
-| `stop_runtime` | ✅ CONNECTED | يقتل child process بالـ PID |
-| `get_runtime_status` | ✅ CONNECTED | يفحص صحة child process عبر `try_wait()` |
-| `set_api_key` | ✅ CONNECTED | يخزن API key في OS keychain عبر crate `keyring` |
-| `run_agent` | ❌ **MOCKED** | **Placeholder** — `let _ = task;` يتجاهل المهمة ويعيد نتيجة وهمية |
+| Command | Status | What it does |
+|---------|--------|--------------|
+| `start_runtime` | ✅ CONNECTED | Runs Python binary (Nuitka/PyInstaller) as child process on port 8080 |
+| `stop_runtime` | ✅ CONNECTED | Kills child process by PID |
+| `get_runtime_status` | ✅ CONNECTED | Checks child process health via `try_wait()` |
+| `set_api_key` | ✅ CONNECTED | Stores API key in OS keychain via `keyring` crate |
+| `run_agent` | ❌ **MOCKED** | **Placeholder** — `let _ = task;` ignores task and returns fake result |
 
 ### Frontend invoke() Calls
 
-| الوظيفة | الأمر | الحالة |
-|---------|-------|--------|
-| `RuntimeClient.startRuntime()` | `invoke("start_runtime")` | ✅ مطابق |
-| `RuntimeClient.stopRuntime(pid)` | `invoke("stop_runtime", { pid })` | ✅ مطابق |
-| `RuntimeClient.getRuntimeStatus()` | `invoke("get_runtime_status")` | ✅ مطابق |
-| `RuntimeClient.setApiKey(provider, key)` | `invoke("set_api_key", { provider, key })` | ✅ مطابق |
-| `RuntimeClient.runAgent(task)` | `invoke("run_agent", { task })` | ⚠️ مطابق لكن Placeholder |
-| `invokeKeyringSave()` | `invoke("plugin:keyring|set_password")` | ❌ **MISSING** — لا يوجد Rust handler |
+| Function | Command | Status |
+|----------|---------|--------|
+| `RuntimeClient.startRuntime()` | `invoke("start_runtime")` | ✅ Matching |
+| `RuntimeClient.stopRuntime(pid)` | `invoke("stop_runtime", { pid })` | ✅ Matching |
+| `RuntimeClient.getRuntimeStatus()` | `invoke("get_runtime_status")` | ✅ Matching |
+| `RuntimeClient.setApiKey(provider, key)` | `invoke("set_api_key", { provider, key })` | ✅ Matching |
+| `RuntimeClient.runAgent(task)` | `invoke("run_agent", { task })` | ⚠️ Matching but Placeholder |
+| `invokeKeyringSave()` | `invoke("plugin:keyring|set_password")` | ❌ **MISSING** — No Rust handler |
 | `invokeKeyringGet()` | `invoke("plugin:keyring|get_password")` | ❌ **MISSING** |
 | `invokeKeyringDelete()` | `invoke("plugin:keyring|delete_password")` | ❌ **MISSING** |
 
 ### RUB_BRIDGE_STATUS
 
-| الفئة | العدد |
-|-------|-------|
-| **CONNECTED** (command حقيقي → نواة) | **4** |
-| **MOCKED** (command موجود لكن لا يفعل شيئاً) | **1** (run_agent) |
-| **MISSING** (استدعاء frontend بدون Rust handler) | **3** (plugin:keyring) |
-| **ORPHAN** (كود قديم في emo-desktop/tauri/) | **7** (stream_events, get_trace, ...) |
+| Category | Count |
+|----------|-------|
+| **CONNECTED** (real command → core) | **4** |
+| **MOCKED** (command exists but does nothing) | **1** (run_agent) |
+| **MISSING** (frontend call without Rust handler) | **3** (plugin:keyring) |
+| **ORPHAN** (old code in emo-desktop/tauri/) | **7** (stream_events, get_trace, ...) |
 
-### مشاكل Rust Bridge
+### Rust Bridge Issues
 
-| # | الخطر | الوصف |
-|---|-------|-------|
-| 🔴 C1 | **BLOCKER** | `run_agent` لا يعمل — الميزة الأساسية للمنتج معطلة |
-| 🔴 C2 | **CRITICAL** | keyring له تطبيقان متعارضان: `commands.rs` يستخدم `keyring` crate مباشرة، و `keyring-adapter.ts` يستدعي `plugin:keyring` الغير موجود |
-| 🔴 C3 | **CRITICAL** | `capabilities.json` فارغ — Tauri v2 قد يمنع كل custom commands |
-| 🟡 H1 | Port 8080 Hardcoded | لا يوجد تعيين ديناميكي للمنفذ |
-| 🟡 H2 | WebSocket URL Hardcoded | `ws://localhost:8080` غير مربوط بالـ session الفعلية |
-| 🟡 H3 | session_token غير مُستخدم | يتم توليده في `start_runtime` لكن لا يتم التحقق منه أبداً |
-| 🟡 M1 | tokio غير مُستخدم | موجود في Cargo.toml لكن لا يوجد async commands |
-| 🟡 M2 | موت runtime بدون تعافي | لا auto-restart, لا إشعار للمستخدم |
-| 🟡 M3 | CSP يمنع WebSocket | `default-src 'self'` يمنع `ws://localhost:8080` |
+| # | Risk | Description |
+|---|------|-------------|
+| 🔴 C1 | **BLOCKER** | `run_agent` does not work — core product feature is broken |
+| 🔴 C2 | **CRITICAL** | keyring has two conflicting implementations: `commands.rs` uses `keyring` crate directly, and `keyring-adapter.ts` calls non-existent `plugin:keyring` |
+| 🔴 C3 | **CRITICAL** | `capabilities.json` is empty — Tauri v2 may block all custom commands |
+| 🟡 H1 | Port 8080 Hardcoded | No dynamic port assignment |
+| 🟡 H2 | WebSocket URL Hardcoded | `ws://localhost:8080` not bound to actual session |
+| 🟡 H3 | session_token unused | Generated in `start_runtime` but never verified |
+| 🟡 M1 | tokio unused | Present in Cargo.toml but no async commands |
+| 🟡 M2 | Runtime death without recovery | No auto-restart, no user notification |
+| 🟡 M3 | CSP blocks WebSocket | `default-src 'self'` blocks `ws://localhost:8080` |
 
 ---
 
@@ -85,41 +85,41 @@ emo-desktop/src-tauri/
 
 ### PACKAGING_READINESS
 
-| المنصة | النضج | التفاصيل |
-|--------|-------|---------|
-| **macOS (DMG)** | **55%** | سكريبتات موجودة لكن signingIdentity = null، لا entitlements، لا notarization |
-| **Windows (MSI/EXE)** | **65%** | WiX + NSIS مهيآن، service registration موجود، لكن لا PFX certificate |
-| **Linux (AppImage)** | **50%** | سكريبت موجود لكن يعتمد على `appimagetool` غير مضمون في CI |
-| **CI/CD Pipeline** | **40%** | سكريبتات متقنة لكن خارج CI — لا Build أوتوماتيكي لأي منصة |
+| Platform | Maturity | Details |
+|----------|----------|---------|
+| **macOS (DMG)** | **55%** | Scripts exist but signingIdentity = null, no entitlements, no notarization |
+| **Windows (MSI/EXE)** | **65%** | WiX + NSIS configured, service registration exists, but no PFX certificate |
+| **Linux (AppImage)** | **50%** | Script exists but depends on `appimagetool` not guaranteed in CI |
+| **CI/CD Pipeline** | **40%** | Scripts well-crafted but outside CI — no automatic Build for any platform |
 
-### ما هو موجود فعلاً
-- ✅ Tauri v2 scaffold كامل مع 5 IPC commands
-- ✅ سكريبتات Build لـ 3 منصات: `build-installers.sh`, `secure-build.sh`
-- ✅ سكريبتات توقيع لـ 3 منصات: codesign, signtool, gpg
-- ✅ Auto-updater مهيأ مع endpoint + pubkey slot + manifest generator
-- ✅ `verify-signatures.sh` مع fail-on-mismatch
-- ✅ Leakage scanner (`leakage-scanner.sh`) لمنع تسرب الـ API keys
-- ✅ نظام إصدار كامل: `release_state_machine.py`, `release_validator.py`, `certificate_engine.py`
-- ✅ 51 اختبار توزيع عبر 7 ملفات
+### What Actually Exists
+- ✅ Complete Tauri v2 scaffold with 5 IPC commands
+- ✅ Build scripts for 3 platforms: `build-installers.sh`, `secure-build.sh`
+- ✅ Signing scripts for 3 platforms: codesign, signtool, gpg
+- ✅ Auto-updater configured with endpoint + pubkey slot + manifest generator
+- ✅ `verify-signatures.sh` with fail-on-mismatch
+- ✅ Leakage scanner (`leakage-scanner.sh`) to prevent API key leaks
+- ✅ Complete release system: `release_state_machine.py`, `release_validator.py`, `certificate_engine.py`
+- ✅ 51 distribution tests across 7 files
 
-### الثغرات الحرجة
+### Critical Gaps
 
-| # | الخطر | الوصف |
-|---|-------|-------|
-| 🔴 P0-1 | لا CI workflow للـ Desktop builds | لن يتم إنتاج أي installer أوتوماتيكياً |
-| 🔴 P0-2 | macOS signingIdentity = null | DMG غير موقّع → Gatekeeper يمنع التثبيت |
-| 🔴 P0-3 | لا icon.icns ولا icon.ico | DMG/EXE بدون أيقونات |
-| 🔴 P0-4 | ed25519 pubkey Placeholder | توقيع auto-updater غير حقيقي — يمكن تزوير التحديثات |
-| 🔴 P0-5 | لا Release Workflow | لا `on: release` trigger |
-| 🔴 P0-6 | Signing workflow خارج `.github/workflows/` | لن يُنفذ أبداً |
-| 🟡 P1-1 | لا macOS entitlements | Hardened runtime لا يعمل بشكل صحيح |
-| 🟡 P1-2 | لا notarization credentials | التطبيق سيظهر "مطور غير معروف" |
-| 🟡 P1-3 | SHA-256 placeholders | `SHA256_PLACEHOLDER` في manifests |
-| 🟡 P1-4 | build-installers.sh يُنتج placeholders صامتة | قد يُنتج installers غير وظيفية بدون تحذير |
-| 🟡 P1-5 | deb بدون dependencies | تكامل incomplete |
-| 🟡 P1-6 | tauri.conf.json مكرر | `emo-desktop/tauri/` vs `emo-desktop/src-tauri/` |
-| 🟢 P2-1 | لا ARM64 | فقط x86_64 مهيأ |
-| 🟢 P2-2 | Update server غير منشور | `releases.emo-ai.dev` غير موجود |
+| # | Risk | Description |
+|---|------|-------------|
+| 🔴 P0-1 | No CI workflow for Desktop builds | No installer will be produced automatically |
+| 🔴 P0-2 | macOS signingIdentity = null | Un-signed DMG → Gatekeeper blocks installation |
+| 🔴 P0-3 | No icon.icns nor icon.ico | DMG/EXE without icons |
+| 🔴 P0-4 | ed25519 pubkey Placeholder | Auto-updater signature not real — updates can be forged |
+| 🔴 P0-5 | No Release Workflow | No `on: release` trigger |
+| 🔴 P0-6 | Signing workflow outside `.github/workflows/` | Will never execute |
+| 🟡 P1-1 | No macOS entitlements | Hardened runtime does not work correctly |
+| 🟡 P1-2 | No notarization credentials | App will show "Unidentified Developer" |
+| 🟡 P1-3 | SHA-256 placeholders | `SHA256_PLACEHOLDER` in manifests |
+| 🟡 P1-4 | build-installers.sh produces silent placeholders | May produce non-functional installers without warning |
+| 🟡 P1-5 | deb without dependencies | Incomplete integration |
+| 🟡 P1-6 | Duplicate tauri.conf.json | `emo-desktop/tauri/` vs `emo-desktop/src-tauri/` |
+| 🟢 P2-1 | No ARM64 | Only x86_64 configured |
+| 🟢 P2-2 | Update server not deployed | `releases.emo-ai.dev` does not exist |
 
 ---
 
@@ -127,129 +127,129 @@ emo-desktop/src-tauri/
 
 ### DEPLOYMENT_SECURITY_SCORE: **42/100**
 
-| الفئة | الوزن | النتيجة |
-|-------|-------|---------|
-| Keychain/Credential Storage | 25% | 18/25 — vault موجود لكن XOR "تشفير" |
-| Update Signing | 20% | 8/20 — لا توقيع ثنائي على الإطلاق |
-| Binary Protection | 20% | 5/20 — سكربت بايثون مكشوف، لا obfuscation |
-| Secrets Handling | 20% | 8/20 — `.env` مكشوف، SQLite غير مشفر |
-| Runtime Security | 15% | 13/20 — Sandbox ممتاز لكن لا OS-level seccomp |
+| Category | Weight | Score |
+|----------|--------|-------|
+| Keychain/Credential Storage | 25% | 18/25 — vault exists but XOR "encryption" |
+| Update Signing | 20% | 8/20 — no binary signing at all |
+| Binary Protection | 20% | 5/20 — exposed Python script, no obfuscation |
+| Secrets Handling | 20% | 8/20 — `.env` exposed, SQLite unencrypted |
+| Runtime Security | 15% | 13/20 — Excellent sandbox but no OS-level seccomp |
 
-### الثغرات الأمنية الحرجة
+### Critical Security Gaps
 
-| # | الخطر | التفاصيل |
-|---|-------|---------|
-| 🔴 S1 | **HIGH** — Python vault يستخدم XOR "تشفير" | `core/runtime/secrets/vault.py` يستخدم XOR obfuscation موثق كـ "NOT production-grade" |
-| 🔴 S2 | **HIGH** — لا توقيع ثنائي | macOS codesign, Windows authenticode, GPG signing كلها غير موجودة |
-| 🔴 S3 | **HIGH** — SQLite غير مشفر | `emo_ai.db` بدون تشفير — يحتوي audit logs وبيانات حساسة |
-| 🟡 S4 | **MEDIUM** — `.env` في مجلد العمل | API keys لـ 6 خدمات + JWT secret مكشوفة |
-| 🟡 S5 | **MEDIUM** — لا OS sandbox | لا seccomp, AppArmor, SELinux — فقط software sandbox |
-| 🟡 S6 | **MEDIUM** — No HSM/TPM | Secrets في ذاكرة Python قابلة للاستخراج |
+| # | Risk | Details |
+|---|------|---------|
+| 🔴 S1 | **HIGH** — Python vault uses XOR "encryption" | `core/runtime/secrets/vault.py` uses XOR obfuscation documented as "NOT production-grade" |
+| 🔴 S2 | **HIGH** — No binary signing | macOS codesign, Windows authenticode, GPG signing all missing |
+| 🔴 S3 | **HIGH** — SQLite not encrypted | `emo_ai.db` without encryption — contains audit logs and sensitive data |
+| 🟡 S4 | **MEDIUM** — `.env` in working directory | API keys for 6 services + JWT secret exposed |
+| 🟡 S5 | **MEDIUM** — No OS sandbox | No seccomp, AppArmor, SELinux — only software sandbox |
+| 🟡 S6 | **MEDIUM** — No HSM/TPM | Secrets in Python memory extractable |
 
 ---
 
 ## 4. Industrial Readiness Audit
 
-| المجال | الحالة | التفاصيل |
-|--------|--------|---------|
-| **Permission Profiles** | 🟠 **FOUNDATION** | RBAC + 4 Industrial Levels موجودة، لكن لا HIPAA/FedRAMP/FERPA profiles |
-| **Risk Policies** | 🟡 **PARTIAL** | Risk engine في TS و Python لكن لا risk matrix رسمي، لا unified model |
-| **Human Approval Gates** | 🟡 **PARTIAL** | Single/dual approval + emergency stop، لكن لا UI ولا escalation matrix |
-| **Audit Trails** | 🟢 **READY** | Chain-linked, HMAC-SHA256 signed, tamper-evident — أقوى منطقة |
-| **Recovery Procedures** | 🟡 **PARTIAL** | DR framework + failover + rollback موجودة، لكن لا operational DR plan |
+| Area | Status | Details |
+|------|--------|---------|
+| **Permission Profiles** | 🟠 **FOUNDATION** | RBAC + 4 Industrial Levels exist, but no HIPAA/FedRAMP/FERPA profiles |
+| **Risk Policies** | 🟡 **PARTIAL** | Risk engine in TS and Python but no formal risk matrix, no unified model |
+| **Human Approval Gates** | 🟡 **PARTIAL** | Single/dual approval + emergency stop, but no UI nor escalation matrix |
+| **Audit Trails** | 🟢 **READY** | Chain-linked, HMAC-SHA256 signed, tamper-evident — strongest area |
+| **Recovery Procedures** | 🟡 **PARTIAL** | DR framework + failover + rollback exist, but no operational DR plan |
 
-### الثغرات الصناعية
+### Industrial Gaps
 
-| # | الفجوة | التأثير |
-|---|--------|---------|
-| 1 | لا Sector-Specific Profiles | HIPAA/FedRAMP/PCI-DSS/FERPA غير موجودة |
-| 2 | Audit logs منفصلة | Python backend و TS frontend غير مرتبطين |
-| 3 | لا UI للموافقات | Approval Gates موجودة فقط في CLI/Code |
-| 4 | لا Risk Register | لا قبول/تتبع/تصور للمخاطر |
-| 5 | لا DR Operational Plan | لا RPO/RTO/Backup Schedule |
-| 6 | In-memory state | RBAC + audit trail يضيعان عند إعادة التشغيل |
-| 7 | Risk engine مكرر | خوارزميتان مختلفتان في Python و TS |
-
----
-
-## 5. تقييم النضج النهائي (المصحح)
-
-| المجال | التقدير السابق | التقدير الفعلي | الفرق |
-|--------|---------------|---------------|-------|
-| Runtime | 90-95% | 90-95% | ✅ صحيح |
-| Memory | 85-90% | 85-90% | ✅ صحيح |
-| Skills | 80-90% | 80-90% | ✅ صحيح |
-| Cognitive | 80-90% | 80-90% | ✅ صحيح |
-| Governance | 75-85% | 75-85% | ✅ صحيح |
-| Security | 85-90% | **42/100** (Deployment) | ❌ كان تقديراً للنواة فقط |
-| Desktop UX | 75-85% | **70%** | ⚠️ قريب لكن run_agent لا يعمل |
-| Packaging | 40-60% | **40%** | ✅ متطابق |
-| Industrial Readiness | 30-50% | **25%** | ❌ أقل من التقدير |
-| Public Release Readiness | 60-75% | **35%** | ❌ أقل بكثير — run_agent يعطل المنتج |
+| # | Gap | Impact |
+|---|-----|--------|
+| 1 | No Sector-Specific Profiles | HIPAA/FedRAMP/PCI-DSS/FERPA missing |
+| 2 | Separate audit logs | Python backend and TS frontend not linked |
+| 3 | No UI for approvals | Approval Gates exist only in CLI/Code |
+| 4 | No Risk Register | No risk acceptance/tracking/visualization |
+| 5 | No DR Operational Plan | No RPO/RTO/Backup Schedule |
+| 6 | In-memory state | RBAC + audit trail lost on restart |
+| 7 | Duplicate risk engine | Two different algorithms in Python and TS |
 
 ---
 
-## 6. التوصيات — ترتيب الأولويات الجديد
+## 5. Final Maturity Assessment (Corrected)
 
-### الأولوية #1: إصلاح Rust Bridge (يمنع الإطلاق)
-| المهمة | الجهد | الخطر إن لم تفعل |
-|--------|-------|-----------------|
-| 1.1 تنفيذ `run_agent` الحقيقي — HTTP POST للنواة | 2-3 أيام | المنتج لا يعمل |
-| 1.2 تثبيت `tauri-plugin-keyring` + ربطه | 1 يوم | تخزين الـ API keys يفشل صامتاً |
-| 1.3 إنشاء `capabilities.json` صحيح | 0.5 يوم | Tauri قد يمنع كل الـ Commands |
-| 1.4 إزالة/توحيد `emo-desktop/tauri/` المكرر | 0.5 يوم | صيانة مربكة |
-
-### الأولوية #2: Packaging Pipeline (للإطلاق التجريبي)
-| المهمة | الجهد | الخطر إن لم تفعل |
-|--------|-------|-----------------|
-| 2.1 CI workflow للـ Desktop builds | 2-3 أيام | لا installers أوتوماتيكية |
-| 2.2 إنشاء icon.icns + icon.ico | 0.5 يوم | تطبيق بدون أيقونات |
-| 2.3 نقل signing workflow إلى `.github/` | 0.5 يوم | لن يتم توقيع أي شيء |
-| 2.4 ed25519 key pair حقيقي | 0.5 يوم | توقيع auto-updater مزيف |
-| 2.5 macOS entitlements | 0.5 يوم | Gatekeeper كتلة |
-| 2.6 First Release Build فعلي | 1 يوم | التحقق من سير العمل كاملاً |
-
-### الأولوية #3: Industrial Hardening (للمنتج النهائي)
-| المهمة | الجهد |
-|--------|-------|
-| 3.1 تبديل XOR → AES-GCM في vault | 1 يوم |
-| 3.2 تشفير SQLite في الراحة | 2 أيام |
-| 3.3 Sector Profiles (HIPAA, FedRAMP, FERPA, PCI-DSS, SOX) | 3-5 أيام |
-| 3.4 توحيد Risk Engines (Python + TS) | 2 أيام |
-| 3.5 Approval Workflow UI | 3-5 أيام |
-| 3.6 Centralized Audit Aggregation | 2 أيام |
-| 3.7 DR Operational Plan + Backup Scheduling | 2 أيام |
-
-### الأولوية #4: Pilot Program
-| المهمة | الجهد |
-|--------|-------|
-| 4.1 إعداد بيئة التجميع | 1 يوم |
-| 4.2 Crash Report Pipeline | 2 أيام |
-| 4.3 UX Friction Tracking | 1 يوم |
-| 4.4 دعوة 10-20 مستخدم | أسبوع |
+| Area | Previous Estimate | Actual Estimate | Difference |
+|------|-------------------|-----------------|------------|
+| Runtime | 90-95% | 90-95% | ✅ Correct |
+| Memory | 85-90% | 85-90% | ✅ Correct |
+| Skills | 80-90% | 80-90% | ✅ Correct |
+| Cognitive | 80-90% | 80-90% | ✅ Correct |
+| Governance | 75-85% | 75-85% | ✅ Correct |
+| Security | 85-90% | **42/100** (Deployment) | ❌ Was core-only estimate |
+| Desktop UX | 75-85% | **70%** | ⚠️ Close but run_agent broken |
+| Packaging | 40-60% | **40%** | ✅ Matching |
+| Industrial Readiness | 30-50% | **25%** | ❌ Lower than estimate |
+| Public Release Readiness | 60-75% | **35%** | ❌ Much lower — run_agent breaks product |
 
 ---
 
-## الخلاصة
+## 6. Recommendations — New Priority Order
+
+### Priority #1: Fix Rust Bridge (Blocks Launch)
+| Task | Effort | Risk if not done |
+|------|--------|------------------|
+| 1.1 Implement real `run_agent` — HTTP POST to core | 2-3 days | Product does not work |
+| 1.2 Install `tauri-plugin-keyring` + wire it | 1 day | API key storage silently fails |
+| 1.3 Create correct `capabilities.json` | 0.5 day | Tauri may block all Commands |
+| 1.4 Remove/unify duplicate `emo-desktop/tauri/` | 0.5 day | Confusing maintenance |
+
+### Priority #2: Packaging Pipeline (For Beta Launch)
+| Task | Effort | Risk if not done |
+|------|--------|------------------|
+| 2.1 CI workflow for Desktop builds | 2-3 days | No automatic installers |
+| 2.2 Create icon.icns + icon.ico | 0.5 day | App without icons |
+| 2.3 Move signing workflow to `.github/` | 0.5 day | Nothing will be signed |
+| 2.4 Real ed25519 key pair | 0.5 day | Fake auto-updater signing |
+| 2.5 macOS entitlements | 0.5 day | Gatekeeper blocks |
+| 2.6 First Actual Release Build | 1 day | Verify full workflow |
+
+### Priority #3: Industrial Hardening (For Final Product)
+| Task | Effort |
+|------|--------|
+| 3.1 Switch XOR → AES-GCM in vault | 1 day |
+| 3.2 Encrypt SQLite at rest | 2 days |
+| 3.3 Sector Profiles (HIPAA, FedRAMP, FERPA, PCI-DSS, SOX) | 3-5 days |
+| 3.4 Unify Risk Engines (Python + TS) | 2 days |
+| 3.5 Approval Workflow UI | 3-5 days |
+| 3.6 Centralized Audit Aggregation | 2 days |
+| 3.7 DR Operational Plan + Backup Scheduling | 2 days |
+
+### Priority #4: Pilot Program
+| Task | Effort |
+|------|--------|
+| 4.1 Set up staging environment | 1 day |
+| 4.2 Crash Report Pipeline | 2 days |
+| 4.3 UX Friction Tracking | 1 day |
+| 4.4 Invite 10-20 users | 1 week |
+
+---
+
+## Summary
 
 ```
-الحكم: المشروع لا يمكن إطلاقه تجريبياً حالياً
+Verdict: Project cannot be launched for pilot testing currently
 ═════════════════════════════════════════
 
-السبب المباشر: run_agent لا يعمل
-السبب النظامي: لا build pipeline أوتوماتيكي
-السبب الأمني: لا توقيع ثنائي ولا تشفير حقيقي
+Direct cause: run_agent does not work
+Systemic cause: No automatic build pipeline
+Security cause: No binary signing and no real encryption
 
-الحد الأدنى للـ Pilot:
-1. ✅ run_agent يعمل → يرسل HTTP للنواة الفعلية
-2. ✅ Desktop Build في CI → ينتج DMG موقّع
-3. ✅ keychain يخزن API keys بشكل صحيح
-4. ✅ Tauri capabilities.json غير فارغ
+Minimum requirements for Pilot:
+1. ✅ run_agent works → sends HTTP to actual core
+2. ✅ Desktop Build in CI → produces signed DMG
+3. ✅ keychain stores API keys correctly
+4. ✅ Tauri capabilities.json not empty
 
-بعد هذه الـ 4، يمكن بدء Pilot مع 10 مستخدمين.
-أما Industrial Hardening و Sector Profiles فبعد الـ Pilot.
+After these 4, Pilot can start with 10 users.
+Industrial Hardening and Sector Profiles come after Pilot.
 ```
 
 ---
 
-*انتهى التقرير — EXEC-DIRECTIVE-P0-PRODUCT-READINESS-AUDIT*
+*End of Report — EXEC-DIRECTIVE-P0-PRODUCT-READINESS-AUDIT*

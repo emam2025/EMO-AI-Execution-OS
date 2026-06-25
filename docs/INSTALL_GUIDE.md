@@ -1,47 +1,47 @@
-# EMO AI — دليل التثبيت
+# EMO AI — Installation Guide
 ## Installation Guide v1.0
 
-### متطلبات النظام
-| المنصة | المتطلبات |
+### System Requirements
+| Platform | Requirements |
 |---|---|
 | **macOS** | macOS 13+ (Ventura) |
 | **Windows** | Windows 10+ |
 | **Linux** | Ubuntu 22.04+ / Fedora 38+ |
 
-### التثبيت
+### Installation
 
 #### macOS
-1. حمل ملف `EMO-AI.dmg`
-2. افتح DMG → اسحب `EMO AI` إلى مجلد التطبيقات
-3. افتح التطبيق من Launchpad
-4. إذا ظهر تحذير "Unidentified Developer": اذهب إلى System Settings → Privacy & Security → Open Anyway
+1. Download the `EMO-AI.dmg` file
+2. Open DMG → Drag `EMO AI` to the Applications folder
+3. Open the application from Launchpad
+4. If an "Unidentified Developer" warning appears: go to System Settings → Privacy & Security → Open Anyway
 
 #### Windows
-1. حمل ملف `EMO-AI-Setup.exe`
-2. شغّل المثبّت → اتبع التعليمات
-3. افتح EMO AI من Start Menu
+1. Download the `EMO-AI-Setup.exe` file
+2. Run the installer → Follow the instructions
+3. Open EMO AI from the Start Menu
 
 #### Linux
-1. حمل `EMO-AI.AppImage`
+1. Download `EMO-AI.AppImage`
 2. `chmod +x EMO-AI.AppImage`
 3. `./EMO-AI.AppImage`
-   أو: `sudo dpkg -i emo-ai.deb` (إذا كنت تستخدم .deb)
+   Or: `sudo dpkg -i emo-ai.deb` (if you are using .deb)
 
-### الإعداد الأول
-1. عند أول تشغيل، سيظهر **First Run Wizard**
-2. اتبع الخطوات:
-   - **Welcome** → ابدأ
+### Initial Setup
+1. On first run, the **First Run Wizard** will appear
+2. Follow the steps:
+   - **Welcome** → Start
    - **Choose AI Mode** → Local / Hybrid / Cloud
-   - **Connect Model** → أضف مفتاح API (OpenRouter، OpenAI، إلخ) عبر Keychain
-   - **Create Project** → سمِّ مشروعك الأول
-   - **Launch** → ابدأ!
-3. مبروك! EMO AI جاهز للاستخدام 🎉
+   - **Connect Model** → Add API key (OpenRouter, OpenAI, etc.) via Keychain
+   - **Create Project** → Name your first project
+   - **Launch** → Start!
+3. Congratulations! EMO AI is ready to use 🎉
 
-### التحديثات
-- التطبيق يتحقق من التحديثات تلقائياً عند التشغيل
-- يمكنك تفعيل التحديث التلقائي من Settings → Updates
+### Updates
+- The application checks for updates automatically on startup
+- You can enable automatic updates from Settings → Updates
 
-### إلغاء التثبيت
-- **macOS**: اسحب `EMO AI` من مجلد التطبيقات إلى المهملات
+### Uninstallation
+- **macOS**: Drag `EMO AI` from the Applications folder to Trash
 - **Windows**: Control Panel → Programs → Uninstall
-- **Linux**: `sudo apt remove emo-ai` أو احذف AppImage
+- **Linux**: `sudo apt remove emo-ai` or delete the AppImage

@@ -1,232 +1,232 @@
-# 🤝 دليل المساهمة في EMO AI
+# 🤝 EMO AI Contribution Guide
 
-مرحباً بك في دليل المساهمة في EMO AI. يرجى قراءة هذا الدليل بالكامل قبل البدء في أي مساهمة.
-
----
-
-## 📋 قبل البدء
-
-قبل البدء في المساهمة، تأكد من فهمك للبنية المعمارية للمشروع:
-
-- 📖 اقرأ [DEVELOPER.md](DEVELOPER.md) — الدليل التقني الشامل
-- 🏗️ اقرأ [ARCHITECTURE_DESIGN.md](docs/architecture/) — التصميم المعماري
-- 📐 اقرأ [SOURCE_OF_TRUTH.md](docs/SOURCE_OF_TRUTH.md) — ترتيب الثقة وسياسة التوثيق
-- 🗺️ اقرأ [REPOSITORY_STRUCTURE_MAP.md](docs/REPOSITORY_STRUCTURE_MAP.md) — خريطة هيكل المستودع
-- ⚖️ فهم **Architecture Canon** (LAW 1-27) — القواعد المعمارية الصارمة
-
-> ⚠️ **تحذير صارم**: عدم فهم القواعد المعمارية قد يؤدي إلى رفض Pull Request الخاص بك.
+Welcome to the EMO AI contribution guide. Please read this entire guide before starting any contribution.
 
 ---
 
-## 🚀 إعداد بيئة التطوير
+## 📋 Before Starting
 
-### المتطلبات الأساسية
+Before contributing, make sure you understand the project's architecture:
+
+- 📖 Read [DEVELOPER.md](DEVELOPER.md) — comprehensive technical guide
+- 🏗️ Read [ARCHITECTURE_DESIGN.md](docs/architecture/) — architectural design
+- 📐 Read [SOURCE_OF_TRUTH.md](docs/SOURCE_OF_TRUTH.md) — trust hierarchy and documentation policy
+- 🗺️ Read [REPOSITORY_STRUCTURE_MAP.md](docs/REPOSITORY_STRUCTURE_MAP.md) — repository structure map
+- ⚖️ Understand **Architecture Canon** (LAW 1-27) — strict architectural rules
+
+> ⚠️ **Strict Warning**: Failure to understand the architectural rules may result in your Pull Request being rejected.
+
+---
+
+## 🚀 Setting Up the Development Environment
+
+### Prerequisites
 
 - Python 3.14+
-- pip (أحدث إصدار)
+- pip (latest version)
 - git
 
-### خطوات الإعداد
+### Setup Steps
 
 ```bash
-# 1. استنساخ المشروع (Fork أولاً)
+# 1. Clone the project (Fork first)
 git clone https://github.com/YOUR-USERNAME/emo-ai.git
 cd emo-ai
 
-# 2. إنشاء بيئة افتراضية
+# 2. Create virtual environment
 python3 -m venv venv
 source venv/bin/activate  # macOS/Linux
-# أو
+# or
 venv\Scripts\activate  # Windows
 
-# 3. تثبيت المتطلبات
+# 3. Install requirements
 pip install -r requirements.txt
 
-# 4. إعداد المتغيرات البيئية
+# 4. Set up environment variables
 cp .env.example .env
-# عدّل .env بمفاتيحك الخاصة
+# Edit .env with your own keys
 
-# 5. تشغيل الاختبارات للتأكد من صحة البيئة
+# 5. Run tests to verify the environment
 python -m pytest tests/ -v
 ```
 
 ---
 
-## 📝 معايير الكود
+## 📝 Code Standards
 
-### نمط الكتابة (Code Style)
+### Code Style
 
-- **PEP 8**: اتبع معايير Python الرسمية
-- **Type Hints**: استخدم type annotations لجميع الدوال
-- **Docstrings**: استخدم Google Style Docstrings
+- **PEP 8**: Follow official Python standards
+- **Type Hints**: Use type annotations for all functions
+- **Docstrings**: Use Google Style Docstrings
 
 ```python
 def example_function(param1: str, param2: int) -> bool:
-    """وصف مختصر للدالة.
+    """Brief function description.
 
     Args:
-        param1: وصف param1.
-        param2: وصف param2.
+        param1: Description of param1.
+        param2: Description of param2.
 
     Returns:
-        bool: وصف القيمة المُعادة.
+        bool: Description of the return value.
 
     Raises:
-        ValueError: إذا كان param1 فارغاً.
+        ValueError: If param1 is empty.
     """
     pass
 ```
 
-### قواعد صارمة
+### Strict Rules
 
-- ❌ **لا circular imports** — استخدم TYPE_CHECKING للاستيراد الدائري
-- ❌ **لا hardcoded secrets** — استخدم متغيرات البيئة
-- ✅ **Test coverage ≥ 80%** — كل كود جديد يحتاج اختبارات
-- ✅ **لا تعديل core/runtime/** بدون مراجعة مسبقة
+- ❌ **No circular imports** — Use TYPE_CHECKING for circular imports
+- ❌ **No hardcoded secrets** — Use environment variables
+- ✅ **Test coverage ≥ 80%** — Every new code requires tests
+- ✅ **No modification of core/runtime/** without prior review
 
 ---
 
-## 🏗️ القواعد المعمارية (CRITICAL)
+## 🏗️ Architectural Rules (CRITICAL)
 
-> ⚠️ **هذه القواعد إلزامية.** أي انتهاك يعني رفض الـ PR فوراً.
+> ⚠️ **These rules are mandatory.** Any violation means immediate PR rejection.
 
 ### LAW 1: ExecutionEngine Isolation
 
 ```python
-# ✅ الصحيح
+# ✅ Correct
 from core.execution_governor import ExecutionGovernor
 
-# ❌ الخطأ
+# ❌ Incorrect
 from core.runtime.execution_engine import ExecutionEngine  # FORBIDDEN
 ```
 
 ### LAW 13: CompositionRoot Only
 
 ```python
-# ✅ الصحيح
+# ✅ Correct
 def create_service() -> MyService:
     return MyService(dep1, dep2)
 
-# ❌ الخطأ
+# ❌ Incorrect
 service = MyService()  # FORBIDDEN outside CompositionRoot
 ```
 
 ### LAW 14-16: CodeGraph Boundaries
 
-- لا تعديل `core/interfaces/` مباشرة بدون اطلاع المشرف
-- لا إضافة imports من `core.runtime.*` في `core/interfaces/*`
+- No modification of `core/interfaces/` directly without supervisor notification
+- No adding imports from `core.runtime.*` in `core/interfaces/*`
 
 ### LAW 20-22: Failure Propagation
 
-- كل service يجب أن يكون له `health_check()` method
-- لا تarkan exceptions من `health_check()`
+- Every service must have a `health_check()` method
+- Do not raise exceptions from `health_check()`
 
 ### LAW 23-27: Service Ownership
 
-- كل خدمة مسؤولة فقط عن نطاقها
-- لا cross-service calls مباشرة
+- Each service is responsible only for its scope
+- No direct cross-service calls
 
-### القواعد الإضافية
+### Additional Rules
 
-- ** LAW 10**: لا تعتمد على أن Workers موثوقين
-- **LAW 28**: لا تعتمد على تشغيل cron jobs
-- **LAW 35-37**: لا محتوى عربي في core/
+- ** LAW 10**: Do not assume Workers are trustworthy
+- **LAW 28**: Do not rely on cron jobs running
+- **LAW 35-37**: No Arabic content in core/
 
-> 📖 راجع [DEVELOPER.md](DEVELOPER.md) للتفاصيل الكاملة لكل قانون.
+> 📖 See [DEVELOPER.md](DEVELOPER.md) for full details of each law.
 
 ---
 
-## 🧪 الاختبارات
+## 🧪 Tests
 
-### تشغيل الاختبارات
+### Running Tests
 
 ```bash
-# تشغيل جميع الاختبارات
+# Run all tests
 python -m pytest tests/ -v
 
-# تشغيل اختبارات محددة
+# Run specific tests
 python -m pytest tests/test_workflow_v2.py -v
 
-# مع تقرير التغطية
+# With coverage report
 python -m pytest tests/ --cov=core --cov-report=html
 
-# فتح تقرير التغطية
+# Open coverage report
 open htmlcov/index.html
 ```
 
-### التحقق من عدم انتهاك العزل (إلزامي)
+### Verify Isolation Compliance (Mandatory)
 
 ```bash
-# تشغيل emo-guard للتحقق من القواعد المعمارية
+# Run emo-guard to verify architectural rules
 python -m core.tools.emo_guard --ci
 
-# أو
+# Or
 emo-guard --update-snapshot
 ```
 
-### معايير القبول للاختبارات
+### Test Acceptance Criteria
 
-- ✅ جميع الاختبارات الحالية تبقى PASS
-- ✅ لا اختبارات جديدة تفشل
-- ✅ Test coverage ≥ 80% للكود الجديد
-- ✅ لا وجود لـ `print()` في اختبارات الإنتاج
+- ✅ All existing tests remain PASS
+- ✅ No new tests fail
+- ✅ Test coverage ≥ 80% for new code
+- ✅ No `print()` in production tests
 
 ---
 
-## 📤 عملية الـ Pull Request
+## 📤 Pull Request Process
 
-### 1. Fork و Clone
+### 1. Fork and Clone
 
 ```bash
-# Fork المشروع من GitHub
-# ثم clone
+# Fork the project from GitHub
+# Then clone
 git clone https://github.com/YOUR-USERNAME/emo-ai.git
 cd emo-ai
 ```
 
-### 2. إنشاء فرع جديد
+### 2. Create a New Branch
 
 ```bash
-# تأكد من أنك على main
+# Make sure you're on main
 git checkout main
 
-# أنشئ فرع جديد
+# Create a new branch
 git checkout -b feature/your-feature-name
 
-# أو
+# Or
 git checkout -b fix/bug-description
 ```
 
-### 3. كتابة الكود والاختبارات
+### 3. Write Code and Tests
 
 ```python
-# مثال: إضافة feature جديد
+# Example: Adding a new feature
 
-# 1. أضف الكود في المكان المناسب
-# 2. أضف اختبارات جديدة
-# 3. تأكد من أن جميع الاختبارات تمر
+# 1. Add the code in the appropriate location
+# 2. Add new tests
+# 3. Make sure all tests pass
 ```
 
-### 4. التحقق قبل الـ Commit
+### 4. Verification Before Commit
 
 ```bash
-# تشغيل جميع الاختبارات
+# Run all tests
 python -m pytest tests/ -v
 
-# التحقق من القواعد المعمارية
+# Verify architectural rules
 python -m core.tools.emo_guard --ci
 
-# التحقق من التغطية
+# Check coverage
 python -m pytest tests/ --cov=core --cov-report=term-missing
 ```
 
-### 5. الـ Commit
+### 5. The Commit
 
 ```bash
-# أضف الملفات
+# Add files
 git add .
 
-# اكتب رسالة وصفية
+# Write a descriptive message
 git commit -m "feat: add health check endpoint for scheduler
 
 - Add health_check() method to ExecutionScheduler
@@ -237,75 +237,75 @@ git commit -m "feat: add health check endpoint for scheduler
 Refs: #123"
 ```
 
-### 6. الـ Push و فتح PR
+### 6. Push and Open PR
 
 ```bash
-# Push للفرع
+# Push the branch
 git push origin feature/your-feature-name
 
-# فتح Pull Request من GitHub
-# - العنوان وصفي
-# - الوصف يوضح ماذا فعلت ولماذا
-# - ربط Issue إذا وجد
+# Open a Pull Request from GitHub
+# - Descriptive title
+# - Description explains what you did and why
+# - Link Issue if applicable
 ```
 
-### 7. مراجعة الـ PR
+### 7. PR Review
 
-- ⏳ انتظر مراجعة المشرف
-- 🔧 عالج أي ملاحظات
-- ✅ تأكد من مرور جميع الاختبارات في CI
+- ⏳ Wait for supervisor review
+- 🔧 Address any feedback
+- ✅ Make sure all tests pass in CI
 
 ---
 
-## 🚫 ما لا يجب فعله
+## 🚫 What Not to Do
 
-### ❌ ممنوعات صارمة
+### ❌ Strict Prohibitions
 
-| الفعل | السبب | البديل |
+| Action | Reason | Alternative |
 |-------|-------|--------|
-| Cross-layer imports | انتهاك LAW 1 | استخدم interfaces |
-| تعديل `core/runtime/*` | Core Freeze | راجج المشرف |
-| حذف اختبارات | تراجع التغطية | أعد كتابتها |
-| Hardcoded secrets | ثغرة أمنية | استخدم .env |
-| `print()` في الإنتاج | تسريب بيانات | استخدم `logging` |
-| تعديل `core/interfaces/*` | انتهاك LAW 14-16 | راجج المشرف |
-| إضافة `from core.runtime.*` في interfaces | انتهاك LAW 14-16 | استخدم TYPE_CHECKING |
+| Cross-layer imports | Violates LAW 1 | Use interfaces |
+| Modifying `core/runtime/*` | Core Freeze | Consult the supervisor |
+| Deleting tests | Coverage regression | Rewrite them |
+| Hardcoded secrets | Security vulnerability | Use .env |
+| `print()` in production | Data leakage | Use `logging` |
+| Modifying `core/interfaces/*` | Violates LAW 14-16 | Consult the supervisor |
+| Adding `from core.runtime.*` in interfaces | Violates LAW 14-16 | Use TYPE_CHECKING |
 
-### ❌ لا تفعل
+### ❌ Do Not Do
 
 ```python
-# ❌ لا تفعل هذا
+# ❌ Do not do this
 from core.runtime.services.scheduler import ExecutionScheduler
 
-# ❌ لا تفعل هذا
+# ❌ Do not do this
 API_KEY = "sk-1234567890"
 
-# ❌ لا تفعل هذا
+# ❌ Do not do this
 print(f"Debug: {variable}")
 
-# ❌ لا تفعل هذا
+# ❌ Do not do this
 def test_something():
-    assert True  # اختبار فارغ
+    assert True  # Empty test
 ```
 
-### ✅ افعل هذا بدلاً منه
+### ✅ Do This Instead
 
 ```python
-# ✅ استخدم TYPE_CHECKING
+# ✅ Use TYPE_CHECKING
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from core.runtime.services.scheduler import ExecutionScheduler
 
-# ✅ استخدم متغيرات البيئة
+# ✅ Use environment variables
 import os
 API_KEY = os.getenv("API_KEY")
 
-# ✅ استخدم logging
+# ✅ Use logging
 import logging
 logger = logging.getLogger(__name__)
 logger.debug("Debug: %s", variable)
 
-# ✅ اكتب اختبارات حقيقية
+# ✅ Write real tests
 def test_something():
     result = my_function()
     assert result == expected_value
@@ -313,32 +313,32 @@ def test_something():
 
 ---
 
-## 📞 التواصل
+## 📞 Communication
 
-### قنوات التواصل
+### Communication Channels
 
-- 🐛 **GitHub Issues**: للأخطاء والمطالبات
-- 💬 **GitHub Discussions**: للأسئلة العامة
-- 📧 **Email**: للتواصل المباشر
+- 🐛 **GitHub Issues**: For bugs and feature requests
+- 💬 **GitHub Discussions**: For general questions
+- 📧 **Email**: For direct contact
 
-###_reporting Security Issues
+### Reporting Security Issues
 
-> ⚠️ **لا تفتح Issue عامة لثغرات أمنية.**
+> ⚠️ **Do not open a public Issue for security vulnerabilities.**
 
-أرسل بريد إلكتروني إلى: security@emo-ai.dev
-
----
-
-## 🏆 تقدير المساهمين
-
-جميع المساهمين سيظهرون في قائمة المساهمين في README.md.
+Send an email to: security@emo-ai.dev
 
 ---
 
-## 📄 الترخيص
+## 🏆 Acknowledging Contributors
 
-بالمشاركة في هذا المشروع، أنت توافق على أن عملك سيكون مرخضاً تحت [MIT License](LICENSE).
+All contributors will appear in the contributors list in README.md.
 
 ---
 
-**شكراً لمساهمتك في EMO AI! 🚀**
+## 📄 License
+
+By contributing to this project, you agree that your work will be licensed under the [MIT License](LICENSE).
+
+---
+
+**Thank you for contributing to EMO AI! 🚀**

@@ -2,10 +2,10 @@ blank_issues_enabled: false
 contact_links:
   - name: General Feedback
     url: https://forms.gle/YOUR_FORM_ID
-    about: شاركنا تعليقاتك العامة عن المنتج
+    about: Share your general feedback about the product
   - name: Discord Community
     url: https://discord.gg/YOUR_DISCORD_LINK
-    about: انضم إلى مجتمعنا للنقاش والمساعدة
+    about: Join our community for discussion and help
   - name: Documentation
     url: https://github.com/emo-ai/emo-ai#readme
-    about: اقرأ التوثيق قبل تقديم البلاغ
+    about: Read the documentation before submitting a report

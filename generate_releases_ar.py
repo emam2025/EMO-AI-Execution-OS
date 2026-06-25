@@ -27,14 +27,14 @@ class PDF(FPDF):
         if self.page_no() > 1:
             self.set_font("Unicode", "", 8)
             self.set_text_color(140, 140, 140)
-            self.cell(0, 6, ar("EMO AI — دليل الإصدارات"), align="C")
+            self.cell(0, 6, ar("EMO AI — Releases Guide"), align="C")
             self.ln(8)
 
     def footer(self):
         self.set_y(-15)
         self.set_font("Unicode", "", 8)
         self.set_text_color(140, 140, 140)
-        self.cell(0, 8, ar(f"الصفحة {self.page_no()}/{{nb}}"), align="C")
+        self.cell(0, 8, ar(f"Page {self.page_no()}/{{nb}}"), align="C")
 
     def section_title(self, title):
         self.set_font("Unicode", "B", 16)
@@ -101,19 +101,19 @@ pdf.set_text_color(139, 92, 246)
 pdf.cell(0, 16, ar("EMO AI"), align="C", new_x="LMARGIN", new_y="NEXT")
 pdf.set_font("Unicode", "", 18)
 pdf.set_text_color(120, 120, 160)
-pdf.cell(0, 12, ar("دليل خريطة الإصدارات"), align="C", new_x="LMARGIN", new_y="NEXT")
+pdf.cell(0, 12, ar("Releases Map Guide"), align="C", new_x="LMARGIN", new_y="NEXT")
 pdf.ln(5)
 pdf.set_draw_color(139, 92, 246)
 pdf.line(50, pdf.get_y(), 160, pdf.get_y())
 pdf.ln(8)
 pdf.set_font("Unicode", "", 11)
 pdf.set_text_color(100, 100, 120)
-pdf.cell(0, 7, ar("من Runtime OS إلى Big EMO AI OS"), align="C", new_x="LMARGIN", new_y="NEXT")
-pdf.cell(0, 7, ar("خمسة أجيال من التطور"), align="C", new_x="LMARGIN", new_y="NEXT")
+pdf.cell(0, 7, ar("From Runtime OS to Big EMO AI OS"), align="C", new_x="LMARGIN", new_y="NEXT")
+pdf.cell(0, 7, ar("Five Generations of Evolution"), align="C", new_x="LMARGIN", new_y="NEXT")
 pdf.ln(35)
 pdf.set_font("Unicode", "", 10)
 pdf.set_text_color(100, 100, 120)
-pdf.cell(0, 7, ar("إعداد: المهندس إمام عبدالعزيز"), align="C", new_x="LMARGIN", new_y="NEXT")
+pdf.cell(0, 7, ar("Prepared by: Eng. Emam Abdullaziz"), align="C", new_x="LMARGIN", new_y="NEXT")
 pdf.cell(0, 7, "2026", align="C", new_x="LMARGIN", new_y="NEXT")
 
 # Intellectual property
@@ -121,24 +121,24 @@ pdf.ln(20)
 pdf.set_font("Unicode", "", 9)
 pdf.set_text_color(140, 140, 140)
 pdf.multi_cell(0, 5,
-    ar("جميع حقوق الملكية الفكرية محفوظة للمهندس إمام عبدالعزيز. هذا المستند ونظام EMO AI "
-       "الموصوف فيه محميان بموجب قوانين الملكية الفكرية المعمول بها. يُحظر النسخ أو التوزيع "
-       "أو التعديل غير المصرح به."),
+    ar("All intellectual property rights are reserved to Eng. Emam Abdullaziz. This document and the EMO AI "
+       "system described herein are protected by applicable intellectual property laws. Unauthorized copying, distribution, "
+       "or modification is prohibited."),
     align="C"
 )
 
 # ===================== TABLE OF CONTENTS =====================
 pdf.add_page()
-pdf.section_title("المحتويات")
+pdf.section_title("Contents")
 toc = [
-    "1.  مقدمة",
-    "2.  R1 — Runtime OS نظام تشغيل التشغيل",
-    "3.  R2 — Memory OS نظام تشغيل الذاكرة",
-    "4.  R3 — Skill OS نظام تشغيل المهارات",
-    "5.  R4 — Cognitive OS نظام تشغيل الإدراك",
-    "6.  R5 — Big EMO AI OS نظام تشغيل الذكاء الكامل",
-    "7.  مصفوفة دعم المنصات",
-    "8.  ملخص والرؤية المستقبلية",
+    "1.  Introduction",
+    "2.  R1 — Runtime OS Operating System",
+    "3.  R2 — Memory OS Operating System",
+    "4.  R3 — Skill OS Operating System",
+    "5.  R4 — Cognitive OS Operating System",
+    "6.  R5 — Big EMO AI OS Full Intelligence Operating System",
+    "7.  Platform Support Matrix",
+    "8.  Summary and Future Vision",
 ]
 for item in toc:
     pdf.set_font("Unicode", "", 11)
@@ -147,26 +147,26 @@ for item in toc:
 
 # ===================== INTRODUCTION =====================
 pdf.add_page()
-pdf.section_title("1. مقدمة")
+pdf.section_title("1. Introduction")
 pdf.body(
-    "EMO AI هو نظام تشغيل ذكاء اصطناعي متعدد الأجيال، مصمم ليتطور من منصة تشغيل مهام بسيطة "
-    "إلى منصة قوة عمل رقمية مستقلة بالكامل. تم بناء النظام عبر خمسة إصدارات رئيسية، كل إصدار "
-    "يضيف طبقة جديدة من الذكاء والاستقلالية والقدرات."
+    "EMO AI is a multi-generational AI operating system, designed to evolve from a simple task execution platform "
+    "to a fully independent digital workforce platform. The system is built across five major releases, each release "
+    "adding a new layer of intelligence, autonomy, and capabilities."
 )
 pdf.body(
-    "كل إصدار هو منتج منعزل بذاته، يحتوي على محرك أساسي مجمد، واجهة مستخدم مستقلة مبنية "
-    "بإطار Tauri (لتطبيقات سطح المكتب عبر المنصات)، مجموعة اختبارات مخصصة، إعدادات نشر "
-    "وشهادات توقيع رقمية. تضمن هذه البنية التوافق مع الإصدارات السابقة وتسمح بالتطور المستقل "
-    "لكل جيل."
+    "Each release is a standalone product, containing a frozen core engine, an independent user interface built "
+    "with the Tauri framework (for cross-platform desktop applications), a dedicated test suite, deployment configurations, "
+    "and digital signing certificates. This architecture ensures backward compatibility and allows independent evolution "
+    "of each generation."
 )
 pdf.ln(3)
-pdf.sub_title("الإصدارات الخمسة بنظرة سريعة")
+pdf.sub_title("Five Releases at a Glance")
 overview = [
-    ("R1 — Runtime OS",     "تشغيل المهام، التنسيق بين الوكلاء، بوابة النماذج، المراقبة"),
-    ("R2 — Memory OS",      "الذاكرة الهرمية، تجميع السياق، خرائط المعرفة، الاسترجاع طويل المدى"),
-    ("R3 — Skill OS",       "استخراج المهارات تلقائياً، تعلم الأنماط، مكتبة مهارات قابلة لإعادة الاستخدام"),
-    ("R4 — Cognitive OS",   "التخطيط الاستراتيجي، تحليل الأهداف، التقييم الذاتي، حلقات التفكير"),
-    ("R5 — Big EMO AI OS",  "قوة عمل رقمية مستقلة، بناء أدوات ذاتياً، بنية تحتية ذاتية الشفاء"),
+    ("R1 — Runtime OS",     "Task execution, agent coordination, model gateway, monitoring"),
+    ("R2 — Memory OS",      "Hierarchical memory, context assembly, knowledge maps, long-term retrieval"),
+    ("R3 — Skill OS",       "Automatic skill extraction, pattern learning, reusable skill library"),
+    ("R4 — Cognitive OS",   "Strategic planning, goal analysis, self-assessment, reasoning loops"),
+    ("R5 — Big EMO AI OS",  "Independent digital workforce, self-building tools, self-healing infrastructure"),
 ]
 for name, desc in overview:
     pdf.set_font("Unicode", "B", 10)
@@ -179,162 +179,159 @@ for name, desc in overview:
 
 # ===================== R1 — RUNTIME OS =====================
 pdf.add_page()
-pdf.section_title("2. R1 — Runtime OS نظام تشغيل التشغيل")
+pdf.section_title("2. R1 — Runtime OS Operating System")
 pdf.body(
-    "الإصدار الأساسي. يحول Runtime OS نظام EMO AI من برنامج محادثة بسيط إلى منصة تنسيق "
-    "وكلاء متعددي المهام على مستوى إنتاجي. يدير الوكلاء والمهام وسير العمل وتوجيه النماذج "
-    "عبر البيئات المحلية والموزعة."
+    "The foundational release. Runtime OS transforms EMO AI from a simple chat application into a production-grade "
+    "multi-agent orchestration platform. It manages agents, tasks, workflows, and model routing across local and distributed environments."
 )
 pdf.ln(2)
-pdf.sub_title("القدرات الأساسية")
-pdf.bullet("تشغيل متعدد الوكلاء — PlannerAgent، CriticAgent، OptimizerAgent مع آلة حالة للتنسيق (8 حالات، 9 انتقالات)")
-pdf.bullet("محرك التنفيذ — مقسم إلى 5 خدمات محددة: المجدول، مخزن الحالة، الموزع، معالج إعادة المحاولة، مدير الترخيص")
-pdf.bullet("طبقة التحكم — CompositionRoot مع حقن التبعيات وخدمات المصانع")
-pdf.bullet("بوابة النماذج — موجه ذكي لاختيار المزود بناءً على الوزن/زمن الاستجابة/التكلفة، تجاوز تلقائي (<=500ms)، تحديد معدل، تجميع القياسات")
-pdf.bullet("المراقبة — مراقبة实时 CPU/الذاكرة/قائمة الانتظار، مستكشف التنفيذ، لوحة تحكم التوجيه")
-pdf.bullet("الأمان — تكامل مع keychain نظام التشغيل (macOS/Windows/Linux)، حقن بيانات اعتماد مؤقتة (مسح تلقائي 5 ثوان)، بدون مفاتيح نصية")
-pdf.bullet("واجهة المستخدم — غلاف Tauri عبر المنصات مع 7 مسارات حية، نظام تصميم (زجاج)، لوحة أوامر (Ctrl+K)، معالج التشغيل الأول")
-pdf.bullet("عقد IPC — بروتوكول منظم (v1.2.0) لكل اتصالات التشغيل مع قواعد توافق مستقبلي صارمة")
+pdf.sub_title("Core Capabilities")
+pdf.bullet("Multi-agent execution — PlannerAgent, CriticAgent, OptimizerAgent with coordination state machine (8 states, 9 transitions)")
+pdf.bullet("Execution engine — Divided into 5 specific services: Scheduler, State Store, Dispatcher, Retry Handler, Lease Manager")
+pdf.bullet("Control layer — CompositionRoot with dependency injection and factory services")
+pdf.bullet("Model gateway — Smart provider router based on weight/latency/cost, automatic failover (<=500ms), rate limiting, metrics aggregation")
+pdf.bullet("Monitoring — Real-time CPU/memory/queue monitoring, execution explorer, routing dashboard")
+pdf.bullet("Security — OS keychain integration (macOS/Windows/Linux), temporary credential injection (auto-clear 5s), no plain text keys")
+pdf.bullet("User interface — Cross-platform Tauri shell with 7 live routes, design system (glass), command palette (Ctrl+K), first-run wizard")
+pdf.bullet("IPC contract — Structured protocol (v1.2.0) for all runtime communications with strict forward-compatibility rules")
 pdf.ln(2)
-pdf.sub_title("المكونات")
+pdf.sub_title("Components")
 pdf.component_table([
-    ("التنسيق بين الوكلاء",        "مكتمل",  "41/41 اختبار، 8 انتقالات G-P1-G-P8"),
-    ("محرك التنفيذ",              "مكتمل",  "5 خدمات محددة، 358 اختبار"),
-    ("بوابة النماذج",             "مكتمل",  "47/47 اختبار، 8 معايير جودة"),
-    ("واجهة المستخدم",             "P1-P4",  "7 مسارات، 130/130 اختبار"),
-    ("الحوكمة (RBAC/التدقيق)",    "قيد الانتظار", "مخطط للإغلاق النهائي لـ R1"),
-    ("المنصة",                    "macOS",  "هيكل Tauri عبر المنصات جاهز"),
+    ("Agent Coordination",        "Complete",  "41/41 tests, 8 transitions G-P1-G-P8"),
+    ("Execution Engine",          "Complete",  "5 specific services, 358 tests"),
+    ("Model Gateway",             "Complete",  "47/47 tests, 8 quality criteria"),
+    ("User Interface",             "P1-P4",    "7 routes, 130/130 tests"),
+    ("Governance (RBAC/Audit)",   "Pending",   "Planned for R1 final closure"),
+    ("Platform",                  "macOS",     "Cross-platform Tauri structure ready"),
 ])
 pdf.ln(2)
 pdf.body(
-    "R1 مكتمل بنسبة 75%. العمل المتبقي يشمل الحوكمة (RBAC، مسارات التدقيق، سياسات عزل "
-    "المستأجرين) والتكامل الكامل لواجهة المستخدم مع البيانات الحية."
+    "R1 is 75% complete. Remaining work includes governance (RBAC, audit trails, tenant isolation policies) and full UI integration with live data."
 )
 
 # ===================== R2 — MEMORY OS =====================
 pdf.add_page()
-pdf.section_title("3. R2 — Memory OS نظام تشغيل الذاكرة")
+pdf.section_title("3. R2 — Memory OS Operating System")
 pdf.body(
-    "يحول Memory OS نظام EMO من نظام ينفذ المهام إلى نظام يتذكر ويتعلم ويتطور من تاريخه. "
-    "يضيف هذا الإصدار طبقات ذاكرة دائمة تمكن اتخاذ القرارات بوعي سياقي والاحتفاظ بالمعرفة "
-    "طويلة المدى."
+    "Memory OS transforms EMO from a task-executing system into a system that remembers, learns, and evolves from its history. "
+    "This release adds persistent memory layers enabling context-aware decision making and long-term knowledge retention."
 )
 pdf.ln(2)
-pdf.sub_title("القدرات الأساسية")
-pdf.bullet("الذاكرة الهرمية — بنية ذاكرة متعددة المستويات مع عمليات تخزين/استرجاع/تهذيب، محسنة لأكثر من 126 ألف عملية في الثانية")
-pdf.bullet("مجمّع السياق — ضغط ذكي للسياق مع ميزانية توكنات والتحقق من السلامة عبر SHA-256")
-pdf.bullet("مدير الرسم البياني للمهارات — يسجل وينظم المهارات المستفادة كرسم بياني معرفي قابل للتنقل")
-pdf.bullet("آلة حالة الذاكرة — 6 حالات مع 7 انتقالات (G-M1 إلى G-M6)، 0% تسرب بين المستأجرين")
-pdf.bullet("مربط التتبع المعرفي — نشر SHA-256 عبر جميع عمليات الذاكرة للتدقيق الكامل")
+pdf.sub_title("Core Capabilities")
+pdf.bullet("Hierarchical memory — Multi-level memory architecture with store/retrieve/prune operations, optimized for over 126K operations per second")
+pdf.bullet("Context assembler — Intelligent context compression with token budget and SHA-256 integrity verification")
+pdf.bullet("Skill graph manager — Records and organizes learned skills as a navigable knowledge graph")
+pdf.bullet("Memory state machine — 6 states with 7 transitions (G-M1 to G-M6), 0% tenant leakage")
+pdf.bullet("Cognitive trace anchor — SHA-256 deployment across all memory operations for full audit")
 pdf.ln(2)
-pdf.sub_title("المكونات المخطط لها")
+pdf.sub_title("Planned Components")
 pdf.component_table([
-    ("ذاكرة المشروع",                "مخطط",   "مساحات ذاكرة معزولة لكل مشروع"),
-    ("ذاكرة الوكيل",                 "مخطط",   "سياق تاريخي لكل وكيل"),
-    ("الذاكرة طويلة المدى",          "مخطط",   "تخزين دائم مع استرجاع ذكي"),
-    ("رسم المعرفة البياني",          "مخطط",   "تمثيل معرفي قائم على الرسوم البيانية"),
-    ("ضغط الذاكرة",                  "مخطط",   "تحسين الذاكرة لتقليل التوكنات"),
-    ("الفهرسة الدلالية",             "مخطط",   "استرجاع ذكي قائم على السياق"),
-    ("إعادة بناء السياق",            "مخطط",   "إعادة بناء السياق من الذاكرة المجزأة"),
+    ("Project Memory",               "Planned",   "Isolated memory spaces per project"),
+    ("Agent Memory",                 "Planned",   "Historical context per agent"),
+    ("Long-term Memory",             "Planned",   "Persistent storage with intelligent retrieval"),
+    ("Knowledge Graph",              "Planned",   "Graph-based knowledge representation"),
+    ("Memory Compression",           "Planned",   "Memory optimization to reduce tokens"),
+    ("Semantic Indexing",            "Planned",   "Context-based intelligent retrieval"),
+    ("Context Reconstruction",       "Planned",   "Context reconstruction from fragmented memory"),
 ])
 pdf.ln(2)
 pdf.body(
-    "R2 مكتمل بنسبة 30% مع 5 مكونات أساسية مبنية بالفعل في core/memory/. "
-    "سبعة مكونات إضافية بالإضافة إلى واجهة مستخدم مخصصة لمستكشف الذاكرة مخطط لها."
+    "R2 is 30% complete with 5 core components already built in core/memory/. "
+    "Seven additional components plus a dedicated UI for the memory explorer are planned."
 )
 
 # ===================== R3 — SKILL OS =====================
 pdf.add_page()
-pdf.section_title("4. R3 — Skill OS نظام تشغيل المهارات")
+pdf.section_title("4. R3 — Skill OS Operating System")
 pdf.body(
-    "يحول Skill OS المعرفة والخبرات المتراكمة إلى مهارات قابلة لإعادة الاستخدام والتجميع. "
-    "بدلاً من برمجة الحلول يدوياً، يقوم EMO باستخراج الأنماط من التنفيذات السابقة بشكل "
-    "تلقائي وبناء مكتبة من المهارات القابلة للنشر."
+    "Skill OS transforms accumulated knowledge and experience into reusable, composable skills. "
+    "Instead of manually programming solutions, EMO automatically extracts patterns from past executions "
+    "and builds a library of deployable skills."
 )
 pdf.ln(2)
-pdf.sub_title("القدرات الأساسية")
-pdf.bullet("استخراج المهارات — تحديد تلقائي للأنماط القابلة لإعادة الاستخدام من تنفيذات المهام الناجحة")
-pdf.bullet("تعلم سير العمل — تعلم تسلسلات العمل متعددة الخطوات بمراقبة تسلسلات التنفيذ المتكررة")
-pdf.bullet("التعرف على الأنماط — كشف أنماط المشكلة-الحل المتكررة عبر سياقات مختلفة")
-pdf.bullet("تعلم استخدام الأدوات — تحليل كيفية استخدام الأدوات وتعميم أنماط استدعائها")
-pdf.bullet("مكتبة المهارات — مستودع مفهرس ومرقم للإصدارات من المهارات المستخرجة")
-pdf.bullet("ترتيب المهارات — تحديد أولويات المهارات حسب الصلة ومعدل النجاح وتكرار الاستخدام")
-pdf.bullet("تطور المهارات — تحديث وتحسين المهارات تلقائياً مع ظهور أنماط جديدة")
+pdf.sub_title("Core Capabilities")
+pdf.bullet("Skill extraction — Automatic identification of reusable patterns from successful task executions")
+pdf.bullet("Workflow learning — Learning multi-step work sequences by monitoring repeated execution sequences")
+pdf.bullet("Pattern recognition — Detecting recurring problem-solution patterns across different contexts")
+pdf.bullet("Tool usage learning — Analyzing how tools are used and generalizing invocation patterns")
+pdf.bullet("Skill library — Indexed and versioned repository of extracted skills")
+pdf.bullet("Skill ranking — Prioritizing skills by relevance, success rate, and usage frequency")
+pdf.bullet("Skill evolution — Automatically updating and improving skills as new patterns emerge")
 pdf.ln(2)
 pdf.body(
-    "مثال: بعد إصلاح 5 مشكلات React، يستخرج EMO تلقائياً 'مهارة تصحيح React' ويطبقها "
-    "بشكل استباقي في مهام React المستقبلية."
+    "Example: After fixing 5 React issues, EMO automatically extracts a 'React Debugging Skill' and proactively "
+    "applies it in future React tasks."
 )
 pdf.ln(2)
 pdf.body(
-    "R3 لم يبدأ بعد (0%). جميع المكونات السبعة بحاجة إلى البناء من الصفر، بالإضافة إلى "
-    "واجهة مستخدم مخصصة لمكتبة المهارات."
+    "R3 has not started yet (0%). All seven components need to be built from scratch, in addition to "
+    "a dedicated UI for the skill library."
 )
 
 # ===================== R4 — COGNITIVE OS =====================
 pdf.add_page()
-pdf.section_title("5. R4 — Cognitive OS نظام تشغيل الإدراك")
+pdf.section_title("5. R4 — Cognitive OS Operating System")
 pdf.body(
-    "يضيف Cognitive OS التفكير الاستراتيجي والتخطيط طويل المدى. يتقدم EMO من تنفيذ المهام "
-    "الفردية إلى صياغة استراتيجيات متعددة الخطوات، وتحليل الأهداف المعقدة، وتقييم أدائه "
-    "الذاتي، وتكييف منهجه بمرور الوقت."
+    "Cognitive OS adds strategic thinking and long-term planning. EMO advances from individual task execution "
+    "to formulating multi-step strategies, analyzing complex goals, self-assessing its performance, "
+    "and adapting its approach over time."
 )
 pdf.ln(2)
-pdf.sub_title("القدرات الأساسية")
-pdf.bullet("التخطيط الاستراتيجي — صياغة استراتيجيات متعددة الخطوات طويلة المدى متوائمة مع الأهداف عالية المستوى")
-pdf.bullet("تحليل الأهداف — تقسيم الأهداف المعقدة إلى أهداف فرعية قابلة للإدارة ومنظمة هرمياً")
-pdf.bullet("التقييم الذاتي — تقييم نقدي للمخرجات الذاتية وتحديد مجالات التحسين")
-pdf.bullet("الاستدلال متعدد الخطوات — تنفيذ سلاسل استدلال مع تحقق وسيط")
-pdf.bullet("حلقات التفكير — تحسين الحلول بشكل تكراري من خلال دورات التفكير الذاتي")
-pdf.bullet("السياسات التكيفية — تعديل ديناميكي للسلوك بناءً على ردود الفعل البيئية")
+pdf.sub_title("Core Capabilities")
+pdf.bullet("Strategic planning — Formulating multi-step long-term strategies aligned with high-level goals")
+pdf.bullet("Goal analysis — Decomposing complex goals into manageable, hierarchically organized sub-goals")
+pdf.bullet("Self-assessment — Critically evaluating self-outputs and identifying areas for improvement")
+pdf.bullet("Multi-step reasoning — Executing reasoning chains with intermediate verification")
+pdf.bullet("Thinking loops — Iteratively refining solutions through self-reflection cycles")
+pdf.bullet("Adaptive policies — Dynamically adjusting behavior based on environmental feedback")
 pdf.ln(2)
-pdf.sub_title("الأصول التأسيسية (من المرحلة G)")
+pdf.sub_title("Foundational Assets (from Phase G)")
 pdf.component_table([
-    ("PlannerAgent",     "متاح",   "توليف DAG، منع التذبذب"),
-    ("CriticAgent",      "متاح",   "تقييم الخطة، التحقق من النطاق"),
-    ("OptimizerAgent",   "متاح",   "تحسين التكلفة العشرية"),
-    ("آلة الحالة",       "متاح",   "8 حالات، 9 انتقالات، G-P1-G-P8"),
+    ("PlannerAgent",     "Available",   "DAG synthesis, oscillation prevention"),
+    ("CriticAgent",      "Available",   "Plan evaluation, scope verification"),
+    ("OptimizerAgent",   "Available",   "Linear cost optimization"),
+    ("State Machine",    "Available",   "8 states, 9 transitions, G-P1-G-P8"),
 ])
 pdf.ln(2)
 pdf.body(
-    "R4 مكتمل بنسبة 20%. وكلاء Planner/Critic/Optimizer من المرحلة G يوفرون قدرات إدراكية "
-    "على مستوى المهام. يوسع R4 هذه القدرات إلى الإدراك الاستراتيجي طويل المدى مع 6 مكونات "
-    "إضافية ولوحة تحكم استراتيجية."
+    "R4 is 20% complete. Planner/Critic/Optimizer agents from Phase G provide task-level cognitive "
+    "capabilities. R4 expands these capabilities to long-term strategic cognition with 6 additional "
+    "components and a strategic dashboard."
 )
 
 # ===================== R5 — BIG EMO AI OS =====================
 pdf.add_page()
-pdf.section_title("6. R5 — Big EMO AI OS نظام تشغيل الذكاء الكامل")
+pdf.section_title("6. R5 — Big EMO AI OS Full Intelligence Operating System")
 pdf.body(
-    "الإصدار النهائي. Big EMO AI OS هو منصة قوة عمل رقمية مستقلة بالكامل. يبني أدواته "
-    "بنفسه، ويتعلم دون تدخل بشري، ويحصّن حدوده، ويعمل عبر macOS وWindows وLinux وAndroid "
-    "بطبقة ذكاء موحدة."
+    "The final release. Big EMO AI OS is a fully independent digital workforce platform. It builds its own tools, "
+    "learns without human intervention, hardens its boundaries, and runs across macOS, Windows, Linux, and Android "
+    "with a unified intelligence layer."
 )
 pdf.ln(2)
-pdf.sub_title("القدرات الأساسية")
-pdf.bullet("فرق وكلاء متخصصة — تشكيل ديناميكي لفرق وكلاء محسَّنة لأنواع مشاريع محددة")
-pdf.bullet("تنفيذ مشاريع مستقل — إدارة مشاريع شاملة من المتطلبات إلى التسليم")
-pdf.bullet("تعلم عبر المشاريع — نقل المعرفة والأنماط عبر مشاريع غير مرتبطة")
-pdf.bullet("ذاكرة مؤسسية — ذاكرة على مستوى المؤسسة مع تحكم في الوصول قائم على الأدوار")
-pdf.bullet("سوق المهارات — نظام بيئي لمشاركة وتقييم واكتشاف مهارات المجتمع")
-pdf.bullet("ذكاء على مستوى المؤسسة — تعلم ديناميكيات الفريق ومعايير البرمجة والأنماط التنظيمية")
-pdf.bullet("تشغيل ذاتي التحسين — تحسين تلقائي لخط أنابيب التنفيذ الخاص به")
-pdf.bullet("بناء أدوات ذاتي — توليد أدوات جديدة عند الحاجة لحل مشكلات جديدة")
-pdf.bullet("بنية تحتية ذاتية الشفاء — كشف وإصلاح مشكلات التشغيل دون تدخل بشري")
-pdf.bullet("أمن ذاتي التحصين — تكيف مستمر للوضع الأمني مع التهديدات الناشئة")
+pdf.sub_title("Core Capabilities")
+pdf.bullet("Specialized agent teams — Dynamic formation of agent teams optimized for specific project types")
+pdf.bullet("Independent project execution — Comprehensive project management from requirements to delivery")
+pdf.bullet("Cross-project learning — Transferring knowledge and patterns across unrelated projects")
+pdf.bullet("Enterprise memory — Organization-level memory with role-based access control")
+pdf.bullet("Skill marketplace — Ecosystem for sharing, evaluating, and discovering community skills")
+pdf.bullet("Enterprise-level intelligence — Learning team dynamics, coding standards, and organizational patterns")
+pdf.bullet("Self-optimizing operation — Automatic optimization of its own execution pipeline")
+pdf.bullet("Self-tool building — Generating new tools as needed to solve novel problems")
+pdf.bullet("Self-healing infrastructure — Detecting and fixing operational issues without human intervention")
+pdf.bullet("Self-hardening security — Continuous adaptation of security posture against emerging threats")
 pdf.ln(2)
 pdf.body(
-    "R5 لم يبدأ بعد (0%) مع 10+ مكونات بحاجة للبناء. يمثل هذا الإصدار تتويجاً لرؤية EMO AI: "
-    "نظام تشغيل ذكاء اصطناعي مستقل بالكامل يبني ويتعلم ويحمي نفسه."
+    "R5 has not started yet (0%) with 10+ components needing to be built. This release represents the culmination of the EMO AI vision: "
+    "a fully independent AI operating system that builds, learns, and protects itself."
 )
 
 # ===================== PLATFORM SUPPORT =====================
 pdf.add_page()
-pdf.section_title("7. مصفوفة دعم المنصات")
+pdf.section_title("7. Platform Support Matrix")
 pdf.ln(2)
-pdf.sub_title("دعم سطح المكتب والجوال لكل إصدار")
+pdf.sub_title("Desktop and Mobile Support Per Release")
 pdf.ln(1)
-headers = [ar("الإصدار"), ar("macOS"), ar("Windows"), ar("Linux"), ar("Android")]
+headers = [ar("Release"), ar("macOS"), ar("Windows"), ar("Linux"), ar("Android")]
 col_w = [50, 30, 30, 30, 30]
 pdf.set_font("Unicode", "B", 9.5)
 pdf.set_fill_color(139, 92, 246)
@@ -344,11 +341,11 @@ for i, h in enumerate(headers):
 pdf.ln()
 
 rows = [
-    [ar("R1 Runtime OS"),     ar("نعم (Tauri)"), ar("نعم (Tauri)"),   ar("نعم (Tauri)"),   ar("لا")],
-    [ar("R2 Memory OS"),      ar("مخطط"),        ar("مخطط"),           ar("مخطط"),           ar("مخطط")],
-    [ar("R3 Skill OS"),       ar("مخطط"),        ar("مخطط"),           ar("مخطط"),           ar("مخطط")],
-    [ar("R4 Cognitive OS"),   ar("مخطط"),        ar("مخطط"),           ar("مخطط"),           ar("مخطط")],
-    [ar("R5 Big EMO AI OS"),  ar("نعم"),         ar("نعم"),            ar("نعم"),            ar("نعم")],
+    [ar("R1 Runtime OS"),     ar("Yes (Tauri)"), ar("Yes (Tauri)"),   ar("Yes (Tauri)"),   ar("No")],
+    [ar("R2 Memory OS"),      ar("Planned"),     ar("Planned"),        ar("Planned"),        ar("Planned")],
+    [ar("R3 Skill OS"),       ar("Planned"),     ar("Planned"),        ar("Planned"),        ar("Planned")],
+    [ar("R4 Cognitive OS"),   ar("Planned"),     ar("Planned"),        ar("Planned"),        ar("Planned")],
+    [ar("R5 Big EMO AI OS"),  ar("Yes"),         ar("Yes"),            ar("Yes"),            ar("Yes")],
 ]
 pdf.set_font("Unicode", "", 9.5)
 pdf.set_text_color(40, 40, 40)
@@ -359,21 +356,21 @@ for row in rows:
 
 pdf.ln(5)
 pdf.body(
-    "إطار Tauri v2 يوفر دعماً أصلياً عبر المنصات لنظام التشغيل macOS وWindows وLinux. "
-    "دعم Android يتطلب تكوين Tauri Mobile أو Capacitor إضافي، مخطط له من R2 فصاعداً."
+    "The Tauri v2 framework provides native cross-platform support for macOS, Windows, and Linux operating systems. "
+    "Android support requires additional Tauri Mobile or Capacitor configuration, planned from R2 onward."
 )
 
 # ===================== SUMMARY =====================
 pdf.add_page()
-pdf.section_title("8. ملخص والرؤية المستقبلية")
+pdf.section_title("8. Summary and Future Vision")
 pdf.body(
-    "خريطة الإصدارات الخمسة لـ EMO AI ترسم تطوراً واضحاً من محرك تنفيذ مهام إلى قوة عاملة "
-    "رقمية مستقلة بالكامل. كل إصدار يبني على سابقه مع البقاء منتجاً مستقلاً ومكتفياً بذاته."
+    "The five-release roadmap of EMO AI charts a clear evolution from a task execution engine to a fully independent "
+    "digital workforce. Each release builds on its predecessor while remaining an independent, self-contained product."
 )
 pdf.ln(3)
-pdf.sub_title("ملخص الإصدارات")
+pdf.sub_title("Releases Summary")
 pdf.ln(1)
-sum_headers = [ar("الإصدار"), ar("الحالة"), ar("الاختبارات"), ar("المكونات")]
+sum_headers = [ar("Release"), ar("Status"), ar("Tests"), ar("Components")]
 sum_col_w = [48, 30, 30, 82]
 pdf.set_font("Unicode", "B", 9.5)
 pdf.set_fill_color(139, 92, 246)
@@ -383,11 +380,11 @@ for i, h in enumerate(sum_headers):
 pdf.ln()
 
 rows_data = [
-    ("R1 Runtime OS",      "75% مكتمل",     "3047+",   "وكلاء متعددون، تنفيذ، بوابة، مراقبة، أمان، واجهة مستخدم"),
-    ("R2 Memory OS",       "30% مكتمل",     "25+",     "ذاكرة هرمية، مجمّع سياق، رسم مهارات، آلة حالة"),
-    ("R3 Skill OS",        "0% لم يبدأ",    "0",       "استخراج، تعلم، تعرف، مكتبة، ترتيب، تطوّر"),
-    ("R4 Cognitive OS",    "20% أساسي",     "41+",     "تخطيط استراتيجي، تحليل أهداف، تقييم ذاتي، تفكير"),
-    ("R5 Big EMO AI OS",   "0% لم يبدأ",    "0",       "فرق مستقلة، بناء ذاتي، شفاء ذاتي، ذاكرة مؤسسية"),
+    ("R1 Runtime OS",      "75% Complete",  "3047+",   "Multi-agent, execution, gateway, monitoring, security, UI"),
+    ("R2 Memory OS",       "30% Complete",  "25+",     "Hierarchical memory, context assembler, skill graph, state machine"),
+    ("R3 Skill OS",        "0% Not Started","0",       "Extraction, learning, recognition, library, ranking, evolution"),
+    ("R4 Cognitive OS",    "20% Basic",     "41+",     "Strategic planning, goal analysis, self-assessment, reasoning"),
+    ("R5 Big EMO AI OS",   "0% Not Started","0",       "Independent teams, self-building, self-healing, enterprise memory"),
 ]
 
 for row in rows_data:
@@ -404,22 +401,22 @@ for row in rows_data:
     pdf.set_y(y0 + row_h)
 
 pdf.ln(5)
-pdf.sub_title("الرؤية")
+pdf.sub_title("Vision")
 pdf.body(
-    "يمثل Big EMO AI OS الشكل النهائي: نظام تشغيل ذكاء اصطناعي يبني أدواته بنفسه، ويتعلم "
-    "من تاريخه دون تدخل بشري، ويُحصّن حدوده، ويعمل بسلاسة عبر منصات سطح المكتب والجوال. "
-    "كل إصدار يُقرّبنا من هذه الرؤية، مُقدّماً قيمة ملموسة في كل خطوة مع الحفاظ على التوافق "
-    "الكامل مع الإصدارات السابقة وسلامة المنتج المستقلة."
+    "Big EMO AI OS represents the final form: an AI operating system that builds its own tools, learns "
+    "from its history without human intervention, hardens its boundaries, and works seamlessly across desktop and mobile platforms. "
+    "Each release brings us closer to this vision, delivering tangible value at every step while maintaining full "
+    "backward compatibility and independent product integrity."
 )
 pdf.ln(5)
-pdf.sub_title("الهيكل المستهدف")
+pdf.sub_title("Target Structure")
 pdf.code_block(
     "releases/\n"
-    "  runtime-os/       (R1)  محرك مجمد + واجهة Tauri + نشر\n"
-    "  memory-os/        (R2)  محرك مجمد + واجهة ذاكرة + نشر\n"
-    "  skill-os/         (R3)  محرك مجمد + واجهة مهارات + نشر\n"
-    "  cognitive-os/     (R4)  محرك مجمد + واجهة إدراك + نشر\n"
-    "  big-emo/          (R5)  محرك مجمد + واجهة قوة عمل + جوال"
+    "  runtime-os/       (R1)  Frozen engine + Tauri UI + deployment\n"
+    "  memory-os/        (R2)  Frozen engine + Memory UI + deployment\n"
+    "  skill-os/         (R3)  Frozen engine + Skills UI + deployment\n"
+    "  cognitive-os/     (R4)  Frozen engine + Cognitive UI + deployment\n"
+    "  big-emo/          (R5)  Frozen engine + Workforce UI + mobile"
 )
 
 # ===================== CREDITS =====================
@@ -429,24 +426,23 @@ pdf.line(50, pdf.get_y(), 160, pdf.get_y())
 pdf.ln(8)
 pdf.set_font("Unicode", "B", 16)
 pdf.set_text_color(139, 92, 246)
-pdf.cell(0, 10, ar("حقوق الملكية الفكرية"), align="C", new_x="LMARGIN", new_y="NEXT")
+pdf.cell(0, 10, ar("Intellectual Property Rights"), align="C", new_x="LMARGIN", new_y="NEXT")
 pdf.ln(3)
 pdf.set_font("Unicode", "", 10)
 pdf.set_text_color(100, 100, 120)
 pdf.multi_cell(0, 6,
-    ar("جميع حقوق الملكية الفكرية، بما في ذلك على سبيل المثال لا الحصر حقوق النشر والعلامات "
-       "التجارية وبراءات الاختراع، في نظام EMO AI وشفرة مصدره وهندسته المعمارية وتصميمه "
-       "ووثائقه وأي مواد مرتبطة به، مملوكة حصرياً للمهندس إمام عبدالعزيز. يُحظر النسخ أو "
-       "التوزيع أو التعديل أو الاستخدام التجاري غير المصرح به دون موافقة خطية مسبقة."),
+    ar("All intellectual property rights, including but not limited to copyrights, trademarks, and patents, in the EMO AI system "
+       "and its source code, architecture, design, documentation, and any related materials, are exclusively owned by "
+       "Eng. Emam Abdullaziz. Unauthorized copying, distribution, modification, or commercial use without prior written consent is prohibited."),
     align="C"
 )
 pdf.ln(5)
 pdf.set_font("Unicode", "B", 14)
 pdf.set_text_color(139, 92, 246)
-pdf.cell(0, 8, ar("المهندس إمام عبدالعزيز"), align="C", new_x="LMARGIN", new_y="NEXT")
+pdf.cell(0, 8, ar("Eng. Emam Abdullaziz"), align="C", new_x="LMARGIN", new_y="NEXT")
 pdf.set_font("Unicode", "", 10)
 pdf.set_text_color(100, 100, 120)
-pdf.cell(0, 7, ar("مهندس النظام والمطور الرئيسي"), align="C", new_x="LMARGIN", new_y="NEXT")
+pdf.cell(0, 7, ar("System Architect and Lead Developer"), align="C", new_x="LMARGIN", new_y="NEXT")
 pdf.ln(5)
 pdf.set_font("Unicode", "", 9)
 pdf.set_text_color(140, 140, 140)

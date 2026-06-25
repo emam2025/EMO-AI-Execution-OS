@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 """
-المرحلة 1 — Model Execution Unlock
-====================================
-يجب تشغيل هذا السكريبت بعد تدوير المفاتيح (Key Rotation).
+Phase 1 — Model Execution Unlock
+==================================
+This script must be run after Key Rotation.
 
-المتطلبات:
-- المفاتيح الجديدة مضافة في Keychain عبر Desktop UI
-- Ollama مثبت (اختياري للتجربة المحلية)
+Requirements:
+- New keys added to Keychain via Desktop UI
+- Ollama installed (optional for local testing)
 
-السيناريو:
+Scenario:
   EMO Desktop → Keychain → Model Provider → Agent → Response → UI
 
-الناتج:
+Output:
   artifacts/runtime/MODEL_EXECUTION_CERTIFICATE.json
 """
 import os, sys, json, time, uuid

@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 # ────────────────────────────────────────────────────────────────
 # binary_security_audit.sh
-# فحص أمان الباينري — يتحقق من عدم وجود ملفات ممنوعة داخل DMG/EXE/AppImage
+# Binary security audit — verifies no prohibited files exist inside DMG/EXE/AppImage
 #
 # Usage:
 #   ./scripts/audit/binary_security_audit.sh path/to/EMO-AI.dmg
 #   ./scripts/audit/binary_security_audit.sh path/to/EMO-AI-Setup.exe
 #   ./scripts/audit/binary_security_audit.sh path/to/EMO-AI.AppImage
 #
-# الناتج:
+# Output:
 #   artifacts/security/BINARY_SECURITY_CERTIFICATE.json
 # ────────────────────────────────────────────────────────────────
 

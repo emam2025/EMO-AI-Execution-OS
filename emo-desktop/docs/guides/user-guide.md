@@ -125,78 +125,78 @@ An **Agent** is a smart worker you assign to a task. You give it instructions, i
 
 ---
 
-# دليل المستخدم — EMO AI
+# EMO AI — User Guide
 
-> مساحة العمل الذكية الخاصة بك. ثبّتها. هيّئها. شغّل وكلاءك.
-
----
-
-## البدء
-
-### التنزيل والتثبيت
-
-**ماك**
-1. حمّل `EMO.dmg` من [صفحة الإصدارات](https://releases.emo-ai.dev).
-2. انقر نقراً مزدوجاً على ملف `.dmg`.
-3. اسحب `EMO.app` إلى مجلد `التطبيقات`.
-4. افتح `EMO.app` من التطبيقات (انقر يميناً → فتح في أول تشغيل).
-
-**ويندوز**
-1. حمّل `EMO-Setup.exe` من [صفحة الإصدارات](https://releases.emo-ai.dev).
-2. انقر نقراً مزدوجاً على المثبّت.
-3. اتّبع معالج الإعداد. سيتم إنشاء اختصار سطح المكتب تلقائياً.
-4. شغّل EMO AI من قائمة ابدأ أو اختصار سطح المكتب.
-
-**لينكس**
-1. حمّل `EMO.AppImage` من [صفحة الإصدارات](https://releases.emo-ai.dev).
-2. انقر يميناً على الملف → خصائص → صلاحيات → السماح بالتنفيذ.
-3. انقر نقراً مزدوجاً للتشغيل.
+> Your personal AI workspace. Install it. Set it up. Run your agents.
 
 ---
 
-## التشغيل الأول — إعداد مفتاح API
+## Getting Started
 
-عند تشغيل EMO AI لأول مرة، سيرشدك **معالج التشغيل الأول** خلال خطوات ربط مزوّدي الخدمة.
+### Download & Install
 
-1. **شاشة الترحيب** — انقر "ابدأ".
-2. **اختر مزوّد الخدمة** — حدّد خدمة الذكاء الاصطناعي التي تستخدمها.
-3. **أدخل مفتاح API** — الصق مفتاحك في الحقل الآمن.
-   - يتم تخزين مفتاحك في **سلسلة المفاتيح** (Keychain) بجهازك — نفس المكان الآمن الذي يحفظ كلمات مرورك.
-   - لا يُحفظ أبداً في ملف، ولا يظهر في الإعدادات، ولا يُرسل دون إذنك.
-4. **تأكيد** — سيختبر EMO AI الاتصال. إذا نجح، فأنت جاهز.
-5. **تم** — يُغلق المعالج ويمكنك إنشاء أول مشروع لك.
+**macOS**
+1. Download `EMO.dmg` from the [releases page](https://releases.emo-ai.dev).
+2. Double-click the `.dmg` file.
+3. Drag `EMO.app` into your `Applications` folder.
+4. Open `EMO.app` from Applications (right-click → Open on first launch).
 
----
+**Windows**
+1. Download `EMO-Setup.exe` from the [releases page](https://releases.emo-ai.dev).
+2. Double-click the installer.
+3. Follow the setup wizard. A desktop shortcut will be created automatically.
+4. Launch EMO AI from the Start menu or desktop shortcut.
 
-## إنشاء المشاريع
-
-**المشروع** هو مساحة عمل تنظّم فيها مهامك. كل مشروع له ذاكرة خاصة، فريق من الوكلاء، وملفات معرفة.
-
-1. انقر **+ مشروع جديد** في الشريط الجانبي.
-2. أعطِ مشروعك اسماً.
-3. (اختياري) أضف وصفاً مختصراً.
-4. انقر **إنشاء**.
+**Linux**
+1. Download `EMO.AppImage` from the [releases page](https://releases.emo-ai.dev).
+2. Right-click the file → Properties → Permissions → Allow executing as program.
+3. Double-click to launch.
 
 ---
 
-## تشغيل الوكلاء
+## First Run — Setting Up Your API Key
 
-**الوكيل** هو عامل ذكي تُسند إليه مهمة. تعطيه تعليمات، يعمل، وتحصل على النتائج.
+When you launch EMO AI for the first time, the **First Run Wizard** will guide you through connecting your AI providers.
 
-1. افتح مشروعاً.
-2. انقر **+ وكيل جديد**.
-3. أعطِ الوكيل اسماً وصف ما يجب أن يفعله.
-4. (اختياري) اربط ذاكرة أو ملفات معرفة.
-5. انقر **تشغيل**.
+1. **Welcome Screen** — Click "Get Started".
+2. **Choose a Provider** — Select the AI service you use (e.g., OpenAI, Anthropic, Gemini).
+3. **Enter Your API Key** — Paste your key into the secure field.
+   - Your key is stored in your computer's **keychain** (the same secure place where your passwords live).
+   - It is never saved to a file, never visible in settings, and never sent anywhere without your permission.
+4. **Confirm** — EMO AI will test the connection. If it works, you're all set.
+5. **Done** — The wizard closes and you're ready to create your first project.
 
 ---
 
-## استكشاف الأخطاء
+## Creating Projects
 
-| المشكلة | الحل |
+A **Project** is a workspace where you organize your work. Each project has its own memory, team of agents, and knowledge files.
+
+1. Click **+ New Project** in the sidebar.
+2. Give your project a name (e.g., "Q2 Marketing Research").
+3. (Optional) Add a short description.
+4. Click **Create**.
+
+---
+
+## Running Agents
+
+An **Agent** is a smart worker you assign to a task. You give it instructions, it works, and you get results.
+
+1. Open a project.
+2. Click **+ New Agent**.
+3. Give your agent a name and describe what it should do.
+4. (Optional) Connect memory or knowledge files the agent should reference.
+5. Click **Run**.
+
+---
+
+## Troubleshooting
+
+| Problem | Solution |
 |---|---|
-| خطأ "مفتاح API غير صالح" | تحقق من نسخ المفتاح بالكامل. أنشئ مفتاحاً جديداً من لوحة تحكم المزوّد. |
-| التطبيق لا يفتح (ماك) | انقر يميناً → فتح. قد يمنع macOS التطبيق في أول تشغيل. |
-| التطبيق لا يفتح (لينكس) | تأكد من أن ملف `.AppImage` لديه صلاحية التنفيذ. |
-| لا يوجد اتصال بالإنترنت | يحتاج EMO AI إلى اتصال بالإنترنت لتشغيل الوكلاء. |
-| نسيت أي المزوّدين أعددت | اذهب إلى الإعدادات → المزوّدون لرؤية جميع الخدمات المتصلة. |
+| "Invalid API Key" error | Check you copied the full key. Generate a new key from your provider's dashboard. |
+| App won't open (macOS) | Right-click → Open. On first launch, macOS may block unsigned apps. |
+| App won't open (Linux) | Make sure the `.AppImage` file has execute permission: right-click → Properties → Permissions → Allow executing. |
+| No internet connection | EMO AI needs an internet connection to run agents. Check your network. |
+| Forgot which providers I set up | Go to **Settings** → **Providers** to see all connected services. |

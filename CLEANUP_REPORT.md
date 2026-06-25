@@ -1,79 +1,79 @@
-# تقرير تنظيف المشروع — Project Cleanup Report
+# Project Cleanup Report — Project Cleanup Report
 
-> تاريخ: 2026-05-30 — الحجم الكلي: ~376 MB
-
----
-
-## 1. 🗑️ يمكن حذفها فوراً (آمن — لا تأثير)
-
-| الملف | الحجم | السبب |
-|-------|-------|-------|
-| `brain.py.save` | 726 B | ملف احتياطي قديم |
-| `emo-ai-v4.11.0-enterprise-ready-archive.tar.gz` | 138 KB | نسخة قديمة من الأرشيف (لدينا v4.15.0) |
-| `emo-runtime-os-v1-release.tar.gz` (جذر المشروع) | 4.5 MB | مكرر — موجود في `releases/emo-runtime-os/` |
-| `PHASE_1_SUMMARY.md` | 4.6 KB | مستندات مراحل قديمة — المعلومات في ROADMAP.md |
-| `PHASE_2_SUMMARY.md` | 8.0 KB | نفس السبب |
-| `PHASE_3_SUMMARY.md` | 7.9 KB | نفس السبب |
-| `PHASE_3_PLAN.md` | 3.8 KB | خطة قديمة لم تعد صالحة |
-| `PHASE_4_SUMMARY.md` | 21 KB | نفس السبب |
-| `ANALYSIS_REPORT.md` | 12 KB | تقرير تحليل قديم |
-| `ARCHITECTURE_AUDIT_REPORT.md` | 17 KB | تدقيق معماري قديم |
-| `ENTERPRISE_RELEASE_SUMMARY.md` | 3.8 KB | ملخص إصدار قديم |
-| `FINAL_PROJECT_AUDIT_REPORT.md` | 15 KB | تدقيق نهائي قديم |
-| `execution_log.md` | 2.9 KB | سجل تنفيذ قديم (لدينا `artifacts/product/execution_log.txt`) |
-| `EMO_AI_ORCHESTRATOR_REFERENCE.pdf` | 34 KB | PDF قديم — المعلومات في DEVELOPER.md |
-| `.emo_chat_history.json` | 13 KB | تاريخ محادثة EMO — غير ضروري للمشروع |
-| `.emo_conversations.json` | 4.7 MB | محادثات كبيرة — يمكن حذفها |
-| `.emo_settings.json` | 10 KB | إعدادات EMO المحلية |
-| `emo_ai.db` | 140 KB | قاعدة بيانات SQLite محلية (تتولد تلقائياً) |
-| `c3_leases.db-shm` (نسختان) | 64 KB | ملفات WAL/SHM يتيمة بدون `c3_leases.db` |
-| `c3_leases.db-wal` (نسختان) | 162 KB | نفس السبب |
-| `logs/emo_ai.log` | 169 KB | سجلات تشغيل قديمة |
-| `logs/emo_ai_error.log` | 0 B | فارغ |
-| `logs/emo_ai_audit.log` | 0 B | فارغ |
-
-**المجموع**: ~9.9 MB يمكن حذفها فوراً
+> Date: 2026-05-30 — Total Size: ~376 MB
 
 ---
 
-## 2. ⚠️ مقترح للحذف (بحاجة مراجعة)
+## 1. 🗑️ Can Be Deleted Immediately (Safe — No Impact)
 
-| الملف | الحجم | السبب |
-|-------|-------|-------|
-| `emo-ai-v4.15.0-release-archive.tar.gz` | 791 KB | هل نحتاجه في الجذر أم ننقله لـ `releases/`؟ |
-| `.ai/` المجلد | 424 KB | مجلد أنشأته أداة AI خارجية — غير ضروري للمشروع |
-| `.memory/` المجلد | 0 B | فارغ |
-| `static/` المجلد | 0 B | فارغ (مجلد HTML قديم) |
-| `templates/index.html` | 80 KB | واجهة HTML قديمة — مع `emo-desktop/` لم نعد نحتاجها |
-| `templates/login.html` | 8.9 KB | نفس السبب |
-| `templates/observability.html` | 19 KB | نفس السبب |
-| `frontend/minimal/` المجلد | 56 KB | واجهة Flask قديمة — مستبدلة بـ `emo-desktop/` |
-| `middleware/auth.py` | 7.3 KB | Middleware قديم — مستبدل بـ `core/security/` |
-| `emo_desktop/src-tauri/src/` | 0 B | مجلد Tauri فارغ (المسار الصحيح: `emo-desktop/tauri/`) |
-| `user_projects/` | 0 B | فارغ |
-| `tray.py` | ? | برنامج System Tray قديم |
+| File | Size | Reason |
+|------|------|--------|
+| `brain.py.save` | 726 B | Old backup file |
+| `emo-ai-v4.11.0-enterprise-ready-archive.tar.gz` | 138 KB | Old archive version (we have v4.15.0) |
+| `emo-runtime-os-v1-release.tar.gz` (project root) | 4.5 MB | Duplicate — exists in `releases/emo-runtime-os/` |
+| `PHASE_1_SUMMARY.md` | 4.6 KB | Old phase documents — info in ROADMAP.md |
+| `PHASE_2_SUMMARY.md` | 8.0 KB | Same reason |
+| `PHASE_3_SUMMARY.md` | 7.9 KB | Same reason |
+| `PHASE_3_PLAN.md` | 3.8 KB | Old plan no longer valid |
+| `PHASE_4_SUMMARY.md` | 21 KB | Same reason |
+| `ANALYSIS_REPORT.md` | 12 KB | Old analysis report |
+| `ARCHITECTURE_AUDIT_REPORT.md` | 17 KB | Old architecture audit |
+| `ENTERPRISE_RELEASE_SUMMARY.md` | 3.8 KB | Old release summary |
+| `FINAL_PROJECT_AUDIT_REPORT.md` | 15 KB | Old final audit |
+| `execution_log.md` | 2.9 KB | Old execution log (we have `artifacts/product/execution_log.txt`) |
+| `EMO_AI_ORCHESTRATOR_REFERENCE.pdf` | 34 KB | Old PDF — info in DEVELOPER.md |
+| `.emo_chat_history.json` | 13 KB | EMO chat history — not needed for project |
+| `.emo_conversations.json` | 4.7 MB | Large conversations — can be deleted |
+| `.emo_settings.json` | 10 KB | Local EMO settings |
+| `emo_ai.db` | 140 KB | Local SQLite database (auto-generated) |
+| `c3_leases.db-shm` (2 copies) | 64 KB | Orphaned WAL/SHM files without `c3_leases.db` |
+| `c3_leases.db-wal` (2 copies) | 162 KB | Same reason |
+| `logs/emo_ai.log` | 169 KB | Old runtime logs |
+| `logs/emo_ai_error.log` | 0 B | Empty |
+| `logs/emo_ai_audit.log` | 0 B | Empty |
 
-**المجموع للمراجعة**: ~1.5 MB
-
----
-
-## 3. 🧹 تنظيف تلقائي (GitHub + .gitignore)
-
-| النوع | الحجم | الإجراء |
-|-------|-------|---------|
-| `__pycache__/` (116 مجلد) | ~20.9 MB | إضافتها لـ `.gitignore` إذا لم تكن موجودة |
-| `.DS_Store` (24 ملف) | 236 KB | إضافة `**/.DS_Store` لـ `.gitignore` |
-| `.pytest_cache/` | 356 KB | إضافة لـ `.gitignore` |
-| `venv/` | — | موجود في `.gitignore` ✅ |
-
-**المجموع**: ~21.5 MB
+**Total**: ~9.9 MB can be deleted immediately
 
 ---
 
-## 4. 📁 مجلدات فارغة — يمكن حذفها
+## 2. ⚠️ Suggested for Deletion (Needs Review)
 
-40 مجلداً فارغاً، منها:
-- `artifacts/pilot/tenants/tenant-alpha` → `tenant-kappa` (10 مجلدات)
+| File | Size | Reason |
+|------|------|--------|
+| `emo-ai-v4.15.0-release-archive.tar.gz` | 791 KB | Do we need it in root or move to `releases/`? |
+| `.ai/` folder | 424 KB | Folder created by external AI tool — not needed for project |
+| `.memory/` folder | 0 B | Empty |
+| `static/` folder | 0 B | Empty (old HTML folder) |
+| `templates/index.html` | 80 KB | Old HTML interface — with `emo-desktop/` we no longer need it |
+| `templates/login.html` | 8.9 KB | Same reason |
+| `templates/observability.html` | 19 KB | Same reason |
+| `frontend/minimal/` folder | 56 KB | Old Flask interface — replaced by `emo-desktop/` |
+| `middleware/auth.py` | 7.3 KB | Old middleware — replaced by `core/security/` |
+| `emo_desktop/src-tauri/src/` | 0 B | Empty Tauri folder (correct path: `emo-desktop/tauri/`) |
+| `user_projects/` | 0 B | Empty |
+| `tray.py` | ? | Old System Tray program |
+
+**Total for review**: ~1.5 MB
+
+---
+
+## 3. 🧹 Automatic Cleanup (GitHub + .gitignore)
+
+| Type | Size | Action |
+|------|------|--------|
+| `__pycache__/` (116 folders) | ~20.9 MB | Add to `.gitignore` if not already present |
+| `.DS_Store` (24 files) | 236 KB | Add `**/.DS_Store` to `.gitignore` |
+| `.pytest_cache/` | 356 KB | Add to `.gitignore` |
+| `venv/` | — | Already in `.gitignore` ✅ |
+
+**Total**: ~21.5 MB
+
+---
+
+## 4. 📁 Empty Folders — Can Be Deleted
+
+40 empty folders, including:
+- `artifacts/pilot/tenants/tenant-alpha` → `tenant-kappa` (10 folders)
 - `artifacts/archive/decisions/`
 - `artifacts/stability/`
 - `artifacts/implementation/g5/`
@@ -85,24 +85,24 @@
 
 ---
 
-## 5. 📊 ملخص التوفير المتوقع
+## 5. 📊 Expected Savings Summary
 
-| الفئة | الحجم |
-|-------|-------|
-| 🗑️ حذف فوري | ~9.9 MB |
-| ⚠️ مراجعة | ~1.5 MB |
+| Category | Size |
+|----------|------|
+| 🗑️ Immediate Deletion | ~9.9 MB |
+| ⚠️ Review | ~1.5 MB |
 | 🧹 .gitignore | ~21.5 MB |
-| 📁 مجلدات فارغة | ≤ 1 MB |
-| **المجموع** | **~34 MB** |
+| 📁 Empty Folders | ≤ 1 MB |
+| **Total** | **~34 MB** |
 
 ---
 
-## 6. الخلاصة
+## 6. Conclusion
 
-**أهم 3 إجراءات مقترحة:**
+**Top 3 Suggested Actions:**
 
-1. **حذف الملفات القديمة** (15 ملف) — غير ضرورية، المعلومات موجودة في `ROADMAP.md` و `PROJECT_STATUS_REPORT.md`
-2. **تنظيف `.gitignore`** — إضافة `__pycache__/`, `**/.DS_Store`, `.pytest_cache/`, `*.db`, `logs/`
-3. **نقل الأرشيف المكرر** — `emo-runtime-os-v1-release.tar.gz` في الجذر مكرر — موجود في `releases/`
+1. **Delete old files** (15 files) — Unnecessary, info exists in `ROADMAP.md` and `PROJECT_STATUS_REPORT.md`
+2. **Clean `.gitignore`** — Add `__pycache__/`, `**/.DS_Store`, `.pytest_cache/`, `*.db`, `logs/`
+3. **Move duplicate archive** — `emo-runtime-os-v1-release.tar.gz` in root is duplicate — exists in `releases/`
 
-هل تريد تطبيق التنظيف مباشرة؟
+Would you like to apply the cleanup directly?

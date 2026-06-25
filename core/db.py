@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS projects (
 CREATE TABLE IF NOT EXISTS project_sessions (
     id            TEXT PRIMARY KEY,
     project_id    TEXT REFERENCES projects(id) ON DELETE CASCADE,
-    name          TEXT NOT NULL DEFAULT 'جلسة جديدة',
+    name          TEXT NOT NULL DEFAULT 'New Session',
     is_active     INTEGER NOT NULL DEFAULT 0,
     is_archived   INTEGER NOT NULL DEFAULT 0,
     created_at    TEXT NOT NULL DEFAULT (datetime('now')),
@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS conversations (
     project_id    TEXT REFERENCES projects(id),
     session_id    TEXT REFERENCES project_sessions(id),
     user_id       TEXT REFERENCES users(id),
-    name          TEXT NOT NULL DEFAULT 'محادثة جديدة',
+    name          TEXT NOT NULL DEFAULT 'New Conversation',
     is_active     INTEGER NOT NULL DEFAULT 0,
     is_archived   INTEGER NOT NULL DEFAULT 0,
     created_at    TEXT NOT NULL DEFAULT (datetime('now')),
@@ -2123,7 +2123,7 @@ class Database:
         self,
         session_id: str,
         project_id: str,
-        name: str = "جلسة جديدة",
+        name: str = "New Session",
     ) -> Dict:
         now = datetime.utcnow().isoformat()
         async with self._connect() as db:
@@ -2196,7 +2196,7 @@ class Database:
     async def create_conversation(
         self,
         conv_id: str,
-        name: str = "محادثة جديدة",
+        name: str = "New Conversation",
         user_id: Optional[str] = None,
     ) -> Dict:
         now = datetime.utcnow().isoformat()
@@ -2413,7 +2413,6 @@ class Database:
 
     async def get_provider_key(self, key_id: int) -> Optional[Dict]:
         async with self._connect() as db:
-            db.row_factory = aiosqlite.Row
             cur = await db.execute(
                 "SELECT * FROM provider_keys WHERE id = ?",
                 (key_id,),
@@ -2445,7 +2444,6 @@ class Database:
     async def _fetch_provider_key_row(self, key_id: int) -> Optional[Dict]:
         """Internal: fetch the full row including the raw ``key_value``."""
         async with self._connect() as db:
-            db.row_factory = aiosqlite.Row
             cur = await db.execute(
                 "SELECT * FROM provider_keys WHERE id = ?",
                 (key_id,),
@@ -2482,7 +2480,6 @@ class Database:
         sql += " ORDER BY provider ASC, sort_order ASC, id ASC"
         out: List[Dict] = []
         async with self._connect() as db:
-            db.row_factory = aiosqlite.Row
             cur = await db.execute(sql, params)
             rows = await cur.fetchall()
             for row in rows:
@@ -2568,7 +2565,6 @@ class Database:
 
     async def get_active_provider_key(self, provider: str) -> Optional[Dict]:
         async with self._connect() as db:
-            db.row_factory = aiosqlite.Row
             cur = await db.execute(
                 "SELECT * FROM provider_keys "
                 "WHERE provider = ? AND is_active = 1 AND is_enabled = 1 "
@@ -2590,7 +2586,6 @@ class Database:
         needed.)
         """
         async with self._connect() as db:
-            db.row_factory = aiosqlite.Row
             cur = await db.execute(
                 "SELECT * FROM provider_keys "
                 "WHERE provider = ? AND is_enabled = 1 "
@@ -2973,7 +2968,6 @@ class Database:
 
     async def get_skill(self, skill_id: str) -> Optional[Dict]:
         async with self._connect() as db:
-            db.row_factory = aiosqlite.Row
             cursor = await db.execute("SELECT * FROM skills WHERE id = ?", (skill_id,))
             row = await cursor.fetchone()
         return self._decode_row(row, json_fields=self._SKILL_JSON_FIELDS) if row else None
@@ -3003,7 +2997,6 @@ class Database:
         where = (" WHERE " + " AND ".join(clauses)) if clauses else ""
         params.append(limit)
         async with self._connect() as db:
-            db.row_factory = aiosqlite.Row
             cursor = await db.execute(
                 f"SELECT * FROM skills{where} ORDER BY created_at DESC LIMIT ?",
                 params,
@@ -3125,7 +3118,6 @@ class Database:
     ) -> List[Dict]:
         """Get execution history for a skill (newest first)."""
         async with self._connect() as db:
-            db.row_factory = aiosqlite.Row
             cursor = await db.execute(
                 "SELECT * FROM skill_execution_history WHERE skill_id = ? ORDER BY created_at DESC LIMIT ?",
                 (skill_id, limit),
@@ -3169,7 +3161,6 @@ class Database:
     async def get_skill_versions(self, skill_id: str) -> List[Dict]:
         """Get all versions for a skill (newest first)."""
         async with self._connect() as db:
-            db.row_factory = aiosqlite.Row
             cursor = await db.execute(
                 "SELECT * FROM skill_versions WHERE skill_id = ? ORDER BY created_at DESC",
                 (skill_id,),
@@ -3182,7 +3173,6 @@ class Database:
     ) -> Optional[Dict]:
         """Approve a skill version."""
         async with self._connect() as db:
-            db.row_factory = aiosqlite.Row
             cursor = await db.execute(
                 "SELECT * FROM skill_versions WHERE id = ?", (version_id,)
             )

@@ -1,193 +1,193 @@
 # EMO AI Orchestrator — Developer Reference Guide
 
-| البند          | القيمة                                        |
-|----------------|-----------------------------------------------|
-| **التاريخ**    | 2026-05-17                                    |
-| **المؤلف**     | opencode AI Agent                             |
-| **الحالة**     | نهائي — مرجع رسمي                             |
-| **الإصدار**    | 1.0.0                                         |
-| **المشروع**    | EMO AI Orchestrator v4.0.0                    |
-| **الترخيص**    | Open Source (MIT/Apache 2.0 — TBD)            |
-| **المنصات**    | macOS + Windows + Android (web-responsive)    |
-| **الهدف**      | 3 مستخدمين في المرحلة الأولى                  |
-| **الامتثال**   | GDPR + SOC2                                   |
+| Item                 | Value                                        |
+|----------------------|----------------------------------------------|
+| **Date**             | 2026-05-17                                   |
+| **Author**           | opencode AI Agent                            |
+| **Status**           | Final — Official Reference                   |
+| **Version**          | 1.0.0                                        |
+| **Project**          | EMO AI Orchestrator v4.0.0                   |
+| **License**          | Open Source (MIT/Apache 2.0 — TBD)           |
+| **Platforms**        | macOS + Windows + Android (web-responsive)   |
+| **Target**           | 3 users in initial phase                     |
+| **Compliance**       | GDPR + SOC2                                  |
 
 ---
 
-## فهرس المحتويات
+## Table of Contents
 
-1. [نظرة عامة على المشروع](#1-نظرة-عامة-على-المشروع)
-2. [هيكل المشروع](#2-هيكل-المشروع)
-3. [خريطة الاعتماديات (Dependency Map)](#3-خريطة-الاعتماديات-dependency-map)
-4. [المكونات الأساسية](#4-المكونات-الأساسية)
-5. [واجهة البرمجة (API Reference)](#5-واجهة-البرمجة-api-reference)
-6. [نظام الوكلاء](#6-نظام-الوكلاء)
-7. [نظام الأدوات](#7-نظام-الأدوات)
-8. [إعداد بيئة التطوير](#8-إعداد-بيئة-التطوير)
-9. [دليل التشغيل](#9-دليل-التشغيل)
-10. [دليل الصيانة](#10-دليل-الصيانة)
-11. [استكشاف الأخطاء](#11-استكشاف-الأخطاء)
-12. [الأمان والامتثال](#12-الأمان-والامتثال)
-13. [نماذج البيانات](#13-نماذج-البيانات)
-14. [دليل المساهمة](#14-دليل-المساهمة)
-15. [سجل التغييرات](#15-سجل-التغييرات)
-
----
-
-## 1. نظرة عامة على المشروع
-
-### 1.1 ما هو EMO AI Orchestrator؟
-
-نظام تنسيق ذكي متعدد الوكلاء (Multi-Agent Intelligence Orchestration System) يعمل كطبقة وسيطة بين المستخدم ونماذج الذكاء الاصطناعي. النظام يُدير وكلاء متعددين ويوجّه المهام تلقائياً عبر واجهة ويب تفاعلية وتكامل مع Telegram.
-
-### 1.2 المزايا الأساسية
-
-| الميزة | الوصف | الحالة |
-|--------|-------|--------|
-| محادثات ذكية | دردشة مع وكلاء AI متعددين | ⚠️ جزئي (mock) |
-| وكلاء متعددون | Planner, Coder, Writer, Researcher | ⚠️ stubs |
-| نماذج متعددة | OpenRouter, Groq, Gemini (API) + Ollama (محلي) | ⚠️ stub |
-| أدوات DevOps | Vercel, Docker, Env Manager | ✅ يعمل |
-| أدوات مشاريع | Debugger, Code Reviewer, Scaffold, Analyzer | ✅ يعمل |
-| تكامل GitHub | إدارة المستودعات عبر API | ✅ يعمل |
-| تكامل Supabase | قاعدة بيانات + Storage | ✅ يعمل |
-| تكامل Firebase | Firestore + Auth + Hosting | ✅ يعمل |
-| بوت Telegram | دردشة عبر Telegram | ✅ يعمل |
-| واجهة ويب | Glass Morphism + RTL/LTR + Dark/Light | ✅ يعمل |
-| System Tray | مراقبة الخادم (macOS) | ✅ يعمل |
-
-### 1.3 التقنيات المستخدمة
-
-| التقنية | الإصدار | الاستخدام |
-|---------|---------|-----------|
-| Python | 3.14 | اللغة الأساسية |
-| FastAPI | أحدث | إطار عمل HTTP |
-| Uvicorn | أحدث | ASGI Server |
-| Pydantic | أحدث | التحقق من البيانات |
-| python-dotenv | أحدث | إدارة المتغيرات البيئية |
-| TailwindCSS | CDN | تصميم الواجهة |
-| Font Awesome | 6.5.1 | الأيقونات |
-| python-telegram-bot | اختياري | تكامل Telegram |
-| rumps | اختياري | System Tray (macOS) |
-| psutil | اختياري | مراقبة العمليات |
-| openai | مطلوب | SDK للتواصل مع LLM |
-| fpdf | اختياري | توليد PDF |
+1. [Project Overview](#1-project-overview)
+2. [Project Structure](#2-project-structure)
+3. [Dependency Map](#3-dependency-map)
+4. [Core Components](#4-core-components)
+5. [API Reference](#5-api-reference)
+6. [Agent System](#6-agent-system)
+7. [Tools System](#7-tools-system)
+8. [Development Environment Setup](#8-development-environment-setup)
+9. [Operation Guide](#9-operation-guide)
+10. [Maintenance Guide](#10-maintenance-guide)
+11. [Troubleshooting](#11-troubleshooting)
+12. [Security and Compliance](#12-security-and-compliance)
+13. [Data Models](#13-data-models)
+14. [Contribution Guide](#14-contribution-guide)
+15. [Changelog](#15-changelog)
 
 ---
 
-## 2. هيكل المشروع
+## 1. Project Overview
+
+### 1.1 What is EMO AI Orchestrator?
+
+A Multi-Agent Intelligence Orchestration System that acts as an intermediary layer between the user and artificial intelligence models. The system manages multiple agents and routes tasks automatically via an interactive web interface and Telegram integration.
+
+### 1.2 Key Features
+
+| Feature | Description | Status |
+|---------|-------------|--------|
+| Smart Conversations | Chat with multiple AI agents | ⚠️ Partial (mock) |
+| Multi-Agent | Planner, Coder, Writer, Researcher | ⚠️ stubs |
+| Multiple Models | OpenRouter, Groq, Gemini (API) + Ollama (local) | ⚠️ stub |
+| DevOps Tools | Vercel, Docker, Env Manager | ✅ Working |
+| Project Tools | Debugger, Code Reviewer, Scaffold, Analyzer | ✅ Working |
+| GitHub Integration | Repository management via API | ✅ Working |
+| Supabase Integration | Database + Storage | ✅ Working |
+| Firebase Integration | Firestore + Auth + Hosting | ✅ Working |
+| Telegram Bot | Chat via Telegram | ✅ Working |
+| Web UI | Glass Morphism + RTL/LTR + Dark/Light | ✅ Working |
+| System Tray | Server monitoring (macOS) | ✅ Working |
+
+### 1.3 Technologies Used
+
+| Technology | Version | Usage |
+|------------|---------|-------|
+| Python | 3.14 | Core language |
+| FastAPI | Latest | HTTP framework |
+| Uvicorn | Latest | ASGI Server |
+| Pydantic | Latest | Data validation |
+| python-dotenv | Latest | Environment variable management |
+| TailwindCSS | CDN | UI design |
+| Font Awesome | 6.5.1 | Icons |
+| python-telegram-bot | Optional | Telegram integration |
+| rumps | Optional | System Tray (macOS) |
+| psutil | Optional | Process monitoring |
+| openai | Required | SDK for LLM communication |
+| fpdf | Optional | PDF generation |
+
+---
+
+## 2. Project Structure
 
 ```
 Emo-AI/
 │
-├── 📄 main.py                          # نقطة الدخول — FastAPI app
-├── 📄 brain.py                         # واجهة LLM (STUB — يحتاج تنفيذ)
-├── 📄 brain.py.save                    # نسخة احتياطية بتنفيذ حقيقي (OpenAI SDK)
-├── 📄 agent.py                         # نظام الوكلاء (STUB)
-├── 📄 memory.py                        # نظام الذاكرة (STUB)
-├── 📄 tools.py                         # تسجيل الأدوات (STUB — يحتاج Tool base class)
-├── 📄 i18n.py                          # الترجمة (عربي/إنجليزي) — ✅ كامل
-├── 📄 telegram_bot.py                  # بوت Telegram — ✅ يعمل
-├── 📄 tray.py                          # System Tray (macOS) — ✅ يعمل
-├── 📄 generate_pdf.py                  # مولّد PDF توثيقي — ✅ يعمل
+├── 📄 main.py                          # Entry point — FastAPI app
+├── 📄 brain.py                         # LLM interface (STUB — needs implementation)
+├── 📄 brain.py.save                    # Backup with real implementation (OpenAI SDK)
+├── 📄 agent.py                         # Agent system (STUB)
+├── 📄 memory.py                        # Memory system (STUB)
+├── 📄 tools.py                         # Tool registry (STUB — needs Tool base class)
+├── 📄 i18n.py                          # Translation (Arabic/English) — ✅ Complete
+├── 📄 telegram_bot.py                  # Telegram bot — ✅ Working
+├── 📄 tray.py                          # System Tray (macOS) — ✅ Working
+├── 📄 generate_pdf.py                  # Documentation PDF generator — ✅ Working
 │
-├── 📄 project_tools.py                 # أدوات ذكاء المشاريع (8 أصناف, 1409 سطر) — ✅ يعمل
-├── 📄 devops_tools.py                  # أدوات DevOps (4 أصناف, 273 سطر) — ✅ يعمل
-├── 📄 supabase_tools.py                # أدوات Supabase (6 أصناف, 220 سطر) — ✅ يعمل
-├── 📄 firebase_tools.py                # أدوات Firebase (5 أصناف, 196 سطر) — ✅ يعمل
-├── 📄 github_tools.py                  # أدوات GitHub (7 أصناف, 193 سطر) — ✅ يعمل
+├── 📄 project_tools.py                 # Project intelligence tools (8 classes, 1409 lines) — ✅ Working
+├── 📄 devops_tools.py                  # DevOps tools (4 classes, 273 lines) — ✅ Working
+├── 📄 supabase_tools.py                # Supabase tools (6 classes, 220 lines) — ✅ Working
+├── 📄 firebase_tools.py                # Firebase tools (5 classes, 196 lines) — ✅ Working
+├── 📄 github_tools.py                  # GitHub tools (7 classes, 193 lines) — ✅ Working
 │
 ├── 📁 core/
-│   ├── 📄 state.py                     # حالة التطبيق العامة (Singleton) — ✅ يعمل
-│   ├── 📄 context_builder.py           # بناء سياق المحادثة — ✅ يعمل
-│   ├── 📄 task_manager.py              # إدارة المهام (thread-safe) — ✅ يعمل
-│   └── 📄 tasks.py                     # حلقة تنظيف المهام (STUB)
+│   ├── 📄 state.py                     # Application global state (Singleton) — ✅ Working
+│   ├── 📄 context_builder.py           # Conversation context builder — ✅ Working
+│   ├── 📄 task_manager.py              # Task management (thread-safe) — ✅ Working
+│   └── 📄 tasks.py                     # Task cleanup loop (STUB)
 │
 ├── 📁 routers/
-│   └── 📄 chat.py                      # نقطة_chat API — ⚠️ جزئي
+│   └── 📄 chat.py                      # Chat API endpoint — ⚠️ Partial
 │
 ├── 📁 templates/
-│   ├── 📄 index.html                   # الواجهة الرئيسية (1109 سطر) — ✅ كامل
-│   └── 📄 login.html                   # صفحة تسجيل الدخول (171 سطر) — ✅ كامل
+│   ├── 📄 index.html                   # Main interface (1109 lines) — ✅ Complete
+│   └── 📄 login.html                   # Login page (171 lines) — ✅ Complete
 │
-├── 📁 static/                          # ملفات ثابتة (CSS, JS, صور)
+├── 📁 static/                          # Static files (CSS, JS, images)
 │
-├── 📁 docs/                            # وثائق المشروع
-│   ├── 📄 REQUIREMENTS_UNDERSTANDING.md # وثيقة المتطلبات
-│   ├── 📄 core_features_api.json        # مواصفات API
-│   ├── 📄 PROGRESS.md                   # سجل التقدم
-│   └── 📄 developer.md                  # هذا الملف
+├── 📁 docs/                            # Project documentation
+│   ├── 📄 REQUIREMENTS_UNDERSTANDING.md # Requirements document
+│   ├── 📄 core_features_api.json       # API specification
+│   ├── 📄 PROGRESS.md                  # Progress log
+│   └── 📄 developer.md                 # This file
 │
-├── 📄 requirements.txt                 # المتطلبات الأساسية (4 حزم فقط!)
-├── 📄 README.md                        # README مختصر
+├── 📄 requirements.txt                 # Core requirements (4 packages only!)
+├── 📄 README.md                        # Brief README
 │
-├── 📄 .emo_settings.json               # إعدادات التطبيق (⚠️ مفاتيح API مكشوفة!)
-├── 📄 .emo_conversations.json          # بيانات المحادثات
-├── 📄 .emo_chat_history.json           # سجل المحادثات
+├── 📄 .emo_settings.json               # App settings (⚠️ API keys exposed!)
+├── 📄 .emo_conversations.json          # Conversation data
+├── 📄 .emo_chat_history.json           # Chat history
 │
-├── 📄 .env                             # المتغيرات البيئية (يجب إنشاؤه — غير موجود حالياً)
-├── 📄 .gitignore                       # ملفات مستبعدة من Git
+├── 📄 .env                             # Environment variables (must be created — not yet present)
+├── 📄 .gitignore                       # Files excluded from Git
 │
-├── 📁 venv/                            # بيئة Python الافتراضية (مستبعدة)
-├── 📁 __pycache__/                     # ملفات Python المترجمة (مستبعدة)
+├── 📁 venv/                            # Python virtual environment (excluded)
+├── 📁 __pycache__/                     # Compiled Python files (excluded)
 │
-└── 📁 my-project/                      # مشاريع مولّدة (scaffolded artifacts)
+└── 📁 my-project/                      # Generated projects (scaffolded artifacts)
     📁 my_project/
     📁 test-app/
 ```
 
-### 2.1 وصف كل ملف
+### 2.1 File Descriptions
 
-#### الملفات الأساسية
+#### Core Files
 
-| الملف | الأسطر | الحالة | الوصف |
-|-------|--------|--------|-------|
-| `main.py` | 36 | ✅ يعمل | نقطة دخول FastAPI. يُنشئ التطبيق، يدير lifespan مع خلفية cleanup، ويشغّل Uvicorn على المنفذ 8080 |
-| `brain.py` | 6 | ❌ STUB | واجهة LLM. حالياً يرجع نص المستخدم كما هو. **يجب استبداله بـ `brain.py.save`** |
-| `brain.py.save` | 28 | ✅ يعمل | تنفيذ حقيقي يستخدم `openai.OpenAI` مع دعم OpenRouter/Groq عبر `LLM_PROVIDER` env var |
-| `agent.py` | 16 | ❌ STUB | صنف Agent ومُصنّع. يُنشئ 3 وكلاء (planner, writer, researcher) لكن بـ mock Brain |
-| `memory.py` | 3 | ❌ STUB | صنف Memory فارغ. قائمة `data = []` بدون أي منطق |
-| `tools.py` | 9 | ❌ STUB | Registry بسيطة. لا تحتوي على `Tool` base class الذي تستورده الأدوات الأخرى |
+| File | Lines | Status | Description |
+|------|-------|--------|-------------|
+| `main.py` | 36 | ✅ Working | FastAPI entry point. Creates app, manages lifespan with background cleanup, runs Uvicorn on port 8080 |
+| `brain.py` | 6 | ❌ STUB | LLM interface. Currently returns user text as-is. **Must be replaced with `brain.py.save`** |
+| `brain.py.save` | 28 | ✅ Working | Real implementation using `openai.OpenAI` with OpenRouter/Groq support via `LLM_PROVIDER` env var |
+| `agent.py` | 16 | ❌ STUB | Agent class and factory. Creates 3 agents (planner, writer, researcher) but with mock Brain |
+| `memory.py` | 3 | ❌ STUB | Empty Memory class. `data = []` list with no logic |
+| `tools.py` | 9 | ❌ STUB | Simple Registry. Does not contain `Tool` base class imported by other tools |
 
-#### الأدوات (Tools)
+#### Tools
 
-| الملف | الأسطر | الأصناف | الحالة | الوصف |
-|-------|--------|---------|--------|-------|
-| `project_tools.py` | 1409 | 8 | ✅ يعمل | AutoDebugger, AICodeReviewer, ProjectMonitor, ProjectScaffold, ProjectAnalyzer, DependencyManager, CodebaseRefactor, DeploymentBuilder |
-| `devops_tools.py` | 273 | 4 | ✅ يعمل | VercelDeploy, DockerBuild, DockerRun, EnvManager |
-| `supabase_tools.py` | 220 | 6 | ✅ يعمل | CreateProject, CreateTable, InsertData, Query, AuthSetup, StorageUpload |
-| `firebase_tools.py` | 196 | 5 | ✅ يعمل | InitProject, AuthSetup, FirestoreWrite, FirestoreRead, Deploy |
-| `github_tools.py` | 193 | 7 | ✅ يعمل | CreateRepo, CloneRepo, PushChanges, PullRepo, ReadFile, WriteFile, CreateBranch |
+| File | Lines | Classes | Status | Description |
+|------|-------|---------|--------|-------------|
+| `project_tools.py` | 1409 | 8 | ✅ Working | AutoDebugger, AICodeReviewer, ProjectMonitor, ProjectScaffold, ProjectAnalyzer, DependencyManager, CodebaseRefactor, DeploymentBuilder |
+| `devops_tools.py` | 273 | 4 | ✅ Working | VercelDeploy, DockerBuild, DockerRun, EnvManager |
+| `supabase_tools.py` | 220 | 6 | ✅ Working | CreateProject, CreateTable, InsertData, Query, AuthSetup, StorageUpload |
+| `firebase_tools.py` | 196 | 5 | ✅ Working | InitProject, AuthSetup, FirestoreWrite, FirestoreRead, Deploy |
+| `github_tools.py` | 193 | 7 | ✅ Working | CreateRepo, CloneRepo, PushChanges, PullRepo, ReadFile, WriteFile, CreateBranch |
 
-#### النواة (Core)
+#### Core
 
-| الملف | الأسطر | الحالة | الوصف |
-|-------|--------|--------|-------|
-| `core/state.py` | 17 | ⚠️ خطأ | Singleton للحالة العامة. **خطأ: لا يُعرّف `conversations` لكن `chat.py` يستخدمه** |
-| `core/context_builder.py` | 63 | ✅ يعمل | يبني سياق المحادثة: آخر 12 رسالة، حد 1200 حرف/رسالة، تنظيف نصوص |
-| `core/task_manager.py` | 24 | ✅ يعمل | إدارة مهام thread-safe مع dict. CRUD أساسي بدون SSE |
-| `core/tasks.py` | 5 | ❌ STUB | حلقة تنظيف مهام — تنام 300 ثانية بلا فعل |
+| File | Lines | Status | Description |
+|------|-------|--------|-------------|
+| `core/state.py` | 17 | ⚠️ Bug | Singleton for global state. **Bug: does not define `conversations` but `chat.py` uses it** |
+| `core/context_builder.py` | 63 | ✅ Working | Builds conversation context: last 12 messages, 1200 char/message limit, text cleaning |
+| `core/task_manager.py` | 24 | ✅ Working | Thread-safe task management with dict. Basic CRUD without SSE |
+| `core/tasks.py` | 5 | ❌ STUB | Task cleanup loop — sleeps 300 seconds doing nothing |
 
-#### التكامل
+#### Integration
 
-| الملف | الأسطر | الحالة | الوصف |
-|-------|--------|--------|-------|
-| `telegram_bot.py` | 197 | ✅ يعمل | بوت Telegram كامل: تفويض، أوامر، إعادة توجيه. يعمل في thread منفصل |
-| `tray.py` | 543 | ✅ يعمل | تطبيق macOS system tray: مراقبة، إعادة تشغيل، إشعارات. fallback console mode |
-| `i18n.py` | 262 | ✅ يعمل | ~130 مفتاح ترجمة لكل لغة (EN/AR). دالة `t(key, lang)` |
+| File | Lines | Status | Description |
+|------|-------|--------|-------------|
+| `telegram_bot.py` | 197 | ✅ Working | Complete Telegram bot: authorization, commands, forwarding. Runs in separate thread |
+| `tray.py` | 543 | ✅ Working | macOS system tray app: monitoring, restart, notifications. Fallback console mode |
+| `i18n.py` | 262 | ✅ Working | ~130 translation keys per language (EN/AR). `t(key, lang)` function |
 
-#### القوالب
+#### Templates
 
-| الملف | الأسطر | الحالة | الوصف |
-|-------|--------|--------|-------|
-| `templates/index.html` | 1109 | ✅ كامل | واجهة رئيسية: 3 ألواح (محادثات/وكلاء، دردشة، سجل/مهام). Glass Morphism + TailwindCSS |
-| `templates/login.html` | 171 | ✅ كامل | صفحة تسجيل دخول/إنشاء حساب مع particle animation |
+| File | Lines | Status | Description |
+|------|-------|--------|-------------|
+| `templates/index.html` | 1109 | ✅ Complete | Main interface: 3 panels (conversations/agents, chat, log/tasks). Glass Morphism + TailwindCSS |
+| `templates/login.html` | 171 | ✅ Complete | Login/signup page with particle animation |
 
 ---
 
-## 3. خريطة الاعتماديات (Dependency Map)
+## 3. Dependency Map
 
-### 3.1 مخطط الاستيرادات
+### 3.1 Import Diagram
 
 ```
 main.py
@@ -201,79 +201,79 @@ main.py
 │   └── core/context_builder.py
 └── core/tasks.py
 
-tray.py (standalone — يستدعي main.py عبر subprocess)
-telegram_bot.py (standalone — يحتاج on_message callback)
+tray.py (standalone — calls main.py via subprocess)
+telegram_bot.py (standalone — needs on_message callback)
 
 project_tools.py  ──┐
 devops_tools.py     │
-supabase_tools.py   ├──> tools.Tool (غير موجود! يستخدمون fallback)
+supabase_tools.py   ├──> tools.Tool (not found! use fallback)
 firebase_tools.py   │
 github_tools.py     ┘
 
-i18n.py (غير مُستورد — يُستخدم server-side rendering)
+i18n.py (not imported — used for server-side rendering)
 generate_pdf.py (standalone utility)
 ```
 
-### 3.2 الاعتماديات الخارجية (requirements.txt)
+### 3.2 External Dependencies (requirements.txt)
 
 ```
-fastapi          # إطار عمل HTTP
+fastapi          # HTTP framework
 uvicorn          # ASGI Server
-pydantic         # التحقق من البيانات
-python-dotenv    # متغيرات بيئية
+pydantic         # Data validation
+python-dotenv    # Environment variables
 ```
 
-### 3.3 الاعتماديات المطلوبة غير المُثبَّتة
+### 3.3 Required Uninstalled Dependencies
 
-| الحزمة | السبب | الأولوية |
-|--------|-------|----------|
-| `openai` | ربط Brain بـ LLM حقيقي | 🔴 حرجة |
-| `python-telegram-bot` | تكامل Telegram | 🟡 عالية |
-| `rumps` | System Tray (macOS) | 🟡 عالية |
-| `psutil` | مراقبة العمليات | 🟢 متوسطة |
-| `fpdf` | توليد PDF | 🟢 متوسطة |
-| `aiosqlite` | قاعدة بيانات SQLite async | 🟡 عالية |
-| `PyJWT` | مصادقة JWT | 🟡 عالية |
-| `bcrypt` | تشفير كلمات المرور | 🟡 عالية |
-| `httpx` | عميل HTTP async لـ Ollama | 🟡 عالية |
+| Package | Reason | Priority |
+|---------|--------|----------|
+| `openai` | Connect Brain to real LLM | 🔴 Critical |
+| `python-telegram-bot` | Telegram integration | 🟡 High |
+| `rumps` | System Tray (macOS) | 🟡 High |
+| `psutil` | Process monitoring | 🟢 Medium |
+| `fpdf` | PDF generation | 🟢 Medium |
+| `aiosqlite` | Async SQLite database | 🟡 High |
+| `PyJWT` | JWT authentication | 🟡 High |
+| `bcrypt` | Password encryption | 🟡 High |
+| `httpx` | Async HTTP client for Ollama | 🟡 High |
 
 ---
 
-## 4. المكونات الأساسية
+## 4. Core Components
 
 ### 4.1 FastAPI Application (`main.py`)
 
 ```python
-# نقطة الدخول الرئيسية
+# Main entry point
 app = FastAPI(
     title="Emo AI Orchestrator",
     version="4.0.0",
-    lifespan=lifespan  # يدير cleanup_old_tasks_loop
+    lifespan=lifespan  # Manages cleanup_old_tasks_loop
 )
 
-# المسجلات المسجَّلة
+# Registered routers
 app.include_router(chat_router)  # /api/chat
 
-# نقاط النهاية الحالية
-GET  /          # حالة الخادم
-POST /api/chat  # إرسال رسالة
+# Current endpoints
+GET  /          # Server status
+POST /api/chat  # Send message
 
-# المسجل المطلوب (غير موجود)
-GET  /api/stream/{task_id}       # SSE للبث المباشر
-GET  /api/tasks                  # قائمة المهام
-GET  /api/conversations          # قائمة المحادثات
-POST /api/conversations          # إنشاء محادثة
-POST /api/conversations/{id}/activate  # تفعيل محادثة
-DELETE /api/conversations/{id}   # حذف محادثة
-POST /api/settings               # تحديث إعداد
-GET  /api/status                 # حالة LLM
-GET  /api/history                # سجل المحادثة
-GET  /api/global_stream          # بث عام SSE
-GET  /api/project                # معلومات المشروع
-GET  /api/tray/ping              # فحص صحة الخادم
-POST /api/auth/login             # تسجيل دخول
-POST /api/auth/signup            # إنشاء حساب
-GET  /api/auth/verify            # التحقق من token
+# Required endpoints (not present)
+GET  /api/stream/{task_id}       # SSE for live streaming
+GET  /api/tasks                  # Task list
+GET  /api/conversations          # Conversation list
+POST /api/conversations          # Create conversation
+POST /api/conversations/{id}/activate  # Activate conversation
+DELETE /api/conversations/{id}   # Delete conversation
+POST /api/settings               # Update setting
+GET  /api/status                 # LLM status
+GET  /api/history                # Conversation history
+GET  /api/global_stream          # Global SSE stream
+GET  /api/project                # Project information
+GET  /api/tray/ping              # Server health check
+POST /api/auth/login             # Login
+POST /api/auth/signup            # Create account
+GET  /api/auth/verify            # Verify token
 ```
 
 ### 4.2 AppState (`core/state.py`)
@@ -282,11 +282,11 @@ GET  /api/auth/verify            # التحقق من token
 class AppState:
     tools: Registry          # ⚠️ stub
     memory: Memory           # ⚠️ stub
-    task_manager: TaskManager # ✅ يعمل
+    task_manager: TaskManager # ✅ Working
     agents: dict             # ⚠️ stubs (planner, writer, researcher)
-    conversations: dict      # ❌ غير مُعرَّف (BUG!)
+    conversations: dict      # ❌ Not defined (BUG!)
 
-state = AppState()  # singleton عالمي
+state = AppState()  # Global singleton
 ```
 
 ### 4.3 TaskManager (`core/task_manager.py`)
@@ -298,7 +298,7 @@ class TaskManager:
 
     create_task(task_id, message)   # → pending
     update_task(task_id, **kwargs)  # → running/complete/error
-    get_task(task_id)               # → dict أو None
+    get_task(task_id)               # → dict or None
 ```
 
 ### 4.4 ContextBuilder (`core/context_builder.py`)
@@ -308,149 +308,149 @@ MAX_CONTEXT_MESSAGES = 12
 MAX_MESSAGE_LENGTH = 1200
 
 def _clean_text(text: str) -> str:
-    # يزيل المسافات الزائدة ويقص النص
+    # Removes extra spaces and truncates text
 
 def build_conversation_context(messages: List[Dict]) -> str:
-    # يأخذ آخر 12 رسالة، ينظفها، يُرجع "ROLE: content"
+    # Takes last 12 messages, cleans them, returns "ROLE: content"
 ```
 
-### 4.5 Brain (`brain.py`) — يحتاج تنفيذ
+### 4.5 Brain (`brain.py`) — Needs Implementation
 
 ```python
-# الحالي (STUB):
+# Current (STUB):
 class Brain:
     def ask(self, system="", user="", **kwargs):
-        return f"AI Response => {user}"  # ❌ echo فقط
+        return f"AI Response => {user}"  # ❌ echo only
 
     def test_connection(self):
         return True, "mock-model"  # ❌ mock
 
-# المطلوب (من brain.py.save):
+# Required (from brain.py.save):
 class Brain:
     def __init__(self, provider="openrouter", model="", api_key=""):
-        # يختار المزود ويُنشئ openai.OpenAI client
+        # Selects provider and creates openai.OpenAI client
 
     def ask(self, system="", user="", **kwargs):
-        # يستدعي client.chat.completions.create()
+        # Calls client.chat.completions.create()
 
     def test_connection(self):
-        # يختبر الاتصال الحقيقي
+        # Tests real connection
 ```
 
 ---
 
-## 5. واجهة البرمجة (API Reference)
+## 5. API Reference
 
-### 5.1 النقاط الموجودة
+### 5.1 Existing Endpoints
 
 #### `GET /`
-- **الوصف:** حالة الخادم
-- **الاستجابة:** `{"name": "Emo AI Orchestrator", "version": "4.0.0", "status": "running"}`
+- **Description:** Server status
+- **Response:** `{"name": "Emo AI Orchestrator", "version": "4.0.0", "status": "running"}`
 
 #### `POST /api/chat`
-- **الوصف:** إرسال رسالة وبدء مهمة
-- **المدخلات:**
+- **Description:** Send message and start task
+- **Input:**
   ```json
   {
     "message": "string (required)",
     "conversation_id": "string (optional)"
   }
   ```
-- **الاستجابة:**
+- **Response:**
   ```json
   {
     "task_id": "string (8-char UUID)",
     "status": "started"
   }
   ```
-- **السلوك:** يُنشئ مهمة، يُشغّل thread خلفية، يستدعي planner agent
+- **Behavior:** Creates task, starts background thread, calls planner agent
 
-### 5.2 النقاط المطلوبة (غير موجودة)
+### 5.2 Required Endpoints (Not Present)
 
-كل النقاط التي تستدعيها الواجهة الأمامية لكن غير مُنفَّذة في الخادم:
+All endpoints called by the frontend but not implemented in the server:
 
-| النقطة | الطريقة | الوصف |
-|--------|---------|-------|
-| `/api/stream/{task_id}` | GET (SSE) | بث مباشر لتقدم المهمة |
-| `/api/tasks` | GET | قائمة المهام |
-| `/api/conversations` | GET | قائمة المحادثات |
-| `/api/conversations` | POST | إنشاء محادثة |
-| `/api/conversations/{id}/activate` | POST | تفعيل محادثة |
-| `/api/settings` | POST | تحديث إعداد |
-| `/api/status` | GET | حالة LLM |
-| `/api/history` | GET | سجل المحادثة |
-| `/api/global_stream` | GET (SSE) | بث عام للأحداث |
-| `/api/project` | GET | معلومات المشروع |
-| `/api/tray/ping` | GET | فحص صحة الخادم |
-| `/api/auth/login` | POST | تسجيل دخول |
-| `/api/auth/signup` | POST | إنشاء حساب |
-| `/api/auth/verify` | GET | التحقق من token |
-| `/api/speedtest` | GET | اختبار السرعة |
-
----
-
-## 6. نظام الوكلاء
-
-### 6.1 الوكلاء الحاليون
-
-| الوكيل | الدور | اللون | الحالة |
-|--------|-------|-------|--------|
-| Planner | تخطيط وتوزيع المهام | بنفسجي (#8b5cf6) | ❌ stub |
-| Coder | كتابة وتصحيح الأكواد | أخضر (#10b981) | ❌ غير موجود |
-| Writer | كتابة المستندات | وردي (#ec4899) | ❌ stub |
-| Researcher | بحث وتحقق | برتقالي (#f59e0b) | ❌ stub |
-
-### 6.2 دورة حياة المهمة
-
-```
-1. المستخدم يرسل رسالة → POST /api/chat
-2. الخادم يُنشئ task_id
-3. يُنشئ thread خلفية → process_task()
-4. يُنشئ سياق المحادثة → build_conversation_context()
-5. يُرسل إلى Planner → planner.run(input)
-6. Planner يرد بالنتيجة
-7. تُحدَّث حالة المهمة → complete
-8. (مطلوب) تُبَث النتيجة عبر SSE
-```
-
-### 6.3 المطلوب تنفيذه
-
-```
-1. ربط Brain بـ OpenRouter API (FR-03.01)
-2. ربط Brain بـ Groq API (FR-03.02)
-3. ربط Brain بـ Gemini API (FR-03.03)
-4. ربط Brain بـ Ollama المحلي (FR-03.07)
-5. إضافة وكيل Coder
-6. تنفيذ توجيه المهام تلقائياً (FR-02.05)
-7. ربط الأدوات بالوكلاء (FR-04)
-```
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/stream/{task_id}` | GET (SSE) | Live task progress streaming |
+| `/api/tasks` | GET | Task list |
+| `/api/conversations` | GET | Conversation list |
+| `/api/conversations` | POST | Create conversation |
+| `/api/conversations/{id}/activate` | POST | Activate conversation |
+| `/api/settings` | POST | Update setting |
+| `/api/status` | GET | LLM status |
+| `/api/history` | GET | Conversation history |
+| `/api/global_stream` | GET (SSE) | Global event stream |
+| `/api/project` | GET | Project information |
+| `/api/tray/ping` | GET | Server health check |
+| `/api/auth/login` | POST | Login |
+| `/api/auth/signup` | POST | Create account |
+| `/api/auth/verify` | GET | Verify token |
+| `/api/speedtest` | GET | Speed test |
 
 ---
 
-## 7. نظام الأدوات
+## 6. Agent System
 
-### 7.1 التصنيفات
+### 6.1 Current Agents
 
-| التصنيف | عدد الأدوات | الأدوات |
-|---------|-------------|---------|
+| Agent | Role | Color | Status |
+|-------|------|-------|--------|
+| Planner | Task planning and distribution | Purple (#8b5cf6) | ❌ stub |
+| Coder | Code writing and correction | Green (#10b981) | ❌ Not present |
+| Writer | Document writing | Pink (#ec4899) | ❌ stub |
+| Researcher | Research and verification | Orange (#f59e0b) | ❌ stub |
+
+### 6.2 Task Lifecycle
+
+```
+1. User sends message → POST /api/chat
+2. Server creates task_id
+3. Creates background thread → process_task()
+4. Creates conversation context → build_conversation_context()
+5. Sends to Planner → planner.run(input)
+6. Planner responds with result
+7. Task status updated → complete
+8. (Required) Result streamed via SSE
+```
+
+### 6.3 Required Implementation
+
+```
+1. Connect Brain to OpenRouter API (FR-03.01)
+2. Connect Brain to Groq API (FR-03.02)
+3. Connect Brain to Gemini API (FR-03.03)
+4. Connect Brain to local Ollama (FR-03.07)
+5. Add Coder Agent
+6. Implement automatic task routing (FR-02.05)
+7. Connect tools to agents (FR-04)
+```
+
+---
+
+## 7. Tools System
+
+### 7.1 Categories
+
+| Category | Tool Count | Tools |
+|----------|------------|-------|
 | DevOps | 4 | VercelDeploy, DockerBuild, DockerRun, EnvManager |
 | Project Intelligence | 8 | AutoDebugger, AICodeReviewer, ProjectMonitor, ProjectScaffold, ProjectAnalyzer, DependencyManager, CodebaseRefactor, DeploymentBuilder |
 | GitHub | 7 | CreateRepo, CloneRepo, PushChanges, PullRepo, ReadFile, WriteFile, CreateBranch |
 | Supabase | 6 | CreateProject, CreateTable, InsertData, Query, AuthSetup, StorageUpload |
 | Firebase | 5 | InitProject, AuthSetup, FirestoreWrite, FirestoreRead, Deploy |
-| System | 2 | shell, files (غير مُنفَّذة) |
+| System | 2 | shell, files (not implemented) |
 
-### 7.2 مشكلة Tool Base Class
+### 7.2 Tool Base Class Issue
 
-الأدوات تحاول استيراد `Tool` من `tools.py` لكن الملف لا يُعرّفه:
+Tools try to import `Tool` from `tools.py` but the file does not define it:
 
 ```python
-# tools.py الحالي — لا يحتوي على Tool!
+# Current tools.py — does not contain Tool!
 class Registry:
     def categories(self):
         return {"system": ["shell", "files"], "ai": ["vision", "memory"]}
 
-# كل أدوات *_tools.py تستخدم fallback:
+# All *_tools.py files use fallback:
 try:
     from tools import Tool
 except ImportError:
@@ -462,7 +462,7 @@ except ImportError:
         parameters = {}
 ```
 
-**الحل المطلوب:** إضافة `Tool` base class إلى `tools.py`:
+**Required Solution:** Add `Tool` base class to `tools.py`:
 
 ```python
 from abc import ABC, abstractmethod
@@ -481,55 +481,55 @@ class Tool(ABC):
 
 ---
 
-## 8. إعداد بيئة التطوير
+## 8. Development Environment Setup
 
-### 8.1 المتطلبات المسبقة
+### 8.1 Prerequisites
 
-| المتطلب | الإصدار | طريقة التثبيت |
-|---------|---------|---------------|
+| Requirement | Version | Installation Method |
+|-------------|---------|---------------------|
 | Python | 3.11+ | `brew install python` (macOS) |
-| pip | مرفق مع Python | — |
-| Node.js | 18+ (لأدوات Vercel) | `brew install node` |
-| Docker | اختياري | Docker Desktop |
-| Ollama | اختياري (محلي LLM) | `brew install ollama` |
+| pip | Bundled with Python | — |
+| Node.js | 18+ (for Vercel tools) | `brew install node` |
+| Docker | Optional | Docker Desktop |
+| Ollama | Optional (local LLM) | `brew install ollama` |
 | Git | 2.40+ | `brew install git` |
 
-### 8.2 خطوات الإعداد
+### 8.2 Setup Steps
 
 ```bash
-# 1. استنساخ المشروع
+# 1. Clone the project
 git clone <repo-url>
 cd Emo-AI
 
-# 2. إنشاء بيئة افتراضية
+# 2. Create virtual environment
 python3 -m venv venv
 source venv/bin/activate  # macOS/Linux
-# أو: venv\Scripts\activate  # Windows
+# Or: venv\Scripts\activate  # Windows
 
-# 3. تثبيت المتطلبات الأساسية
+# 3. Install core requirements
 pip install -r requirements.txt
 
-# 4. تثبيت المتطلبات الإضافية
+# 4. Install additional requirements
 pip install openai aiosqlite PyJWT bcrypt httpx python-telegram-bot rumps psutil fpdf
 
-# 5. إنشاء ملف .env
+# 5. Create .env file
 cp .env.example .env
-# تعديل .env بالمفاتيح الخاصة بك
+# Edit .env with your keys
 
-# 6. تشغيل الخادم
+# 6. Run server
 python main.py
-# أو: uvicorn main:app --host 0.0.0.0 --port 8080 --reload
+# Or: uvicorn main:app --host 0.0.0.0 --port 8080 --reload
 
-# 7. التحقق
+# 7. Verify
 curl http://localhost:8080/
 # → {"name": "Emo AI Orchestrator", "version": "4.0.0", "status": "running"}
 ```
 
-### 8.3 ملف .env.example
+### 8.3 .env.example
 
 ```bash
 # EMO AI Orchestrator — Environment Variables
-# انسخ هذا الملف إلى .env واملأ القيم
+# Copy this file to .env and fill in the values
 
 # === LLM Providers (API) ===
 OPENROUTER_API_KEY=
@@ -572,7 +572,7 @@ EMO_AI_WORKSPACE_ROOT=.
 EMO_PROJECT_DIR=.
 ```
 
-### 8.4 ملف .gitignore
+### 8.4 .gitignore
 
 ```
 # Python
@@ -624,34 +624,34 @@ logs/
 
 ---
 
-## 9. دليل التشغيل
+## 9. Operation Guide
 
-### 9.1 تشغيل الخادم
+### 9.1 Running the Server
 
 ```bash
-# الطريقة الأساسية
+# Basic method
 python main.py
 
-# مع Uvicorn مباشرة (مع auto-reload للتطوير)
+# With Uvicorn directly (with auto-reload for development)
 uvicorn main:app --host 0.0.0.0 --port 8080 --reload
 
-# في الخلفية (production)
+# In background (production)
 nohup uvicorn main:app --host 0.0.0.0 --port 8080 > emo.log 2>&1 &
 
-# مع Docker (بعد إنشاء Dockerfile)
+# With Docker (after creating Dockerfile)
 docker build -t emo-ai .
 docker run -p 8080:8080 --env-file .env emo-ai
 ```
 
-### 9.2 تشغيل Telegram Bot
+### 9.2 Running Telegram Bot
 
 ```python
-# إضافة إلى main.py:
+# Add to main.py:
 from telegram_bot import TelegramBot
 
 def telegram_callback(message):
-    """توجيه رسالة Telegram إلى orchestrator"""
-    # استدعاء chat endpoint
+    """Route Telegram message to orchestrator"""
+    # Call chat endpoint
     ...
 
 bot = TelegramBot(
@@ -662,223 +662,223 @@ if bot.token and bot.is_available:
     bot.start()
 ```
 
-### 9.3 تشغيل System Tray
+### 9.3 Running System Tray
 
 ```bash
 # macOS
 python tray.py
 
-# مع rumps غير مثبت
+# With rumps not installed
 pip install rumps psutil
 python tray.py
 
-# Console fallback mode (بدون rumps)
-python tray.py  # يتحول تلقائياً لـ simple_mode()
+# Console fallback mode (without rumps)
+python tray.py  # Auto-switches to simple_mode()
 ```
 
-### 9.4 تشغيل Ollama (محلي)
+### 9.4 Running Ollama (Local)
 
 ```bash
-# تثبيت Ollama
+# Install Ollama
 brew install ollama
 
-# تشغيل الخدمة
+# Run service
 ollama serve &
 
-# تحميل نموذج
+# Download model
 ollama pull llama3.2
 
-# التحقق
+# Verify
 curl http://localhost:11434/api/tags
 
-# إعداد .env
+# Configure .env
 LLM_PROVIDER=ollama
 OLLAMA_MODEL=llama3.2
 ```
 
-### 9.5 توليد PDF التوثيقي
+### 9.5 Generate Documentation PDF
 
 ```bash
 pip install fpdf
 python generate_pdf.py
-# → يُنتج EMO_AI_ORCHESTRATOR_REFERENCE.pdf
+# → Produces EMO_AI_ORCHESTRATOR_REFERENCE.pdf
 ```
 
 ---
 
-## 10. دليل الصيانة
+## 10. Maintenance Guide
 
-### 10.1 الصيانة اليومية
+### 10.1 Daily Maintenance
 
-| المهمة | الأمر | التكرار |
-|--------|-------|---------|
-| فحص حالة الخادم | `curl http://localhost:8080/` | يومياً |
-| فحص السجلات | `tail -f emo.log` | يومياً |
-| فحص المساحة | `du -sh .emo_*.json` | أسبوعياً |
-| تحديث المتطلبات | `pip list --outdated` | أسبوعياً |
+| Task | Command | Frequency |
+|------|---------|-----------|
+| Check server status | `curl http://localhost:8080/` | Daily |
+| Check logs | `tail -f emo.log` | Daily |
+| Check disk space | `du -sh .emo_*.json` | Weekly |
+| Update requirements | `pip list --outdated` | Weekly |
 
-### 10.2 الصيانة الأسبوعية
+### 10.2 Weekly Maintenance
 
-| المهمة | الوصف |
-|--------|-------|
-| تنظيف المحادثات القديمة | حذف محادثات > 30 يوم من `.emo_conversations.json` |
-| تنظيف المهام القديمة | TaskManager يُفترض أن ينظف تلقائياً (لكنه stub) |
-| مراجعة السجلات | البحث عن أخطاء متكررة |
-| تحديث المكتبات | `pip install --upgrade -r requirements.txt` |
+| Task | Description |
+|------|-------------|
+| Clean old conversations | Delete conversations > 30 days from `.emo_conversations.json` |
+| Clean old tasks | TaskManager supposed to auto-clean (but it's a stub) |
+| Review logs | Look for recurring errors |
+| Update libraries | `pip install --upgrade -r requirements.txt` |
 
-### 10.3 الصيانة الشهرية
+### 10.3 Monthly Maintenance
 
-| المهمة | الوصف |
-|--------|-------|
-| مراجعة الأمان | فحص `.env` و `.emo_settings.json` |
-| مراجعة التبعيات | `pip audit` لفحص الثغرات |
-| نسخ احتياطي | نسخ `.emo_*.json` إلى موقع آمن |
-| تحديث Ollama | `ollama pull <model>` لأحدث إصدار |
+| Task | Description |
+|------|-------------|
+| Security review | Check `.env` and `.emo_settings.json` |
+| Dependency review | `pip audit` to check for vulnerabilities |
+| Backup | Copy `.emo_*.json` to a safe location |
+| Update Ollama | `ollama pull <model>` for latest version |
 
-### 10.4 ملفات البيانات
+### 10.4 Data Files
 
-| الملف | الحجم التقريبي | متى ينمو | كيف يُنظَّف |
-|-------|----------------|----------|-------------|
-| `.emo_conversations.json` | 10KB-1MB | كل محادثة جديدة | حذف المحادثات القديمة |
-| `.emo_chat_history.json` | 10KB-5MB | كل رسالة | حد أقصى 1000 رسالة |
-| `.emo_settings.json` | <1KB | نادر | لا يحتاج تنظيف |
+| File | Approximate Size | When it grows | How to clean |
+|------|-----------------|---------------|--------------|
+| `.emo_conversations.json` | 10KB-1MB | Each new conversation | Delete old conversations |
+| `.emo_chat_history.json` | 10KB-5MB | Each message | Max 1000 messages |
+| `.emo_settings.json` | <1KB | Rarely | No cleanup needed |
 
-### 10.5 النسخ الاحتياطي
+### 10.5 Backup
 
 ```bash
-# نسخ احتياطي يدوي
+# Manual backup
 tar czf emo-backup-$(date +%Y%m%d).tar.gz \
   .emo_settings.json \
   .emo_conversations.json \
   .emo_chat_history.json \
   docs/
 
-# استعادة
+# Restore
 tar xzf emo-backup-YYYYMMDD.tar.gz
 ```
 
 ---
 
-## 11. استكشاف الأخطاء
+## 11. Troubleshooting
 
-### 11.1 الأخطاء الشائعة
+### 11.1 Common Errors
 
-| الخطأ | السبب | الحل |
-|-------|-------|------|
-| `AttributeError: 'AppState' object has no attribute 'conversations'` | `state.py` لا يُعرّف `conversations` | أضف `self.conversations = {}` في `AppState.__init__` |
-| `ImportError: cannot import name 'Tool' from 'tools'` | `tools.py` لا يُعرّف `Tool` base class | أضف `Tool` class كما في القسم 7.2 |
-| `ModuleNotFoundError: No module named 'openai'` | مكتبة openai غير مُثبَّتة | `pip install openai` |
-| `ModuleNotFoundError: No module named 'telegram'` | python-telegram-bot غير مُثبَّت | `pip install python-telegram-bot` |
-| `ModuleNotFoundError: No module named 'rumps'` | rumps غير مُثبَّت (macOS فقط) | `pip install rumps` أو استخدم console mode |
-| الخادم لا يستجيب | المنفذ 8080 مشغول | غيّر المنفذ: `PORT=8081 python main.py` |
-| مفاتيح API لا تعمل | غير مُعيَّنة في `.env` | أنشئ `.env` وانسخ المفاتيح |
-| Ollama لا يستجيب | الخدمة لا تعمل | `ollama serve` |
-| Telegram bot لا يعمل | token غير صحيح أو python-telegram-bot غير مُثبَّت | تحقق من token و `pip install python-telegram-bot` |
+| Error | Cause | Solution |
+|-------|-------|----------|
+| `AttributeError: 'AppState' object has no attribute 'conversations'` | `state.py` does not define `conversations` | Add `self.conversations = {}` in `AppState.__init__` |
+| `ImportError: cannot import name 'Tool' from 'tools'` | `tools.py` does not define `Tool` base class | Add `Tool` class as in section 7.2 |
+| `ModuleNotFoundError: No module named 'openai'` | openai library not installed | `pip install openai` |
+| `ModuleNotFoundError: No module named 'telegram'` | python-telegram-bot not installed | `pip install python-telegram-bot` |
+| `ModuleNotFoundError: No module named 'rumps'` | rumps not installed (macOS only) | `pip install rumps` or use console mode |
+| Server not responding | Port 8080 is busy | Change port: `PORT=8081 python main.py` |
+| API keys not working | Not set in `.env` | Create `.env` and copy keys |
+| Ollama not responding | Service not running | `ollama serve` |
+| Telegram bot not working | Incorrect token or python-telegram-bot not installed | Check token and `pip install python-telegram-bot` |
 
-### 11.2 فحص الصحة
+### 11.2 Health Check
 
 ```bash
-# 1. فحص الخادم
+# 1. Check server
 curl http://localhost:8080/
 # → {"name": "Emo AI Orchestrator", "version": "4.0.0", "status": "running"}
 
-# 2. فحص Tray ping (إذا كان الخادم يعمل)
+# 2. Check Tray ping (if server is running)
 curl http://localhost:8080/api/tray/ping
 
-# 3. فحص LLM
+# 3. Check LLM
 curl http://localhost:8080/api/status
 
-# 4. فحص المحادثات
+# 4. Check conversations
 curl http://localhost:8080/api/conversations
 
-# 5. فحص المهام
+# 5. Check tasks
 curl http://localhost:8080/api/tasks
 
-# 6. فحص الاتصال بـ Ollama
+# 6. Check Ollama connection
 curl http://localhost:11434/api/tags
 ```
 
-### 11.3 وضع التصحيح (Debug Mode)
+### 11.3 Debug Mode
 
 ```bash
-# تشغيل مع verbose logging
+# Run with verbose logging
 DEBUG=true uvicorn main:app --host 0.0.0.0 --port 8080 --reload --log-level debug
 
-# فحص logs
+# Check logs
 tail -f emo.log | grep -i error
 
 # Python debugger
 python -m pdb main.py
 ```
 
-### 11.4 إعادة تعيين كاملة
+### 11.4 Full Reset
 
 ```bash
-# حذف كل شيء والبدء من جديد
+# Delete everything and start fresh
 rm -rf venv/
 rm -rf __pycache__/
 rm -rf *.egg-info/
 rm -f .emo_conversations.json
 rm -f .emo_chat_history.json
 
-# إعادة الإعداد
+# Re-setup
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 pip install openai aiosqlite PyJWT bcrypt httpx
 cp .env.example .env
-# تعديل .env
+# Edit .env
 python main.py
 ```
 
 ---
 
-## 12. الأمان والامتثال
+## 12. Security and Compliance
 
-### 12.1 إدارة الأسرار
+### 12.1 Secrets Management
 
-| القاعدة | الوصف |
-|---------|-------|
-| ❌ لا تضع مفاتيح API في الكود | استخدم `.env` دائماً |
-| ❌ لا ترفع `.env` لـ Git | تأكد من `.gitignore` |
-| ❌ لا تعرض المفاتيح في الواجهة | استخدم `type="password"` في HTML |
-| ✅ استخدم `python-dotenv` | لتحميل `.env` تلقائياً |
-| ✅ شفر كلمات المرور | استخدم `bcrypt` |
-| ✅ استخدم JWT للمصادقة | tokens بمدة صلاحية محددة |
+| Rule | Description |
+|------|-------------|
+| ❌ Do not put API keys in code | Always use `.env` |
+| ❌ Do not upload `.env` to Git | Ensure `.gitignore` |
+| ❌ Do not expose keys in UI | Use `type="password"` in HTML |
+| ✅ Use `python-dotenv` | To load `.env` automatically |
+| ✅ Encrypt passwords | Use `bcrypt` |
+| ✅ Use JWT for authentication | Tokens with limited expiry |
 
-### 12.2 متطلبات GDPR
+### 12.2 GDPR Requirements
 
-| المتطلب | التنفيذ المطلوب |
-|---------|-----------------|
-| حق الوصول | API endpoint لتصدير بيانات المستخدم |
-| حق المسح | API endpoint لحذف بيانات المستخدم نهائياً |
-| حق التصحيح | API endpoint لتعديل بيانات المستخدم |
-| Consent | شاشة موافقة قبل جمع البيانات |
-| Data minimization | جمع أقل بيانات ممكنة |
-| Encryption | تشفير البيانات الحساسة في الراحة |
+| Requirement | Required Implementation |
+|-------------|------------------------|
+| Right of access | API endpoint to export user data |
+| Right to erasure | API endpoint to permanently delete user data |
+| Right to rectification | API endpoint to modify user data |
+| Consent | Consent screen before data collection |
+| Data minimization | Collect minimal data possible |
+| Encryption | Encrypt sensitive data at rest |
 
-### 12.3 متطلبات SOC2
+### 12.3 SOC2 Requirements
 
-| المتطلب | التنفيذ المطلوب |
-|---------|-----------------|
-| Audit logs | تسجيل كل عملية حساسة |
-| Access control | مصادقة + تفويض لكل endpoint |
+| Requirement | Required Implementation |
+|-------------|------------------------|
+| Audit logs | Log every sensitive operation |
+| Access control | Authentication + authorization for every endpoint |
 | Encryption in transit | HTTPS (TLS 1.2+) |
-| Encryption at rest | تشفير ملفات البيانات |
-| Incident response | خطة استجابة للحوادث |
-| Regular testing | اختبارات اختراق دورية |
+| Encryption at rest | Encrypt data files |
+| Incident response | Incident response plan |
+| Regular testing | Periodic penetration tests |
 
-### 12.4 تشفير البيانات
+### 12.4 Data Encryption
 
 ```python
-# تشفير كلمات المرور
+# Password encryption
 import bcrypt
 password_hash = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
 
-# التحقق
+# Verification
 bcrypt.checkpw(password.encode(), stored_hash)
 
-# تشفير البيانات الحساسة (مثال: Fernet)
+# Sensitive data encryption (Example: Fernet)
 from cryptography.fernet import Fernet
 key = Fernet.generate_key()
 f = Fernet(key)
@@ -888,14 +888,14 @@ decrypted = f.decrypt(encrypted).decode()
 
 ---
 
-## 13. نماذج البيانات
+## 13. Data Models
 
 ### 13.1 Task
 
 ```json
 {
   "id": "a1b2c3d4",
-  "message": "نص الرسالة الأصلية",
+  "message": "Original message text",
   "status": "pending | running | complete | error",
   "result": "string | null",
   "error": "string | null",
@@ -910,11 +910,11 @@ decrypted = f.decrypt(encrypted).decode()
 ```json
 {
   "id": "550e8400-e29b-41d4-a716-446655440000",
-  "name": "محادثة تجريبية",
+  "name": "Test conversation",
   "messages": [
     {
       "role": "user | assistant | system",
-      "content": "نص الرسالة",
+      "content": "Message text",
       "timestamp": "2026-05-17T10:30:00Z",
       "file_data": {
         "name": "image.png",
@@ -964,19 +964,19 @@ decrypted = f.decrypt(encrypted).decode()
 
 ---
 
-## 14. دليل المساهمة
+## 14. Contribution Guide
 
-### 14.1 معايير الكود
+### 14.1 Code Standards
 
-| المعيار | الوصف |
-|---------|-------|
-| PEP 8 | دليل تنسيق Python الرسمي |
-| Type Hints | استخدم type hints في كل الدوال |
-| Docstrings | كل صنف ودالة يجب أن تحتوي docstring |
-| Solids | اتبع مبادئ SOLID |
-| 12-Factor App | اتبع مبادئ 12-Factor |
+| Standard | Description |
+|----------|-------------|
+| PEP 8 | Official Python formatting guide |
+| Type Hints | Use type hints in all functions |
+| Docstrings | Every class and function must have docstring |
+| SOLID | Follow SOLID principles |
+| 12-Factor App | Follow 12-Factor principles |
 
-### 14.2 هيكلية commits
+### 14.2 Commit Structure
 
 ```
 <type>(<scope>): <description>
@@ -990,100 +990,100 @@ Examples:
   test(task_manager): add unit tests for CRUD
 ```
 
-### 14.3 عملية Pull Request
+### 14.3 Pull Request Process
 
-1. أنشئ فرع جديد: `git checkout -b feat/feature-name`
-2. نفّذ التغييرات مع commits واضحة
-3. اختبر محلياً: `python main.py` + فحص endpoints
-4. افتح PR مع وصف واضح
-5. انتظر مراجعة الكود
-6. عدّل حسب الملاحظات
-7. دمج بعد الموافقة
+1. Create new branch: `git checkout -b feat/feature-name`
+2. Implement changes with clear commits
+3. Test locally: `python main.py` + check endpoints
+4. Open PR with clear description
+5. Wait for code review
+6. Revise according to feedback
+7. Merge after approval
 
-### 14.4 اختبار التغييرات
+### 14.4 Testing Changes
 
 ```bash
-# فحص أساسي
+# Basic check
 python main.py
 curl http://localhost:8080/
 
-# فحص المحادثة
+# Check conversation
 curl -X POST http://localhost:8080/api/chat \
   -H "Content-Type: application/json" \
   -d '{"message": "test"}'
 
-# فحص SSE
+# Check SSE
 curl -N http://localhost:8080/api/stream/<task_id>
 ```
 
 ---
 
-## 15. سجل التغييرات
+## 15. Changelog
 
-### v4.0.0 (الحالي)
-- هيكل FastAPI أساسي
-- واجهة ويب كاملة (Glass Morphism)
-- أدوات DevOps و Project Intelligence
-- تكامل GitHub, Supabase, Firebase
-- بوت Telegram
+### v4.0.0 (Current)
+- Basic FastAPI structure
+- Complete web UI (Glass Morphism)
+- DevOps and Project Intelligence tools
+- GitHub, Supabase, Firebase integration
+- Telegram Bot
 - System Tray (macOS)
 - i18n (EN/AR)
 - ⚠️ Brain/Agent/Memory/Tools = stubs
 
-### v4.1.0 (المخطط — MVP)
-- [ ] ربط Brain بـ OpenRouter/Groq/Gemini/Ollama
-- [ ] تنفيذ SSE stream
-- [ ] تفعيل المصادقة
-- [ ] نقل مفاتيح API إلى .env
-- [ ] إضافة Tool base class
-- [ ] إصلاح AppState.conversations bug
-- [ ] إضافة SQLite
+### v4.1.0 (Planned — MVP)
+- [ ] Connect Brain to OpenRouter/Groq/Gemini/Ollama
+- [ ] Implement SSE stream
+- [ ] Enable authentication
+- [ ] Move API keys to .env
+- [ ] Add Tool base class
+- [ ] Fix AppState.conversations bug
+- [ ] Add SQLite
 - [ ] Dockerfile
-- [ ] اختبارات وحدة
+- [ ] Unit tests
 
-### v5.0.0 (المخطط — Post-MVP)
-- [ ] ذاكرة طويلة المدى (Vector DB)
-- [ ] وكلاء مخصصون
-- [ ] نظام صلاحيات متقدم
+### v5.0.0 (Planned — Post-MVP)
+- [ ] Long-term memory (Vector DB)
+- [ ] Custom agents
+- [ ] Advanced permission system
 - [ ] CI/CD pipeline
-- [ ] اختبارات تحميل
-- [ ] دعم multi-tenant
+- [ ] Load tests
+- [ ] Multi-tenant support
 
 ---
 
-## ملاحق
+## Appendices
 
-### أ. أوامر CLI سريعة
+### A. Quick CLI Commands
 
 ```bash
-# تشغيل الخادم
+# Run server
 python main.py
 
-# تشغيل مع auto-reload
+# Run with auto-reload
 uvicorn main:app --reload --port 8080
 
-# تشغيل Telegram bot
+# Run Telegram bot
 python -c "from telegram_bot import TelegramBot; b = TelegramBot(token='YOUR_TOKEN'); b.start()"
 
-# تشغيل System Tray
+# Run System Tray
 python tray.py
 
-# توليد PDF
+# Generate PDF
 python generate_pdf.py
 
-# فحص التبعيات
+# Check dependencies
 pip list --outdated
 pip audit
 
-# تنظيف
+# Cleanup
 find . -type d -name __pycache__ -exec rm -rf {} +
 find . -type f -name "*.pyc" -delete
 ```
 
-### ب. روابط مفيدة
+### B. Useful Links
 
-| المورد | الرابط |
-|--------|--------|
+| Resource | Link |
+|----------|------|
 | FastAPI Docs | https://fastapi.tiangolo.com/ |
 | OpenAI SDK | https://github.com/openai/openai-python |
 | Ollama API | https://github.com/ollama/ollama/blob/main/docs/api.md |
@@ -1094,25 +1094,25 @@ find . -type f -name "*.pyc" -delete
 | rumps (macOS tray) | https://github.com/jaredks/rumps |
 | TailwindCSS | https://tailwindcss.com/ |
 
-### ج. قائمة المهام العاجلة
+### C. Urgent Task List
 
-| # | المهمة | الأولوية | الجهد |
-|---|--------|----------|-------|
-| 1 | نقل مفاتيح API إلى `.env` | 🔴 حرجة | 30 دقيقة |
-| 2 | استبدال `brain.py` بـ `brain.py.save` | 🔴 حرجة | 1 ساعة |
-| 3 | إضافة `Tool` base class لـ `tools.py` | 🔴 حرجة | 30 دقيقة |
-| 4 | إصلاح `AppState.conversations` bug | 🔴 حرجة | 15 دقيقة |
-| 5 | تنفيذ SSE stream | 🔴 حرجة | 3-4 ساعات |
-| 6 | إضافة `openai` لـ requirements.txt | 🟡 عالية | 5 دقائق |
-| 7 | تنفيذ mصادقة JWT | 🟡 عالية | 4-6 ساعات |
-| 8 | إنشاء Dockerfile | 🟡 عالية | 2 ساعة |
-| 9 | إضافة SQLite | 🟡 عالية | 1-2 يوم |
-| 10 | اختبارات وحدة أساسية | 🟡 عالية | 1 يوم |
+| # | Task | Priority | Effort |
+|---|------|----------|--------|
+| 1 | Move API keys to `.env` | 🔴 Critical | 30 minutes |
+| 2 | Replace `brain.py` with `brain.py.save` | 🔴 Critical | 1 hour |
+| 3 | Add `Tool` base class to `tools.py` | 🔴 Critical | 30 minutes |
+| 4 | Fix `AppState.conversations` bug | 🔴 Critical | 15 minutes |
+| 5 | Implement SSE stream | 🔴 Critical | 3-4 hours |
+| 6 | Add `openai` to requirements.txt | 🟡 High | 5 minutes |
+| 7 | Implement JWT authentication | 🟡 High | 4-6 hours |
+| 8 | Create Dockerfile | 🟡 High | 2 hours |
+| 9 | Add SQLite | 🟡 High | 1-2 days |
+| 10 | Basic unit tests | 🟡 High | 1 day |
 
 ---
 
-**نهاية الوثيقة — الإصدار 1.0.0**
+**End of Document — Version 1.0.0**
 
-*هذه الوثيقة مرجع رسمي للمطورين. أي تعديل يجب أن يُحدَّث هنا أولاً.*
+*This document is an official reference for developers. Any modifications should be updated here first.*
 
-*للاستفسارات: راجع قسم "استكشاف الأخطاء" أو افتح issue في المستودع.*
+*For inquiries: Check "Troubleshooting" section or open an issue in the repository.*

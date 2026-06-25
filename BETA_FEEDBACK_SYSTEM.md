@@ -1,31 +1,31 @@
 # 📝 EMO AI — Beta Feedback System
 
-> دليل شامل لنظام جمع وتحليل التعليقات خلال فترة Beta Testing
+> Comprehensive guide for collecting and analyzing feedback during Beta Testing
 
 ---
 
 ## 1. Overview
 
-### هدف نظام التعليقات
+### Feedback System Objective
 
-جمع وتحليل تعليقات المستخدمين خلال فترة Beta Testing لتحسين جودة المنتج وتحديد المشاكل الحرجة قبل الإصدار الرسمي.
+Collect and analyze user feedback during Beta Testing to improve product quality and identify critical issues before the official release.
 
-### القنوات المتاحة
+### Available Channels
 
-| القناة | الوصف | الاستخدام |
-|--------|-------|----------|
-| **GitHub Issues** | للتقارير التقنية | المطورون والمستخدمون المتقدمون |
-| **Google Forms** | للتعليقات العامة | جميع المستخدمين |
-| **In-App Feedback** | زر في الواجهة | جميع المستخدمين |
-| **Discord** | للنقاشات العامة | المجتمع |
+| Channel | Description | Usage |
+|---------|-------------|-------|
+| **GitHub Issues** | For technical reports | Developers and advanced users |
+| **Google Forms** | For general feedback | All users |
+| **In-App Feedback** | Button in the interface | All users |
+| **Discord** | For general discussions | Community |
 
-### المسؤولون عن المراجعة
+### Review Responsibilities
 
-| الدور | المسؤولية |
-|-------|----------|
-| **Project Manager** | مراجعة يومية، تصنيف الأولويات |
-| **QA Engineer** | تحليل الأخطاء، اختبار الإصلاحات |
-| **Community Manager** | التواصل مع المستخدمين، الردود |
+| Role | Responsibility |
+|------|---------------|
+| **Project Manager** | Daily review, priority classification |
+| **QA Engineer** | Bug analysis, fix testing |
+| **Community Manager** | User communication, responses |
 
 ---
 
@@ -36,35 +36,35 @@
 ```markdown
 ---
 name: Bug Report
-about: الإبلاغ عن خطأ
+about: Report a bug
 title: '[BUG] '
 labels: bug, needs-triage
 ---
 
-## وصف الخطأ
-وصف مختصر للخطأ
+## Bug Description
+Brief description of the bug
 
-## خطوات إعادة الإنتاج
-1. اذهب إلى '...'
-2. انقر على '...'
-3. شاهد الخطأ
+## Steps to Reproduce
+1. Go to '...'
+2. Click on '...'
+3. See the error
 
-## السلوك المتوقع
-صف السلوك المتوقع
+## Expected Behavior
+Describe the expected behavior
 
-## السلوك الفعلي
-صف السلوك الفعلي
+## Actual Behavior
+Describe the actual behavior
 
-## البيئة
-- OS: [مثل Windows 11]
-- Browser: [مثل Chrome 120]
-- Version: [مثل 1.0.0-beta.1]
+## Environment
+- OS: [e.g. Windows 11]
+- Browser: [e.g. Chrome 120]
+- Version: [e.g. 1.0.0-beta.1]
 
 ## Screenshots
-إذا أمكن، أضف لقطات شاشة
+If possible, add screenshots
 
 ## Additional Context
-سياق إضافي
+Additional context
 ```
 
 ### 2.2 Feature Request Template
@@ -72,24 +72,24 @@ labels: bug, needs-triage
 ```markdown
 ---
 name: Feature Request
-about: اقتراح ميزة جديدة
+about: Suggest a new feature
 title: '[FEATURE] '
 labels: enhancement, needs-triage
 ---
 
-## وصف الميزة
-وصف واضح للميزة المطلوبة
+## Feature Description
+Clear description of the requested feature
 
-## الحالة الاستخدامية
-كيف سيتم استخدام هذه الميزة؟
+## Use Case
+How will this feature be used?
 
-## الأولوية المقترحة
-- [ ] High - ضرورية للعمل
-- [ ] Medium - تحسين كبير
-- [ ] Low - تحسين بسيط
+## Suggested Priority
+- [ ] High - Essential for work
+- [ ] Medium - Significant improvement
+- [ ] Low - Minor improvement
 
-## البديل الممكن
-هل هناك طريقة بديلة لتحقيق نفس الهدف؟
+## Possible Alternative
+Is there an alternative way to achieve the same goal?
 ```
 
 ### 2.3 Performance Issue Template
@@ -97,34 +97,34 @@ labels: enhancement, needs-triage
 ```markdown
 ---
 name: Performance Issue
-about: الإبلاغ عن مشكلة أداء
+about: Report a performance issue
 title: '[PERF] '
 labels: performance, needs-triage
 ---
 
-## وصف المشكلة
-وصف مشكلة الأداء
+## Issue Description
+Describe the performance issue
 
 ## Metrics
-- Latency: [مثل 500ms]
-- Memory: [مثل 500MB]
-- CPU: [مثل 80%]
+- Latency: [e.g. 500ms]
+- Memory: [e.g. 500MB]
+- CPU: [e.g. 80%]
 
-## خطوات إعادة الإنتاج
-1. اذهب إلى '...'
-2. انقر على '...'
-3. شاهد البطء
+## Steps to Reproduce
+1. Go to '...'
+2. Click on '...'
+3. See the slowdown
 
-## الأداء المتوقع
-صف الأداء المتوقع
+## Expected Performance
+Describe the expected performance
 
-## الأداء الفعلي
-صف الأداء الفعلي
+## Actual Performance
+Describe the actual performance
 
-## البيئة
-- OS: [مثل Windows 11]
-- Browser: [مثل Chrome 120]
-- Network: [مثل 100Mbps]
+## Environment
+- OS: [e.g. Windows 11]
+- Browser: [e.g. Chrome 120]
+- Network: [e.g. 100Mbps]
 ```
 
 ---
@@ -133,31 +133,31 @@ labels: performance, needs-triage
 
 ### 3.1 General Feedback Form
 
-| السؤال | النوع | ملاحظة |
-|--------|-------|--------|
-| تقييم تجربة المستخدم | Rating (1-5) | 1 = سيء جداً، 5 = ممتاز |
-| الميزات الأكثر فائدة | Multiple Choice | قائمة الميزات |
-| أبرز المشاكل | Checkbox | قائمة المشاكل |
-| الاقتراحات | Text | حقل حر |
+| Question | Type | Note |
+|----------|------|------|
+| User Experience Rating | Rating (1-5) | 1 = Very Poor, 5 = Excellent |
+| Most Useful Features | Multiple Choice | Feature list |
+| Top Issues | Checkbox | Issue list |
+| Suggestions | Text | Free text |
 
-### 3.2 Bug Report Form (لغير التقنيين)
+### 3.2 Bug Report Form (for non-technical users)
 
-| السؤال | النوع | ملاحظة |
-|--------|-------|--------|
-| ما المشكلة؟ | Text | وصف مختصر |
-| ما الذي كنت تحاول فعله؟ | Text | السياق |
-| ماذا حدث بدلاً من ذلك؟ | Text | السلوك الفعلي |
-| هل أنت قادر على إعادة إنتاج المشكلة؟ | Yes/No | تكرار |
-| لقطة شاشة | File Upload | اختياري |
+| Question | Type | Note |
+|----------|------|------|
+| What is the problem? | Text | Brief description |
+| What were you trying to do? | Text | Context |
+| What happened instead? | Text | Actual behavior |
+| Can you reproduce the issue? | Yes/No | Repeatable |
+| Screenshot | File Upload | Optional |
 
 ### 3.3 Feature Request Form
 
-| السؤال | Tipo | ملاحظة |
-|--------|-------|--------|
-| ما الميزة التي تطلبها؟ | Text | وصف واضح |
-| كيف ستستخدم هذه الميزة؟ | Text | حالة الاستخدام |
-| ما أهميتها لك؟ | Multiple Choice | Must have / Nice to have |
-| هل لديك بديل حالياً؟ | Text | اختياري |
+| Question | Type | Note |
+|----------|------|------|
+| What feature are you requesting? | Text | Clear description |
+| How will you use this feature? | Text | Use case |
+| How important is it to you? | Multiple Choice | Must have / Nice to have |
+| Do you have a current alternative? | Text | Optional |
 
 ---
 
@@ -165,44 +165,44 @@ labels: performance, needs-triage
 
 ### 4.1 Severity Levels
 
-| المستوى | الوصف | وقت الرد |
-|---------|-------|---------|
-| **Critical** | نظام ي crash، فقدان بيانات | < 24 ساعة |
-| **High** | ميزة رئيسية لا تعمل | < 48 ساعة |
-| **Medium** | خطأ بسيط، يوجد حل بديل | < 1 أسبوع |
-| **Low** | تجميلي، تحسين | < 2 أسبوع |
+| Level | Description | Response Time |
+|-------|-------------|---------------|
+| **Critical** | System crash, data loss | < 24 hours |
+| **High** | Major feature not working | < 48 hours |
+| **Medium** | Minor bug, workaround exists | < 1 week |
+| **Low** | Cosmetic, enhancement | < 2 weeks |
 
 ### 4.2 Category Tags
 
-| التصنيف | الوصف |
-|---------|-------|
-| `ui/ux` | واجهة المستخدم |
-| `performance` | أداء |
-| `security` | أمان |
-| `feature-request` | طلب ميزة |
-| `documentation` | توثيق |
-| `integration` | تكامل |
-| `backend` | خادم |
-| `frontend` | واجهة |
+| Category | Description |
+|----------|-------------|
+| `ui/ux` | User interface |
+| `performance` | Performance |
+| `security` | Security |
+| `feature-request` | Feature request |
+| `documentation` | Documentation |
+| `integration` | Integration |
+| `backend` | Backend |
+| `frontend` | Frontend |
 
 ---
 
 ## 5. Response SLA
 
-### جدول الاستجابة
+### Response Schedule
 
-| الخطورة | الإقرار | الرد الأول | حل المشكلة |
-|---------|---------|-----------|-----------|
-| **Critical** | < 2 ساعة | < 24 ساعة | < 72 ساعة |
-| **High** | < 4 ساعات | < 48 ساعة | < 1 أسبوع |
-| **Medium** | < 1 يوم | < 3 أيام | < 2 أسبوع |
-| **Low** | < 2 يوم | < 1 أسبوع | < 1 شهر |
+| Severity | Acknowledgment | First Response | Resolution |
+|----------|---------------|---------------|-----------|
+| **Critical** | < 2 hours | < 24 hours | < 72 hours |
+| **High** | < 4 hours | < 48 hours | < 1 week |
+| **Medium** | < 1 day | < 3 days | < 2 weeks |
+| **Low** | < 2 days | < 1 week | < 1 month |
 
-### تعريف المصطلحات
+### Terminology
 
-- **Acknowledgment**: تأكيد استلام البلاغ
-- **First Response**: رد تقني أول
-- **Resolution**: حل المشكلة أو تحديد خطة العمل
+- **Acknowledgment**: Confirmation of report receipt
+- **First Response**: Initial technical reply
+- **Resolution**: Problem solved or action plan defined
 
 ---
 
@@ -213,50 +213,50 @@ labels: performance, needs-triage
 ```markdown
 # Weekly Beta Report — [Date]
 
-## ملخص
-- إجمالي التعليقات: [عدد]
-- تم حلها: [عدد]
-- معلقة: [عدد]
+## Summary
+- Total feedback: [count]
+- Resolved: [count]
+- Pending: [count]
 
-## حسب الخطورة
-- Critical: [عدد]
-- High: [عدد]
-- Medium: [عدد]
-- Low: [عدد]
+## By Severity
+- Critical: [count]
+- High: [count]
+- Medium: [count]
+- Low: [count]
 
-## حسب التصنيف
-- UI/UX: [عدد]
-- Performance: [عدد]
-- Security: [عدد]
-- Feature Request: [عدد]
+## By Category
+- UI/UX: [count]
+- Performance: [count]
+- Security: [count]
+- Feature Request: [count]
 
-## أهم 5 مشاكل
-1. [مشكلة 1] — [حالة]
-2. [مشكلة 2] — [حالة]
-3. [مشكلة 3] — [حالة]
-4. [مشكلة 4] — [حالة]
-5. [مشكلة 5] — [حالة]
+## Top 5 Issues
+1. [Issue 1] — [Status]
+2. [Issue 2] — [Status]
+3. [Issue 3] — [Status]
+4. [Issue 4] — [Status]
+5. [Issue 5] — [Status]
 
-## مشاكل محلولة
-- [مشكلة 1] — [تاريخ الحل]
-- [مشكلة 2] — [تاريخ الحل]
+## Resolved Issues
+- [Issue 1] — [Resolution date]
+- [Issue 2] — [Resolution date]
 
-## مشاكل معلقة
-- [مشكلة 1] — [سبب التأخير]
-- [مشكلة 2] — [سبب التأخير]
+## Pending Issues
+- [Issue 1] — [Reason for delay]
+- [Issue 2] — [Reason for delay]
 
-## الاتجاهات
-- [اتجاه 1]
-- [اتجاه 2]
+## Trends
+- [Trend 1]
+- [Trend 2]
 ```
 
 ### 6.2 Distribution
 
-| القناة | التوقيت |
-|--------|---------|
-| **Email to team** | الأحد 9 صباحاً |
-| **GitHub Discussions** | الأحد 12 ظهراً |
-| **Shared with testers** | الأحد 3 عصراً |
+| Channel | Timing |
+|---------|--------|
+| **Email to team** | Sunday 9:00 AM |
+| **GitHub Discussions** | Sunday 12:00 PM |
+| **Shared with testers** | Sunday 3:00 PM |
 
 ---
 
@@ -265,29 +265,29 @@ labels: performance, needs-triage
 ### 7.1 Daily Triage
 
 ```
-1. مراجعة Issues الجديدة (9 صباحاً)
-2. تصنيف الخطورة (Critical/High/Medium/Low)
-3. إضافة التصنيف (ui/ux, performance, etc.)
-4. التعيين لعضو الفريق
-5. تحديث الحالة
+1. Review new Issues (9:00 AM)
+2. Classify severity (Critical/High/Medium/Low)
+3. Add category (ui/ux, performance, etc.)
+4. Assign to team member
+5. Update status
 ```
 
 ### 7.2 Weekly Review
 
 ```
-1. تحليل الاتجاهات (الأحد 10 صباحاً)
-2. تحديد الأولويات للأسابيع القادمة
-3. تحديث Roadmap إذا لزم الأمر
-4. إعداد التقرير الأسبوعي
+1. Analyze trends (Sunday 10:00 AM)
+2. Define priorities for upcoming weeks
+3. Update Roadmap if necessary
+4. Prepare weekly report
 ```
 
 ### 7.3 Triage Checklist
 
-- [ ] هل هذا خطأ جديد أو مكرر؟
-- [ ] ما الخطورة؟
-- [ ] ما التصنيف؟
-- [ ] من المسؤول عن الإصلاح؟
-- [ ] ما الجدول الزمني للإصلاح؟
+- [ ] Is this a new bug or duplicate?
+- [ ] What is the severity?
+- [ ] What is the category?
+- [ ] Who is responsible for the fix?
+- [ ] What is the timeline for the fix?
 
 ---
 
@@ -296,30 +296,30 @@ labels: performance, needs-triage
 ### 8.1 Onboarding Email
 
 ```markdown
-مرحباً بك في Beta Testing لـ EMO AI!
+Welcome to Beta Testing for EMO AI!
 
-شكراً لانضمامك. نحتاج مساعدتك لتحسين المنتج.
+Thank you for joining. We need your help to improve the product.
 
-## كيف تقدم التعليقات
+## How to Provide Feedback
 
-### لل bugs:
-- استخدم: [GitHub Issues](link)
-- أو: [Google Form](link)
+### For bugs:
+- Use: [GitHub Issues](link)
+- Or: [Google Form](link)
 
-### للتعليقات العامة:
-- استخدم: [Google Form](link)
+### For general feedback:
+- Use: [Google Form](link)
 
-### للنقاش:
-- انضم إلى: [Discord](link)
+### For discussions:
+- Join: [Discord](link)
 
-## وقت الرد
+## Response Time
 
-- Critical: < 24 ساعة
-- High: < 48 ساعة
-- Medium: < 1 أسبوع
-- Low: < 2 أسبوع
+- Critical: < 24 hours
+- High: < 48 hours
+- Medium: < 1 week
+- Low: < 2 weeks
 
-شكراً لمساهمتك!
+Thank you for your contribution!
 ```
 
 ### 8.2 Weekly Newsletter
@@ -327,52 +327,52 @@ labels: performance, needs-triage
 ```markdown
 # Beta Update — Week [X]
 
-## ملخص الأسبوع
-- [عدد] تعليقات جديدة
-- [عدد] مشاكل محلولة
-- [عدد] ميزات جديدة
+## Weekly Summary
+- [count] New feedback
+- [count] Issues resolved
+- [count] New features
 
-## مشاكل محلولة هذه الأسبوع
-- [مشكلة 1]
-- [مشكلة 2]
+## Issues Resolved This Week
+- [Issue 1]
+- [Issue 2]
 
-## مشاكل معروفة
-- [مشكلة 1] — قيد الإصلاح
-- [مشكلة 2] — قيد التحليل
+## Known Issues
+- [Issue 1] — Under fix
+- [Issue 2] — Under analysis
 
-## ميزات قادمة
-- [ميزة 1]
-- [ميزة 2]
+## Upcoming Features
+- [Feature 1]
+- [Feature 2]
 
-## شكراً لمساهمتكم!
+## Thank you for your contributions!
 ```
 
 ---
 
 ## 9. Metrics & KPIs
 
-### جدول المقاييس
+### Metrics Table
 
-| المقياس | الهدف | القياس |
-|---------|-------|--------|
-| وقت الرد (Critical) | < 24 ساعة | GitHub timestamps |
-| نسبة الحل (أسابيع 1-4) | > 70% | Resolved / Total |
-| رضا المستخدمين | > 4.0/5.0 | Google Forms |
-| نسبة تقديم التعليقات | > 30% | Submissions / Testers |
+| Metric | Target | Measurement |
+|--------|--------|-------------|
+| Response Time (Critical) | < 24 hours | GitHub timestamps |
+| Resolution Rate (Weeks 1-4) | > 70% | Resolved / Total |
+| User Satisfaction | > 4.0/5.0 | Google Forms |
+| Feedback Submission Rate | > 30% | Submissions / Testers |
 
-### المقاييس الإضافية
+### Additional Metrics
 
-| المقياس | الهدف |
-|---------|-------|
-| عدد المستخدمين النشطين | > 500 |
-| عدد التثبيتات | > 1000 |
-| وقت التشغيل | > 99.5% |
-| وقت الاستجابة | < 500ms |
+| Metric | Target |
+|--------|--------|
+| Active Users | > 500 |
+| Installations | > 1000 |
+| Uptime | > 99.5% |
+| Response Time | < 500ms |
 
 ### Dashboard Metrics
 
 ```python
-# مقاييس ل追跡 في Dashboard
+# Metrics to track in Dashboard
 metrics = {
     "total_feedback": 0,
     "critical_bugs": 0,
@@ -430,16 +430,16 @@ rules:
 
 ### Notifications
 
-| الأداة | الاستخدام |
-|--------|----------|
-| **Slack/Discord** | إشعارات فورية للـ Critical |
-| **Email** | تقارير أسبوعية |
-| **GitHub** | إشعارات التحديثات |
+| Tool | Usage |
+|------|-------|
+| **Slack/Discord** | Instant Critical notifications |
+| **Email** | Weekly reports |
+| **GitHub** | Update notifications |
 
 ### Dashboard
 
 ```bash
-# أوامر مفيدة للـ Dashboard
+# Useful commands for Dashboard
 gh issue list --label "beta,critical" --state open
 gh issue list --label "beta,high" --state open
 gh issue list --label "beta" --state closed --limit 10
@@ -447,5 +447,5 @@ gh issue list --label "beta" --state closed --limit 10
 
 ---
 
-**آخر تحديث**: 2026-06-12
-**الإصدار**: 1.0.0
+**Last Updated**: 2026-06-12
+**Version**: 1.0.0

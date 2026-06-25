@@ -1,67 +1,67 @@
 # 🎯 EMO AI — Single Source of Truth
 
-> الوثيقة المرجعية النهائية لكل قرار معماري أو تقني في المشروع
+> The ultimate reference document for every architectural or technical decision in the project
 
 ---
 
-## 1. الرؤية النهائية (North Star)
+## 1. Final Vision (North Star)
 
-### ما هو EMO AI؟
+### What is EMO AI?
 
-EMO AI هو **نظام تشغيل كامل للتنفيذ الذكي** (AI Execution OS) مصمم لتشغيل سير العمل المعقدة، إدارة الوكلاء المتعددين، والتكامل مع الأنظمة الصناعية والمؤسسية.
+EMO AI is a **complete AI Execution Operating System** designed to run complex workflows, manage multiple agents, and integrate with industrial and enterprise systems.
 
-### ما الذي يميزه عن الأنظمة الأخرى؟
+### What sets it apart from other systems?
 
-| الميزة | EMO AI | الأنظمة الأخرى |
-|--------|--------|----------------|
-| **النطاق** | نظام تشغيل كامل | أدوات منفردة |
-| **الأمان** | RBAC + ABAC + Guardian | مصادقة بسيطة |
-| **التوأم الرقمي** | محاكاة sectors صناعية | غير موجود |
-| **HITL** | Human Governance Pipeline | غير موجود |
-| **المرونة** | Plugin Architecture | صعب التوسع |
+| Feature | EMO AI | Other Systems |
+|---------|--------|---------------|
+| **Scope** | Complete OS | Standalone Tools |
+| **Security** | RBAC + ABAC + Guardian | Simple Authentication |
+| **Digital Twin** | Industrial Sector Simulation | Not Available |
+| **HITL** | Human Governance Pipeline | Not Available |
+| **Flexibility** | Plugin Architecture | Hard to Scale |
 
-### الهدف النهائي
+### Ultimate Goal
 
-**Industrial AI Execution OS** — نظام تشغيل ذكاء اصطناعي جاهز للإنتاج الصناعي، يدعم قطاعات المياه، الطاقة، التصنيع، وERP.
+**Industrial AI Execution OS** — An AI operating system ready for industrial production, supporting water, energy, manufacturing, and ERP sectors.
 
 ---
 
-## 2. الحالة الحالية (Current State)
+## 2. Current State
 
-### الإصدار الحالي
+### Current Version
 
-| الخاصية | القيمة |
-|---------|--------|
-| **الإصدار** | RC16.6 (Knowledge Freeze) |
-| **التاريخ** | 2026-06-12 |
-| **الحالة** | Production-Ready |
+| Property | Value |
+|----------|-------|
+| **Version** | RC16.6 (Knowledge Freeze) |
+| **Date** | 2026-06-12 |
+| **Status** | Production-Ready |
 
-### إحصائيات المشروع
+### Project Statistics
 
-| الإحصائية | القيمة |
-|-----------|--------|
-| **إجمالي ملفات Python** | 657+ |
-| **إجمالي أسطر الكود** | 161,371+ |
-| **عدد الاختبارات** | 2,430+ |
-| **نسبة النجاح** | 100% |
-| **عدد endpoints** | 290+ |
-| **عدد Services** | 5 (Service Mesh) |
+| Statistic | Value |
+|-----------|-------|
+| **Total Python Files** | 657+ |
+| **Total Lines of Code** | 161,371+ |
+| **Test Count** | 2,430+ |
+| **Success Rate** | 100% |
+| **Endpoints** | 290+ |
+| **Services** | 5 (Service Mesh) |
 
-### حالة الطبقات (R1-R5)
+### Layer Status (R1-R5)
 
-| الطبقة | الحالة | الوصف |
-|--------|--------|-------|
+| Layer | Status | Description |
+|-------|--------|-------------|
 | **R1: Foundation** | ✅ COMPLETED | core/interfaces, core/canon |
-| **R2: Runtime** | ✅ COMPLETED | core/runtime (201 ملف) |
+| **R2: Runtime** | ✅ COMPLETED | core/runtime (201 files) |
 | **R3: Services** | ✅ COMPLETED | 5 services (Service Mesh) |
 | **R4: Applications** | ✅ COMPLETED | routers, middleware |
 | **R5: Enterprise** | 🔄 PARTIAL | control_plane, security |
 
 ---
 
-## 3. المعمارية المعتمدة (Approved Architecture)
+## 3. Approved Architecture
 
-### الطبقات التسع (9 Layers)
+### Nine Layers
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -110,20 +110,20 @@ EMO AI هو **نظام تشغيل كامل للتنفيذ الذكي** (AI Execu
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### Service Mesh (5 خدمات)
+### Service Mesh (5 Services)
 
-| الخدمة | المسؤولية | الملف |
-|--------|----------|-------|
-| **ExecutionScheduler** | ترتيب التنفيذ | `scheduler.py` |
-| **Dispatcher** | توزيع المهام | `dispatcher.py` |
-| **RetryHandler** | إعادة المحاولة | `retry_handler.py` |
-| **StateStore** | حفظ الحالة | `state_store.py` |
-| **LeaseManager** | إدارة الإيجار | `lease_manager.py` |
+| Service | Responsibility | File |
+|---------|---------------|------|
+| **ExecutionScheduler** | Execution Ordering | `scheduler.py` |
+| **Dispatcher** | Task Distribution | `dispatcher.py` |
+| **RetryHandler** | Retry Handling | `retry_handler.py` |
+| **StateStore** | State Persistence | `state_store.py` |
+| **LeaseManager** | Lease Management | `lease_manager.py` |
 
-### Canon Laws (27 قانون)
+### Canon Laws (27 Laws)
 
-| القانون | الوصف |
-|---------|-------|
+| Law | Description |
+|-----|-------------|
 | **LAW 1** | ExecutionEngine Isolation |
 | **LAW 2** | No Dynamic Plugin Loading |
 | **LAW 3** | Capability First |
@@ -164,95 +164,95 @@ Audit Trail (SHA-256)
 
 ---
 
-## 4. القرارات المعمارية الحاسمة (Critical Decisions)
+## 4. Critical Decisions
 
 ### Decision 1: Security-First
 
-> **القرار**: الأمان هو الأولوية القصوى في كل قرار معماري.
+> **Decision**: Security is the top priority in every architectural decision.
 
-- لا ت妥协 على الأمان أبداً
-- كل طبقة لها فحص أمان خاص بها
-- Guardian Pipeline إلزامي لكل طلب
+- Never compromise on security
+- Every layer has its own security check
+- Guardian Pipeline is mandatory for every request
 
 ### Decision 2: No Caller-Supplied Roles
 
-> **القرار**: لا تسمح للمستخدم بتحديد أدواره.
+> **Decision**: Do not allow users to specify their own roles.
 
-- الأدوار تُحدد فقط من قاعدة البيانات
-- لا roles في JWT payload
-- لا trusts from clients
+- Roles are determined only from the database
+- No roles in JWT payload
+- No trust from clients
 
 ### Decision 3: Default DENY
 
-> **القرار**: الافتراضي هو الرفض، ويجب السماح صراحةً.
+> **Decision**: Default is DENY, and permission must be explicitly granted.
 
-- لا صلاحيات افتراضية
-- كل إذن يجب توثيقه
-- Audit trail لكل قرار أمان
+- No default permissions
+- Every permission must be documented
+- Audit trail for every security decision
 
 ### Decision 4: Enterprise Control Plane
 
-> **القرار**: بناء طبقة تحكم مؤسسية موحدة.
+> **Decision**: Build a unified enterprise control plane.
 
-- إدارة المستخدمين وال_roles
-- Audit Trail موحد
+- User and role management
+- Unified Audit Trail
 - Policy Enforcement Point
 
 ### Decision 5: Agent Contract Unification
 
-> **القرار**: توحيد عقود الوكلاء.
+> **Decision**: Unify agent contracts.
 
-- عقد موحد لكل Types من الوكلاء
-- لا أنواع متعددة للعقود
-- اختبارات صارمة لكل عقد
+- Unified contract for all agent types
+- No multiple contract types
+- Strict tests for every contract
 
 ### Decision 6: Human Governance
 
-> **القرار**:Human-in-the-Loop إلزامي للقرارات الحرجة.
+> **Decision**: Human-in-the-Loop is mandatory for critical decisions.
 
-- Human Gate لكل قرار يتجاوز عتبة معينة
+- Human Gate for every decision exceeding a certain threshold
 - Approval Pipeline
 - Simulation-before-execution
 
 ---
 
-## 5. القيود والقواعد (Constraints & Rules)
+## 5. Constraints & Rules
 
 ### KERNEL FREEZE
 
-> ⚠️ **ممنوع تعديل core/interfaces/ و core/canon/ بدون مراجعة مسبقة.**
+> ⚠️ **Modifying core/interfaces/ and core/canon/ is prohibited without prior review.**
 
-- هذه الملفات هي "النواة" غير القابلة للتعديل
-- أي تعديل يحتاج موافقة المشرف
-- الاختبارات يجب أن تبقى PASS
+- These files are the non-modifiable "kernel"
+- Any modification requires supervisor approval
+- Tests must remain PASS
 
 ### RC16.7 MANDATE
 
-> 📋 **يجب إكمال RC16.7 قبل الانتقال لأي إصدار آخر.**
+> 📋 **RC16.7 must be completed before moving to any other version.**
 
-- إكمال Control Plane
-- إكمال Agent Unification
-- إكمال Digital Twin Core
+- Complete Control Plane
+- Complete Agent Unification
+- Complete Digital Twin Core
 
 ### Development Rules
 
-| القاعدة | الوصف |
-|---------|-------|
-| **No Cross-Layer Imports** | ممنوع imports بين الطبقات |
-| **Test Coverage ≥ 80%** | تغطية اختبارات لا تقل عن 80% |
-| **Type Hints Required** | نوع البيانات مطلوب لكل دالة |
-| **Docstrings Required** | وصف مطلوب لكل دالة |
-| **No Hardcoded Secrets** | ممنوع secrets في الكود |
-| **Logging Required** | استخدام logging بدلاً من print |
+| Rule | Description |
+|------|-------------|
+| **No Cross-Layer Imports** | Imports between layers are prohibited |
+| **Test Coverage ≥ 80%** | Test coverage must be at least 80% |
+| **Type Hints Required** | Type hints are required for every function |
+| **Docstrings Required** | Documentation is required for every function |
+| **No Hardcoded Secrets** | Secrets are prohibited in code |
+| **Logging Required** | Use logging instead of print |
 
 ---
 
-## 6. ما تم إنجازه (Completed)
+## 6. Completed
 
-### الإصدارات
+### Versions
 
-| الإصدار | الحالة | الوصف |
-|---------|--------|-------|
+| Version | Status | Description |
+|---------|--------|-------------|
 | **RC12** | ✅ COMPLETED | Foundation |
 | **RC13** | ✅ COMPLETED | Cognitive Layer |
 | **RC14** | ✅ COMPLETED | Workflow Intelligence |
@@ -261,20 +261,20 @@ Audit Trail (SHA-256)
 | **RC16.6** | ✅ COMPLETED | Knowledge Freeze |
 | **RC16.6.1** | ✅ COMPLETED | Bug Fixes |
 
-### الطبقات (R1-R5)
+### Layers (R1-R5)
 
-| الطبقة | الحالة | التفاصيل |
-|--------|--------|----------|
+| Layer | Status | Details |
+|-------|--------|---------|
 | **R1: Foundation** | ✅ COMPLETED | core/interfaces, core/canon |
-| **R2: Runtime** | ✅ COMPLETED | core/runtime (201 ملف) |
+| **R2: Runtime** | ✅ COMPLETED | core/runtime (201 files) |
 | **R3: Services** | ✅ COMPLETED | 5 services (Service Mesh) |
 | **R4: Applications** | ✅ COMPLETED | routers, middleware |
 | **R5: Enterprise** | 🔄 PARTIAL | control_plane, security |
 
-### الاختبارات
+### Tests
 
-| الفئة | العدد | الحالة |
-|--------|------|--------|
+| Category | Count | Status |
+|----------|-------|--------|
 | **Unit Tests** | ~800 | ✅ PASS |
 | **Integration Tests** | ~400 | ✅ PASS |
 | **Security Tests** | ~200 | ✅ PASS |
@@ -283,12 +283,12 @@ Audit Trail (SHA-256)
 
 ---
 
-## 7. ما هو المتبقي (Remaining)
+## 7. Remaining
 
-### الإصدارات القادمة
+### Upcoming Versions
 
-| الإصدار | الحالة | الوصف |
-|---------|--------|-------|
+| Version | Status | Description |
+|---------|--------|-------------|
 | **RC16.7** | 📋 PLANNED | Control Plane |
 | **RC16.8** | 📋 PLANNED | Agent Unification |
 | **RC16.9** | 📋 PLANNED | Digital Twin Core |
@@ -328,98 +328,98 @@ Audit Trail (SHA-256)
 
 ---
 
-## 8. الفجوات الحرجة (Critical Gaps)
+## 8. Critical Gaps
 
-### تم إصلاحها ✅
+### Fixed ✅
 
-| الفجوة | الحالة | التاريخ |
-|--------|--------|---------|
+| Gap | Status | Date |
+|-----|--------|------|
 | **Cross-Layer Imports** | ✅ FIXED | 2026-06-12 |
 | **Health Checks** | ✅ FIXED | 2026-06-12 |
 | **.venv Cleanup** | ✅ FIXED | 2026-06-12 |
 
-### لم يتم إصلاحها بعد ❌
+### Not Fixed Yet ❌
 
-| الفجوة | الأولوية | الوصف |
-|--------|---------|-------|
-| **TODO/FIXME Markers** | Medium | 27 علامة متبقية |
-| **Orphan Directories** | Low | 3 مجلدات يتيمة |
-| **Missing Tests** | High | بعض المكونات بلا اختبارات |
+| Gap | Priority | Description |
+|-----|----------|-------------|
+| **TODO/FIXME Markers** | Medium | 27 remaining markers |
+| **Orphan Directories** | Low | 3 orphan folders |
+| **Missing Tests** | High | Some components lack tests |
 
 ---
 
-## 9. الديون المعمارية (Architectural Debt)
+## 9. Architectural Debt
 
 ### AD-001: DeterministicResume bugs
 
-- **المشكلة**: أخطاء في DeterministicResume
-- **الأثر**: بطء في الاستئناف
-- **الحل المطلوب**: إعادة كتابة المنطق
-- **الأولوية**: Medium
+- **Problem**: Bugs in DeterministicResume
+- **Impact**: Slow resume
+- **Required Solution**: Rewrite the logic
+- **Priority**: Medium
 
 ### AD-002: ContractValidator defaults
 
-- **المشكلة**: قيم افتراضية خاطئة في ContractValidator
-- **الأثر**: اختبارات قد تفشل
-- **الحل المطلوب**: مراجعة القيم الافتراضية
-- **الأولوية**: High
+- **Problem**: Wrong default values in ContractValidator
+- **Impact**: Tests may fail
+- **Required Solution**: Review default values
+- **Priority**: High
 
 ### AD-003: G5 zero test coverage
 
-- **المشكلة**: G5 بلا اختبارات
-- **الأثر**: عدم ثقة في الكود
-- **الحل المطلوب**: إضافة اختبارات
-- **الأولوية**: High
+- **Problem**: G5 has no tests
+- **Impact**: Lack of confidence in code
+- **Required Solution**: Add tests
+- **Priority**: High
 
 ### AD-004: Telemetry skips large DAGs
 
-- **المشكلة**: Telemetry يتخطى DAGs الكبيرة
-- **الأثر**: فقدان بيانات مراقبة
-- **الحل المطلوب**: تحسين المنطق
-- **الأولوية**: Medium
+- **Problem**: Telemetry skips large DAGs
+- **Impact**: Loss of monitoring data
+- **Required Solution**: Improve logic
+- **Priority**: Medium
 
 ### AD-005: TopologyViewer mocked
 
-- **المشكلة**: TopologyViewer يعتمد على mocks
-- **الأثر**: اختبارات غير واقعية
-- **الحل المطلوب**: استخدام بيانات حقيقية
-- **الأولوية**: Medium
+- **Problem**: TopologyViewer depends on mocks
+- **Impact**: Unrealistic tests
+- **Required Solution**: Use real data
+- **Priority**: Medium
 
 ### AD-006: Replay re-runs full DAG
 
-- **المشكلة**: Replay يعيد تشغيل DAG كامل
-- **الأثر**: بطء في الاستئناف
-- **الحل المطلوب**: تشغيل جزئي
-- **الأولوية**: Medium
+- **Problem**: Replay re-runs full DAG
+- **Impact**: Slow resume
+- **Required Solution**: Partial execution
+- **Priority**: Medium
 
 ### AD-007: ReplayDrift = 0.0
 
-- **المشكلة**: ReplayDrift يساوي صفر دائماً
-- **الأثر**: عدم كشف الانحرافات
-- **الحل المطلوب**: حساب حقيقي
-- **الأولوية**: High
+- **Problem**: ReplayDrift always equals zero
+- **Impact**: No drift detection
+- **Required Solution**: Real calculation
+- **Priority**: High
 
 ---
 
-## 10. خريطة الطريق (Roadmap)
+## 10. Roadmap
 
 ### Phase 0: Cleanup ✅
 
-- [x] إزالة .venv
-- [x] تنظيف .gitignore
-- [x] إصلاح Cross-Layer Imports
-- [x] إضافة Health Checks
-- [x] تحديث README.md
-- [x] إنشاء CONTRIBUTING.md
-- [x] إنشاء PROJECT_INDEX.md
-- [x] إنشاء SINGLE_SOURCE_OF_TRUTH.md
+- [x] Remove .venv
+- [x] Clean .gitignore
+- [x] Fix Cross-Layer Imports
+- [x] Add Health Checks
+- [x] Update README.md
+- [x] Create CONTRIBUTING.md
+- [x] Create PROJECT_INDEX.md
+- [x] Create SINGLE_SOURCE_OF_TRUTH.md
 
 ### Phase 1: Beta Release 📋
 
-- [ ] إكمال Control Plane
-- [ ] إكمال Agent Unification
-- [ ] إكمال Digital Twin Core
-- [ ] تغطية اختبارات ≥ 90%
+- [ ] Complete Control Plane
+- [ ] Complete Agent Unification
+- [ ] Complete Digital Twin Core
+- [ ] Test coverage ≥ 90%
 
 ### Phase 2: Workflow Studio 📋
 
@@ -465,63 +465,63 @@ Audit Trail (SHA-256)
 
 ---
 
-## 11. المصادر المرجعية (Reference Sources)
+## 11. Reference Sources
 
-### الوثائق الرئيسية
+### Main Documents
 
-| الوثيقة | الوصف | الموقع |
-|---------|-------|--------|
-| **ROADMAP_MASTER_v3.md** | خارطة الطريق الشاملة | `docs/ROADMAP_MASTER_v3.md` |
-| **PROJECT_INDEX.md** | فهرس المشروع | `PROJECT_INDEX.md` |
-| **DEVELOPER.md** | الدليل التقني | `DEVELOPER.md` |
-| **ARCHITECTURE_DESIGN.md** | التصميم المعماري | `docs/architecture/` |
-| **CHANGELOG.md** | سجل التغييرات | `CHANGELOG.md` |
+| Document | Description | Location |
+|----------|-------------|----------|
+| **ROADMAP_MASTER_v3.md** | Comprehensive Roadmap | `docs/ROADMAP_MASTER_v3.md` |
+| **PROJECT_INDEX.md** | Project Index | `PROJECT_INDEX.md` |
+| **DEVELOPER.md** | Technical Guide | `DEVELOPER.md` |
+| **ARCHITECTURE_DESIGN.md** | Architectural Design | `docs/architecture/` |
+| **CHANGELOG.md** | Change Log | `CHANGELOG.md` |
 
-### الوثائق الفرعية
+### Sub Documents
 
-| الوثيقة | الوصف | الموقع |
-|---------|-------|--------|
-| **docs/api/** | مرجع API | `docs/api/` |
-| **docs/sdk/** | دليل المطور | `docs/sdk/` |
-| **docs/security/** | النموذج الأمني | `docs/security/` |
-| **docs/deployment/** | أدلة النشر | `docs/deployment/` |
-| **docs/testing.md** | سجل الاختبارات | `docs/testing.md` |
+| Document | Description | Location |
+|----------|-------------|----------|
+| **docs/api/** | API Reference | `docs/api/` |
+| **docs/sdk/** | Developer Guide | `docs/sdk/` |
+| **docs/security/** | Security Model | `docs/security/` |
+| **docs/deployment/** | Deployment Guides | `docs/deployment/` |
+| **docs/testing.md** | Test Log | `docs/testing.md` |
 
-### ملفات النظام
+### System Files
 
-| الملف | الوصف | الموقع |
-|-------|-------|--------|
-| **core/canon/** | القواعد المعمارية | `core/canon/` |
-| **core/interfaces/** | الواجهات | `core/interfaces/` |
-| **core/runtime/** | بيئة التنفيذ | `core/runtime/` |
-
----
-
-## 12. قواعد التحديث (Update Rules)
-
-### متى يتم تحديث هذه الوثيقة؟
-
-- ✅ عند إصدار إصدار جديد
-- ✅ عند إكمال مرحلة مهمة
-- ✅ عند اتخاذ قرار معماري جديد
-- ✅ عند اكتشاف فجوة حرجة
-- ✅ عند تحديث الديون المعمارية
-
-### من المسؤول عن التحديث؟
-
-- **المشرف المعماري**: القرارات المعمارية
-- **فريق التطوير**: الإنجازات والديون
-- **فريق الأمان**: الفجوات الأمنية
-
-### كيف يتم المراجعة؟
-
-1. **طلب التحديث**: إنشاء Issue أو PR
-2. **المراجعة**: مراجعة من المشرف المعماري
-3. **القبول**: دمج التغييرات
-4. **التوثيق**: تحديث CHANGELOG.md
+| File | Description | Location |
+|------|-------------|----------|
+| **core/canon/** | Architectural Rules | `core/canon/` |
+| **core/interfaces/** | Interfaces | `core/interfaces/` |
+| **core/runtime/** | Execution Environment | `core/runtime/` |
 
 ---
 
-**آخر تحديث**: 2026-06-12
-**الإصدار**: 1.0.0
-**الحالة**: Production-Ready
+## 12. Update Rules
+
+### When to Update This Document?
+
+- ✅ When a new version is released
+- ✅ When a major phase is completed
+- ✅ When a new architectural decision is made
+- ✅ When a critical gap is discovered
+- ✅ When architectural debt is updated
+
+### Who is Responsible for Updates?
+
+- **Architectural Lead**: Architectural decisions
+- **Development Team**: Achievements and debt
+- **Security Team**: Security gaps
+
+### How is Review Done?
+
+1. **Update Request**: Create Issue or PR
+2. **Review**: Review by architectural lead
+3. **Approval**: Merge changes
+4. **Documentation**: Update CHANGELOG.md
+
+---
+
+**Last Updated**: 2026-06-12
+**Version**: 1.0.0
+**Status**: Production-Ready

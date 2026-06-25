@@ -1,43 +1,43 @@
 # EMO AI — Developer Reference Guide
 
-| البند          | القيمة                                        |
-|----------------|-----------------------------------------------|
-| **التاريخ**    | 2026-06-13                                    |
-| **المؤلف**     | opencode AI Agent                             |
-| **الإصدار**    | 1.0.0-RC16.9 (Industrial Intelligence Fabric) |
-| **المشروع**    | EMO AI Execution OS                           |
-| **الترخيص**    | Open Source (MIT/Apache 2.0 — TBD)            |
-| **المنصات**    | macOS + Windows + Android (web-responsive)    |
-| **الهدف**      | 3 مستخدمين في المرحلة الأولى                  |
-| **الامتثال**   | GDPR + SOC2                                   |
+| Item            | Value                                         |
+|-----------------|-----------------------------------------------|
+| **Date**        | 2026-06-13                                    |
+| **Author**      | opencode AI Agent                             |
+| **Version**     | 1.0.0-RC16.9 (Industrial Intelligence Fabric) |
+| **Project**     | EMO AI Execution OS                           |
+| **License**     | Open Source (MIT/Apache 2.0 — TBD)            |
+| **Platforms**   | macOS + Windows + Android (web-responsive)    |
+| **Target**      | 3 users in the first phase                    |
+| **Compliance**  | GDPR + SOC2                                   |
 
 ---
 
-## فهرس المحتويات
+## Table of Contents
 
-1. [نظرة عامة على المشروع](#1-نظرة-عامة-على-المشروع)
-2. [هيكل المشروع](#2-هيكل-المشروع)
+1. [Project Overview](#1-project-overview)
+2. [Project Structure](#2-project-structure)
 3. [AI Intelligence Layer](#3-ai-intelligence-layer)
-4. [خريطة الاعتماديات](#4-خريطة-الاعتماديات-dependency-map)
-5. [المكونات الأساسية](#5-المكونات-الأساسية)
-6. [واجهة البرمجة (API Reference)](#6-واجهة-البرمجة-api-reference)
-7. [قواعد البيانات](#7-قواعد-البيانات)
-8. [إعداد بيئة التطوير](#8-إعداد-بيئة-التطوير)
-9. [دليل التشغيل](#9-دليل-التشغيل)
-10. [دليل الصيانة](#10-دليل-الصيانة)
-11. [استكشاف الأخطاء](#11-استكشاف-الأخطاء)
-12. [الأمان والامتثال](#12-الأمان-والامتثال)
-13. [دليل المساهمة](#13-دليل-المساهمة)
-14. [سجل التغييرات](#14-سجل-التغييرات)
+4. [Dependency Map](#4-dependency-map)
+5. [Core Components](#5-core-components)
+6. [API Reference](#6-api-reference)
+7. [Databases](#7-databases)
+8. [Development Environment Setup](#8-development-environment-setup)
+9. [Operation Guide](#9-operation-guide)
+10. [Maintenance Guide](#10-maintenance-guide)
+11. [Troubleshooting](#11-troubleshooting)
+12. [Security and Compliance](#12-security-and-compliance)
+13. [Contribution Guide](#13-contribution-guide)
+14. [Changelog](#14-changelog)
 15. [Execution Runtime Specification](#15-execution-runtime-specification)
 16. [Architecture Canon (Official Spec)](#16-architecture-canon-official-spec)
 17. [CodeGraph v1 — Static Analysis System](#17-codegraph-v1--static-analysis-system)
 
 ---
 
-## 1. نظرة عامة على المشروع
+## 1. Project Overview
 
-### 1.1 ما هو EMO AI؟
+### 1.1 What is EMO AI?
 
 EMO AI is a multi-agent system combining:
 - **Orchestrator layer**: FastAPI web server, Telegram bot, project management tools, authentication
@@ -65,33 +65,33 @@ EMO AI is a multi-agent system combining:
 
 ### 1.3 External Integrations
 
-| الميزة | الوصف | الحالة |
+| Feature | Description | Status |
 |--------|-------|--------|
-| Web UI | Glass Morphism + RTL/LTR + Dark/Light | ✅ يعمل |
-| Telegram Bot | Chat via Telegram | ✅ يعمل |
-| System Tray | macOS server monitoring | ✅ يعمل |
-| GitHub API | Repository management | ✅ يعمل |
-| DevOps Tools | Vercel, Docker, Env Manager | ✅ يعمل |
-| Project Tools | Debugger, Code Reviewer, Scaffold, Analyzer | ✅ يعمل |
-| AI Code Intelligence | 15-phase static analysis pipeline | ✅ يعمل (227 tests) |
+| Web UI | Glass Morphism + RTL/LTR + Dark/Light | ✅ Working |
+| Telegram Bot | Chat via Telegram | ✅ Working |
+| System Tray | macOS server monitoring | ✅ Working |
+| GitHub API | Repository management | ✅ Working |
+| DevOps Tools | Vercel, Docker, Env Manager | ✅ Working |
+| Project Tools | Debugger, Code Reviewer, Scaffold, Analyzer | ✅ Working |
+| AI Code Intelligence | 15-phase static analysis pipeline | ✅ Working (227 tests) |
 | LLM Providers | OpenRouter, Groq, Gemini (API) + Ollama (local) | ⚠️ Brain configured (uses direct LLM interface) |
 
-### 1.4 التقنيات المستخدمة
+### 1.4 Technologies Used
 
-| التقنية | الإصدار | الاستخدام |
-|---------|---------|-----------|
-| Python | 3.11+ | اللغة الأساسية |
-| FastAPI | أحدث | إطار عمل HTTP |
-| Uvicorn | أحدث | ASGI Server |
-| SQLite | 3.x | قواعد البيانات (6 قواعد منفصلة) |
-| FAISS | محلي | Semantic vector search |
+| Technology | Version | Usage |
+|------------|---------|-------|
+| Python | 3.11+ | Core language |
+| FastAPI | Latest | HTTP framework |
+| Uvicorn | Latest | ASGI Server |
+| SQLite | 3.x | Databases (6 separate databases) |
+| FAISS | Local | Semantic vector search |
 | sentence-transformers | all-MiniLM-L6-v2 | Query/symbol embedding |
-| TailwindCSS | CDN | تصميم الواجهة |
-| pytest | أحدث | اختبارات (227 اختبار) |
+| TailwindCSS | CDN | UI design |
+| pytest | Latest | Tests (227 tests) |
 
 ---
 
-## 2. هيكل المشروع
+## 2. Project Structure
 
 ```
 Emo-AI/
@@ -409,7 +409,7 @@ The project enforces **layered isolation** to prevent cross-boundary coupling. `
 
 ---
 
-## 4. خريطة الاعتماديات (Dependency Map)
+## 4. Dependency Map
 
 ### 4.1 Python Import Graph
 
@@ -452,7 +452,7 @@ bcrypt               # Password hashing
 
 ---
 
-## 5. المكونات الأساسية
+## 5. Core Components
 
 ### 5.1 GraphQuery (`core/graph_query.py`)
 
@@ -574,38 +574,38 @@ Each parameter has a **Fallback Guard** (`param or Default*()`) ensuring zero-do
 
 ---
 
-## 6. واجهة البرمجة (API Reference)
+## 6. API Reference
 
-### 6.1 نقاط النهاية الحالية
+### 6.1 Current Endpoints
 
-| النقطة | الطريقة | الوصف |
-|--------|---------|-------|
-| `/` | GET | حالة الخادم |
-| `/api/chat` | POST | إرسال رسالة وبدء مهمة |
-| `/api/tasks` | GET | قائمة المهام |
-| `/api/conversations` | GET/POST | إدارة المحادثات |
-| `/api/settings` | POST | تحديث إعداد |
-| `/api/status` | GET | حالة LLM |
-| `/api/history` | GET | سجل المحادثة |
-| `/api/auth/login` | POST | تسجيل دخول |
-| `/api/auth/signup` | POST | إنشاء حساب |
-| `/api/auth/verify` | GET | التحقق من token |
-| `/api/project` | GET | معلومات المشروع |
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/` | GET | Server status |
+| `/api/chat` | POST | Send message and start task |
+| `/api/tasks` | GET | List tasks |
+| `/api/conversations` | GET/POST | Manage conversations |
+| `/api/settings` | POST | Update setting |
+| `/api/status` | GET | LLM status |
+| `/api/history` | GET | Chat history |
+| `/api/auth/login` | POST | Login |
+| `/api/auth/signup` | POST | Create account |
+| `/api/auth/verify` | GET | Verify token |
+| `/api/project` | GET | Project information |
 
-### 6.2 AI Intelligence نقاط مطلوبة
+### 6.2 AI Intelligence Required Endpoints
 
-| النقطة | الطريقة | الوصف | الأولوية |
-|--------|---------|-------|----------|
-| `/api/ai/context/symbol` | POST | Build symbol context for LLM | 🟡 عالية |
-| `/api/ai/query` | POST | Full pipeline (orchestrator entry) | 🟡 عالية |
-| `/api/ai/search` | POST | Hybrid retrieval | 🟡 عالية |
-| `/api/ai/status` | GET | Health check for all AI subsystems | 🔴 حرجة |
-| `/api/ai/replay` | GET | Query replay and feedback | 🟢 متوسطة |
-| `/api/ai/metrics` | GET | Telemetry and analytics | 🟢 متوسطة |
+| Endpoint | Method | Description | Priority |
+|----------|--------|-------------|----------|
+| `/api/ai/context/symbol` | POST | Build symbol context for LLM | 🟡 High |
+| `/api/ai/query` | POST | Full pipeline (orchestrator entry) | 🟡 High |
+| `/api/ai/search` | POST | Hybrid retrieval | 🟡 High |
+| `/api/ai/status` | GET | Health check for all AI subsystems | 🔴 Critical |
+| `/api/ai/replay` | GET | Query replay and feedback | 🟢 Medium |
+| `/api/ai/metrics` | GET | Telemetry and analytics | 🟢 Medium |
 
 ---
 
-## 7. قواعد البيانات
+## 7. Databases
 
 ### 7.1 Repository Index (`.ai/index/repository.db`)
 
@@ -665,45 +665,45 @@ Each parameter has a **Fallback Guard** (`param or Default*()`) ensuring zero-do
 
 ---
 
-## 8. إعداد بيئة التطوير
+## 8. Development Environment Setup
 
-### 8.1 المتطلبات المسبقة
+### 8.1 Prerequisites
 
-| المتطلب | الإصدار | طريقة التثبيت |
-|---------|---------|---------------|
+| Requirement | Version | Installation Method |
+|-------------|---------|---------------------|
 | Python | 3.11+ | `brew install python` |
-| pip | مرفق | — |
+| pip | Included | — |
 | Git | 2.40+ | `brew install git` |
 
-### 8.2 خطوات الإعداد
+### 8.2 Setup Steps
 
 ```bash
-# 1. استنساخ المشروع
+# 1. Clone the project
 git clone <repo-url>
 cd Emo-AI
 
-# 2. إنشاء بيئة افتراضية
+# 2. Create virtual environment
 python3 -m venv venv
 source venv/bin/activate  # macOS/Linux
 
-# 3. تثبيت المتطلبات
+# 3. Install requirements
 pip install -r requirements.txt
 pip install sentence-transformers faiss-cpu  # AI layer dependencies
 
-# 4. إنشاء ملف .env
+# 4. Create .env file
 cp .env.example .env
-# تعديل .env بالمفاتيح الخاصة بك
+# Edit .env with your own keys
 
-# 5. تشغيل الخادم
+# 5. Run the server
 python main.py
 # → Server on http://localhost:8080
 
-# 6. تشغيل الاختبارات
+# 6. Run tests
 python -m pytest tests/ -v
 # → 227 passed
 ```
 
-### 8.3 متغيرات البيئة (.env)
+### 8.3 Environment Variables (.env)
 
 ```bash
 # === LLM Providers ===
@@ -735,28 +735,28 @@ EMO_PROJECT_DIR=.
 
 ---
 
-## 9. دليل التشغيل
+## 9. Operation Guide
 
-### 9.1 تشغيل الخادم
+### 9.1 Running the Server
 
 ```bash
 python main.py
-# أو: uvicorn main:app --host 0.0.0.0 --port 8080 --reload
+# Or: uvicorn main:app --host 0.0.0.0 --port 8080 --reload
 ```
 
-### 9.2 تشغيل الاختبارات
+### 9.2 Running Tests
 
 ```bash
-# كل الاختبارات
+# All tests
 python -m pytest tests/ -v
 
-# مجموعة محددة
+# Specific group
 python -m pytest tests/test_phase15.py -v
 
-# مع التغطية
+# With coverage
 python -m pytest tests/ --cov=core --cov-report=term
 
-# اختبارات RC16.6.1 Security Consolidation فقط
+# RC16.6.1 Security Consolidation tests only
 python -m pytest tests/phase80_security_consolidation.py -v
 ```
 
@@ -799,13 +799,13 @@ result = hr.retrieve("authentication logic")
 
 ---
 
-## 10. دليل الصيانة
+## 10. Maintenance Guide
 
-### 10.1 قاعدة البيانات
+### 10.1 Database
 
-> ⚠️ **ملاحظة الحالة التطوّرية**: النطاقات الحجمية المذكورة أدناه تفترض تشغيل النظام على بيانات إنتاج (مستودع مفهرس، استعلامات فعلية، جلسات تنفيذ). في بيئة التطوير (`dev/empty state`)، تكون قواعد البيانات في حدود `KB` وليس `MB`، وقد لا يوجد `semantic.index` حتى تشغيل `RepositoryIndexer` و `SemanticStore` لأول مرة.
+> ⚠️ **Development State Note**: The size ranges mentioned below assume the system is running on production data (indexed repository, actual queries, execution sessions). In a development environment (`dev/empty state`), databases are in the `KB` range, not `MB`, and `semantic.index` may not exist until `RepositoryIndexer` and `SemanticStore` are run for the first time.
 
-| DB | المسار | الحجم المتوقع | النمو |
+| DB | Path | Expected Size | Growth |
 |----|--------|---------------|-------|
 | Repository Index | `.ai/index/repository.db` | 1–100 MB | Per full index |
 | Query Logs | `.ai/index/query_logs.db` | 1–50 MB | Per query |
@@ -813,18 +813,18 @@ result = hr.retrieve("authentication logic")
 | Execution Memory | `.ai/index/execution_memory.db` | 1–10 MB | Per session |
 | App DB | `emo_ai.db` | 1–10 MB | Per project/user |
 
-### 10.2 التنظيف
+### 10.2 Cleanup
 
 ```bash
-# مسح AI layer والبدء من جديد
+# Clear AI layer and start fresh
 rm -rf .ai/
-python main.py  # يعيد إنشاء .ai/ تلقائياً
+python main.py  # Recreates .ai/ automatically
 
-# تنظيف سجلات
+# Clean logs
 rm -f .ai/logs/*.log
 ```
 
-### 10.3 النسخ الاحتياطي
+### 10.3 Backup
 
 ```bash
 tar czf emo-backup-$(date +%Y%m%d).tar.gz \
@@ -833,23 +833,23 @@ tar czf emo-backup-$(date +%Y%m%d).tar.gz \
 
 ---
 
-## 11. استكشاف الأخطاء
+## 11. Troubleshooting
 
-### 11.1 الأخطاء الشائعة
+### 11.1 Common Errors
 
-| الخطأ | السبب | الحل |
+| Error | Cause | Solution |
 |-------|-------|------|
-| `no such table: graph_edges` | لم يتم فهرسة المستودع | شغّل `RepositoryIndexer.index_all()` أولاً |
-| `database is locked` | صراع SQLite | تأكد من WAL mode + timeout كافٍ |
-| `Model not loaded: all-MiniLM-L6-v2` | مكتبة مفقودة | `pip install sentence-transformers --no-cache-dir` |
-| `FAISS index not found` | لم يتم بناء semantic store | أنشئ SemanticStore(path).save() بعد indexing |
-| Embeddings تختلف بين التشغيلات | Random seed في النموذج | طبيعي — استخدم threshold بدلاً من exact match |
-| تقارير QueryAnalytics فارغة | لا توجد أحداث كافية | شغّل على الأقل 10 queries قبل التحليل |
+| `no such table: graph_edges` | Repository not indexed | Run `RepositoryIndexer.index_all()` first |
+| `database is locked` | SQLite contention | Ensure WAL mode + sufficient timeout |
+| `Model not loaded: all-MiniLM-L6-v2` | Missing library | `pip install sentence-transformers --no-cache-dir` |
+| `FAISS index not found` | Semantic store not built | Create SemanticStore(path).save() after indexing |
+| Embeddings differ between runs | Random seed in model | Normal — use threshold instead of exact match |
+| QueryAnalytics reports empty | Not enough events | Run at least 10 queries before analysis |
 
-### 11.2 التحقق من صحة AI Layer
+### 11.2 AI Layer Health Check
 
 ```bash
-# فهرس
+# Index
 python -c "
 from core.graph_query import GraphQuery
 gq = GraphQuery('.ai/index/repository.db')
@@ -874,7 +874,7 @@ print('Events:', len(ms.query_events()))
 
 ---
 
-## 12. الأمان والامتثال
+## 12. Security and Compliance
 
 ### 12.1 RC16.6.1 Security Architecture
 
@@ -901,9 +901,9 @@ RC16.6.1 consolidates security into a single gate-based architecture. **Every op
 
 ---
 
-## 13. دليل المساهمة
+## 13. Contribution Guide
 
-### 13.1 معايير الكود
+### 13.1 Code Standards
 
 - PEP 8 + type hints for all functions
 - Docstrings for every class and method
@@ -912,7 +912,7 @@ RC16.6.1 consolidates security into a single gate-based architecture. **Every op
 - Pure extraction layers (parsers, static analyzer) must not import DB modules
 - Graph layer (graph_query, graph_retrieval) must be read-only — no writes
 
-### 13.2 إضافة Phase جديد
+### 13.2 Adding a New Phase
 
 1. Create file in `core/<phase_name>.py`
 2. Follow the dependency DAG — avoid circular imports
@@ -920,7 +920,7 @@ RC16.6.1 consolidates security into a single gate-based architecture. **Every op
 4. Run all 227 tests before committing
 5. Update this document's Phase Overview table
 
-### 13.3 هيكلية commits
+### 13.3 Commit Structure
 
 ```
 <type>(<phase>): <description>
@@ -934,9 +934,9 @@ Examples:
 
 ---
 
-## 14. سجل التغييرات
+## 14. Changelog
 
-### v4.2.0 (الحالي)
+### v4.2.0 (Current)
 - **Phase 12** — Guardrails: DriftMonitor, SafeWeightBoundaries, ConfidenceDecay, PerformanceRegressionDetector, ShadowEvaluator, RollbackManager
 - **Phase 13** — Telemetry: MetricsStore, TimelineBuilder, QueryAnalytics (5 failure detectors)
 - **Phase 14** — Execution Memory: sessions, session_events, reasoning_traces, task_memory, plan_history
@@ -2180,15 +2180,15 @@ ExecutionEngine → IsolationRuntime (BRIDGE)
 
 ### 0. Canon Purpose
 
-هذا الـ Canon يحدد القواعد النهائية غير القابلة للتفسير المتعدد داخل EMO AI Runtime.
+This Canon defines the final, unambiguous rules within EMO AI Runtime.
 
-أي اختلاف بين الكود والوثائق يجب أن يُحل عبر هذا Canon.
+Any discrepancy between code and documentation must be resolved through this Canon.
 
 ---
 
-### 1. Interface Canonical Map (مصدر الحقيقة الوحيد)
+### 1. Interface Canonical Map (Single Source of Truth)
 
-كل الـ interfaces داخل النظام لها مكان محدد ونهائي:
+All interfaces within the system have a definitive and final location:
 
 | Protocol | Module | Status |
 |----------|--------|--------|
@@ -2215,7 +2215,7 @@ ExecutionEngine → IsolationRuntime (BRIDGE)
 | `ITwinManager` | `core.interfaces.industrial` | ✅ RC16.9 |
 | `IIndustrialIntegration` | `core.interfaces.industrial` | ✅ RC16.9 |
 
-> ❌ أي import خارج هذا mapping يعتبر **Architectural Violation**.
+> ❌ Any import outside this mapping is an **Architectural Violation**.
 
 ---
 
@@ -2223,7 +2223,7 @@ ExecutionEngine → IsolationRuntime (BRIDGE)
 
 #### Definition
 
-`CompositionRoot` هو:
+`CompositionRoot` is:
 
 > **The ONLY valid runtime construction and dependency wiring entry point.**
 
@@ -2714,6 +2714,6 @@ Intent → PlannerAgent → Plan (DAG) → CriticAgent → CriticReport
 
 ---
 
-**نهاية الوثيقة — الإصدار 1.0.0-RC17.5 🟢 Healthcare Pack Foundation — 3255 tests collected (75 new: D8+F+G, 0 regression)**
+**End of document — Version 1.0.0-RC17.5 🟢 Healthcare Pack Foundation — 3255 tests collected (75 new: D8+F+G, 0 regression)**
 
-*للأسئلة: افتح issue.*
+*For questions: open an issue.*

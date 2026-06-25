@@ -9,7 +9,7 @@ router = APIRouter(prefix="/api/conversations", tags=["conversations"])
 
 
 class CreateConversation(BaseModel):
-    name: str = "محادثة جديدة"
+    name: str = "New Conversation"
     project_id: str = ""
     session_id: str = ""
 

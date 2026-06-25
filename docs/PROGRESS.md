@@ -1,39 +1,39 @@
-# سجل التقدم — EMO AI Orchestrator
+# Progress Log — EMO AI Orchestrator
 
-| البند | القيمة |
-|-------|--------|
-| **آخر تحديث** | 2026-05-20 |
-| **الحالة** | نشط |
-| **الإصدار** | 4.0.0-gaps |
-
----
-
-## الملخص — 6 مراحل مكتملة
-
-- **Phase 1**: MVP الأولي — API، Telegram Bot، JWT، SQLite، Docker ✅
-- **Phase 2**: Enhanced Parsing — tree-sitter، symbol extraction، dependency resolution ✅
-- **Phase 3**: AST Parsing System — parsers متعددة اللغات ✅
-- **Phase 3.4–3.9**: CodeGraph، Drift Detection، Canon، Event Model، Engine Decomposition، Runtime Intelligence، Composition Root ✅
-- **D8**: Service Contracts — 5 Protocols، Failure Propagation، Service Ownership (LAW 20-27) ✅
-- **Phase 4**: Runtime Isolation — Sandbox، Capabilities، IO، Resources، IsolationRuntime ✅
-- **GAP 1–4**: Service Mesh، Control Plane، Runtime OS، Suggestion Evolution ✅
-- **LAW 28–30**: Meta-Governance — Evolution Gate، Audit Trail، Rollback ✅
-- **Phase 5**: Distributed Runtime — HTTP transport، MeshNode، distributed registry ✅
-- **Phase 6**: Control Plane Brain — SystemState، Reconciler، Orchestrator، HealthManager (45 tests) ✅
+| Item | Value |
+|------|-------|
+| **Last Updated** | 2026-05-20 |
+| **Status** | Active |
+| **Version** | 4.0.0-gaps |
 
 ---
 
-## تفاصيل المراحل
+## Summary — 6 Phases Complete
+
+- **Phase 1**: Initial MVP — API, Telegram Bot, JWT, SQLite, Docker ✅
+- **Phase 2**: Enhanced Parsing — tree-sitter, symbol extraction, dependency resolution ✅
+- **Phase 3**: AST Parsing System — multi-language parsers ✅
+- **Phase 3.4–3.9**: CodeGraph, Drift Detection, Canon, Event Model, Engine Decomposition, Runtime Intelligence, Composition Root ✅
+- **D8**: Service Contracts — 5 Protocols, Failure Propagation, Service Ownership (LAW 20-27) ✅
+- **Phase 4**: Runtime Isolation — Sandbox, Capabilities, IO, Resources, IsolationRuntime ✅
+- **GAP 1–4**: Service Mesh, Control Plane, Runtime OS, Suggestion Evolution ✅
+- **LAW 28–30**: Meta-Governance — Evolution Gate, Audit Trail, Rollback ✅
+- **Phase 5**: Distributed Runtime — HTTP transport, MeshNode, distributed registry ✅
+- **Phase 6**: Control Plane Brain — SystemState, Reconciler, Orchestrator, HealthManager (45 tests) ✅
+
+---
+
+## Phase Details
 
 ### ✅ Phase 1 — MVP (2026-05-17)
-- نقل مفاتيح API إلى `.env`
-- ربط `brain.py` بـ OpenRouter/Groq/Gemini/Ollama
-- SSE stream في `routers/stream.py`
+- Move API keys to `.env`
+- Connect `brain.py` to OpenRouter/Groq/Gemini/Ollama
+- SSE stream in `routers/stream.py`
 - JWT authentication
 - SQLite database
 - Telegram Bot
 - Dockerfile
-- 6 ملفات اختبارات (36 حالة)
+- 6 test files (36 cases)
 
 ### ✅ Phase 2 — Enhanced Parsing (2026-05-18)
 - Tree-sitter parsers (Python, JS, TS)
@@ -72,11 +72,11 @@
 - ResourceTracker + QuotaManager + ResourceEnforcer
 - IsolationRuntime Bridge (5-step execute)
 
-### ✅ GAP 1–4 — النظام الكامل
-- **GAP 1**: ServiceMesh — MeshProtocol، ServiceRegistry، FailurePropagator
-- **GAP 2**: ControlPlane — SystemState، Reconciler، WorkerOrchestrator، HealthMonitor
-- **GAP 3**: RuntimeOS — submit، observe، replay، cancel، scale
-- **GAP 4**: Evolution — RuleRefiner، CanonEvolver، FeedbackActuator (suggestion-only)
+### ✅ GAP 1–4 — Complete System
+- **GAP 1**: ServiceMesh — MeshProtocol, ServiceRegistry, FailurePropagator
+- **GAP 2**: ControlPlane — SystemState, Reconciler, WorkerOrchestrator, HealthMonitor
+- **GAP 3**: RuntimeOS — submit, observe, replay, cancel, scale
+- **GAP 4**: Evolution — RuleRefiner, CanonEvolver, FeedbackActuator (suggestion-only)
 
 ### ✅ LAW 28–30 — Meta-Governance
 - LAW 28: Human-in-the-loop gate
@@ -91,27 +91,27 @@
 - **RemoteTransportServer**: Threaded HTTP server
 - **DistributedRegistry**: Peer discovery + gossip sync + health checks
 - **MeshNode**: Full node combining local mesh + remote transport + distributed registry
-- 32 tests (serialization, transport, registry, two-node intergation)
+- 32 tests (serialization, transport, registry, two-node integration)
 
 ---
 
-## إحصائيات
+## Statistics
 
-| القياس | القيمة |
-|--------|--------|
-| **إجمالي الاختبارات** | 1029 passing |
-| **أخطاء موجودة مسبقًا** | 5 |
+| Measurement | Value |
+|-------------|-------|
+| **Total tests** | 1029 passing |
+| **Pre-existing errors** | 5 |
 | **CodeGraph nodes** | 1,630 |
 | **CodeGraph edges** | 1,647 |
-| **متوسط المخاطرة** | 0.34 |
-| **العقد عالية المخاطرة (>0.8)** | 6 |
-| **قوانين Canon** | 17 (LAW 14-30) |
-| **آخر baseline** | `4.0.0-gaps` |
+| **Average risk** | 0.34 |
+| **High risk nodes (>0.8)** | 6 |
+| **Canon laws** | 17 (LAW 14-30) |
+| **Last baseline** | `4.0.0-gaps` |
 | **Phase 5 tests** | 32 ✅ |
 
 ---
 
-## المتبقي (Next Steps)
+## Remaining (Next Steps)
 
 - [ ] Phase 6 — Production hardening
   - [ ] TLS for mesh transport
@@ -126,34 +126,34 @@
 
 ---
 
-## الملفات المُنشأة
+## Created Files
 
 ### Phase 4 / GAPs
-| الملف | الوصف |
-|-------|-------|
-| `core/runtime/sandbox/` | SandboxExecutor، SandboxContext، SandboxManager |
-| `core/security/capabilities/` | Capability Model، Registry، Guard |
-| `core/runtime/io/` | IO Policy، Network، Filesystem isolation |
-| `core/runtime/resources/` | Resource Tracker، Quota، Enforcer |
+| File | Description |
+|------|-------------|
+| `core/runtime/sandbox/` | SandboxExecutor, SandboxContext, SandboxManager |
+| `core/security/capabilities/` | Capability Model, Registry, Guard |
+| `core/runtime/io/` | IO Policy, Network, Filesystem isolation |
+| `core/runtime/resources/` | Resource Tracker, Quota, Enforcer |
 | `core/runtime/isolation/` | IsolationRuntime bridge |
-| `core/runtime/mesh/` | MeshProtocol، ServiceRegistry، ServiceMesh |
-| `core/runtime/control/` | ControlPlane، SystemState، Reconciler |
+| `core/runtime/mesh/` | MeshProtocol, ServiceRegistry, ServiceMesh |
+| `core/runtime/control/` | ControlPlane, SystemState, Reconciler |
 | `core/runtime/os/` | RuntimeOS API |
-| `core/runtime/evolution/` | RuleRefiner، CanonEvolver، FeedbackActuator |
+| `core/runtime/evolution/` | RuleRefiner, CanonEvolver, FeedbackActuator |
 
 ### Phase 5 — Distributed Runtime
-| الملف | الوصف |
-|-------|-------|
-| `core/runtime/mesh/remote/` | Remote transport، discovery، MeshNode |
+| File | Description |
+|------|-------------|
+| `core/runtime/mesh/remote/` | Remote transport, discovery, MeshNode |
 | `core/runtime/mesh/remote/serialization.py` | MeshEnvelope ←→ JSON |
 | `core/runtime/mesh/remote/transport.py` | HTTP client + threaded server |
-| `core/runtime/mesh/remote/discovery.py` | DistributedRegistry، PeerNode |
+| `core/runtime/mesh/remote/discovery.py` | DistributedRegistry, PeerNode |
 | `core/runtime/mesh/remote/node.py` | MeshNode (full node) |
 | `tests/test_phase5_distributed.py` | 32 tests |
 
 ### Phase 6 — Control Plane Brain
-| الملف | الوصف |
-|-------|-------|
+| File | Description |
+|------|-------------|
 | `core/control_plane/brain.py` | ControlPlaneBrain — orchestrates 4 subsystems, background loop |
 | `core/control_plane/state/system_state.py` | SystemStateBrain — global truth model (workers, executions, nodes, failures) |
 | `core/control_plane/reconciler.py` | Reconciler — self-healing loop (desired vs actual, restart/scale/migrate) |

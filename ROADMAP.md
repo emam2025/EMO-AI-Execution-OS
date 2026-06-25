@@ -1,4 +1,4 @@
-# EMO AI — خريطة مسار المشروع (Project Roadmap)
+# EMO AI — Project Roadmap (Project Roadmap)
 
 ## Tags
 ```
@@ -16,7 +16,7 @@ r5-big-emo-v1.0.0       ← R5 Closure (Big EMO — SelfBuilder, SelfHealer, Mul
 
 ---
 
-## ✅ المراحل المنجزة
+## ✅ Completed Phases
 
 ### R3 — Skill OS ✅ CLOSED & ARCHIVED
 - SkillExtractor (trace→SkillDraft extraction with sandbox validation)
@@ -124,42 +124,42 @@ r5-big-emo-v1.0.0       ← R5 Closure (Big EMO — SelfBuilder, SelfHealer, Mul
 
 ---
 
-## 🔜 المراحل القادمة
+## 🔜 Upcoming Phases
 
 ```
-P4  — UX Platform Polish       (توحيد المظهر، تحسين تجربة المستخدم)
-P5  — Installation Wizard      (معالج تثبيت سطح المكتب)
+P4  — UX Platform Polish       (UI Unification, UX Improvement)
+P5  — Installation Wizard      (Desktop Installation Wizard)
 P6  — Runtime Event Model      (IEventBus + execution event stream)
-P7  — Enterprise OS Portal     (لوحة تحكم متعددة المستأجرين)
-P8  — AI Safety & Guardrails   (حدود أمان للذكاء الاصطناعي)
-P9  — Multi-Modal Pipeline     (صورة/صوت/نص عبر Model Gateway)
-P10 — Production Hardening     (تصلب الإنتاج + مراقبة مستمرة)
+P7  — Enterprise OS Portal     (Multi-tenant Dashboard)
+P8  — AI Safety & Guardrails   (AI Safety Boundaries)
+P9  — Multi-Modal Pipeline     (Image/Audio/Text via Model Gateway)
+P10 — Production Hardening     (Production Hardening + Continuous Monitoring)
 ```
 
 ---
 
-## 📐 القوانين الثابتة (Immutable Rules)
+## 📐 Immutable Rules
 
-| القانون | القاعدة |
+| Law | Rule |
 |---------|---------|
-| LAW 5 | Zero core mutations — كل التطوير في `emo-desktop/` فقط |
-| LAW 9 | لا مفاتيح افتراضية/اختبارية في الإنتاج |
-| LAW 11 | لا تخزين بيانات اعتماد في ملفات أو Env غير مشفر |
-| RULE 3 | لا اتصال مباشر بمزودي AI — عبر IPC → emo-runtime-service دائمًا |
-| STOP | أي خرق للقوانين أعلاه = إيقاف فوري + تقرير STOP-REPORT |
+| LAW 5 | Zero core mutations — all development in `emo-desktop/` only |
+| LAW 9 | No default/test keys in production |
+| LAW 11 | No credential storage in unencrypted files or Env |
+| RULE 3 | No direct connection to AI providers — always via IPC → emo-runtime-service |
+| STOP | Any violation of the above laws = immediate stop + STOP-REPORT |
 
 ---
 
-## 📊 إحصائيات المشروع
+## 📊 Project Statistics
 
 - **Tags**: 12 (r5-big-emo-v1.0.0, r4-cognitive-os-v1.0.0, r4-cognitive-os-foundation-v1.0.0, r3-skill-os-impl-v1.0.0, r3-skill-os-foundation-v1.0.0, v4.15.0-delivery-ready, v1-runtime-stable, v0.1.0, v0.1.1, v0.1.2, v0.1.3, r2-memory-os-v1.0.0)
-- **اختبارات Desktop**: 90/90 PASS (14 files)
-- **اختبارات Runtime**: 4126+ PASS (358 full suite, 100 quarantined)
+- **Desktop Tests**: 90/90 PASS (14 files)
+- **Runtime Tests**: 4126+ PASS (358 full suite, 100 quarantined)
 - **Memory OS Tests**: 181/181 PASS (16 files)
 - **Skill OS Tests**: 70/70 PASS (6 files)
 - **Cognitive OS Tests**: 91/91 PASS (6 files)
 - **Big EMO Tests**: 103/103 PASS (6 files)
-- **Shipped**: 13 مراحل كاملة (L, G, Final Prep, Final Release, R1, R2 Memory, R3 Skill, R4 Cognitive, R5 Big EMO, P1, P2, P3, 3.4)
+- **Shipped**: 13 complete phases (L, G, Final Prep, Final Release, R1, R2 Memory, R3 Skill, R4 Cognitive, R5 Big EMO, P1, P2, P3, 3.4)
 
 ---
 
