@@ -1,8 +1,9 @@
 import asyncio
 import json
 from typing import AsyncGenerator, Optional
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from sse_starlette.sse import EventSourceResponse
+from middleware.auth import require_auth
 
 router = APIRouter(prefix="/api/stream", tags=["stream"])
 
@@ -103,7 +104,7 @@ def close_stream(task_id: str) -> None:
 
 
 @router.get("/{task_id}")
-async def stream_task(task_id: str) -> EventSourceResponse:
+async def stream_task(task_id: str, user: dict = Depends(require_auth())) -> EventSourceResponse:
     """SSE endpoint for real-time task progress."""
     queue: asyncio.Queue = asyncio.Queue()
     _streams[task_id] = queue
@@ -132,7 +133,7 @@ async def stream_task(task_id: str) -> EventSourceResponse:
 
 
 @router.get("/global")
-async def global_stream() -> EventSourceResponse:
+async def global_stream(user: dict = Depends(require_auth())) -> EventSourceResponse:
     """SSE endpoint for global events (task updates, notifications)."""
     queue: asyncio.Queue = asyncio.Queue()
     _streams["__global__"] = queue
@@ -186,7 +187,7 @@ def list_missions() -> list:
 
 
 @router.get("/runtime/state")
-async def runtime_state() -> dict:
+async def runtime_state(user: dict = Depends(require_auth())) -> dict:
     """Return the current Chat Runtime state for the header.
 
     Reads from real runtime registries:

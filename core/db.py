@@ -1237,6 +1237,71 @@ CREATE TABLE IF NOT EXISTS projectos_memory_entries (
     updated_at TEXT DEFAULT (datetime('now')),
     expires_at TEXT DEFAULT ''
 );
+
+-- ─── P1-01: Governance Audit Events (signed, chain-linked) ────────────────
+CREATE TABLE IF NOT EXISTS governance_audit_events (
+    id              TEXT PRIMARY KEY,
+    action          TEXT NOT NULL DEFAULT '',
+    principal_id    TEXT NOT NULL DEFAULT '',
+    tenant_id       TEXT NOT NULL DEFAULT '',
+    resource        TEXT NOT NULL DEFAULT '',
+    outcome         TEXT NOT NULL DEFAULT '',
+    payload_hash    TEXT NOT NULL DEFAULT '',
+    signature       TEXT NOT NULL DEFAULT '',
+    previous_hash   TEXT NOT NULL DEFAULT '',
+    chain_hash      TEXT NOT NULL DEFAULT '',
+    timestamp       REAL NOT NULL DEFAULT 0.0,
+    created_at      TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_gae_tenant ON governance_audit_events(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_gae_principal ON governance_audit_events(principal_id);
+CREATE INDEX IF NOT EXISTS idx_gae_action ON governance_audit_events(action);
+CREATE INDEX IF NOT EXISTS idx_gae_ts ON governance_audit_events(timestamp);
+
+-- ─── P1-01: Governance Approval Requests ──────────────────────────────────
+CREATE TABLE IF NOT EXISTS governance_approval_requests (
+    id              TEXT PRIMARY KEY,
+    tenant_id       TEXT NOT NULL DEFAULT '',
+    org_id          TEXT NOT NULL DEFAULT '',
+    action          TEXT NOT NULL DEFAULT '',
+    requested_by    TEXT NOT NULL DEFAULT '',
+    status          TEXT NOT NULL DEFAULT 'PENDING'
+                    CHECK (status IN ('PENDING','APPROVED','REJECTED')),
+    reason          TEXT NOT NULL DEFAULT '',
+    reviewer        TEXT NOT NULL DEFAULT '',
+    reviewed_at     TEXT,
+    metadata        TEXT NOT NULL DEFAULT '{}',
+    created_at      TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_gar_tenant ON governance_approval_requests(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_gar_status ON governance_approval_requests(status);
+CREATE INDEX IF NOT EXISTS idx_gar_org ON governance_approval_requests(org_id);
+
+-- ─── P1-01: Resource Workers ──────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS resource_workers (
+    worker_id       TEXT PRIMARY KEY,
+    node_id         TEXT NOT NULL DEFAULT '',
+    total_cpu       REAL NOT NULL DEFAULT 8.0,
+    total_memory    REAL NOT NULL DEFAULT 8192.0,
+    total_gpu       INTEGER NOT NULL DEFAULT 0,
+    total_gpu_memory REAL NOT NULL DEFAULT 0.0,
+    capacity        INTEGER NOT NULL DEFAULT 10,
+    tags            TEXT NOT NULL DEFAULT '{}',
+    is_active       INTEGER NOT NULL DEFAULT 1,
+    created_at      TEXT NOT NULL DEFAULT (datetime('now')),
+    updated_at      TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+-- ─── P1-01: Resource Quotas ───────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS resource_quotas (
+    user_id         TEXT PRIMARY KEY,
+    max_cpu         REAL NOT NULL DEFAULT 32.0,
+    max_memory      REAL NOT NULL DEFAULT 32768.0,
+    max_gpu         INTEGER NOT NULL DEFAULT 4,
+    max_executions  INTEGER NOT NULL DEFAULT 20,
+    created_at      TEXT NOT NULL DEFAULT (datetime('now')),
+    updated_at      TEXT NOT NULL DEFAULT (datetime('now'))
+);
 CREATE INDEX IF NOT EXISTS idx_mem_tier ON projectos_memory_entries(tier);
 CREATE INDEX IF NOT EXISTS idx_mem_entity ON projectos_memory_entries(entity_type, entity_id);
 CREATE INDEX IF NOT EXISTS idx_mem_type ON projectos_memory_entries(memory_type);
@@ -1256,6 +1321,69 @@ CREATE TABLE IF NOT EXISTS projectos_memory_stores (
 );
 CREATE INDEX IF NOT EXISTS idx_memstore_tier ON projectos_memory_stores(tier);
 CREATE INDEX IF NOT EXISTS idx_memstore_entity ON projectos_memory_stores(entity_type, entity_id);
+
+-- ─── P1-01: Memory Hierarchy Entries ─────────────────────────────────────
+CREATE TABLE IF NOT EXISTS memory_hierarchy_entries (
+    id              TEXT PRIMARY KEY,
+    tenant_id       TEXT NOT NULL DEFAULT '',
+    layer           TEXT NOT NULL DEFAULT '',
+    entry_key       TEXT NOT NULL DEFAULT '',
+    payload         TEXT NOT NULL DEFAULT '{}',
+    isolation_policy TEXT NOT NULL DEFAULT '',
+    cognitive_trace_id TEXT NOT NULL DEFAULT '',
+    ttl_seconds     REAL,
+    access_count    INTEGER NOT NULL DEFAULT 0,
+    last_access_ns  INTEGER NOT NULL DEFAULT 0,
+    relevance_score REAL NOT NULL DEFAULT 1.0,
+    entry_hash      TEXT NOT NULL DEFAULT '',
+    expires_at      TEXT,
+    created_at      TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_mhe_tenant ON memory_hierarchy_entries(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_mhe_layer ON memory_hierarchy_entries(layer);
+CREATE INDEX IF NOT EXISTS idx_mhe_key ON memory_hierarchy_entries(entry_key);
+
+-- ─── P1-01: Skill Graph Nodes ────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS skill_graph_nodes (
+    id                  TEXT PRIMARY KEY,
+    skill_id            TEXT UNIQUE NOT NULL,
+    intent_pattern      TEXT NOT NULL DEFAULT '',
+    dag_template_hash   TEXT NOT NULL DEFAULT '',
+    tool_chain          TEXT NOT NULL DEFAULT '[]',
+    cost_profile        TEXT NOT NULL DEFAULT '{}',
+    tenant_id           TEXT NOT NULL DEFAULT '',
+    cognitive_trace_id  TEXT NOT NULL DEFAULT '',
+    success_rate        REAL NOT NULL DEFAULT 1.0,
+    prerequisites       TEXT NOT NULL DEFAULT '[]',
+    created_at          TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_sgn_tenant ON skill_graph_nodes(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_sgn_intent ON skill_graph_nodes(intent_pattern);
+
+-- ─── P1-01: Skill Failure Patterns ────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS skill_failure_patterns (
+    id                  TEXT PRIMARY KEY,
+    pattern_id          TEXT UNIQUE NOT NULL,
+    dag_id              TEXT NOT NULL DEFAULT '',
+    failure_hash        TEXT NOT NULL DEFAULT '',
+    failure_signal      TEXT NOT NULL DEFAULT '',
+    tool_chain_at_failure TEXT NOT NULL DEFAULT '[]',
+    tenant_id           TEXT NOT NULL DEFAULT '',
+    cognitive_trace_id  TEXT NOT NULL DEFAULT '',
+    created_at          TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_sfp_tenant ON skill_failure_patterns(tenant_id);
+
+-- ─── P1-01: Metrics Data ─────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS metrics_data (
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    name            TEXT NOT NULL,
+    value           REAL NOT NULL DEFAULT 0.0,
+    labels          TEXT NOT NULL DEFAULT '{}',
+    created_at      TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_md_name ON metrics_data(name);
+CREATE INDEX IF NOT EXISTS idx_md_created ON metrics_data(created_at);
 """
 
 
@@ -1466,6 +1594,70 @@ class Database:
                 await db.execute("CREATE INDEX IF NOT EXISTS idx_sa_status ON security_approvals(status)")
                 await db.execute("CREATE INDEX IF NOT EXISTS idx_sa_user ON security_approvals(user_id)")
                 await db.execute("CREATE INDEX IF NOT EXISTS idx_sa_action ON security_approvals(action)")
+                await db.commit()
+            except Exception:
+                pass
+            # Migration P1-01: governance_audit_events table
+            try:
+                await db.execute("""
+                    CREATE TABLE IF NOT EXISTS governance_audit_events (
+                        id TEXT PRIMARY KEY, action TEXT NOT NULL DEFAULT '',
+                        principal_id TEXT NOT NULL DEFAULT '', tenant_id TEXT NOT NULL DEFAULT '',
+                        resource TEXT NOT NULL DEFAULT '', outcome TEXT NOT NULL DEFAULT '',
+                        payload_hash TEXT NOT NULL DEFAULT '', signature TEXT NOT NULL DEFAULT '',
+                        previous_hash TEXT NOT NULL DEFAULT '', chain_hash TEXT NOT NULL DEFAULT '',
+                        timestamp REAL NOT NULL DEFAULT 0.0, created_at TEXT NOT NULL DEFAULT (datetime('now'))
+                    )
+                """)
+                await db.execute("CREATE INDEX IF NOT EXISTS idx_gae_tenant ON governance_audit_events(tenant_id)")
+                await db.execute("CREATE INDEX IF NOT EXISTS idx_gae_principal ON governance_audit_events(principal_id)")
+                await db.execute("CREATE INDEX IF NOT EXISTS idx_gae_action ON governance_audit_events(action)")
+                await db.execute("CREATE INDEX IF NOT EXISTS idx_gae_ts ON governance_audit_events(timestamp)")
+                await db.commit()
+            except Exception:
+                pass
+            # Migration P1-01: governance_approval_requests table
+            try:
+                await db.execute("""
+                    CREATE TABLE IF NOT EXISTS governance_approval_requests (
+                        id TEXT PRIMARY KEY, tenant_id TEXT NOT NULL DEFAULT '',
+                        org_id TEXT NOT NULL DEFAULT '', action TEXT NOT NULL DEFAULT '',
+                        requested_by TEXT NOT NULL DEFAULT '',
+                        status TEXT NOT NULL DEFAULT 'PENDING'
+                            CHECK (status IN ('PENDING','APPROVED','REJECTED')),
+                        reason TEXT NOT NULL DEFAULT '', reviewer TEXT NOT NULL DEFAULT '',
+                        reviewed_at TEXT, metadata TEXT NOT NULL DEFAULT '{}',
+                        created_at TEXT NOT NULL DEFAULT (datetime('now'))
+                    )
+                """)
+                await db.execute("CREATE INDEX IF NOT EXISTS idx_gar_tenant ON governance_approval_requests(tenant_id)")
+                await db.execute("CREATE INDEX IF NOT EXISTS idx_gar_status ON governance_approval_requests(status)")
+                await db.execute("CREATE INDEX IF NOT EXISTS idx_gar_org ON governance_approval_requests(org_id)")
+                await db.commit()
+            except Exception:
+                pass
+            # Migration P1-01: resource_workers + resource_quotas tables
+            try:
+                await db.execute("""
+                    CREATE TABLE IF NOT EXISTS resource_workers (
+                        worker_id TEXT PRIMARY KEY, node_id TEXT NOT NULL DEFAULT '',
+                        total_cpu REAL NOT NULL DEFAULT 8.0, total_memory REAL NOT NULL DEFAULT 8192.0,
+                        total_gpu INTEGER NOT NULL DEFAULT 0, total_gpu_memory REAL NOT NULL DEFAULT 0.0,
+                        capacity INTEGER NOT NULL DEFAULT 10, tags TEXT NOT NULL DEFAULT '{}',
+                        is_active INTEGER NOT NULL DEFAULT 1,
+                        created_at TEXT NOT NULL DEFAULT (datetime('now')),
+                        updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+                    )
+                """)
+                await db.execute("""
+                    CREATE TABLE IF NOT EXISTS resource_quotas (
+                        user_id TEXT PRIMARY KEY, max_cpu REAL NOT NULL DEFAULT 32.0,
+                        max_memory REAL NOT NULL DEFAULT 32768.0, max_gpu INTEGER NOT NULL DEFAULT 4,
+                        max_executions INTEGER NOT NULL DEFAULT 20,
+                        created_at TEXT NOT NULL DEFAULT (datetime('now')),
+                        updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+                    )
+                """)
                 await db.commit()
             except Exception:
                 pass
@@ -3189,6 +3381,420 @@ class Database:
             )
             row = await cursor.fetchone()
         return self._decode_row(row, json_fields={"config"}) if row else None
+
+    # ── P1-01: Governance Audit Events ──────────────────────────────────────
+
+    async def create_audit_event(self, record: Dict) -> None:
+        async with self._connect() as db:
+            await db.execute(
+                """INSERT INTO governance_audit_events
+                (id, action, principal_id, tenant_id, resource, outcome,
+                 payload_hash, signature, previous_hash, chain_hash, timestamp)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                (
+                    record.get("record_id", ""),
+                    record.get("action", ""),
+                    record.get("principal_id", ""),
+                    record.get("tenant_id", ""),
+                    record.get("resource", ""),
+                    record.get("outcome", ""),
+                    record.get("payload_hash", ""),
+                    record.get("signature", ""),
+                    record.get("previous_hash", ""),
+                    record.get("chain_hash", ""),
+                    record.get("timestamp", 0.0),
+                ),
+            )
+            await db.commit()
+
+    async def list_audit_events(
+        self,
+        tenant_id: Optional[str] = None,
+        principal_id: Optional[str] = None,
+        action: Optional[str] = None,
+        limit: int = 100,
+        offset: int = 0,
+    ) -> List[Dict]:
+        q = "SELECT * FROM governance_audit_events"
+        conds: List[str] = []
+        params: List = []
+        if tenant_id:
+            conds.append("tenant_id = ?")
+            params.append(tenant_id)
+        if principal_id:
+            conds.append("principal_id = ?")
+            params.append(principal_id)
+        if action:
+            conds.append("action = ?")
+            params.append(action)
+        if conds:
+            q += " WHERE " + " AND ".join(conds)
+        q += " ORDER BY timestamp DESC LIMIT ? OFFSET ?"
+        params.extend([limit, offset])
+        async with self._connect() as db:
+            cursor = await db.execute(q, params)
+            rows = await cursor.fetchall()
+        return [dict(r) for r in rows]
+
+    async def count_audit_events(
+        self,
+        tenant_id: Optional[str] = None,
+    ) -> int:
+        q = "SELECT COUNT(*) FROM governance_audit_events"
+        params: List = []
+        if tenant_id:
+            q += " WHERE tenant_id = ?"
+            params.append(tenant_id)
+        async with self._connect() as db:
+            cursor = await db.execute(q, params)
+            row = await cursor.fetchone()
+        return row[0] if row else 0
+
+    async def get_all_audit_events(self) -> List[Dict]:
+        async with self._connect() as db:
+            cursor = await db.execute(
+                "SELECT * FROM governance_audit_events ORDER BY timestamp ASC"
+            )
+            rows = await cursor.fetchall()
+        return [dict(r) for r in rows]
+
+    # ── P1-01: Governance Approval Requests ─────────────────────────────────
+
+    async def create_approval_request(self, request: Dict) -> None:
+        async with self._connect() as db:
+            await db.execute(
+                """INSERT INTO governance_approval_requests
+                (id, tenant_id, org_id, action, requested_by, status, reason,
+                 reviewer, reviewed_at, metadata)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                (
+                    request.get("id", ""),
+                    request.get("tenant_id", ""),
+                    request.get("org_id", ""),
+                    request.get("action", ""),
+                    request.get("requested_by", ""),
+                    request.get("status", "PENDING"),
+                    request.get("reason", ""),
+                    request.get("reviewer", ""),
+                    request.get("reviewed_at"),
+                    request.get("metadata", "{}"),
+                ),
+            )
+            await db.commit()
+
+    async def update_approval_request(self, request_id: str, **kwargs) -> None:
+        allowed = frozenset({"status", "reviewer", "reviewed_at", "reason", "metadata"})
+        bad = [k for k in kwargs if k not in allowed]
+        if bad:
+            raise InvalidColumnError(f"Unwhitelisted columns {bad} for approval_requests")
+        fields = ", ".join(f"{k} = ?" for k in kwargs)
+        values = list(kwargs.values()) + [request_id]
+        async with self._connect() as db:
+            await db.execute(
+                f"UPDATE governance_approval_requests SET {fields} WHERE id = ?",
+                values,
+            )
+            await db.commit()
+
+    async def get_approval_request(self, request_id: str) -> Optional[Dict]:
+        async with self._connect() as db:
+            cursor = await db.execute(
+                "SELECT * FROM governance_approval_requests WHERE id = ?", (request_id,)
+            )
+            row = await cursor.fetchone()
+        return dict(row) if row else None
+
+    async def list_approval_requests(
+        self,
+        tenant_id: Optional[str] = None,
+        status: Optional[str] = None,
+        org_id: Optional[str] = None,
+        limit: int = 100,
+    ) -> List[Dict]:
+        q = "SELECT * FROM governance_approval_requests"
+        conds: List[str] = []
+        params: List = []
+        if tenant_id:
+            conds.append("tenant_id = ?")
+            params.append(tenant_id)
+        if status:
+            conds.append("status = ?")
+            params.append(status)
+        if org_id:
+            conds.append("org_id = ?")
+            params.append(org_id)
+        if conds:
+            q += " WHERE " + " AND ".join(conds)
+        q += " ORDER BY created_at DESC LIMIT ?"
+        params.append(limit)
+        async with self._connect() as db:
+            cursor = await db.execute(q, params)
+            rows = await cursor.fetchall()
+        return [dict(r) for r in rows]
+
+    # ── P1-01: Resource Workers ─────────────────────────────────────────────
+
+    async def save_worker(self, worker_id: str, node_id: str,
+                          total_cpu: float = 8.0, total_memory: float = 8192.0,
+                          total_gpu: int = 0, total_gpu_memory: float = 0.0,
+                          capacity: int = 10, tags: Optional[Dict] = None,
+                          is_active: int = 1) -> None:
+        import json as _json
+        async with self._connect() as db:
+            await db.execute(
+                """INSERT OR REPLACE INTO resource_workers
+                (worker_id, node_id, total_cpu, total_memory, total_gpu,
+                 total_gpu_memory, capacity, tags, is_active, updated_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))""",
+                (worker_id, node_id, total_cpu, total_memory, total_gpu,
+                 total_gpu_memory, capacity, _json.dumps(tags or {}), is_active),
+            )
+            await db.commit()
+
+    async def delete_worker(self, worker_id: str) -> None:
+        async with self._connect() as db:
+            await db.execute(
+                "DELETE FROM resource_workers WHERE worker_id = ?", (worker_id,)
+            )
+            await db.commit()
+
+    async def list_workers(self) -> List[Dict]:
+        import json as _json
+        async with self._connect() as db:
+            cursor = await db.execute(
+                "SELECT * FROM resource_workers WHERE is_active = 1 ORDER BY created_at"
+            )
+            rows = await cursor.fetchall()
+        result = []
+        for r in rows:
+            d = dict(r)
+            if isinstance(d.get("tags"), str):
+                try:
+                    d["tags"] = _json.loads(d["tags"])
+                except Exception:
+                    d["tags"] = {}
+            result.append(d)
+        return result
+
+    async def get_worker(self, worker_id: str) -> Optional[Dict]:
+        import json as _json
+        async with self._connect() as db:
+            cursor = await db.execute(
+                "SELECT * FROM resource_workers WHERE worker_id = ?", (worker_id,)
+            )
+            row = await cursor.fetchone()
+        if not row:
+            return None
+        d = dict(row)
+        if isinstance(d.get("tags"), str):
+            try:
+                d["tags"] = _json.loads(d["tags"])
+            except Exception:
+                d["tags"] = {}
+        return d
+
+    # ── P1-01: Resource Quotas ──────────────────────────────────────────────
+
+    async def save_quota(self, user_id: str, max_cpu: float = 32.0,
+                         max_memory: float = 32768.0, max_gpu: int = 4,
+                         max_executions: int = 20) -> None:
+        async with self._connect() as db:
+            await db.execute(
+                """INSERT OR REPLACE INTO resource_quotas
+                (user_id, max_cpu, max_memory, max_gpu, max_executions, updated_at)
+                VALUES (?, ?, ?, ?, ?, datetime('now'))""",
+                (user_id, max_cpu, max_memory, max_gpu, max_executions),
+            )
+            await db.commit()
+
+    async def get_quota(self, user_id: str) -> Optional[Dict]:
+        async with self._connect() as db:
+            cursor = await db.execute(
+                "SELECT * FROM resource_quotas WHERE user_id = ?", (user_id,)
+            )
+            row = await cursor.fetchone()
+        return dict(row) if row else None
+
+    async def list_quotas(self) -> List[Dict]:
+        async with self._connect() as db:
+            cursor = await db.execute("SELECT * FROM resource_quotas ORDER BY user_id")
+            rows = await cursor.fetchall()
+        return [dict(r) for r in rows]
+
+    # ─── P1-01: Memory Hierarchy ──────────────────────────────────────────
+
+    async def save_memory_entry(self, entry_id: str, tenant_id: str, layer: str,
+                                entry_key: str, payload: str, isolation_policy: str,
+                                cognitive_trace_id: str, ttl_seconds: Optional[float] = None,
+                                access_count: int = 0, last_access_ns: int = 0,
+                                relevance_score: float = 1.0, entry_hash: str = "",
+                                expires_at: Optional[str] = None) -> None:
+        async with self._connect() as db:
+            await db.execute(
+                """INSERT OR REPLACE INTO memory_hierarchy_entries
+                (id, tenant_id, layer, entry_key, payload, isolation_policy,
+                 cognitive_trace_id, ttl_seconds, access_count, last_access_ns,
+                 relevance_score, entry_hash, expires_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                (entry_id, tenant_id, layer, entry_key, payload, isolation_policy,
+                 cognitive_trace_id, ttl_seconds, access_count, last_access_ns,
+                 relevance_score, entry_hash, expires_at),
+            )
+            await db.commit()
+
+    async def get_memory_entry(self, entry_id: str) -> Optional[Dict]:
+        async with self._connect() as db:
+            cursor = await db.execute(
+                "SELECT * FROM memory_hierarchy_entries WHERE id = ?", (entry_id,)
+            )
+            row = await cursor.fetchone()
+        return dict(row) if row else None
+
+    async def list_memory_entries(self, tenant_id: str, layer: Optional[str] = None,
+                                  limit: int = 100) -> List[Dict]:
+        async with self._connect() as db:
+            if layer:
+                cursor = await db.execute(
+                    "SELECT * FROM memory_hierarchy_entries WHERE tenant_id = ? AND layer = ? ORDER BY created_at DESC LIMIT ?",
+                    (tenant_id, layer, limit),
+                )
+            else:
+                cursor = await db.execute(
+                    "SELECT * FROM memory_hierarchy_entries WHERE tenant_id = ? ORDER BY created_at DESC LIMIT ?",
+                    (tenant_id, limit),
+                )
+            rows = await cursor.fetchall()
+        return [dict(r) for r in rows]
+
+    async def delete_memory_entry(self, entry_id: str) -> None:
+        async with self._connect() as db:
+            await db.execute("DELETE FROM memory_hierarchy_entries WHERE id = ?", (entry_id,))
+            await db.commit()
+
+    async def delete_memory_entries_by_key(self, tenant_id: str, layer: str, entry_key: str) -> None:
+        async with self._connect() as db:
+            await db.execute(
+                "DELETE FROM memory_hierarchy_entries WHERE tenant_id = ? AND layer = ? AND entry_key = ?",
+                (tenant_id, layer, entry_key),
+            )
+            await db.commit()
+
+    # ─── P1-01: Skill Graph Nodes ────────────────────────────────────────
+
+    async def save_skill_node(self, id: str, skill_id: str, intent_pattern: str,
+                               dag_template_hash: str, tool_chain: str,
+                               cost_profile: str, tenant_id: str,
+                               cognitive_trace_id: str,
+                               success_rate: float = 1.0,
+                               prerequisites: str = "[]") -> None:
+        async with self._connect() as db:
+            await db.execute(
+                """INSERT OR REPLACE INTO skill_graph_nodes
+                (id, skill_id, intent_pattern, dag_template_hash, tool_chain,
+                 cost_profile, tenant_id, cognitive_trace_id, success_rate, prerequisites)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                (id, skill_id, intent_pattern, dag_template_hash, tool_chain,
+                 cost_profile, tenant_id, cognitive_trace_id, success_rate, prerequisites),
+            )
+            await db.commit()
+
+    async def get_skill_node(self, skill_id: str) -> Optional[Dict]:
+        async with self._connect() as db:
+            cursor = await db.execute(
+                "SELECT * FROM skill_graph_nodes WHERE skill_id = ?", (skill_id,)
+            )
+            row = await cursor.fetchone()
+        return dict(row) if row else None
+
+    async def list_skill_nodes(self, tenant_id: str,
+                               intent_pattern: Optional[str] = None,
+                               limit: int = 100) -> List[Dict]:
+        async with self._connect() as db:
+            if intent_pattern:
+                cursor = await db.execute(
+                    "SELECT * FROM skill_graph_nodes WHERE tenant_id = ? AND intent_pattern LIKE ? ORDER BY success_rate DESC LIMIT ?",
+                    (tenant_id, f"%{intent_pattern}%", limit),
+                )
+            else:
+                cursor = await db.execute(
+                    "SELECT * FROM skill_graph_nodes WHERE tenant_id = ? ORDER BY created_at DESC LIMIT ?",
+                    (tenant_id, limit),
+                )
+            rows = await cursor.fetchall()
+        return [dict(r) for r in rows]
+
+    async def update_skill_node_success_rate(self, skill_id: str,
+                                              success_rate: float) -> None:
+        async with self._connect() as db:
+            await db.execute(
+                "UPDATE skill_graph_nodes SET success_rate = ? WHERE skill_id = ?",
+                (success_rate, skill_id),
+            )
+            await db.commit()
+
+    # ─── P1-01: Skill Failure Patterns ────────────────────────────────────
+
+    async def save_failure_pattern(self, id: str, pattern_id: str, dag_id: str,
+                                   failure_hash: str, failure_signal: str,
+                                   tool_chain_at_failure: str, tenant_id: str,
+                                   cognitive_trace_id: str) -> None:
+        async with self._connect() as db:
+            await db.execute(
+                """INSERT OR REPLACE INTO skill_failure_patterns
+                (id, pattern_id, dag_id, failure_hash, failure_signal,
+                 tool_chain_at_failure, tenant_id, cognitive_trace_id)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
+                (id, pattern_id, dag_id, failure_hash, failure_signal,
+                 tool_chain_at_failure, tenant_id, cognitive_trace_id),
+            )
+            await db.commit()
+
+    async def get_failure_pattern(self, pattern_id: str) -> Optional[Dict]:
+        async with self._connect() as db:
+            cursor = await db.execute(
+                "SELECT * FROM skill_failure_patterns WHERE pattern_id = ?", (pattern_id,)
+            )
+            row = await cursor.fetchone()
+        return dict(row) if row else None
+
+    async def list_failure_patterns(self, tenant_id: str,
+                                    limit: int = 100) -> List[Dict]:
+        async with self._connect() as db:
+            cursor = await db.execute(
+                "SELECT * FROM skill_failure_patterns WHERE tenant_id = ? ORDER BY created_at DESC LIMIT ?",
+                (tenant_id, limit),
+            )
+            rows = await cursor.fetchall()
+        return [dict(r) for r in rows]
+
+    # ─── P1-01: Metrics Data ──────────────────────────────────────────────
+
+    async def record_metric(self, name: str, value: float,
+                            labels: str = "{}") -> None:
+        async with self._connect() as db:
+            await db.execute(
+                "INSERT INTO metrics_data (name, value, labels) VALUES (?, ?, ?)",
+                (name, value, labels),
+            )
+            await db.commit()
+
+    async def get_metric_latest(self, name: str) -> Optional[Dict]:
+        async with self._connect() as db:
+            cursor = await db.execute(
+                "SELECT * FROM metrics_data WHERE name = ? ORDER BY created_at DESC LIMIT 1",
+                (name,),
+            )
+            row = await cursor.fetchone()
+        return dict(row) if row else None
+
+    async def get_metric_history(self, name: str, limit: int = 1000) -> List[Dict]:
+        async with self._connect() as db:
+            cursor = await db.execute(
+                "SELECT * FROM metrics_data WHERE name = ? ORDER BY created_at DESC LIMIT ?",
+                (name, limit),
+            )
+            rows = await cursor.fetchall()
+        return [dict(r) for r in rows]
 
 
 db = Database()

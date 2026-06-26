@@ -7,6 +7,7 @@ Ref: P10.1 — Observability Foundation (Metrics & Tracing)
 
 from __future__ import annotations
 
+import json
 from typing import TYPE_CHECKING, Any, Dict, List, Optional
 
 if TYPE_CHECKING:
@@ -18,8 +19,10 @@ from core.models.observability import Span, SpanStatus
 class InMemoryMetricsCollector:
     """In-memory metrics collector with optional event bus integration."""
 
-    def __init__(self, event_bus: Optional[IEventBus] = None) -> None:
+    def __init__(self, event_bus: Optional[IEventBus] = None,
+                 db: Any = None) -> None:
         self._event_bus = event_bus
+        self._db = db
         self._metrics: Dict[str, float] = {}
         self._history: List[Dict[str, Any]] = []
 
@@ -43,6 +46,20 @@ class InMemoryMetricsCollector:
                 loop = asyncio.get_running_loop()
                 loop.create_task(
                     self._event_bus.publish(EventTopic.METRIC_RECORDED, event)
+                )
+            except RuntimeError:
+                pass
+
+        if self._db is not None:
+            import asyncio
+            try:
+                loop = asyncio.get_running_loop()
+                loop.create_task(
+                    self._db.record_metric(
+                        name=name,
+                        value=value,
+                        labels=json.dumps(labels or {}),
+                    )
                 )
             except RuntimeError:
                 pass

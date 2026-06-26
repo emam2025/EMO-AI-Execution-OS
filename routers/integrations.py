@@ -11,7 +11,7 @@ from __future__ import annotations
 
 from typing import Any, Dict, List
 
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, HTTPException, Request, Depends
 from pydantic import BaseModel
 
 from core.models.integration import (
@@ -21,6 +21,7 @@ from core.models.integration import (
     MessageEnvelope,
 )
 from routers.workspace import _get_current_user_id, _verify_workspace_access, _verify_write_access
+from middleware.auth import require_auth
 
 router = APIRouter(prefix="/api/workspaces", tags=["integrations"])
 
@@ -44,7 +45,7 @@ class WebhookPayload(BaseModel):
 
 
 @router.get("/{workspace_id}/integrations", response_model=List[Dict[str, Any]])
-def list_integrations(workspace_id: str, request: Request) -> List[Dict[str, Any]]:
+def list_integrations(workspace_id: str, request: Request, user: dict = Depends(require_auth())) -> List[Dict[str, Any]]:
     user_id = _get_current_user_id(request)
     _verify_workspace_access(user_id, workspace_id)
     integrations = [
@@ -63,7 +64,7 @@ def list_integrations(workspace_id: str, request: Request) -> List[Dict[str, Any
 
 
 @router.post("/{workspace_id}/integrations", response_model=Dict[str, Any], status_code=201)
-def add_integration(workspace_id: str, request: AddIntegrationRequest, req: Request) -> Dict[str, Any]:
+def add_integration(workspace_id: str, request: AddIntegrationRequest, req: Request, user: dict = Depends(require_auth())) -> Dict[str, Any]:
     user_id = _get_current_user_id(req)
     _verify_write_access(user_id, workspace_id)
     config = IntegrationConfig(
@@ -85,7 +86,7 @@ def add_integration(workspace_id: str, request: AddIntegrationRequest, req: Requ
 
 
 @router.post("/{workspace_id}/integrations/{channel_type}/webhook", response_model=Dict[str, Any])
-def receive_webhook(workspace_id: str, channel_type: IntegrationChannel, payload: WebhookPayload, request: Request) -> Dict[str, Any]:
+def receive_webhook(workspace_id: str, channel_type: IntegrationChannel, payload: WebhookPayload, request: Request, user: dict = Depends(require_auth())) -> Dict[str, Any]:
     user_id = _get_current_user_id(request)
     _verify_workspace_access(user_id, workspace_id)
 
@@ -114,7 +115,7 @@ def receive_webhook(workspace_id: str, channel_type: IntegrationChannel, payload
 
 
 @router.delete("/{workspace_id}/integrations/{channel_type}", response_model=Dict[str, Any])
-def remove_integration(workspace_id: str, channel_type: IntegrationChannel, request: Request) -> Dict[str, Any]:
+def remove_integration(workspace_id: str, channel_type: IntegrationChannel, request: Request, user: dict = Depends(require_auth())) -> Dict[str, Any]:
     user_id = _get_current_user_id(request)
     _verify_write_access(user_id, workspace_id)
 

@@ -124,8 +124,17 @@ class OperatorHooks:
     def operator_replay(self, req: OperatorActionRequest) -> OperatorActionResult:
         runtime = self._runtime
         if runtime is None:
-            from core.composition.root import build_minimal_runtime
-            runtime = build_minimal_runtime()
+            from core.runtime.bootstrap import EmoRuntime as _ER
+            _rt = _ER().build().start()
+            runtime = _rt.root.unified_runtime if _rt.root else None
+        if runtime is None:
+            result = OperatorActionResult(
+                request=req,
+                status=OperatorActionResultStatus.FAILED,
+                detail="No runtime available for replay",
+            )
+            self._emit(req, result)
+            return result
         ticket = runtime.replay(req.target_id, deterministic=True)
         result = OperatorActionResult(
             request=req,

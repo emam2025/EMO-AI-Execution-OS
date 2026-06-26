@@ -87,3 +87,5 @@ docker-compose.override.yml
 
 # === NEXT.JS ===
 next.config.js.map
+# Tauri signing key
+~/.tauri/emo-ai.key

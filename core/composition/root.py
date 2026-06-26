@@ -2014,3 +2014,21 @@ class CompositionRoot:
         )
 
         return self._engine
+
+
+def build_minimal_runtime(
+    gq=None, gre=None, agent=None, ctx=None,
+    hybrid=None, memory=None, metrics=None,
+    cache=None, worker_pool_size: int = 4,
+) -> Any:
+    """Build a lightweight runtime for E2E pipeline use.
+    
+    Backward-compat adapter — constructs the old-style UnifiedRuntime
+    for the E2E pipeline.
+    """
+    from core.unified_runtime import UnifiedRuntime
+    return UnifiedRuntime(
+        gq, gre, agent, ctx,
+        hybrid=hybrid, metrics=metrics, memory=memory,
+        cache=cache, worker_pool_size=worker_pool_size,
+    )

@@ -1,8 +1,10 @@
 from collections import defaultdict
 from typing import Any, Callable, Dict, List
 
-from core.interfaces.event_bus import EventHandler, IEventBus
+from core.interfaces.event_bus import IEventBus
 from core.models.events import ExecutionEvent
+
+EventHandler = Callable[[ExecutionEvent], None]
 
 
 class InMemoryEventBus(IEventBus):

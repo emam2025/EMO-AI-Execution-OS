@@ -1,13 +1,14 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
 
 from core.runtime.data_providers import get_db, get_state
+from middleware.auth import require_auth
 
 router = APIRouter(prefix="/api/history", tags=["history"])
 
 
 @router.get("")
-async def get_history():
+async def get_history(user: dict = Depends(require_auth())):
     """Get message history for the active conversation."""
     conv_id = get_state().active_conversation_id
     if not conv_id:

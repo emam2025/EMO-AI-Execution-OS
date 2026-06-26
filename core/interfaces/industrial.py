@@ -109,30 +109,4 @@ class IIndustrialIntegration(Protocol):
         """Get asset with tenant/org info."""
         ...
 
-
-class IDataPipeline(Protocol):
-    """Pipeline that ingests data from connectors into TwinManager."""
-
-    def register_connector(self, connector_id: str, connector: Any) -> None:
-        """Register a connector for data ingestion."""
-        ...
-
-    def register_mapping(self, node_id: str, asset_id: str, field: str) -> None:
-        """Register a mapping from connector node to twin asset field."""
-        ...
-
-    def set_threshold(self, field: str, max_value: float) -> None:
-        """Set a safety threshold for a field value."""
-        ...
-
-    async def ingest_once(self) -> Dict[str, int]:
-        """Run one ingestion cycle. Returns stats {successes, failures, violations}."""
-        ...
-
-    def start_background_loop(self, interval_seconds: float = 1.0) -> None:
-        """Start a background ingestion loop."""
-        ...
-
-    def stop_background_loop(self) -> None:
-        """Stop the background ingestion loop."""
         ...

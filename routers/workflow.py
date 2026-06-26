@@ -14,8 +14,9 @@ import uuid
 from datetime import datetime, timezone
 from typing import Any, Dict, List
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
+from middleware.auth import require_auth
 
 router = APIRouter(prefix="/api/workflows", tags=["workflows"])
 
@@ -105,13 +106,13 @@ def _validate_dag(nodes: List[Any], edges: List[Any]) -> bool:
 
 
 @router.get("", response_model=List[WorkflowResponse])
-def list_workflows() -> List[Dict[str, Any]]:
+def list_workflows(user: dict = Depends(require_auth())) -> List[Dict[str, Any]]:
     """Return all stored workflows."""
     return list(_workflow_store.values())
 
 
 @router.get("/{workflow_id}", response_model=WorkflowResponse)
-def get_workflow(workflow_id: str) -> Dict[str, Any]:
+def get_workflow(workflow_id: str, user: dict = Depends(require_auth())) -> Dict[str, Any]:
     """Return a specific workflow by ID."""
     if workflow_id not in _workflow_store:
         raise HTTPException(status_code=404, detail="Workflow not found")
@@ -119,7 +120,7 @@ def get_workflow(workflow_id: str) -> Dict[str, Any]:
 
 
 @router.post("", response_model=WorkflowResponse, status_code=201)
-def create_workflow(request: WorkflowRequest) -> Dict[str, Any]:
+def create_workflow(request: WorkflowRequest, user: dict = Depends(require_auth())) -> Dict[str, Any]:
     """Create a new workflow. Validates DAG before saving."""
     if not _validate_dag(request.nodes, request.edges):
         raise HTTPException(status_code=400, detail="Invalid DAG: cycle detected or missing edge references")
@@ -137,14 +138,14 @@ def create_workflow(request: WorkflowRequest) -> Dict[str, Any]:
 
 
 @router.post("/preview-validate", response_model=Dict[str, Any])
-def preview_validate(request: PreviewValidateRequest) -> Dict[str, Any]:
+def preview_validate(request: PreviewValidateRequest, user: dict = Depends(require_auth())) -> Dict[str, Any]:
     """Validate a DAG without storing it (for UI preview)."""
     is_valid = _validate_dag(request.nodes, request.edges)
     return {"valid": is_valid, "node_count": len(request.nodes), "edge_count": len(request.edges)}
 
 
 @router.post("/{workflow_id}/validate", response_model=Dict[str, Any])
-def validate_workflow(workflow_id: str) -> Dict[str, Any]:
+def validate_workflow(workflow_id: str, user: dict = Depends(require_auth())) -> Dict[str, Any]:
     """Validate an existing workflow's DAG."""
     if workflow_id not in _workflow_store:
         raise HTTPException(status_code=404, detail="Workflow not found")
@@ -154,7 +155,7 @@ def validate_workflow(workflow_id: str) -> Dict[str, Any]:
 
 
 @router.post("/{workflow_id}/submit", response_model=WorkflowResponse)
-def submit_workflow(workflow_id: str) -> Dict[str, Any]:
+def submit_workflow(workflow_id: str, user: dict = Depends(require_auth())) -> Dict[str, Any]:
     """Submit a workflow for execution (status change only, no execution)."""
     if workflow_id not in _workflow_store:
         raise HTTPException(status_code=404, detail="Workflow not found")
@@ -168,7 +169,7 @@ def submit_workflow(workflow_id: str) -> Dict[str, Any]:
 
 
 @router.post("/{workflow_id}/execute", response_model=Dict[str, Any])
-def execute_workflow(workflow_id: str) -> Dict[str, Any]:
+def execute_workflow(workflow_id: str, user: dict = Depends(require_auth())) -> Dict[str, Any]:
     """Submit a workflow for execution via UnifiedRuntimeAPI (status change only)."""
     if workflow_id not in _workflow_store:
         raise HTTPException(status_code=404, detail="Workflow not found")
@@ -188,7 +189,7 @@ def execute_workflow(workflow_id: str) -> Dict[str, Any]:
 
 
 @router.get("/{workflow_id}/history", response_model=List[Dict[str, Any]])
-def get_execution_history(workflow_id: str) -> List[Dict[str, Any]]:
+def get_execution_history(workflow_id: str, user: dict = Depends(require_auth())) -> List[Dict[str, Any]]:
     """Return execution history for a workflow."""
     if workflow_id not in _workflow_store:
         raise HTTPException(status_code=404, detail="Workflow not found")

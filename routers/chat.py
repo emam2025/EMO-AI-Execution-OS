@@ -1,8 +1,10 @@
 import uuid
 import asyncio
 from typing import Optional
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from pydantic import BaseModel
+
+from middleware.auth import require_auth
 from fastapi.responses import JSONResponse
 
 from core.runtime.data_providers import get_db, get_state
@@ -80,7 +82,7 @@ class ChatRequest(BaseModel):
 
 
 @router.post("")
-async def chat(req: ChatRequest):
+async def chat(req: ChatRequest, user: dict = Depends(require_auth())):
     task_id = str(uuid.uuid4())[:8]
     conversation_id = req.conversation_id
     mission_id = req.mission_id or generate_mission_id()

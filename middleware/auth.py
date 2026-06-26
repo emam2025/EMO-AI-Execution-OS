@@ -51,7 +51,7 @@ def get_auth_mode() -> str:
     if os.getenv("EMO_AUTH_ENABLED", "false").lower() == "true":
         return AuthMode.ENFORCED
 
-    return AuthMode.OFF
+    return AuthMode.ENFORCED
 
 
 # ══════════════════════════════════════════════════════════════════════════════

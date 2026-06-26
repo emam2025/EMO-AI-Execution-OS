@@ -11,7 +11,7 @@ from __future__ import annotations
 
 from typing import Any, Dict, List
 
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, HTTPException, Request, Depends
 from pydantic import BaseModel
 
 from core.gateway.models import ProviderType
@@ -21,6 +21,7 @@ from core.models.provider_marketplace import (
     WorkspaceProviderConfig,
 )
 from routers.workspace import _get_current_user_id, _verify_workspace_access, _verify_write_access
+from middleware.auth import require_auth
 
 router = APIRouter(prefix="/api/workspaces", tags=["providers"])
 
@@ -49,7 +50,7 @@ class AddProviderRequest(BaseModel):
 
 
 @router.get("/{workspace_id}/providers", response_model=List[Dict[str, Any]])
-def list_providers(workspace_id: str, request: Request) -> List[Dict[str, Any]]:
+def list_providers(workspace_id: str, request: Request, user: dict = Depends(require_auth())) -> List[Dict[str, Any]]:
     user_id = _get_current_user_id(request)
     _verify_workspace_access(user_id, workspace_id)
     providers = [
@@ -68,7 +69,7 @@ def list_providers(workspace_id: str, request: Request) -> List[Dict[str, Any]]:
 
 
 @router.post("/{workspace_id}/providers", response_model=Dict[str, Any], status_code=201)
-def add_provider(workspace_id: str, request: AddProviderRequest, req: Request) -> Dict[str, Any]:
+def add_provider(workspace_id: str, request: AddProviderRequest, req: Request, user: dict = Depends(require_auth())) -> Dict[str, Any]:
     user_id = _get_current_user_id(req)
     _verify_write_access(user_id, workspace_id)
     config = WorkspaceProviderConfig(
@@ -90,7 +91,7 @@ def add_provider(workspace_id: str, request: AddProviderRequest, req: Request) -
 
 
 @router.get("/{workspace_id}/providers/{provider_type}/usage", response_model=Dict[str, Any])
-def get_provider_usage(workspace_id: str, provider_type: ProviderType, request: Request) -> Dict[str, Any]:
+def get_provider_usage(workspace_id: str, provider_type: ProviderType, request: Request, user: dict = Depends(require_auth())) -> Dict[str, Any]:
     user_id = _get_current_user_id(request)
     _verify_workspace_access(user_id, workspace_id)
 
@@ -123,7 +124,7 @@ def get_provider_usage(workspace_id: str, provider_type: ProviderType, request: 
 
 
 @router.delete("/{workspace_id}/providers/{provider_type}", response_model=Dict[str, Any])
-def remove_provider(workspace_id: str, provider_type: ProviderType, request: Request) -> Dict[str, Any]:
+def remove_provider(workspace_id: str, provider_type: ProviderType, request: Request, user: dict = Depends(require_auth())) -> Dict[str, Any]:
     user_id = _get_current_user_id(request)
     _verify_write_access(user_id, workspace_id)
 

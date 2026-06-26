@@ -12,9 +12,10 @@ from __future__ import annotations
 import logging
 from pathlib import Path
 
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Request, Depends
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
+from middleware.auth import require_auth
 
 logger = logging.getLogger("emo_ai.router")
 
@@ -25,7 +26,7 @@ _templates = Jinja2Templates(directory=str(_templates_dir))
 
 
 @router.get("/", response_class=HTMLResponse)
-def dashboard(request: Request):
+def dashboard(request: Request, user: dict = Depends(require_auth())):
     """Main observability dashboard."""
     return _templates.TemplateResponse(
         "observability.html",

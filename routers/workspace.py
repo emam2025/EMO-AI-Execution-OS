@@ -13,9 +13,10 @@ import uuid
 from datetime import datetime, timezone
 from typing import Any, Dict, List
 
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, HTTPException, Request, Depends
 from pydantic import BaseModel
 
+from middleware.auth import require_auth
 from core.models.workspace import (
     User,
     Workspace,
@@ -85,7 +86,7 @@ class AddMemberRequest(BaseModel):
 
 
 @router.post("/users", response_model=Dict[str, Any], status_code=201)
-def create_user(request: UserRequest) -> Dict[str, Any]:
+def create_user(request: UserRequest, user: dict = Depends(require_auth())) -> Dict[str, Any]:
     user = User(
         tenant_id=request.tenant_id,
         email=request.email,
@@ -96,21 +97,21 @@ def create_user(request: UserRequest) -> Dict[str, Any]:
 
 
 @router.post("", response_model=Dict[str, Any], status_code=201)
-def create_workspace(request: WorkspaceRequest) -> Dict[str, Any]:
+def create_workspace(request: WorkspaceRequest, user: dict = Depends(require_auth())) -> Dict[str, Any]:
     workspace = Workspace(tenant_id=request.tenant_id, name=request.name, description=request.description)
     _workspace_store[workspace.id] = workspace
     return {"id": workspace.id, "name": workspace.name, "tenant_id": workspace.tenant_id, "status": workspace.status.value}
 
 
 @router.get("/{workspace_id}", response_model=Dict[str, Any])
-def get_workspace(workspace_id: str, request: Request) -> Dict[str, Any]:
+def get_workspace(workspace_id: str, request: Request, user: dict = Depends(require_auth())) -> Dict[str, Any]:
     user_id = _get_current_user_id(request)
     workspace = _verify_workspace_access(user_id, workspace_id)
     return {"id": workspace.id, "name": workspace.name, "tenant_id": workspace.tenant_id, "status": workspace.status.value}
 
 
 @router.post("/{workspace_id}/members", response_model=Dict[str, Any], status_code=201)
-def add_member(workspace_id: str, request: AddMemberRequest, req: Request) -> Dict[str, Any]:
+def add_member(workspace_id: str, request: AddMemberRequest, req: Request, user: dict = Depends(require_auth())) -> Dict[str, Any]:
     user_id = _get_current_user_id(req)
     _verify_write_access(user_id, workspace_id)
 
@@ -128,7 +129,7 @@ def add_member(workspace_id: str, request: AddMemberRequest, req: Request) -> Di
 
 
 @router.get("/{workspace_id}/members", response_model=List[Dict[str, Any]])
-def list_members(workspace_id: str, request: Request) -> List[Dict[str, Any]]:
+def list_members(workspace_id: str, request: Request, user: dict = Depends(require_auth())) -> List[Dict[str, Any]]:
     user_id = _get_current_user_id(request)
     _verify_workspace_access(user_id, workspace_id)
     members = [

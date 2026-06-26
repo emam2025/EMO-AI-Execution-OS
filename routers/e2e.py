@@ -13,10 +13,11 @@ import logging
 import traceback
 from typing import Any, Dict, Optional
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 
 from core.runtime.e2e_pipeline import build_e2e_components, run_e2e_pipeline
 from core.composition.root import build_minimal_runtime
+from middleware.auth import require_auth
 
 logger = logging.getLogger("emo_ai.router")
 
@@ -30,6 +31,7 @@ def run_pipeline(
     force_reindex: bool = False,
     include_trace: bool = True,
     runtime: Optional["UnifiedRuntime"] = None,
+    user: dict = Depends(require_auth()),
 ):
     """Execute the full AI pipeline: index -> graph -> semantic -> DAG -> trace.
 

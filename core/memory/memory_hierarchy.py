@@ -36,8 +36,10 @@ class MemoryHierarchy:  # LAW-11 LAW-14 RULE-3
     No global mutable state — LAW 11.
     """
 
-    def __init__(self, trace_correlator: Optional[CognitiveTraceCorrelator] = None) -> None:
+    def __init__(self, trace_correlator: Optional[CognitiveTraceCorrelator] = None,
+                 db: Any = None) -> None:
         self._trace_correlator = trace_correlator
+        self._db = db
         self._entries: Dict[str, Dict[str, Dict[str, MemoryEntry]]] = {}
         # ^ {tenant_id: {layer: {key: MemoryEntry}}}
 
@@ -67,6 +69,21 @@ class MemoryHierarchy:  # LAW-11 LAW-14 RULE-3
         if self._trace_correlator:
             self._trace_correlator.record_memory_store(
                 cognitive_trace_id, layer.value, key, tenant_id,
+            )
+
+        if self._db is not None:
+            entry_id = f"{tenant_id}:{layer.value}:{key}"
+            await self._db.save_memory_entry(
+                entry_id=entry_id,
+                tenant_id=tenant_id,
+                layer=layer.value,
+                entry_key=key,
+                payload=json.dumps(payload, default=str),
+                isolation_policy=isolation_policy,
+                cognitive_trace_id=cognitive_trace_id,
+                ttl_seconds=ttl_seconds,
+                entry_hash=entry._hash,
+                expires_at=expires_at,
             )
 
         return {
@@ -104,6 +121,23 @@ class MemoryHierarchy:  # LAW-11 LAW-14 RULE-3
                     "relevance_score": entry.relevance_score,
                     "_hash": entry._hash,
                 })
+                if self._db is not None:
+                    entry_id = f"{tenant_id}:{layer.value}:{key}"
+                    await self._db.save_memory_entry(
+                        entry_id=entry_id,
+                        tenant_id=tenant_id,
+                        layer=layer.value,
+                        entry_key=key,
+                        payload=json.dumps(entry.payload, default=str),
+                        isolation_policy=entry.isolation_policy,
+                        cognitive_trace_id=entry.cognitive_trace_id,
+                        ttl_seconds=entry.ttl_seconds,
+                        access_count=entry.access_count,
+                        last_access_ns=entry.last_access_ns,
+                        relevance_score=entry.relevance_score,
+                        entry_hash=entry._hash,
+                        expires_at=str(entry.stored_at_ns / 1e9 + entry.ttl_seconds) if entry.ttl_seconds else None,
+                    )
         else:
             for key, entry in layer_store.items():
                 entry.access_count += 1
@@ -114,6 +148,23 @@ class MemoryHierarchy:  # LAW-11 LAW-14 RULE-3
                     "relevance_score": entry.relevance_score,
                     "_hash": entry._hash,
                 })
+                if self._db is not None and len(results) <= 10:
+                    entry_id = f"{tenant_id}:{layer.value}:{key}"
+                    await self._db.save_memory_entry(
+                        entry_id=entry_id,
+                        tenant_id=tenant_id,
+                        layer=layer.value,
+                        entry_key=key,
+                        payload=json.dumps(entry.payload, default=str),
+                        isolation_policy=entry.isolation_policy,
+                        cognitive_trace_id=entry.cognitive_trace_id,
+                        ttl_seconds=entry.ttl_seconds,
+                        access_count=entry.access_count,
+                        last_access_ns=entry.last_access_ns,
+                        relevance_score=entry.relevance_score,
+                        entry_hash=entry._hash,
+                        expires_at=str(entry.stored_at_ns / 1e9 + entry.ttl_seconds) if entry.ttl_seconds else None,
+                    )
 
         results = results[:limit]
         return {
@@ -164,6 +215,8 @@ class MemoryHierarchy:  # LAW-11 LAW-14 RULE-3
         if not dry_run:
             for k in evicted:
                 layer_store.pop(k, None)
+                if self._db is not None:
+                    await self._db.delete_memory_entries_by_key(tenant_id, layer.value, k)
 
         return {
             "status": "dry_run" if dry_run else "pruned",

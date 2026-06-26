@@ -282,12 +282,14 @@ class ResourceScheduler:  # ←→ IResourceScheduler
         topology_mapper: Optional[TopologyMapper] = None,
         state_machine: Optional[AllocationStateMachine] = None,
         starvation_handler: Optional[StarvationHandler] = None,
+        db: Any = None,
     ) -> None:
         self._quota = quota_arbitrator or QuotaArbitrator()
         self._fairness = fairness_engine or FairnessEngine()
         self._topology = topology_mapper or TopologyMapper()
         self._sm = state_machine or AllocationStateMachine()
         self._starvation = starvation_handler or StarvationHandler()
+        self._db = db
         self._assignments: Dict[str, AssignmentRecord] = {}
 
         # Legacy scheduling state (used by ControlPlaneBrain)
@@ -657,3 +659,79 @@ class ResourceScheduler:  # ←→ IResourceScheduler
 
         logger.debug("No resources to release for %s", execution_id)
         return False
+
+    # ── Async persistence helpers (P1-01) ──────────────────────────
+
+    def set_db(self, db: Any) -> None:
+        self._db = db
+
+    async def async_register_worker(
+        self, worker_id: str, node_id: str,
+        total_cpu: float = 8.0, total_memory: float = 8192.0,
+        total_gpu: int = 0, total_gpu_memory: float = 0.0,
+        capacity: int = 10,
+        tags: Optional[Dict[str, str]] = None,
+    ) -> None:
+        self.register_worker(worker_id, node_id, total_cpu, total_memory,
+                             total_gpu, total_gpu_memory, capacity, tags)
+        if self._db is not None:
+            await self._db.save_worker(
+                worker_id=worker_id, node_id=node_id,
+                total_cpu=total_cpu, total_memory=total_memory,
+                total_gpu=total_gpu, total_gpu_memory=total_gpu_memory,
+                capacity=capacity, tags=tags or {},
+            )
+
+    async def async_unregister_worker(self, worker_id: str) -> None:
+        self.unregister_worker(worker_id)
+        if self._db is not None:
+            await self._db.delete_worker(worker_id)
+
+    async def async_set_quota(self, user_id: str, max_cpu: float = 32.0,
+                              max_memory: float = 32768.0, max_gpu: int = 4,
+                              max_executions: int = 20) -> None:
+        self.set_quota(user_id, max_cpu, max_memory, max_gpu, max_executions)
+        if self._db is not None:
+            await self._db.save_quota(
+                user_id=user_id, max_cpu=max_cpu,
+                max_memory=max_memory, max_gpu=max_gpu,
+                max_executions=max_executions,
+            )
+
+    async def load_workers_from_db(self) -> int:
+        if self._db is None:
+            return 0
+        try:
+            rows = await self._db.list_workers()
+            for w in rows:
+                self._workers[w["worker_id"]] = WorkerResource(
+                    worker_id=w["worker_id"], node_id=w.get("node_id", ""),
+                    total_cpu=w.get("total_cpu", 8.0),
+                    total_memory=w.get("total_memory", 8192.0),
+                    total_gpu=w.get("total_gpu", 0),
+                    total_gpu_memory=w.get("total_gpu_memory", 0.0),
+                    capacity=w.get("capacity", 10),
+                    tags=w.get("tags", {}),
+                )
+                if w.get("total_gpu", 0) > 0:
+                    self._gpu_nodes.add(w.get("node_id", ""))
+            return len(rows)
+        except Exception:
+            return 0
+
+    async def load_quotas_from_db(self) -> int:
+        if self._db is None:
+            return 0
+        try:
+            rows = await self._db.list_quotas()
+            for q in rows:
+                self._quotas[q["user_id"]] = UserQuota(
+                    user_id=q["user_id"],
+                    max_cpu=q.get("max_cpu", 32.0),
+                    max_memory=q.get("max_memory", 32768.0),
+                    max_gpu=q.get("max_gpu", 4),
+                    max_executions=q.get("max_executions", 20),
+                )
+            return len(rows)
+        except Exception:
+            return 0

@@ -1,5 +1,5 @@
 """EMO AI Governance Layer"""
 
-from core.governance import rbac, audit_trail, tenant_isolation
+from core.governance import audit_trail
 
-__all__ = ["rbac", "audit_trail", "tenant_isolation"]
+__all__ = ["audit_trail"]
