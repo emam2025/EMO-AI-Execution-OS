@@ -65,6 +65,7 @@ class EmoRuntime:
         self._config = {**DEFAULT_CONFIG, **(config or {})}
         self._root: Optional[CompositionRoot] = None
         self._os: Optional[RuntimeOS] = None
+        self._facade: Optional["EmoRuntimeFacade"] = None
         self._built = False
         self._started = False
 
@@ -171,6 +172,28 @@ class EmoRuntime:
     @property
     def is_built(self) -> bool:
         return self._built
+
+    @property
+    def facade(self) -> "EmoRuntimeFacade":
+        if not self._built:
+            self.build()
+        from core.runtime.facade import EmoRuntimeFacade
+        if not hasattr(self, "_facade") or self._facade is None:
+            self._facade = EmoRuntimeFacade(
+                unified_runtime=self.unified_runtime,
+                event_bus=self._root.event_bus if self._root else None,
+            )
+        return self._facade
+
+    @property
+    def unified_runtime(self) -> Any:
+        if self._root is None:
+            raise RuntimeError("EmoRuntime not built. Call .build() first.")
+        return self._root.unified_runtime
+
+    async def initialize(self) -> None:
+        """Async initialize: build + start the runtime."""
+        self.build().start()
 
     # ── Convenience ──────────────────────────────────────────────
 

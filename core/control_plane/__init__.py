@@ -4,6 +4,7 @@ Provides centralized management for tenants, organizations, resources, and polic
 This is the foundation layer for all industry modules.
 """
 
+from core.control_plane.brain import ControlPlaneBrain
 from core.control_plane.tenant_manager import TenantManager, Tenant
 from core.control_plane.organization_manager import OrganizationManager, Organization
 from core.control_plane.resource_manager import ResourceManager, Resource, ResourceType, ResourceStatus
@@ -16,6 +17,7 @@ from core.control_plane.health import HealthManager, HealthReport, TopologyEvent
 from core.control_plane.state import *  # noqa: F401, F403 — SystemStateBrain, WorkerInfo, etc.
 
 __all__ = [
+    "ControlPlaneBrain",
     "TenantManager",
     "Tenant",
     "OrganizationManager",

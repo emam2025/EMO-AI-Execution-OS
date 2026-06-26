@@ -11,7 +11,8 @@ services:
       - DATABASE_URL=sqlite:///./data/emo_ai.db
       # EMO_JWT_SECRET must be set via .env or environment variable
       - EMO_JWT_SECRET=${EMO_JWT_SECRET:?EMO_JWT_SECRET is required}
-      - EMO_AUTH_MODE=migration
+      - EMO_AUTH_MODE=enforced
+      - EMO_AUDIT_SIGNING_KEY=${EMO_AUDIT_SIGNING_KEY:?EMO_AUDIT_SIGNING_KEY is required}
     volumes:
       - ./data:/app/data
     healthcheck:

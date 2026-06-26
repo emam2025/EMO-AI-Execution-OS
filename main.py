@@ -97,7 +97,22 @@ async def lifespan(app: FastAPI):
             logger.warning(f"ProviderGateway init skipped: {e}")
             app.state.provider_gateway = None
 
-    async def _init_ai_state():
+    async def _init_runtime():
+        try:
+            from core.runtime.bootstrap import EmoRuntime
+            runtime = EmoRuntime()
+            await runtime.initialize()
+            app.state.runtime = runtime
+            app.state.facade = runtime.facade
+            logger.info("EmoRuntime initialized via CompositionRoot")
+            return runtime
+        except Exception as e:
+            logger.error("EmoRuntime initialization failed: %s\n%s", e, traceback.format_exc())
+            app.state.runtime = None
+            app.state.facade = None
+            return None
+
+    async def _init_ai_state(runtime=None):
         try:
             from pathlib import Path as _Path
             from core.graph_query import GraphQuery as _GQ
@@ -127,8 +142,6 @@ async def lifespan(app: FastAPI):
                 _feedback = None
 
             _hybrid: Optional[Any] = None
-            _ee: Optional[Any] = None
-            _ss: Optional[Any] = None
             try:
                 from core.embedding_engine import EmbeddingEngine as _EE
                 from core.semantic_store import SemanticStore as _SS
@@ -180,12 +193,16 @@ async def lifespan(app: FastAPI):
             _ai_state.agent = _agent
             _ai_state.ctx = _ctx
             _ai_state.hybrid = _hybrid
-            _ai_state.runtime = _rt
             _ai_state.memory = _mem
             _ai_state.metrics = _metrics
             _ai_state.replay = _replay
             _ai_state.cache = _exec_cache
             _ai_state.service_registry = None
+            if runtime is not None:
+                _ai_state.facade = runtime.facade
+            else:
+                _ai_state.facade = None
+            _ai_state.runtime = _rt or (runtime.unified_runtime if runtime else None)
 
             from core.runtime.facade import EmoRuntimeFacade as _Facade
             _ai_state.facade = _Facade(
@@ -226,6 +243,18 @@ async def lifespan(app: FastAPI):
                 await db.create_user(admin_id, admin_username, password_hash)
                 logger.info(f"Default admin created: {admin_username}")
 
+    async def _init_audit_trail():
+        audit_signing_key = os.getenv("EMO_AUDIT_SIGNING_KEY")
+        if not audit_signing_key:
+            logger.critical(
+                "EMO_AUDIT_SIGNING_KEY not set — audit trail signatures will be FORGEABLE. "
+                "Set EMO_AUDIT_SIGNING_KEY in production."
+            )
+            return
+        from core.governance.audit_trail import init as audit_init
+        audit_init(signing_key=audit_signing_key)
+        logger.info("Audit trail initialized with signing key")
+
     async def _init_telegram():
         telegram_enabled = os.getenv("TELEGRAM_ENABLED", "false").lower() == "true"
         telegram_token = os.getenv("TELEGRAM_TOKEN", "")
@@ -260,6 +289,7 @@ async def lifespan(app: FastAPI):
         _init_db(),
         _init_gateway(),
         _init_ai_layer(),
+        _init_audit_trail(),
         return_exceptions=True,
     )
 
@@ -270,9 +300,12 @@ async def lifespan(app: FastAPI):
         return_exceptions=True,
     )
 
+    # Initialize EmoRuntime (F2/F3/I1/I2/I3 subsystems)
+    emo_runtime = await _init_runtime()
+
     # AI state and admin depend on DB + gateway
     await asyncio.gather(
-        _init_ai_state(),
+        _init_ai_state(runtime=emo_runtime),
         _init_admin(),
         return_exceptions=True,
     )
@@ -373,11 +406,11 @@ app.include_router(project_router)
 
 # Multi-key provider management (Settings → Models redesign)
 try:
-    from routers.provider_keys import router as provider_keys_router
-    app.include_router(provider_keys_router)
-    logger.info("Provider keys router registered")
+    from routers.providers import router as providers_router
+    app.include_router(providers_router)
+    logger.info("Providers router registered")
 except Exception as e:
-    logger.error(f"Failed to register provider_keys router: {e}")
+    logger.error(f"Failed to register providers router: {e}")
 
 # Tool Marketplace (v1.1 Phase 1)
 try:
@@ -416,14 +449,6 @@ try:
 except Exception as e:
     logger.error(f"Failed to register workspace router: {e}")
 
-# Autonomous Missions (v1.1 Phase 4)
-try:
-    from routers.missions import router as missions_router
-    app.include_router(missions_router)
-    logger.info("Missions router registered")
-except Exception as e:
-    logger.error(f"Failed to register missions router: {e}")
-
 # Human Approval Layer (v1.1 Phase 4.5.10)
 try:
     from routers.approvals import router as approvals_router
@@ -431,14 +456,6 @@ try:
     logger.info("Approvals router registered")
 except Exception as e:
     logger.error(f"Failed to register approvals router: {e}")
-
-# Skill Evolution Layer (RC12.4)
-try:
-    from routers.skills import router as skills_router
-    app.include_router(skills_router)
-    logger.info("Skills router registered")
-except Exception as e:
-    logger.error(f"Failed to register skills router: {e}")
 
 # Industrial Control Plane (v1.1 Phase 5)
 try:
@@ -496,29 +513,7 @@ try:
 except Exception as e:
     logger.error(f"Failed to register observability router: {e}")
 
-# Project Management OS (RC12.8)
-try:
-    from routers.projectos import router as projectos_router
-    app.include_router(projectos_router)
-    logger.info("Project OS router registered")
-except Exception as e:
-    logger.error(f"Failed to register Project OS router: {e}")
 
-# Project OS Experience Layer (RC12.8.2)
-try:
-    from routers.projectos_experience import router as projectos_exp_router
-    app.include_router(projectos_exp_router)
-    logger.info("Project OS Experience router registered")
-except Exception as e:
-    logger.error(f"Failed to register Project OS Experience router: {e}")
-
-# Enterprise Command Center (RC15.7)
-try:
-    from routers.command_center import router as command_center_router
-    app.include_router(command_center_router)
-    logger.info("Command Center router registered")
-except Exception as e:
-    logger.error(f"Failed to register Command Center router: {e}")
 
 
 @app.get("/api/status")
