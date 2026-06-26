@@ -63,7 +63,7 @@
         "https://releases.emo-ai.dev/{{target}}/{{arch}}/latest.json"
       ],
       "dialog": true,
-      "pubkey": "ed25519:7e8f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f",
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDcwODkxQUREQzJCN0IwRjQKUldUMHNMZkMzUnFKY05QZ3o4dzhHYzZSaFd0K1JCc0FiMitjQzBpL2VjMjJmeHZVbk5vRWsvd3oK",
       "dangerous_insecure_replace": false
     }
   }
