@@ -41,3 +41,9 @@ psutil>=5.9.0
 
 # Optional: Vector DB production backend
 # qdrant-client>=1.9.0  # uncomment for QdrantVectorDB
+
+# Observability (P1-04)
+prometheus-client>=0.20.0
+opentelemetry-api>=1.24.0
+opentelemetry-sdk>=1.24.0
+opentelemetry-exporter-otlp>=1.24.0

@@ -39,6 +39,7 @@ from core.tasks import cleanup_old_tasks_loop
 from core.db import db
 from middleware.auth import auth_middleware, require_auth
 from brain import Brain
+from core.runtime.observability.exporters import PrometheusExporter, OpenTelemetryExporter
 
 # Global Telegram bot instance
 telegram_bot = None
@@ -308,6 +309,27 @@ async def lifespan(app: FastAPI):
     # Initialize EmoRuntime (F2/F3/I1/I2/I3 subsystems)
     emo_runtime = await _init_runtime()
 
+    # ── Prometheus exporter ───────────────────────────────────────
+    prometheus = PrometheusExporter()
+    app.state.prometheus_exporter = prometheus
+    logger.info("Prometheus metrics exporter initialized at /metrics")
+
+    # ── OpenTelemetry exporter (optional) ─────────────────────────
+    otel_endpoint = os.getenv("OTEL_EXPORTER_OTLP_ENDPOINT")
+    if otel_endpoint:
+        otel_service = os.getenv("OTEL_SERVICE_NAME", "emo-ai")
+        otel = OpenTelemetryExporter(
+            endpoint=otel_endpoint, service_name=otel_service
+        )
+        app.state.otel_exporter = otel
+        logger.info("OpenTelemetry traces exporting to %s", otel_endpoint)
+    else:
+        app.state.otel_exporter = None
+        logger.info(
+            "OpenTelemetry not configured "
+            "(set OTEL_EXPORTER_OTLP_ENDPOINT to enable)"
+        )
+
     # AI state and admin depend on DB + gateway
     await asyncio.gather(
         _init_ai_state(runtime=emo_runtime),
@@ -518,7 +540,19 @@ try:
 except Exception as e:
     logger.error(f"Failed to register observability router: {e}")
 
+from fastapi.responses import Response
 
+
+@app.get("/metrics")
+async def metrics():
+    """Prometheus metrics endpoint for scraping."""
+    exporter = getattr(app.state, "prometheus_exporter", None)
+    if exporter:
+        return Response(
+            exporter.generate_metrics(),
+            media_type=exporter.CONTENT_TYPE,
+        )
+    return Response(b"", media_type="text/plain; version=1.0.0; charset=utf-8")
 
 
 @app.get("/api/status")
