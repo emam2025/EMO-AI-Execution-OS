@@ -5,7 +5,7 @@ MeshEnvelope JSON serialization for network transport.
 from __future__ import annotations
 
 import json
-from dataclasses import asdict, is_dataclass
+from dataclasses import asdict
 from typing import Any, Dict
 
 from core.runtime.mesh.mesh_protocol import MeshEnvelope, MeshMessageType

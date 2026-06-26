@@ -18,7 +18,6 @@ from typing import Any, Dict, List, Optional, Set, Tuple
 
 from core.runtime.models.synthesis_models import (
     SecurityFinding,
-    ValidationReport,
     ValidationSeverity,
 )
 

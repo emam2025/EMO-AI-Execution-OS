@@ -43,7 +43,7 @@ class CertificationGate:  # LAW-3 LAW-5 LAW-8 LAW-11 LAW-21 LAW-22 RULE-1 RULE-2
 
     async def load_canon_baseline(  # RULE-2
         self,
-        baseline_path: str,
+        _baseline_path: str,
         readiness_trace_id: str,
     ) -> Dict[str, Any]:
         baseline = {

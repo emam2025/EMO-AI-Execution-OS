@@ -20,7 +20,7 @@
 | `core/autonomous_control/` | **Full ownership — Agent OS** | Remains in place |
 | `core/autonomy/` | **Full ownership — Agent OS** | Remains in place |
 
-**Core files:** `core/agents/planner_agent.py`, `critic_agent.py`, `adaptive_planner.py`, the sector directories under `core/agents/{energy,manufacturing,water,healthcare}/`.
+**Core files:** `core/orchestration/planner_agent.py`, `core/runtime/critic/critic_agent.py`, `core/orchestration/adaptive_planner.py`, the sector directories under `core/agents/{energy,manufacturing,water,healthcare}/`.
 
 **Dependencies:** `core/models/` (event, planner, critic, agent), `core/interfaces/`, `core/governance/`, `core/security/`
 

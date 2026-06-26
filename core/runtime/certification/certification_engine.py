@@ -55,7 +55,7 @@ class ICertificationEngine(Protocol):  # LAW-1 LAW-3 LAW-5 LAW-8 LAW-11 LAW-12 R
         self,
         load_results: Dict[str, Any],
         oscillation_data: Dict[str, Any],
-        performance_metrics: Dict[str, Any],
+        _performance_metrics: Dict[str, Any],
         certification_trace_id: str,
     ) -> Dict[str, Any]:
         """Compute system stability score from load and performance data.
@@ -63,7 +63,7 @@ class ICertificationEngine(Protocol):  # LAW-1 LAW-3 LAW-5 LAW-8 LAW-11 LAW-12 R
         Args:
             load_results:         Results from LoadGenerator.
             oscillation_data:     Oscillation detection results.
-            performance_metrics:  Aggregated performance metrics.
+            _performance_metrics: Aggregated performance metrics (reserved).
             certification_trace_id: Correlation ID.
 
         Returns:
@@ -243,7 +243,7 @@ class CertificationEngine:  # LAW-1 LAW-3 LAW-5 LAW-8 LAW-11 LAW-12 LAW-13 LAW-1
         self,
         load_results: Dict[str, Any],
         oscillation_data: Dict[str, Any],
-        performance_metrics: Dict[str, Any],
+        _performance_metrics: Dict[str, Any],
         certification_trace_id: str,
     ) -> Dict[str, Any]:
         p99 = load_results.get("p99_latency_ms", 999)

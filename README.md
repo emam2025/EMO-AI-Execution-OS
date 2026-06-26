@@ -5,7 +5,7 @@
 ### Industrial AI Execution Operating System
 
 [![Version](https://img.shields.io/badge/version-1.0.0--RC18-blue)]()
-[![Tests](https://img.shields.io/badge/tests-4,106-green)]()
+[![Tests](https://img.shields.io/badge/tests-4,263-green)]()
 [![Python](https://img.shields.io/badge/python-3.12+-blue)]()
 [![License](https://img.shields.io/badge/license-Proprietary-red)]()
 [![Status](https://img.shields.io/badge/status-Pilot--Baseline-yellow)]()
@@ -140,10 +140,10 @@ pytest tests/ --collect-only -q | tail -1
 | Metric | Value |
 |--------|-------|
 | Version | 1.0.0-RC18 |
-| Tests | 4,106 |
+| Tests | 4,263 |
 | Collection Errors | 0 |
-| Python Files (core/) | 513 |
-| LOC (core/) | ~86,800 |
+| Python Files (core/) | 493 |
+| LOC (core/) | ~88,240 |
 | Industrial Sectors | 4 |
 | Architecture Layers | 10 |
 
@@ -207,7 +207,7 @@ All documentation must follow this priority:
 - ✅ CI/CD source-of-truth gates
 
 ### In Progress (Phase 2: Critical Gaps)
-- 🔄 R2 Memory OS (T-30 Project Memory done, 9 components remaining)
+- 🔄 R2 Memory OS (T-30 Project Memory, T-31 Agent Memory, T-32 Long-Term Memory done — 3/10 components)
 - ⏳ R16 Write Support (industrial actuator commands)
 - ⏳ Computer Use real implementation
 - ⏳ K8s/HA/DR deployment

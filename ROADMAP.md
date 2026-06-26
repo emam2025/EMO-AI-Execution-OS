@@ -78,15 +78,15 @@ R5 ─── Big EMO AI OS    ← 🔴 0% (Planned)
 ## Phase 2: Critical Gaps Closure 🔄 IN PROGRESS
 
 > **Duration:** Months 1-3 (July - September 2026)
-> **Status:** 10% Complete (T-30 done)
+> **Status:** 30% Complete (T-30, T-31, T-32 done — 3/10 components)
 
 ### Sprint 2.1: R2 Memory OS Complete (4-6 weeks)
 
 | Task | Component | Status |
 |------|-----------|--------|
 | T-30 | Project Memory | ✅ Done (75 tests) |
-| T-31 | Agent Memory | ⏳ Next |
-| T-32 | Long-Term Memory | ⏳ Planned |
+| T-31 | Agent Memory | ✅ Done (82 tests) |
+| T-32 | Long-Term Memory | ✅ Done (79 tests) |
 | T-33 | Knowledge Graph | ⏳ Planned |
 | T-34 | Memory Compression | ⏳ Planned |
 | T-35 | Semantic Indexing | ⏳ Planned |
@@ -221,10 +221,10 @@ R5 ─── Big EMO AI OS    ← 🔴 0% (Planned)
 | Metric | Value |
 |--------|-------|
 | Version | 1.0.0-RC18 |
-| Tests | 4,106 |
+| Tests | 4,263 |
 | Collection Errors | 0 |
-| Python Files (core/) | 513 |
-| LOC (core/) | ~86,800 |
+| Python Files (core/) | 493 |
+| LOC (core/) | ~88,240 |
 | Industrial Sectors | 4 |
 | Architecture Layers | 10 |
 | Architecture Grade | A- |

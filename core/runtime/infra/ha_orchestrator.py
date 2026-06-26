@@ -30,7 +30,6 @@ from core.runtime.infra.ha_state_machine import (
 from core.runtime.models.infra_models import (
     HAState,
     LeaderElectionState,
-    HAQuorumResult,
 )
 
 

@@ -286,7 +286,7 @@ class QueryAnalytics:
     def dead_graph_zones(
         self,
         all_graph_symbols: List[str],
-        top_fraction: float = 0.3,
+        _top_fraction: float = 0.3,
     ) -> List[str]:
         """Identify symbols that exist in the graph but are never retrieved.
 

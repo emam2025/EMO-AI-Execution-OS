@@ -213,16 +213,15 @@ class PlannerAgent:  # LAW-13
         if not ok:
             raise RuntimeError(f"Adaptation guard: {reason}")
 
-        if True:
-            plan.metadata["adaptation_count"] = adaptation_count + 1
-            plan.version += 1
+        plan.metadata["adaptation_count"] = adaptation_count + 1
+        plan.version += 1
 
-            if new_intents:
-                resolved = self._swarm.resolve(new_intents)
-                plan = self._dag.synthesize(plan, resolved)
+        if new_intents:
+            resolved = self._swarm.resolve(new_intents)
+            plan = self._dag.synthesize(plan, resolved)
 
-            self._sm.transition(PlanningState.CRITIC_EVAL)
-            plan.status = PlanStatus.PENDING
+        self._sm.transition(PlanningState.CRITIC_EVAL)
+        plan.status = PlanStatus.PENDING
 
         return plan
 

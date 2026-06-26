@@ -14,7 +14,7 @@ from __future__ import annotations
 import logging
 from typing import Any, Dict, List, Optional
 
-from core.runtime.models.optimizer_models import CostBudget
+
 
 logger = logging.getLogger("emo_ai.optimizer.cost_optimizer")
 

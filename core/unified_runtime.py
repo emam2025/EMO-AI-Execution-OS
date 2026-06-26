@@ -25,9 +25,7 @@ from .feedback_intel import FeedbackIntelligence
 from .context_compiler import ContextCompiler
 
 if TYPE_CHECKING:
-    from .dag_optimizer import DAGOptimizer
-    from .cost_intel import CostTracker
-    from .memory_pressure import DAGSizeLimiter, CheckpointManager
+    from .memory_pressure import CheckpointManager
 
 logger = logging.getLogger("emo_ai.unified_runtime")
 

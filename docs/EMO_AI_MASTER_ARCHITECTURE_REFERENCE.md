@@ -54,7 +54,7 @@ The ultimate goal is an **Industrial AI Execution Operating System** capable of:
 |---|---|---|
 | Understanding systems | ✅ Implemented (code analysis, connectors) | `core/codegraph/`, `core/connectors/` |
 | Analyzing data | ✅ Implemented (telemetry, OEE, digital twins) | `core/runtime/observability/`, `core/industrial/oee_engine.py` |
-| Planning actions | ✅ Implemented (Planner Agent, Adaptive Planner) | `core/orchestration/planner_agent.py`, `core/agents/adaptive_planner.py` |
+| Planning actions | ✅ Implemented (Planner Agent, Adaptive Planner) | `core/orchestration/planner_agent.py`, `core/orchestration/adaptive_planner.py` |
 | Operating Agents | ✅ Implemented (lifecycle, multi-agent, swarm) | `core/agents/lifecycle_manager.py`, `core/runtime/multi_agent/swarm_coordinator.py` |
 | Creating tools | ⚠️ Partial (template-based, not LLM-driven) | `core/runtime/tool_synthesis/tool_synthesizer.py:35,94,314` |
 | Executing Workflows | ✅ Implemented (router, DAG, submission) | `routers/workflow.py`, `core/dag_optimizer.py`, `core/execution_core.py` |

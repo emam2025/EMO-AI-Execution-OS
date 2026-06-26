@@ -231,7 +231,7 @@ def evaluate_g_c1_pre_fault_health(  # LAW-8 LAW-20 RULE-3
 
 def evaluate_g_c2_degradation_budget(  # LAW-21 LAW-22 RULE-3
     degradation_metric: float = 0.0,
-    recovery_time_remaining_sec: float = 60.0,
+    _recovery_time_remaining_sec: float = 60.0,
     cascade_failure_detected: bool = False,
     severity_propagation_contained: bool = True,
 ) -> GuardResult:
@@ -286,7 +286,7 @@ def evaluate_g_c3_recovery_verification(  # LAW-5 LAW-8 LAW-22 RULE-3 RULE-5
 
 def evaluate_g_d1_deterministic_load(  # RULE-1
     profile_hash: str = "",
-    cluster_state_hash: str = "",
+    _cluster_state_hash: str = "",
     expected_profile_hash: str = "",
 ) -> GuardResult:
     blocked_by: List[str] = []

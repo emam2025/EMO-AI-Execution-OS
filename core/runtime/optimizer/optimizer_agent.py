@@ -22,12 +22,9 @@ import time
 from typing import Any, Dict, List, Optional
 
 from core.runtime.models.optimizer_models import (
-    CostBudget,
     OptimizationProposal,
-    OptimizationSignal,
     PatchOperation,
     SafePatchGuardResult,
-    TopologyPatch,
 )
 from core.runtime.optimizer.optimization_state_machine import (
     OptimizationState,

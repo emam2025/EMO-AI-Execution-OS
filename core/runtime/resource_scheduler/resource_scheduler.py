@@ -606,7 +606,7 @@ class ResourceScheduler:  # ←→ IResourceScheduler
     def preempt_if_needed(  # LAW-8, RULE-3
         self,
         request: ResourceRequest,
-        active_assignments: List[SchedulingDecision],
+        _active_assignments: List[SchedulingDecision],
     ) -> Optional[SchedulingDecision]:
         candidates: List[AssignmentRecord] = []
         for rec in self._assignments.values():

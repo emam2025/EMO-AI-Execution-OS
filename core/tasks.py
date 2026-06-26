@@ -2,7 +2,7 @@ import asyncio
 from core.db import db
 
 
-async def cleanup_old_tasks_loop(task_manager):
+async def cleanup_old_tasks_loop(_task_manager):
     """Background loop that cleans up old tasks every 5 minutes."""
     while True:
         await asyncio.sleep(300)  # 5 minutes

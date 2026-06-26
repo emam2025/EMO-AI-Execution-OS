@@ -73,8 +73,8 @@ class DesktopWorker:  # LAW-10 LAW-24 RULE-2 RULE-3 RULE-4
         session_id: str,
         target: Dict[str, Any],
         sandbox_token: str = "",
-        button: str = "left",
-        modifiers: Optional[List[str]] = None,
+        _button: str = "left",
+        _modifiers: Optional[List[str]] = None,
     ) -> Dict[str, Any]:
         session = self._sessions.get(session_id)
         if not session:

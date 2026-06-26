@@ -308,7 +308,7 @@ class WorkerRuntime:
 # ═══════════════════════════════════════════════════════════════════
 
 
-def _signal_handler(worker: WorkerRuntime, signum: int, frame) -> None:
+def _signal_handler(worker: WorkerRuntime, signum: int, _frame) -> None:
     """Handle SIGTERM/SIGINT for graceful shutdown."""
     sig_name = signal.Signals(signum).name
     logger.info("Received %s, shutting down gracefully...", sig_name)

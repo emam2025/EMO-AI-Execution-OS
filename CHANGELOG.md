@@ -19,6 +19,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Doc cross-references updated**: `CHANGELOG.md`, `ARCHITECTURE_OWNERSHIP_MAP.md`, `REPOSITORY_STRUCTURE_MAP.md`
 - **Net change**: 26 files, +607 insertions, -2,074 deletions
 
+### P1-01 Persistence
+
+- **AuditTrail**: Added async `persist()` with SHA-256 chain + HMAC signing
+- **ApprovalManager**: Added async `persist()` for approval requests
+- **ResourceScheduler**: Added async `persist()` for scheduled tasks
+- **MemoryHierarchy**: Added async `store()` with MemoryEntry persistence
+- **SkillGraphManager**: Added async `record_skill()`, `record_evolution()` with async DB
+- **MetricsCollector**: Added async `record_metric()` with MetricsEntry persistence
+- Added 4 new DB tables: `governance_audit_events`, `governance_approval_requests`, `scheduled_tasks`, `metrics_data`
+- Removed `_DB` global instance, removed `ensure_future` usage
+
+### P1-02 RBAC Enforcement
+
+- Added `Depends(require_auth())` to all 107 endpoints across 23 routers
+- Only auth endpoints unprotected: `/api/auth/login`, `/api/auth/signup`, `/api/auth/verify`, `/api/auth/refresh`
+- Enforced `ENFORCED` mode by default
+- `core/security/rbac.py`: Role enum, Permission enum, PolicyEngine with bind/enforce/check
+
+### P1-04 Observability Exporters
+
+- Added `PrometheusExporter` with `/metrics` endpoint (8 metrics: requests, latency, active agents, memory entries, audit events, approvals, scheduled tasks, active workers)
+- Added `OpenTelemetryExporter` with OTLP trace export to Jaeger/Tempo
+- Wired in `main.py` lifespan with `app.state.prometheus_exporter` and optional `otel_exporter`
+- Added `requirements.txt` deps: `prometheus-client`, `opentelemetry-api`, `opentelemetry-sdk`, `opentelemetry-exporter-otlp`
+- Added `tests/observability/test_observability_exporters.py` (6 tests)
+
+### P1-05 Dead Code Cleanup
+
+- Removed 19 files (-1,156 LOC): `core/governance/rbac.py`, `tenant_isolation.py`, `core/models/critic.py`, `planner.py`, `secrets.py`, `core/runtime/models/data_models.py`, 8 unused Protocol interfaces, `IDataPipeline` from `industrial.py`, `core/interfaces/computer/` (3 files), `core/workflow_os/`
+- Fixed `__init__.py` imports and test references (hotfix commit `210071b`)
+
 ### R2 Memory OS Components
 
 - **Project Memory (T-30)**: New `core/memory/project_memory.py` — per-project memory namespace built on `MemoryHierarchy`'s PROJECT layer. CRUD operations (store/retrieve/delete), text search with payload matching, project stats and listing, TTL support, cognitive trace propagation via `CognitiveTraceCorrelator`. 75 tests across 11 classes. Exports `ProjectMemory`, `ProjectMemoryEntry`, `ProjectSummary`.

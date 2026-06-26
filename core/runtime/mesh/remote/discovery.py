@@ -94,7 +94,7 @@ class DistributedRegistry:
     def discover_remote(
         self,
         service: str,
-        exclude_local: bool = False,
+        _exclude_local: bool = False,
     ) -> List[Dict[str, Any]]:
         """Discover services across all known peers.
 

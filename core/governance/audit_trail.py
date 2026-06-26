@@ -14,6 +14,7 @@ import hashlib
 import hmac
 import json
 import logging
+import os
 import time
 import uuid
 from dataclasses import dataclass, field, asdict
@@ -59,6 +60,9 @@ class AuditTrail:
         self._signing_key = signing_key
         self._log: List[dict] = []
         if not signing_key:
+            auth_mode = os.getenv("EMO_AUTH_MODE", "enforced").lower()
+            if auth_mode == "enforced":
+                raise RuntimeError("EMO_AUDIT_SIGNING_KEY is required in ENFORCED mode")
             logger.critical("Audit trail signing key is empty — signatures will be FORGEABLE")
 
     def _sign(self, record: dict) -> str:

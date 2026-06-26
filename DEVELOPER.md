@@ -269,8 +269,8 @@ EMO Core
 | Memory State Machine | `core/memory/memory_state_machine.py` | ✅ Implemented |
 | Cognitive Trace Correlator | `core/memory/trace_correlator.py` | ✅ Implemented |
 | Project Memory | `core/memory/project_memory.py` | ✅ Implemented (T-30) |
-| Agent Memory | `core/memory/agent_memory.py` | ⏳ In Progress (T-31) |
-| Long-Term Memory | — | ⏳ Planned (T-32) |
+| Agent Memory | `core/memory/agent_memory.py` | ✅ Implemented (T-31) |
+| Long-Term Memory | `core/memory/long_term_memory.py` | ✅ Implemented (T-32) |
 | Knowledge Graph | — | ⏳ Planned (T-33) |
 | Vector DB Backend | `core/vector_db.py` | ✅ Implemented |
 

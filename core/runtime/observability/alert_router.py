@@ -19,7 +19,6 @@ from typing import Dict, List, Optional
 
 from core.runtime.models.observability_models import (
     AggregatedMetric,
-    AlertPayload,
     AlertReceipt,
     AlertRule,
     Severity,

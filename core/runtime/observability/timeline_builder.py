@@ -60,8 +60,8 @@ class ExecutionTimelineBuilder:
     def build_timeline(
         self,
         execution_id: str,
-        include_scheduling: bool = True,
-        include_quota: bool = True,
+        _include_scheduling: bool = True,
+        _include_quota: bool = True,
     ) -> Timeline:
         """Build full execution timeline from EventStore.
 

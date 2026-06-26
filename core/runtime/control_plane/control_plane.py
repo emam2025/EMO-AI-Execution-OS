@@ -142,9 +142,9 @@ class ControlPlane:  # ←→ IControlPlane
             )
 
         target = self._autoscaler.calculate_target_count(
-            context.load or context.load,
+            context.load or 0,
             policy,
-        ) if False else 0  # simplified: use context.worker_count as proxy
+        )
 
         return PolicyResult(
             applied=True,

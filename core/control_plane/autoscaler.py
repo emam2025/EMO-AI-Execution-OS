@@ -68,7 +68,7 @@ class Autoscaler:
     def evaluate(self, current_workers: int,
                  pending_tasks: int = 0,
                  worker_utilization: float = 0.0,
-                 request_rate: float = 0.0) -> ScalingDecision:
+                 _request_rate: float = 0.0) -> ScalingDecision:
         """Evaluate whether to scale and produce a decision.
 
         Args:

@@ -51,12 +51,12 @@ class IMQTTConnector(Protocol):
 class IModbusConnector(Protocol):
     """Protocol for Modbus read-only connector."""
 
-    def read_holding_registers(self, address: int, count: int) -> List[int]:
+    def read_holding_registers(self, _address: int, count: int) -> List[int]:
         """Read holding registers from Modbus device (sync)."""
         ...
 
     async def read_holding_registers_async(
-        self, address: int, count: int
+        self, _address: int, count: int
     ) -> List[int]:
         """Read holding registers from Modbus device (async)."""
         ...

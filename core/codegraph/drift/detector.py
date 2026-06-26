@@ -10,7 +10,6 @@ from core.codegraph.drift.metrics import (
     compute_coupling_delta,
     compute_risk_delta,
 )
-from core.codegraph.drift.snapshot import build_snapshot
 from core.codegraph.drift.store import DriftStore
 
 

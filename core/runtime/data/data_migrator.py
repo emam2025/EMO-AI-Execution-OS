@@ -87,8 +87,8 @@ class DataMigrator:  # LAW-5 LAW-11 LAW-14 RULE-1 RULE-2 RULE-5
 
     def transform_schema(  # LAW-14 RULE-1
         self,
-        sqlite_schema: Dict[str, Any],
-        target_schema: Dict[str, Any],
+        _sqlite_schema: Dict[str, Any],
+        _target_schema: Dict[str, Any],
         mapping_rules: List[Dict[str, Any]],
         data_trace_id: str,
     ) -> Dict[str, Any]:
@@ -115,7 +115,7 @@ class DataMigrator:  # LAW-5 LAW-11 LAW-14 RULE-1 RULE-2 RULE-5
     def load_postgres(  # LAW-5 RULE-5
         self,
         transformed_data: Dict[str, Any],
-        target_conn_config: Dict[str, Any],
+        _target_conn_config: Dict[str, Any],
         batch_size: int,
         data_trace_id: str,
     ) -> Dict[str, Any]:

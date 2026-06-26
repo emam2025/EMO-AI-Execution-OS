@@ -34,6 +34,7 @@ from routers.project import router as project_router
 from routers.security import router as security_router
 from routers.workflow import router as workflow_router
 from routers.workspace import router as workspace_router
+from routers.integrations import router as integrations_router
 from core.state import state
 from core.tasks import cleanup_old_tasks_loop
 from core.db import db
@@ -379,9 +380,13 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
         return response
 
 
+# Read version from VERSION file
+with open("VERSION", "r") as _f:
+    __version__ = _f.read().strip()
+
 app = FastAPI(
     title="Emo AI Orchestrator",
-    version="4.2.0",
+    version=__version__,
     description=(
         "Multi-Agent Intelligence Orchestration System\n\n"
         "EMO AI orchestrate multiple AI agents (Planner, Coder, Writer, Researcher) "
@@ -505,6 +510,10 @@ try:
     from routers.connectors import router as connectors_router
     app.include_router(connectors_router)
     logger.info("Connectors router registered")
+
+    from routers.integrations import router as integrations_router
+    app.include_router(integrations_router)
+    logger.info("Integrations router registered")
 except Exception as e:
     logger.error(f"Failed to register Connectors router: {e}")
 
@@ -565,7 +574,7 @@ async def api_status(user: dict = Depends(require_auth(role="operator"))):
     key = kp.get(current_provider)
     return JSONResponse({
         "name": "Emo AI Orchestrator",
-        "version": "4.1.0",
+        "version": __version__,
         "status": "running",
         "provider": current_provider,
         "model": settings.get("model", ""),

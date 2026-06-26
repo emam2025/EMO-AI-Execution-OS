@@ -24,7 +24,7 @@ class OptimizerAgent:  # LAW-14 RULE-1
     async def optimize_execution_graph(
         self,
         dag: Dict[str, Any],
-        resource_profile: Dict[str, Any],
+        _resource_profile: Dict[str, Any],
         tenant_id: str,
         cognitive_trace_id: str = "",
     ) -> Dict[str, Any]:
