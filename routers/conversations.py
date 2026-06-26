@@ -1,9 +1,10 @@
 import uuid
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, Query, Depends
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
 from core.runtime.data_providers import get_db, get_state
+from middleware.auth import require_auth
 
 router = APIRouter(prefix="/api/conversations", tags=["conversations"])
 
@@ -19,7 +20,7 @@ class UpdateConversation(BaseModel):
 
 
 @router.get("")
-async def list_conversations(archived: bool = Query(False), project_id: str = "", session_id: str = ""):
+async def list_conversations(archived: bool = Query(False), project_id: str = "", session_id: str = "", user: dict = Depends(require_auth())):
     """List all conversations, optionally filtered by project or session."""
     convs = await get_db().get_conversations(archived=archived)
     if project_id:
@@ -31,7 +32,7 @@ async def list_conversations(archived: bool = Query(False), project_id: str = ""
 
 
 @router.post("")
-async def create_conversation(req: CreateConversation):
+async def create_conversation(req: CreateConversation, user: dict = Depends(require_auth())):
     """Create a new conversation."""
     conv_id = str(uuid.uuid4())
     await get_db().create_conversation(conv_id, name=req.name)
@@ -50,7 +51,7 @@ async def create_conversation(req: CreateConversation):
 
 
 @router.post("/{conv_id}/activate")
-async def activate_conversation(conv_id: str):
+async def activate_conversation(conv_id: str, user: dict = Depends(require_auth())):
     """Activate a conversation."""
     if conv_id not in get_state().conversations:
         get_state().conversations[conv_id] = {"messages": []}
@@ -60,7 +61,7 @@ async def activate_conversation(conv_id: str):
 
 
 @router.put("/{conv_id}")
-async def update_conversation(conv_id: str, req: UpdateConversation):
+async def update_conversation(conv_id: str, req: UpdateConversation, user: dict = Depends(require_auth())):
     """Rename a conversation."""
     await get_db().update_conversation_name(conv_id, req.name)
     if conv_id in get_state().conversations:
@@ -69,7 +70,7 @@ async def update_conversation(conv_id: str, req: UpdateConversation):
 
 
 @router.post("/{conv_id}/archive")
-async def archive_conversation(conv_id: str):
+async def archive_conversation(conv_id: str, user: dict = Depends(require_auth())):
     """Archive a conversation."""
     await get_db().archive_conversation(conv_id)
     get_state().conversations.pop(conv_id, None)
@@ -79,14 +80,14 @@ async def archive_conversation(conv_id: str):
 
 
 @router.post("/{conv_id}/unarchive")
-async def unarchive_conversation(conv_id: str):
+async def unarchive_conversation(conv_id: str, user: dict = Depends(require_auth())):
     """Unarchive a conversation."""
     await get_db().unarchive_conversation(conv_id)
     return JSONResponse({"status": "unarchived", "conversation_id": conv_id})
 
 
 @router.delete("/{conv_id}")
-async def delete_conversation(conv_id: str):
+async def delete_conversation(conv_id: str, user: dict = Depends(require_auth())):
     """Delete a conversation."""
     await get_db().delete_conversation(conv_id)
     get_state().conversations.pop(conv_id, None)

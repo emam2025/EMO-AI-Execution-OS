@@ -1,14 +1,15 @@
 import logging
 from typing import Any, Dict
 
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Request, Depends
+from middleware.auth import require_auth
 
 logger = logging.getLogger("emo_ai.security.router")
 router = APIRouter(prefix="/api/security", tags=["security"])
 
 
 @router.get("/status")
-async def security_status():
+async def security_status(user: dict = Depends(require_auth())):
     modules = {}
     try:
         from core.security.identity import get_identity_builder, Identity, Role
@@ -41,7 +42,7 @@ async def security_status():
 
 
 @router.get("/health")
-async def security_health(request: Request):
+async def security_health(request: Request, user: dict = Depends(require_auth())):
     gateway = getattr(request.app.state, "provider_gateway", None)
     return {
         "security": True,

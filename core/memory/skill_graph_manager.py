@@ -23,7 +23,8 @@ from core.memory.models import (  # LAW-6
 class SkillGraphManager:  # LAW-6 LAW-8 RULE-1
     """Governs the Procedural memory layer — tool chains, plans, patterns."""
 
-    def __init__(self) -> None:
+    def __init__(self, db: Any = None) -> None:
+        self._db = db
         self._skills: Dict[str, SkillNode] = {}  # skill_id → SkillNode
         self._failure_patterns: Dict[str, FailurePattern] = {}
 
@@ -48,6 +49,21 @@ class SkillGraphManager:  # LAW-6 LAW-8 RULE-1
             cognitive_trace_id=cognitive_trace_id,
         )
         self._skills[skill_id] = node
+
+        if self._db is not None:
+            await self._db.save_skill_node(
+                id=skill_id,
+                skill_id=skill_id,
+                intent_pattern=intent,
+                dag_template_hash=plan_hash,
+                tool_chain=json.dumps(tool_chain, default=str),
+                cost_profile=json.dumps({k: str(v) for k, v in node.cost_profile.items()}),
+                tenant_id=tenant_id,
+                cognitive_trace_id=cognitive_trace_id,
+                success_rate=float(node.success_rate),
+                prerequisites=json.dumps(node.prerequisites),
+            )
+
         return {
             "status": "recorded",
             "skill_id": skill_id,
@@ -100,6 +116,10 @@ class SkillGraphManager:  # LAW-6 LAW-8 RULE-1
                     "cognitive_trace_id": cognitive_trace_id}  # LAW-11
 
         node.success_rate = max(0.0, min(1.0, node.success_rate + feedback * 0.1))
+
+        if self._db is not None:
+            await self._db.update_skill_node_success_rate(skill_id, node.success_rate)
+
         return {
             "status": "updated",
             "skill_id": skill_id,
@@ -127,6 +147,19 @@ class SkillGraphManager:  # LAW-6 LAW-8 RULE-1
             cognitive_trace_id=cognitive_trace_id,
         )
         self._failure_patterns[pattern_id] = pattern
+
+        if self._db is not None:
+            await self._db.save_failure_pattern(
+                id=pattern_id,
+                pattern_id=pattern_id,
+                dag_id=dag_id,
+                failure_hash=failure_hash,
+                failure_signal=failure_signal,
+                tool_chain_at_failure=json.dumps(tool_chain, default=str),
+                tenant_id=tenant_id,
+                cognitive_trace_id=cognitive_trace_id,
+            )
+
         return {
             "status": "recorded",
             "pattern_id": pattern_id,

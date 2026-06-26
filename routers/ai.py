@@ -21,6 +21,7 @@ from typing import Any, Dict, Optional
 from fastapi import APIRouter, Depends, HTTPException, Query
 
 from core.runtime.facade import EmoRuntimeFacade
+from middleware.auth import require_auth
 
 logger = logging.getLogger("emo_ai.router")
 
@@ -73,6 +74,7 @@ def _ensure_initialized():
 def run_query(
     query: str = Query(..., description="Natural-language query"),
     strategy: str = Query("balanced", description="Retrieval strategy"),
+    user: dict = Depends(require_auth()),
 ):
     """Full pipeline: plan -> execute DAG -> format answer."""
     _ensure_initialized()
@@ -99,6 +101,7 @@ def run_query(
 @router.post("/query")
 def plan_query(
     query: str = Query(..., description="Natural-language query"),
+    user: dict = Depends(require_auth()),
 ):
     """Classify intent and build a DAG plan without executing."""
     _ensure_initialized()
@@ -125,6 +128,7 @@ def plan_query(
 def explain_symbol(
     symbol_id: str = Query(..., description="Symbol ID or name"),
     mode: str = Query("explain", description="explain | impact | why | refactor"),
+    user: dict = Depends(require_auth()),
 ):
     """Direct call to the AI reasoning agent for a symbol."""
     _ensure_initialized()
@@ -150,7 +154,7 @@ def explain_symbol(
 # ======================================================================
 
 @router.get("/status")
-def ai_status():
+def ai_status(user: dict = Depends(require_auth())):
     """Health check for all AI subsystems."""
     return ai_state.status()
 
@@ -163,6 +167,7 @@ def ai_status():
 def list_traces(
     limit: int = Query(20, description="Max sessions"),
     has_trace: bool = Query(True, description="Only sessions with DAG traces"),
+    user: dict = Depends(require_auth()),
 ):
     """List recent execution sessions with DAG traces."""
     _ensure_initialized()
@@ -182,7 +187,7 @@ def list_traces(
 # ======================================================================
 
 @router.get("/trace/{session_id}")
-def get_trace(session_id: str):
+def get_trace(session_id: str, user: dict = Depends(require_auth())):
     """Get session metadata + DAG trace."""
     _ensure_initialized()
     try:
@@ -204,7 +209,7 @@ def get_trace(session_id: str):
 # ======================================================================
 
 @router.get("/trace/{session_id}/replay")
-def replay_session(session_id: str):
+def replay_session(session_id: str, user: dict = Depends(require_auth())):
     """Step-by-step chronological replay of a DAG execution."""
     _ensure_initialized()
     try:
@@ -227,7 +232,7 @@ def replay_session(session_id: str):
 # ======================================================================
 
 @router.get("/trace/{session_id}/visualize")
-def visualize_session(session_id: str):
+def visualize_session(session_id: str, user: dict = Depends(require_auth())):
     """ASCII-graph visualization of a DAG execution."""
     _ensure_initialized()
     try:
@@ -248,6 +253,7 @@ def visualize_session(session_id: str):
 def compare_sessions(
     session_a: str = Query(..., description="First session ID"),
     session_b: str = Query(..., description="Second session ID"),
+    user: dict = Depends(require_auth()),
 ):
     """Side-by-side comparison of two DAG executions."""
     _ensure_initialized()

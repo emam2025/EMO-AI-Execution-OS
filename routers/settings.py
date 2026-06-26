@@ -3,12 +3,13 @@ import json
 import os
 import time
 from pathlib import Path
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
 from brain import Brain
 from core.security.keychain_provider import KeychainProvider
+from middleware.auth import require_auth
 
 SETTINGS_FILE = Path(".emo_settings.json")
 _SETTINGS_CACHE_TTL = 2.0  # seconds
@@ -47,7 +48,7 @@ def save_settings(settings: dict) -> None:
 
 
 @router.get("")
-async def get_settings():
+async def get_settings(user: dict = Depends(require_auth())):
     """Get current settings (without sensitive keys)."""
     settings = load_settings()
     # Don't return sensitive keys
@@ -60,7 +61,7 @@ async def get_settings():
 
 
 @router.get("/keys")
-async def get_sensitive_keys():
+async def get_sensitive_keys(user: dict = Depends(require_auth())):
     """Return masked tokens for UI display."""
     settings = load_settings()
     return JSONResponse({
@@ -70,7 +71,7 @@ async def get_sensitive_keys():
 
 
 @router.post("")
-async def update_setting(req: SettingsUpdate):
+async def update_setting(req: SettingsUpdate, user: dict = Depends(require_auth())):
     """Update a single setting.
     
     If the key ends with '_key', it's an API key — store in system Keychain,
@@ -110,7 +111,7 @@ async def update_setting(req: SettingsUpdate):
 
 
 @router.get("/status")
-async def get_status():
+async def get_status(user: dict = Depends(require_auth())):
     """Get LLM connection status."""
     settings = load_settings()
     provider = settings.get("provider", os.getenv("LLM_PROVIDER", "openrouter"))

@@ -251,9 +251,14 @@ async def lifespan(app: FastAPI):
                 "Set EMO_AUDIT_SIGNING_KEY in production."
             )
             return
-        from core.governance.audit_trail import init as audit_init
-        audit_init(signing_key=audit_signing_key)
-        logger.info("Audit trail initialized with signing key")
+        from core.governance.audit_trail import AuditTrail
+        audit_trail = AuditTrail(db=db, signing_key=audit_signing_key)
+        try:
+            count = await audit_trail.load_from_db()
+            logger.info("Audit trail initialized (loaded %d records from DB)", count)
+        except Exception:
+            logger.info("Audit trail initialized with signing key")
+        app.state.audit_trail = audit_trail
 
     async def _init_telegram():
         telegram_enabled = os.getenv("TELEGRAM_ENABLED", "false").lower() == "true"

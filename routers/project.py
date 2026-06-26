@@ -1,7 +1,7 @@
 import os
 import uuid
 from pathlib import Path
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from core.runtime.data_providers import get_db
@@ -25,10 +25,11 @@ class SessionCreate(BaseModel):
 
 
 from project_tools import WORKSPACE_ROOT, EMO_AI_PROJECT_DIR
+from middleware.auth import require_auth
 
 
 @router.get("")
-async def list_projects(archived: bool = False):
+async def list_projects(archived: bool = False, user: dict = Depends(require_auth())):
     """List all projects (active or archived)."""
     await get_db().initialize()
     projects = await get_db().get_projects(archived=archived)
@@ -40,7 +41,7 @@ async def list_projects(archived: bool = False):
 
 
 @router.post("")
-async def create_project(req: ProjectCreate):
+async def create_project(req: ProjectCreate, user: dict = Depends(require_auth())):
     """Create a new project with directory in isolated workspace."""
     await get_db().initialize()
 
@@ -96,7 +97,7 @@ async def create_project(req: ProjectCreate):
 
 
 @router.post("/{project_id}/activate")
-async def activate_project(project_id: str):
+async def activate_project(project_id: str, user: dict = Depends(require_auth())):
     """Set a project as active."""
     await get_db().initialize()
     await get_db().activate_project(project_id)
@@ -116,7 +117,7 @@ async def activate_project(project_id: str):
 
 
 @router.post("/{project_id}/archive")
-async def archive_project(project_id: str):
+async def archive_project(project_id: str, user: dict = Depends(require_auth())):
     """Archive a project."""
     await get_db().initialize()
     await get_db().archive_project(project_id)
@@ -124,7 +125,7 @@ async def archive_project(project_id: str):
 
 
 @router.post("/{project_id}/unarchive")
-async def unarchive_project(project_id: str):
+async def unarchive_project(project_id: str, user: dict = Depends(require_auth())):
     """Restore an archived project."""
     await get_db().initialize()
     await get_db().unarchive_project(project_id)
@@ -132,7 +133,7 @@ async def unarchive_project(project_id: str):
 
 
 @router.delete("/{project_id}")
-async def delete_project(project_id: str):
+async def delete_project(project_id: str, user: dict = Depends(require_auth())):
     """Delete a project and its directory."""
     await get_db().initialize()
     project = None
@@ -160,7 +161,7 @@ async def delete_project(project_id: str):
 
 
 @router.get("/{project_id}/sessions")
-async def list_sessions(project_id: str, archived: bool = False):
+async def list_sessions(project_id: str, archived: bool = False, user: dict = Depends(require_auth())):
     """List sessions for a project."""
     await get_db().initialize()
     sessions = await get_db().get_sessions(project_id, archived=archived)
@@ -168,7 +169,7 @@ async def list_sessions(project_id: str, archived: bool = False):
 
 
 @router.post("/{project_id}/sessions")
-async def create_session(project_id: str, req: SessionCreate):
+async def create_session(project_id: str, req: SessionCreate, user: dict = Depends(require_auth())):
     """Create a new session for a project."""
     await get_db().initialize()
     session_id = str(uuid.uuid4())[:8]
@@ -178,7 +179,7 @@ async def create_session(project_id: str, req: SessionCreate):
 
 
 @router.post("/sessions/{session_id}/activate")
-async def activate_session(session_id: str):
+async def activate_session(session_id: str, user: dict = Depends(require_auth())):
     """Set a session as active."""
     await get_db().initialize()
     await get_db().activate_session(session_id)
@@ -186,7 +187,7 @@ async def activate_session(session_id: str):
 
 
 @router.post("/sessions/{session_id}/archive")
-async def archive_session(session_id: str):
+async def archive_session(session_id: str, user: dict = Depends(require_auth())):
     """Archive a session."""
     await get_db().initialize()
     await get_db().archive_session(session_id)
@@ -194,7 +195,7 @@ async def archive_session(session_id: str):
 
 
 @router.post("/sessions/{session_id}/unarchive")
-async def unarchive_session(session_id: str):
+async def unarchive_session(session_id: str, user: dict = Depends(require_auth())):
     """Restore an archived session."""
     await get_db().initialize()
     await get_db().unarchive_session(session_id)
@@ -202,7 +203,7 @@ async def unarchive_session(session_id: str):
 
 
 @router.delete("/sessions/{session_id}")
-async def delete_session(session_id: str):
+async def delete_session(session_id: str, user: dict = Depends(require_auth())):
     """Delete a session."""
     await get_db().initialize()
     await get_db().delete_session(session_id)
@@ -210,7 +211,7 @@ async def delete_session(session_id: str):
 
 
 @router.post("/sessions/{session_id}/rename")
-async def rename_session(session_id: str, req: SessionCreate):
+async def rename_session(session_id: str, req: SessionCreate, user: dict = Depends(require_auth())):
     """Rename a session."""
     await get_db().initialize()
     await get_db().update_session(session_id, name=req.name)
@@ -218,7 +219,7 @@ async def rename_session(session_id: str, req: SessionCreate):
 
 
 @router.get("/info")
-async def get_project_info():
+async def get_project_info(user: dict = Depends(require_auth())):
     """Get current project information (backward compatibility)."""
     await get_db().initialize()
     active = await get_db().get_active_project()
@@ -247,7 +248,7 @@ async def get_project_info():
 
 
 @router.get("/files")
-async def get_project_files(project_id: str = ""):
+async def get_project_files(project_id: str = "", user: dict = Depends(require_auth())):
     """Get files in a project directory."""
     await get_db().initialize()
 
@@ -302,7 +303,7 @@ async def get_project_files(project_id: str = ""):
 
 
 @router.get("/read-file")
-async def read_file_content(project_id: str = "", file_path: str = ""):
+async def read_file_content(project_id: str = "", file_path: str = "", user: dict = Depends(require_auth())):
     """Read content of a specific file."""
     from project_tools import WORKSPACE_ROOT, _safe_path
     await get_db().initialize()
@@ -348,7 +349,7 @@ async def read_file_content(project_id: str = "", file_path: str = ""):
 
 
 @router.get("/browse-folders")
-async def browse_folders(path: str = ""):
+async def browse_folders(path: str = "", user: dict = Depends(require_auth())):
     """List sub-folders of a given path (server-side). Used by the new-project dialog."""
     from project_tools import WORKSPACE_ROOT
 

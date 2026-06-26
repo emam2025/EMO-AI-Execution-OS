@@ -24,6 +24,7 @@ from typing import Any, Dict, Optional
 from fastapi import APIRouter, Depends, Request
 from pydantic import BaseModel
 
+from middleware.auth import require_auth
 from core.runtime.api.unified_runtime_api import (
     ExecutionTicket,
     ReplayTicket,
@@ -101,6 +102,7 @@ class RegisterWorkerRequest(BaseModel):
 async def submit_execution(
     req: SubmitRequest,
     request: Request,
+    user: dict = Depends(require_auth()),
 ):
     try:
         api = _get_runtime(request)
@@ -144,6 +146,7 @@ async def resume_execution(
     ticket_id: str,
     req: ResumeRequest,
     request: Request,
+    user: dict = Depends(require_auth()),
 ):
     try:
         api = _get_runtime(request)
@@ -177,6 +180,7 @@ async def cancel_execution(
     ticket_id: str,
     req: CancelRequest,
     request: Request,
+    user: dict = Depends(require_auth()),
 ):
     try:
         api = _get_runtime(request)
@@ -211,6 +215,7 @@ async def observe_execution(
     ticket_id: str,
     request: Request,
     stream: bool = False,
+    user: dict = Depends(require_auth()),
 ):
     try:
         api = _get_runtime(request)
@@ -243,6 +248,7 @@ async def replay_execution(
     execution_id: str,
     req: ReplayRequest,
     request: Request,
+    user: dict = Depends(require_auth()),
 ):
     try:
         api = _get_runtime(request)
@@ -273,6 +279,7 @@ async def replay_execution(
 async def scale_workers(
     req: ScaleRequest,
     request: Request,
+    user: dict = Depends(require_auth()),
 ):
     try:
         api = _get_runtime(request)
@@ -302,6 +309,7 @@ async def scale_workers(
 async def register_worker(
     req: RegisterWorkerRequest,
     request: Request,
+    user: dict = Depends(require_auth()),
 ):
     try:
         api = _get_runtime(request)
